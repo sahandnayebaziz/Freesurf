@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6185.11" systemVersion="14A299l" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
     <dependencies>
+        <deployment defaultVersion="1808" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6190.4"/>
     </dependencies>
     <scenes>
@@ -15,8 +16,57 @@
                     <view key="view" contentMode="scaleToFill" id="kh9-bI-dsS">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="The Waves" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MHo-4p-fjm">
+                                <rect key="frame" x="258" y="67" width="85" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sD9-B2-zjU">
+                                <rect key="frame" x="265" y="335" width="71" height="30"/>
+                                <state key="normal" title="Load Data">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="loadData:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="7Sk-8I-wH1"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BN0-uc-UK2">
+                                <rect key="frame" x="265" y="390" width="73" height="30"/>
+                                <state key="normal" title="Clear Data">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="clearData:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="Ebl-33-2dN"/>
+                                </connections>
+                            </button>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="This is where the waves data will load once received." translatesAutoresizingMaskIntoConstraints="NO" id="uRe-Ru-xaD">
+                                <rect key="frame" x="0.0" y="128" width="600" height="171"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="BN0-uc-UK2" secondAttribute="bottom" constant="180" id="GIf-WR-RC2"/>
+                            <constraint firstItem="uRe-Ru-xaD" firstAttribute="top" secondItem="MHo-4p-fjm" secondAttribute="bottom" constant="40" id="GrC-Ny-beM"/>
+                            <constraint firstAttribute="trailing" secondItem="uRe-Ru-xaD" secondAttribute="trailing" id="NCN-Kc-kSK"/>
+                            <constraint firstItem="sD9-B2-zjU" firstAttribute="top" secondItem="uRe-Ru-xaD" secondAttribute="bottom" constant="36" id="OKA-Of-wl1"/>
+                            <constraint firstItem="sD9-B2-zjU" firstAttribute="centerX" secondItem="uRe-Ru-xaD" secondAttribute="centerX" id="TcT-Z3-3XO"/>
+                            <constraint firstItem="sD9-B2-zjU" firstAttribute="leading" secondItem="BN0-uc-UK2" secondAttribute="leading" id="e4h-TA-XyB"/>
+                            <constraint firstItem="BN0-uc-UK2" firstAttribute="top" secondItem="sD9-B2-zjU" secondAttribute="bottom" constant="25" id="hzl-oD-ySQ"/>
+                            <constraint firstItem="MHo-4p-fjm" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="47" id="qfY-e3-tzc"/>
+                            <constraint firstItem="MHo-4p-fjm" firstAttribute="centerX" secondItem="uRe-Ru-xaD" secondAttribute="centerX" id="r2d-yl-xvd"/>
+                            <constraint firstItem="uRe-Ru-xaD" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="uuH-Ac-rJV"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="clearButton" destination="BN0-uc-UK2" id="Vhk-K8-Jnp"/>
+                        <outlet property="loadButton" destination="sD9-B2-zjU" id="zfx-ev-Nt9"/>
+                        <outlet property="textArea" destination="uRe-Ru-xaD" id="I1N-8b-rWE"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
