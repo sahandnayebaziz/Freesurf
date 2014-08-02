@@ -8,11 +8,20 @@
 
 import UIKit
 
-class ViewController: UIViewController {
-                            
+class ViewController: UIViewController, NSURLSessionDelegate {
+    let sourceURL:NSURL = NSURL(string: "http://api.spitcast.com/api/county/spots/orange-county/")
+    var sourceSession:NSURLSession = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
+    var sourceData:AnyObject?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        
+        let sourceTask = sourceSession.dataTaskWithURL(sourceURL, completionHandler: {(data, response, error) -> Void in
+            self.sourceData = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: nil)
+            print(self.sourceData)
+        })
+        sourceTask.resume()
+
     }
 
     override func didReceiveMemoryWarning() {
