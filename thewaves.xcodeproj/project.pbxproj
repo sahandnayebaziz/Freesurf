@@ -8,10 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		D801177B198D64C200509A27 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D801177A198D64C200509A27 /* AppDelegate.swift */; };
-		D801177D198D64C200509A27 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D801177C198D64C200509A27 /* ViewController.swift */; };
 		D8011780198D64C200509A27 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D801177E198D64C200509A27 /* Main.storyboard */; };
 		D8011782198D64C200509A27 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D8011781198D64C200509A27 /* Images.xcassets */; };
 		D801178E198D64C200509A27 /* thewavesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D801178D198D64C200509A27 /* thewavesTests.swift */; };
+		D818F3D3198EEE390098FE82 /* spotLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = D818F3D2198EEE390098FE82 /* spotLibrary.swift */; };
+		D86F6218198EFA790070B713 /* YourSpotsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86F6217198EFA790070B713 /* YourSpotsController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -28,12 +29,13 @@
 		D8011775198D64C200509A27 /* thewaves.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = thewaves.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D8011779198D64C200509A27 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D801177A198D64C200509A27 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		D801177C198D64C200509A27 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		D801177F198D64C200509A27 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		D8011781198D64C200509A27 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		D8011787198D64C200509A27 /* thewavesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = thewavesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D801178C198D64C200509A27 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D801178D198D64C200509A27 /* thewavesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = thewavesTests.swift; sourceTree = "<group>"; };
+		D818F3D2198EEE390098FE82 /* spotLibrary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = spotLibrary.swift; sourceTree = "<group>"; };
+		D86F6217198EFA790070B713 /* YourSpotsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YourSpotsController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,9 +77,9 @@
 		D8011777198D64C200509A27 /* thewaves */ = {
 			isa = PBXGroup;
 			children = (
-				D801177A198D64C200509A27 /* AppDelegate.swift */,
-				D801177C198D64C200509A27 /* ViewController.swift */,
-				D801177E198D64C200509A27 /* Main.storyboard */,
+				D86F621A198EFA9A0070B713 /* Models */,
+				D86F621B198EFAAA0070B713 /* Views */,
+				D86F6219198EFA910070B713 /* Controllers */,
 				D8011781198D64C200509A27 /* Images.xcassets */,
 				D8011778198D64C200509A27 /* Supporting Files */,
 			);
@@ -107,6 +109,31 @@
 				D801178C198D64C200509A27 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		D86F6219198EFA910070B713 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				D801177A198D64C200509A27 /* AppDelegate.swift */,
+				D86F6217198EFA790070B713 /* YourSpotsController.swift */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		D86F621A198EFA9A0070B713 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				D818F3D2198EEE390098FE82 /* spotLibrary.swift */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		D86F621B198EFAAA0070B713 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				D801177E198D64C200509A27 /* Main.storyboard */,
+			);
+			name = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -208,7 +235,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D801177D198D64C200509A27 /* ViewController.swift in Sources */,
+				D818F3D3198EEE390098FE82 /* spotLibrary.swift in Sources */,
+				D86F6218198EFA790070B713 /* YourSpotsController.swift in Sources */,
 				D801177B198D64C200509A27 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
