@@ -5,10 +5,36 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6190.4"/>
     </dependencies>
     <scenes>
+        <!--Add a Spot-->
+        <scene sceneID="A0w-bO-5DJ">
+            <objects>
+                <viewController id="1B7-6a-Ai2" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Zcc-Hu-HyB"/>
+                        <viewControllerLayoutGuide type="bottom" id="9D9-Ea-zGS"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="rSe-R1-Ypw">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Add a Spot" id="YGq-j9-77e">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="qef-PV-Nwq">
+                            <connections>
+                                <segue destination="PNQ-CK-MI7" kind="unwind" unwindAction="unwindToList:" id="0aT-sw-zXX"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Sag-Qd-5n3" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="PNQ-CK-MI7" userLabel="Exit" sceneMemberID="exit"/>
+            </objects>
+            <point key="canvasLocation" x="926" y="-451"/>
+        </scene>
         <!--Your Surf Spots-->
         <scene sceneID="amA-PY-fmU">
             <objects>
-                <tableViewController title="Your Surf Spots" id="DdE-yk-Q9I" sceneMemberID="viewController">
+                <tableViewController title="Your Surf Spots" id="DdE-yk-Q9I" customClass="YourSpotsTableViewController" customModule="thewaves" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="6lc-s5-bZy">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -19,7 +45,11 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Your Surf Spots" id="ieq-dx-M15">
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="YoI-kh-8L9"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="YoI-kh-8L9">
+                            <connections>
+                                <segue destination="z12-CJ-xDw" kind="showDetail" id="KZ9-Fp-JQA"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0ve-Xx-3Je" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -43,6 +73,24 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Flf-zX-Kxg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="114" y="347"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="M13-BH-15K">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="z12-CJ-xDw" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="2dn-HX-Aad">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="1B7-6a-Ai2" kind="relationship" relationship="rootViewController" id="rCy-IZ-GMc"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="lZn-Zn-d55" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="114" y="-451"/>
         </scene>
     </scenes>
 </document>
