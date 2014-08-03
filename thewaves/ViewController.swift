@@ -8,39 +8,50 @@
 
 import UIKit
 
-class ViewController: UIViewController, NSURLSessionDelegate {
-    @IBOutlet weak var textArea: UITextView!
-    @IBOutlet weak var loadButton: UIButton!
-    @IBOutlet weak var clearButton: UIButton!
+class ViewController: UIViewController, NSURLSessionDelegate, UITableViewDelegate, UITableViewDataSource {
+    @IBOutlet weak var mainTableView: UITableView!
     
     let sourceURL:NSURL = NSURL(string: "http://api.spitcast.com/api/county/spots/orange-county/")
     var sourceSession:NSURLSession = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
-    var sourceData:AnyObject?
+    var sourceData:AnyObject? = nil
     
-    @IBAction func clearData(sender: AnyObject) {
-        textArea.text = "Cleared."
-    }
-    @IBAction func loadData(sender: AnyObject) {
-        if !(textArea.text == "Cleared.") || !(textArea.text == "This is where the waves data will load once received.") {
-            let sourceTask = sourceSession.dataTaskWithURL(sourceURL, completionHandler: {(data, response, error) -> Void in
-                self.sourceData = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: nil)
-                })
-            sourceTask.resume()
-            textArea.text = "\(self.sourceData)"
-            
+    var spot_names: [String] = []
+    
+    func tableView(tableView: UITableView!, numberOfRowsInSection section: Int) -> Int {
+        let sourceTask = sourceSession.dataTaskWithURL(sourceURL, completionHandler: {(data, response, error) -> Void in
+            self.sourceData = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: nil)
+            })
+        sourceTask.resume()
+        sleep(1)
+        
+        var numberInData:Int! = sourceData?.count!
+        println("numberInData is \(numberInData)")
+        for var index = 0; index < numberInData; index++ {
+            self.spot_names += sourceData![index]!["spot_name"]! as String
         }
+        
+        return numberInData
     }
     
+    func tableView(tableView: UITableView!, cellForRowAtIndexPath indexPath: NSIndexPath!) -> UITableViewCell! {
+        var cell:UITableViewCell = self.mainTableView.dequeueReusableCellWithIdentifier("cell") as UITableViewCell
+        
+        cell.textLabel.text = self.spot_names[indexPath.row]
+        return cell
+    }
+    
+    func tableView(tableView: UITableView!, didDeselectRowAtIndexPath indexPath: NSIndexPath!)  {
+        
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.mainTableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "cell")
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
 
 
 }
-
