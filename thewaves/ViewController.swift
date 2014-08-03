@@ -14,8 +14,7 @@ class ViewController: UIViewController, NSURLSessionDelegate, UITableViewDelegat
     let sourceURL:NSURL = NSURL(string: "http://api.spitcast.com/api/county/spots/orange-county/")
     var sourceSession:NSURLSession = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
     var sourceData:AnyObject? = nil
-    
-    var spot_names: [String] = []
+    var spotNames:[String] = []
     
     func tableView(tableView: UITableView!, numberOfRowsInSection section: Int) -> Int {
         let sourceTask = sourceSession.dataTaskWithURL(sourceURL, completionHandler: {(data, response, error) -> Void in
@@ -23,25 +22,22 @@ class ViewController: UIViewController, NSURLSessionDelegate, UITableViewDelegat
             })
         sourceTask.resume()
         sleep(1)
-        
-        var numberInData:Int! = sourceData?.count!
-        println("numberInData is \(numberInData)")
+        let numberInData:Int! = sourceData?.count!
         for var index = 0; index < numberInData; index++ {
-            self.spot_names += sourceData![index]!["spot_name"]! as String
+            let spotName:String = sourceData![index]!["spot_name"]! as String
+            self.spotNames += spotName
         }
-        
+        self.spotNames = sorted(self.spotNames, forwards)
         return numberInData
     }
     
     func tableView(tableView: UITableView!, cellForRowAtIndexPath indexPath: NSIndexPath!) -> UITableViewCell! {
         var cell:UITableViewCell = self.mainTableView.dequeueReusableCellWithIdentifier("cell") as UITableViewCell
-        
-        cell.textLabel.text = self.spot_names[indexPath.row]
+        cell.textLabel.text = self.spotNames[indexPath.row]
         return cell
     }
     
     func tableView(tableView: UITableView!, didDeselectRowAtIndexPath indexPath: NSIndexPath!)  {
-        
     }
     
     override func viewDidLoad() {
@@ -53,5 +49,10 @@ class ViewController: UIViewController, NSURLSessionDelegate, UITableViewDelegat
         super.didReceiveMemoryWarning()
     }
 
+    
+}
 
+func forwards(s1: String, s2: String) -> Bool
+{
+    return s1 < s2
 }
