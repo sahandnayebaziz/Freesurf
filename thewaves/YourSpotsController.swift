@@ -9,6 +9,39 @@
 import UIKit
 
 class YourSpotsController: UITableViewController {
+    
+    @IBAction func unwindToList(segue:UIStoryboardSegue) {}
+    
+    override func viewDidLoad() {
+        
+    }
+    
+    override func didReceiveMemoryWarning() {
+        
+    }
+    
+    override func numberOfSectionsInTableView(tableView: UITableView!) -> Int {
+        return 1
+    }
+    
+    override func tableView(tableView: UITableView!, numberOfRowsInSection section: Int) -> Int {
+        return 1
+    }
+    
+    override func tableView(tableView: UITableView!, cellForRowAtIndexPath indexPath: NSIndexPath!) -> UITableViewCell!  {
+        return nil
+    }
+    
+    override func tableView(tableView: UITableView!, canEditRowAtIndexPath indexPath: NSIndexPath!) -> Bool  {
+        return true
+    }
+    
+    override func tableView(tableView: UITableView!, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath!) {
+        if (editingStyle == UITableViewCellEditingStyle.Delete) {
+            
+        }
+    }
+    
 
 }
 
