@@ -9,7 +9,18 @@
 import UIKit
 
 class YourSpotsTableViewController: UITableViewController {
-    @IBAction func unwindToList(segue:UIStoryboardSegue) {}
+    @IBAction func unwindToList(segue:UIStoryboardSegue) {
+        var source: AddNewSpotsTableViewController = segue.sourceViewController as AddNewSpotsTableViewController
+        if !source.listOfSpots.selectedSpotsDictionary.isEmpty {
+            self.yourSpotLibrary.selectedSpotsDictionary += source.listOfSpots.selectedSpotsDictionary
+            
+            self.tableView.reloadData()
+        }
+        println("your spot library has a library that looks like this!")
+        println(self.yourSpotLibrary.selectedSpotsDictionary)
+    }
+    
+    var yourSpotLibrary:SpotLibrary = SpotLibrary()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,6 +68,19 @@ class YourSpotsTableViewController: UITableViewController {
             
         }
     }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
+        
+    }
+
+}
+
+@assignment func +=<K, V> (inout left: Dictionary<K, V>, right: Dictionary<K, V>) -> Dictionary<K, V> {
+    for (k, v) in right {
+        left.updateValue(v, forKey: k)
+    }
+    return left
+}
 
     /*
     // Override to support conditional editing of the table view.
@@ -103,4 +127,4 @@ class YourSpotsTableViewController: UITableViewController {
     }
     */
 
-}
+

@@ -8,28 +8,31 @@
 
 import Foundation
 
-class spotLibrary: NSObject, NSURLSessionDelegate {
-    var spotHeightDictionary:[String:Int]
-    var spotIDMap:[(spotName:String, spotID:String)]
+class SpotLibrary: NSObject, NSURLSessionDelegate {
+    var spotIDMap:[(spotName:String, spotID:Int)]
+    var selectedSpotsDictionary:[String:Int]
+    var selectedSpotsArray:[(String, Int)]
     
     init() {
-        spotHeightDictionary = [:]
+        selectedSpotsDictionary = [:]
+        selectedSpotsArray = []
         spotIDMap = []
         super.init()
     }
     
     init(county:String) {
-        spotHeightDictionary = [:]
+        selectedSpotsDictionary = [:]
+        selectedSpotsArray = []
         spotIDMap = []
         super.init()
-        self.getSpotsByCounty("orange-county")
+        self.getSpots()
     }
     
-    func getSpotsByCounty(county:String) -> [(spotName:String, spotID:String)] {
-        let sourceURL:NSURL = NSURL(string: "http://api.spitcast.com/api/county/spots/" + county + "/")
+    func getSpots() {
+        let sourceURL:NSURL = NSURL(string: "http://api.spitcast.com/api/county/spots/orange-county/")
         var sourceSession:NSURLSession = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
         var sourceData:AnyObject? = nil
-        var spotIDMap:[(spotName:String, spotID:String)] = []
+        var newSpotIDMap:[(spotName:String, spotID:Int)] = []
         let sourceTask = sourceSession.dataTaskWithURL(sourceURL, completionHandler: {(data, response, error) -> Void in
             sourceData = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: nil)
         })
@@ -38,11 +41,11 @@ class spotLibrary: NSObject, NSURLSessionDelegate {
         let numberInData:Int! = sourceData?.count!
         for var index = 0; index < numberInData; index++ {
             let spotName:String = sourceData![index]!["spot_name"]! as String
-            let spotID:String = sourceData![index]!["spot_id"]! as String
+            let spotID:Int = sourceData![index]!["spot_id"]! as Int
             var newSpot = (spotName, spotID)
-            spotIDMap += newSpot
+            newSpotIDMap += newSpot
         }
-        return spotIDMap
+        self.spotIDMap = newSpotIDMap
     }
 }
 

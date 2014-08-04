@@ -11,7 +11,8 @@
 		D8011780198D64C200509A27 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D801177E198D64C200509A27 /* Main.storyboard */; };
 		D8011782198D64C200509A27 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D8011781198D64C200509A27 /* Images.xcassets */; };
 		D801178E198D64C200509A27 /* thewavesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D801178D198D64C200509A27 /* thewavesTests.swift */; };
-		D818F3D3198EEE390098FE82 /* spotLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = D818F3D2198EEE390098FE82 /* spotLibrary.swift */; };
+		D803A3C6198F23900094AAE4 /* AddNewSpotsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D803A3C5198F23900094AAE4 /* AddNewSpotsTableViewController.swift */; };
+		D818F3D3198EEE390098FE82 /* SpotLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = D818F3D2198EEE390098FE82 /* SpotLibrary.swift */; };
 		D86F621D198F02DF0070B713 /* YourSpotsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86F621C198F02DF0070B713 /* YourSpotsTableViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -34,7 +35,8 @@
 		D8011787198D64C200509A27 /* thewavesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = thewavesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D801178C198D64C200509A27 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D801178D198D64C200509A27 /* thewavesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = thewavesTests.swift; sourceTree = "<group>"; };
-		D818F3D2198EEE390098FE82 /* spotLibrary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = spotLibrary.swift; sourceTree = "<group>"; };
+		D803A3C5198F23900094AAE4 /* AddNewSpotsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddNewSpotsTableViewController.swift; sourceTree = "<group>"; };
+		D818F3D2198EEE390098FE82 /* SpotLibrary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpotLibrary.swift; sourceTree = "<group>"; };
 		D86F621C198F02DF0070B713 /* YourSpotsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YourSpotsTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -114,6 +116,7 @@
 		D86F6219198EFA910070B713 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				D803A3C5198F23900094AAE4 /* AddNewSpotsTableViewController.swift */,
 				D801177A198D64C200509A27 /* AppDelegate.swift */,
 				D86F621C198F02DF0070B713 /* YourSpotsTableViewController.swift */,
 			);
@@ -123,7 +126,7 @@
 		D86F621A198EFA9A0070B713 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				D818F3D2198EEE390098FE82 /* spotLibrary.swift */,
+				D818F3D2198EEE390098FE82 /* SpotLibrary.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -236,7 +239,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				D86F621D198F02DF0070B713 /* YourSpotsTableViewController.swift in Sources */,
-				D818F3D3198EEE390098FE82 /* spotLibrary.swift in Sources */,
+				D818F3D3198EEE390098FE82 /* SpotLibrary.swift in Sources */,
+				D803A3C6198F23900094AAE4 /* AddNewSpotsTableViewController.swift in Sources */,
 				D801177B198D64C200509A27 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
