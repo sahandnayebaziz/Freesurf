@@ -10,22 +10,19 @@ import Foundation
 
 class SpotLibrary: NSObject, NSURLSessionDelegate {
     var spotIDMap:[(spotName:String, spotID:Int)]
-    var selectedSpotsDictionary:[String:Int]
-    var selectedSpotsArray:[(String, Int)]
+    var selectedSpotsDictionary:[Int:(name:String, isAdded:Bool)]
     
-    init() {
+    override init() {
         selectedSpotsDictionary = [:]
-        selectedSpotsArray = []
-        spotIDMap = []
-        super.init()
-    }
-    
-    init(county:String) {
-        selectedSpotsDictionary = [:]
-        selectedSpotsArray = []
         spotIDMap = []
         super.init()
         self.getSpots()
+    }
+    
+    init(empty:String) {
+        selectedSpotsDictionary = [:]
+        spotIDMap = []
+        super.init()
     }
     
     func getSpots() {
@@ -40,29 +37,16 @@ class SpotLibrary: NSObject, NSURLSessionDelegate {
         sleep(1)
         let numberInData:Int! = sourceData?.count!
         for var index = 0; index < numberInData; index++ {
-            let spotName:String = sourceData![index]!["spot_name"]! as String
-            let spotID:Int = sourceData![index]!["spot_id"]! as Int
-            var newSpot = (spotName, spotID)
-            newSpotIDMap += newSpot
+            let newSpotName:String = sourceData![index]!["spot_name"]! as String
+            let newSpotID:Int = sourceData![index]!["spot_id"]! as Int
+            
+            //add to list
+            newSpotIDMap.append((spotName:newSpotName, spotID:newSpotID))
+            
+            //add to dictionary
+            selectedSpotsDictionary[newSpotID] = (newSpotName, false)
         }
+        //replace with loaded list
         self.spotIDMap = newSpotIDMap
     }
 }
-
-
-
-
-//
-//func tableView(tableView: UITableView!, cellForRowAtIndexPath indexPath: NSIndexPath!) -> UITableViewCell! {
-//    var cell:UITableViewCell = self.mainTableView.dequeueReusableCellWithIdentifier("cell") as UITableViewCell
-//    cell.textLabel.text = self.spotNames[indexPath.row]
-//    return cell
-//}
-//
-//func tableView(tableView: UITableView!, didDeselectRowAtIndexPath indexPath: NSIndexPath!)  {
-//}
-//
-//func forwards(s1: String, s2: String) -> Bool
-//{
-//    return s1 < s2
-//}
