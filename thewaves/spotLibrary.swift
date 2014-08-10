@@ -9,27 +9,21 @@
 import Foundation
 
 class SpotLibrary: NSObject, NSURLSessionDelegate {
-    var spotIDMap:[(spotName:String, spotID:Int)]
-    var selectedSpotsDictionary:[Int:(name:String, isAdded:Bool)]
+    var waveDataDictionary:[Int:(spotName:String, spotHeight:Int)] = [:]
+    var allWaveIDs:[Int] = []
+    var selectedWaveIDs:[Int] = []
     
-    override init() {
-        selectedSpotsDictionary = [:]
-        spotIDMap = []
+    init(getSwellData:Bool) {
         super.init()
-        self.getSpots()
-    }
-    
-    init(empty:String) {
-        selectedSpotsDictionary = [:]
-        spotIDMap = []
-        super.init()
+        if (getSwellData) {
+            self.getSpots()
+        }
     }
     
     func getSpots() {
         let sourceURL:NSURL = NSURL(string: "http://api.spitcast.com/api/county/spots/orange-county/")
         var sourceSession:NSURLSession = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
         var sourceData:AnyObject? = nil
-        var newSpotIDMap:[(spotName:String, spotID:Int)] = []
         let sourceTask = sourceSession.dataTaskWithURL(sourceURL, completionHandler: {(data, response, error) -> Void in
             sourceData = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: nil)
         })
@@ -39,14 +33,51 @@ class SpotLibrary: NSObject, NSURLSessionDelegate {
         for var index = 0; index < numberInData; index++ {
             let newSpotName:String = sourceData![index]!["spot_name"]! as String
             let newSpotID:Int = sourceData![index]!["spot_id"]! as Int
-            
-            //add to list
-            newSpotIDMap.append((spotName:newSpotName, spotID:newSpotID))
-            
             //add to dictionary
-            selectedSpotsDictionary[newSpotID] = (newSpotName, false)
+            self.waveDataDictionary[newSpotID] = (newSpotName, 0)
+            self.allWaveIDs.append(newSpotID)
         }
-        //replace with loaded list
-        self.spotIDMap = newSpotIDMap
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//    func getSwell(spotID:Int) {
+//        let sourceURL:NSURL = NSURL(string: "http://api.spitcast.com/api/spot/forecast/\(spotID)")
+//        var sourceSession:NSURLSession = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
+//        var sourceData:AnyObject? = nil
+//        var newHeightMap:[(spotID:Int, height:Int)] = []
+//        let sourceTask = sourceSession.dataTaskWithURL(sourceURL, completionHandler: {(data, response, error) -> Void in
+//            sourceData = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: nil)
+//        })
+//        sourceTask.resume()
+//        sleep(1)
+//        let newHeight:Int = sourceData![10]!["size"]! as Int
+//        let newSpotID:Int = sourceData![10]!["spot_id"]! as Int
+//
+//        //add to dictionary
+//        println("just added the new height of \(newHeight) to spot with id \(newSpotID)")
+//    }
+

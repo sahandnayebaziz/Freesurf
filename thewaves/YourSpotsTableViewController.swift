@@ -16,10 +16,11 @@ class YourSpotsTableViewController: UITableViewController {
     }
     
     @IBOutlet var yourSpotsTableView: UITableView!
-    var yourSpotLibrary:SpotLibrary = SpotLibrary()
+    var yourSpotLibrary:SpotLibrary = SpotLibrary(getSwellData: true)
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.yourSpotsTableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "yourSpotsTableViewCell")
     }
 
     override func didReceiveMemoryWarning() {
@@ -27,17 +28,17 @@ class YourSpotsTableViewController: UITableViewController {
     }
 
     override func numberOfSectionsInTableView(tableView: UITableView!) -> Int {
-        return 0
+        return 1
     }
 
     override func tableView(tableView: UITableView!, numberOfRowsInSection section: Int) -> Int {
-        return 0
+        return yourSpotLibrary.selectedWaveIDs.count
     }
 
     override func tableView(tableView: UITableView!, cellForRowAtIndexPath indexPath: NSIndexPath!) -> UITableViewCell! {
-        let correspondingSpot = yourSpotLibrary.spotIDMap[indexPath.row]
-        var cell:UITableViewCell = self.yourSpotsTableView.dequeueReusableCellWithIdentifier("addNewSpotCell") as UITableViewCell
-        cell.textLabel.text = correspondingSpot.spotName
+        var cell:UITableViewCell = UITableViewCell(style: UITableViewCellStyle.Value1, reuseIdentifier: "yourSpotsTableViewCell")
+        cell.textLabel.text = yourSpotLibrary.waveDataDictionary[yourSpotLibrary.selectedWaveIDs[indexPath.row]]!.spotName
+        cell.detailTextLabel.text = "0ft"
         return cell
     }
     
