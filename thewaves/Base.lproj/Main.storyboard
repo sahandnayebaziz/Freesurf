@@ -98,6 +98,11 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Your Surf Spots" id="ieq-dx-M15">
+                        <barButtonItem key="leftBarButtonItem" title="Item" systemItem="refresh" id="Ox2-4v-Zuc">
+                            <connections>
+                                <action selector="fetchSwellHeights:" destination="DdE-yk-Q9I" id="zLH-lK-gI8"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="YoI-kh-8L9">
                             <connections>
                                 <segue destination="QcY-Pl-8hc" kind="showDetail" identifier="openAddNewSpots" id="22M-tw-27U"/>

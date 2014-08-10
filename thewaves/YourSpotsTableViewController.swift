@@ -15,6 +15,15 @@ class YourSpotsTableViewController: UITableViewController {
         self.tableView.reloadData()
     }
     
+    @IBAction func fetchSwellHeights(sender: AnyObject) {
+        for spot in self.yourSpotLibrary.selectedWaveIDs {
+            if (self.yourSpotLibrary.waveDataDictionary[spot]!.spotHeight == 0) {
+                self.yourSpotLibrary.getSwell(spot)
+            }
+        }
+        yourSpotsTableView.reloadData()
+    }
+    
     @IBOutlet var yourSpotsTableView: UITableView!
     var yourSpotLibrary:SpotLibrary = SpotLibrary(getSwellData: true)
 
@@ -26,7 +35,7 @@ class YourSpotsTableViewController: UITableViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
-
+    
     override func numberOfSectionsInTableView(tableView: UITableView!) -> Int {
         return 1
     }
@@ -38,7 +47,16 @@ class YourSpotsTableViewController: UITableViewController {
     override func tableView(tableView: UITableView!, cellForRowAtIndexPath indexPath: NSIndexPath!) -> UITableViewCell! {
         var cell:UITableViewCell = UITableViewCell(style: UITableViewCellStyle.Value1, reuseIdentifier: "yourSpotsTableViewCell")
         cell.textLabel.text = yourSpotLibrary.waveDataDictionary[yourSpotLibrary.selectedWaveIDs[indexPath.row]]!.spotName
-        cell.detailTextLabel.text = "0ft"
+        let height:Int = yourSpotLibrary.waveDataDictionary[yourSpotLibrary.selectedWaveIDs[indexPath.row]]!.spotHeight
+        if (height == 0) {
+            var spinner = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
+            spinner.hidesWhenStopped = true
+            spinner.startAnimating()
+            cell.accessoryView = spinner
+        }
+        else {
+            cell.detailTextLabel.text = "\(height)ft"
+        }
         return cell
     }
     
@@ -48,7 +66,8 @@ class YourSpotsTableViewController: UITableViewController {
     
     override func tableView(tableView: UITableView!, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath!) {
         if (editingStyle == UITableViewCellEditingStyle.Delete) {
-            
+            yourSpotLibrary.selectedWaveIDs.removeAtIndex(find(yourSpotLibrary.selectedWaveIDs, yourSpotLibrary.selectedWaveIDs[indexPath.row])!)
+            yourSpotsTableView.reloadData()
         }
     }
     

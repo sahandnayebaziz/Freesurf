@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Sahand Nayebaziz. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 class SpotLibrary: NSObject, NSURLSessionDelegate {
     var waveDataDictionary:[Int:(spotName:String, spotHeight:Int)] = [:]
@@ -38,6 +38,20 @@ class SpotLibrary: NSObject, NSURLSessionDelegate {
             self.allWaveIDs.append(newSpotID)
         }
     }
+    
+    func getSwell(spotID:Int) {
+        let sourceURL:NSURL = NSURL(string: "http://api.spitcast.com/api/spot/forecast/\(spotID)")
+        var sourceSession:NSURLSession = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
+        var sourceData:AnyObject? = nil
+        var newHeightMap:[(spotID:Int, height:Int)] = []
+        let sourceTask = sourceSession.dataTaskWithURL(sourceURL, completionHandler: {(data, response, error) -> Void in
+            sourceData = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: nil)
+        })
+        sourceTask.resume()
+        sleep(1)
+        let newHeight:Int = sourceData![10]!["size"]! as Int
+        self.waveDataDictionary[spotID]!.spotHeight = newHeight
+    }
 }
 
 
@@ -64,20 +78,5 @@ class SpotLibrary: NSObject, NSURLSessionDelegate {
 
 
 
-//    func getSwell(spotID:Int) {
-//        let sourceURL:NSURL = NSURL(string: "http://api.spitcast.com/api/spot/forecast/\(spotID)")
-//        var sourceSession:NSURLSession = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
-//        var sourceData:AnyObject? = nil
-//        var newHeightMap:[(spotID:Int, height:Int)] = []
-//        let sourceTask = sourceSession.dataTaskWithURL(sourceURL, completionHandler: {(data, response, error) -> Void in
-//            sourceData = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: nil)
-//        })
-//        sourceTask.resume()
-//        sleep(1)
-//        let newHeight:Int = sourceData![10]!["size"]! as Int
-//        let newSpotID:Int = sourceData![10]!["spot_id"]! as Int
-//
-//        //add to dictionary
-//        println("just added the new height of \(newHeight) to spot with id \(newSpotID)")
-//    }
+
 
