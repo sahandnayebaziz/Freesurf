@@ -22,14 +22,17 @@ class YourSpotsTableViewController: UITableViewController {
             }
         }
         yourSpotsTableView.reloadData()
+        yourSpotsRefreshControl.endRefreshing()
     }
     
     @IBOutlet var yourSpotsTableView: UITableView!
+    @IBOutlet weak var yourSpotsRefreshControl: UIRefreshControl!
     var yourSpotLibrary:SpotLibrary = SpotLibrary(getSwellData: true)
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.yourSpotsTableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "yourSpotsTableViewCell")
+        yourSpotsRefreshControl.addTarget(self, action: "fetchSwellHeights:", forControlEvents: UIControlEvents.ValueChanged)
     }
 
     override func didReceiveMemoryWarning() {
@@ -49,15 +52,16 @@ class YourSpotsTableViewController: UITableViewController {
         cell.textLabel.text = yourSpotLibrary.waveDataDictionary[yourSpotLibrary.selectedWaveIDs[indexPath.row]]!.spotName
         let height:Int = yourSpotLibrary.waveDataDictionary[yourSpotLibrary.selectedWaveIDs[indexPath.row]]!.spotHeight
         if (height == 0) {
-            var spinner = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
-            spinner.hidesWhenStopped = true
-            spinner.startAnimating()
-            cell.accessoryView = spinner
+            cell.detailTextLabel.text = "-"
         }
         else {
             cell.detailTextLabel.text = "\(height)ft"
         }
         return cell
+    }
+    
+    override func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath:NSIndexPath!) {
+        yourSpotsTableView.deselectRowAtIndexPath(indexPath, animated: false)
     }
     
     override func tableView(tableView: UITableView!, canEditRowAtIndexPath indexPath: NSIndexPath!) -> Bool  {

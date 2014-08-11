@@ -48,7 +48,7 @@ class AddNewSpotsTableViewController: UITableViewController, NSURLSessionDelegat
         if contains(addSpotLibrary.selectedWaveIDs, addSpotLibrary.allWaveIDs[indexPath.row]) {
             addSpotLibrary.selectedWaveIDs.removeAtIndex(find(addSpotLibrary.selectedWaveIDs, addSpotLibrary.allWaveIDs[indexPath.row])!)
         }
-        else if !contains(addSpotLibrary.selectedWaveIDs, addSpotLibrary.allWaveIDs[indexPath.row]) {
+        else {
             addSpotLibrary.selectedWaveIDs.append(addSpotLibrary.allWaveIDs[indexPath.row])
         }
         self.addNewSpotsTableView.reloadData()

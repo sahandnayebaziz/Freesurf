@@ -48,7 +48,7 @@ class SpotLibrary: NSObject, NSURLSessionDelegate {
             sourceData = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: nil)
         })
         sourceTask.resume()
-        sleep(1)
+        sleep(2)
         let newHeight:Int = sourceData![10]!["size"]! as Int
         self.waveDataDictionary[spotID]!.spotHeight = newHeight
     }

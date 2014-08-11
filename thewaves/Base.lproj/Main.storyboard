@@ -98,18 +98,17 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Your Surf Spots" id="ieq-dx-M15">
-                        <barButtonItem key="leftBarButtonItem" title="Item" systemItem="refresh" id="Ox2-4v-Zuc">
-                            <connections>
-                                <action selector="fetchSwellHeights:" destination="DdE-yk-Q9I" id="zLH-lK-gI8"/>
-                            </connections>
-                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="YoI-kh-8L9">
                             <connections>
                                 <segue destination="QcY-Pl-8hc" kind="showDetail" identifier="openAddNewSpots" id="22M-tw-27U"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="tuh-Uc-Rix">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </refreshControl>
                     <connections>
+                        <outlet property="yourSpotsRefreshControl" destination="tuh-Uc-Rix" id="qvB-NE-xe8"/>
                         <outlet property="yourSpotsTableView" destination="6lc-s5-bZy" id="3jo-QM-8OS"/>
                     </connections>
                 </tableViewController>
