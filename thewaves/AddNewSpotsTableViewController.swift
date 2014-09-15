@@ -50,6 +50,9 @@ class AddNewSpotsTableViewController: UITableViewController, NSURLSessionDelegat
         }
         else {
             addSpotLibrary.selectedWaveIDs.append(addSpotLibrary.allWaveIDs[indexPath.row])
+            dispatch_to_background_queue {
+                self.addSpotLibrary.getSwell(self.addSpotLibrary.allWaveIDs[indexPath.row])
+            }
         }
         self.addNewSpotsTableView.reloadData()
         

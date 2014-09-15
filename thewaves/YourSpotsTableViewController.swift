@@ -27,10 +27,13 @@ class YourSpotsTableViewController: UITableViewController {
     
     @IBOutlet var yourSpotsTableView: UITableView!
     @IBOutlet weak var yourSpotsRefreshControl: UIRefreshControl!
-    var yourSpotLibrary:SpotLibrary = SpotLibrary(getSwellData: true)
+    var yourSpotLibrary:SpotLibrary = SpotLibrary()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        dispatch_to_background_queue {
+            self.yourSpotLibrary.getSpots()
+        }
         self.yourSpotsTableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "yourSpotsTableViewCell")
         yourSpotsRefreshControl.addTarget(self, action: "fetchSwellHeights:", forControlEvents: UIControlEvents.ValueChanged)
     }

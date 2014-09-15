@@ -8,10 +8,20 @@
 
 import UIKit
 
+
+func dispatch_to_background_queue(block: dispatch_block_t?) {
+    let q = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
+    dispatch_async(q, block)
+}
+
 class SpotLibrary: NSObject, NSURLSessionDelegate {
     var waveDataDictionary:[Int:(spotName:String, spotHeight:Int)] = [:]
     var allWaveIDs:[Int] = []
     var selectedWaveIDs:[Int] = []
+    
+    override init() {
+        super.init()
+    }
     
     init(getSwellData:Bool) {
         super.init()
@@ -48,7 +58,7 @@ class SpotLibrary: NSObject, NSURLSessionDelegate {
             sourceData = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: nil)
         })
         sourceTask.resume()
-        sleep(2)
+        sleep(1)
         let newHeight:Int = sourceData![10]!["size"]! as Int
         self.waveDataDictionary[spotID]!.spotHeight = newHeight
     }
