@@ -29,7 +29,7 @@ class SpotLibrary: NSObject, NSURLSessionDelegate {
         })
         sourceTask.resume()
         sleep(1)
-        let numberInData:Int! = sourceData?.count!
+        let numberInData = sourceData!.count
         for var index = 0; index < numberInData; index++ {
             let newSpotName:String = sourceData![index]!["spot_name"]! as String
             let newSpotID:Int = sourceData![index]!["spot_id"]! as Int
