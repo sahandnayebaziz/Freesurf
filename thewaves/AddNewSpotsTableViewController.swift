@@ -28,7 +28,6 @@ class AddNewSpotsTableViewController: UITableViewController, NSURLSessionDelegat
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return addSpotLibrary.allWaveIDs.count
-        
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {

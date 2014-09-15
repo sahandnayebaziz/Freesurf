@@ -45,9 +45,10 @@ class SpotLibrary: NSObject, NSURLSessionDelegate {
         var sourceSession:NSURLSession = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
         var sourceData:AnyObject? = nil
         var newHeightMap:[(spotID:Int, height:Int)] = []
+        var currentHour:Int = NSDate().hour()
         let sourceTask = sourceSession.dataTaskWithURL(sourceURL, completionHandler: {(data, response, error) -> Void in
             sourceData = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: nil)
-            let newHeight:Int = sourceData![10]!["size"]! as Int
+            let newHeight:Int = sourceData![currentHour]!["size"]! as Int
             self.waveDataDictionary[spotID]!.spotHeight = newHeight
         })
         sourceTask.resume()
