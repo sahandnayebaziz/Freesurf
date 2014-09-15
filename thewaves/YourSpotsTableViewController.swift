@@ -73,8 +73,10 @@ class YourSpotsTableViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if (editingStyle == UITableViewCellEditingStyle.Delete) {
-            yourSpotLibrary.selectedWaveIDs.removeAtIndex(find(yourSpotLibrary.selectedWaveIDs, yourSpotLibrary.selectedWaveIDs[indexPath.row])!)
-            yourSpotsTableView.reloadData()
+            self.yourSpotsTableView.beginUpdates()
+            yourSpotLibrary.selectedWaveIDs.removeAtIndex(indexPath.row)
+            yourSpotsTableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Top)
+            self.yourSpotsTableView.endUpdates()
         }
     }
     
