@@ -11,7 +11,7 @@ import UIKit
 class AddNewSpotsTableViewController: UITableViewController, NSURLSessionDelegate, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var addNewSpotsTableView: UITableView!
     @IBOutlet weak var cancelButton: UIBarButtonItem!
-    var addSpotLibrary:SpotLibrary = SpotLibrary(getSwellData: false)
+    var addSpotLibrary:SpotLibrary = SpotLibrary()
     
     override func viewDidLoad() {
         super.viewDidLoad()
