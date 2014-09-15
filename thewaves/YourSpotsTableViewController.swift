@@ -39,36 +39,36 @@ class YourSpotsTableViewController: UITableViewController {
         super.didReceiveMemoryWarning()
     }
     
-    override func numberOfSectionsInTableView(tableView: UITableView!) -> Int {
+    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
 
-    override func tableView(tableView: UITableView!, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return yourSpotLibrary.selectedWaveIDs.count
     }
 
-    override func tableView(tableView: UITableView!, cellForRowAtIndexPath indexPath: NSIndexPath!) -> UITableViewCell! {
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell:UITableViewCell = UITableViewCell(style: UITableViewCellStyle.Value1, reuseIdentifier: "yourSpotsTableViewCell")
-        cell.textLabel.text = yourSpotLibrary.waveDataDictionary[yourSpotLibrary.selectedWaveIDs[indexPath.row]]!.spotName
+        cell.textLabel!.text = yourSpotLibrary.waveDataDictionary[yourSpotLibrary.selectedWaveIDs[indexPath.row]]!.spotName
         let height:Int = yourSpotLibrary.waveDataDictionary[yourSpotLibrary.selectedWaveIDs[indexPath.row]]!.spotHeight
         if (height == 0) {
-            cell.detailTextLabel.text = "-"
+            cell.detailTextLabel!.text = "-"
         }
         else {
-            cell.detailTextLabel.text = "\(height)ft"
+            cell.detailTextLabel!.text = "\(height)ft"
         }
         return cell
     }
     
-    override func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath:NSIndexPath!) {
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath:NSIndexPath) {
         yourSpotsTableView.deselectRowAtIndexPath(indexPath, animated: false)
     }
     
-    override func tableView(tableView: UITableView!, canEditRowAtIndexPath indexPath: NSIndexPath!) -> Bool  {
+    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool  {
         return true
     }
     
-    override func tableView(tableView: UITableView!, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath!) {
+    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if (editingStyle == UITableViewCellEditingStyle.Delete) {
             yourSpotLibrary.selectedWaveIDs.removeAtIndex(find(yourSpotLibrary.selectedWaveIDs, yourSpotLibrary.selectedWaveIDs[indexPath.row])!)
             yourSpotsTableView.reloadData()

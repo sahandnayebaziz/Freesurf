@@ -22,18 +22,18 @@ class AddNewSpotsTableViewController: UITableViewController, NSURLSessionDelegat
         super.didReceiveMemoryWarning()
     }
         
-    override func numberOfSectionsInTableView(tableView: UITableView!) -> Int {
+    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
     
-    override func tableView(tableView: UITableView!, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return addSpotLibrary.allWaveIDs.count
         
     }
     
-    override func tableView(tableView: UITableView!, cellForRowAtIndexPath indexPath: NSIndexPath!) -> UITableViewCell! {
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell:UITableViewCell = self.addNewSpotsTableView.dequeueReusableCellWithIdentifier("addNewSpotCell") as UITableViewCell
-        cell.textLabel.text = addSpotLibrary.waveDataDictionary[addSpotLibrary.allWaveIDs[indexPath.row]]!.spotName
+        cell.textLabel!.text = addSpotLibrary.waveDataDictionary[addSpotLibrary.allWaveIDs[indexPath.row]]!.spotName
         if contains(addSpotLibrary.selectedWaveIDs, addSpotLibrary.allWaveIDs[indexPath.row]) {
             cell.accessoryType = .Checkmark
         }
@@ -43,7 +43,7 @@ class AddNewSpotsTableViewController: UITableViewController, NSURLSessionDelegat
         return cell
     }
 
-    override func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath:NSIndexPath!) {
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath:NSIndexPath) {
         addNewSpotsTableView.deselectRowAtIndexPath(indexPath, animated: false)
         if contains(addSpotLibrary.selectedWaveIDs, addSpotLibrary.allWaveIDs[indexPath.row]) {
             addSpotLibrary.selectedWaveIDs.removeAtIndex(find(addSpotLibrary.selectedWaveIDs, addSpotLibrary.allWaveIDs[indexPath.row])!)
