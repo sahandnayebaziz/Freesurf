@@ -8,15 +8,12 @@
 
 import UIKit
 
-func dispatch_to_background_queue(block: dispatch_block_t?) {
-    let q = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
-    dispatch_async(q, block)
-}
-
 class SpotLibrary: NSObject, NSURLSessionDelegate {
-    var waveDataDictionary:[Int:(spotName:String, spotHeight:Int)] = [:]
     var allWaveIDs:[Int] = []
     var selectedWaveIDs:[Int] = []
+    
+    // spotHeight is an optional because it may take longer than expected for the getSwell method to retrieve the height
+    var waveDataDictionary:[Int:(spotName:String, spotHeight:Int?)] = [:]
     
     override init() {
         super.init()
@@ -32,8 +29,10 @@ class SpotLibrary: NSObject, NSURLSessionDelegate {
             for var index = 0; index < numberInData; index++ {
                 let newSpotName:String = sourceData![index]!["spot_name"]! as String
                 let newSpotID:Int = sourceData![index]!["spot_id"]! as Int
-                //add to dictionary
-                self.waveDataDictionary[newSpotID] = (newSpotName, 0)
+                
+                // remember that spotHeight is an optional, so here it is initially set to nil. It will be 
+                self.waveDataDictionary[newSpotID] = (newSpotName, nil)
+                
                 self.allWaveIDs.append(newSpotID)
             }
         })
@@ -45,17 +44,23 @@ class SpotLibrary: NSObject, NSURLSessionDelegate {
         var sourceSession:NSURLSession = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
         var sourceData:AnyObject? = nil
         var newHeightMap:[(spotID:Int, height:Int)] = []
-        var currentHour:Int = NSDate().hour() // this line saves a single integer marking the hour of day in 24-hour time ("0", "10", "16")
+        
+        // this line saves a single integer marking the hour of day in 24-hour time ("0", "10", "16")
+        var currentHour:Int = NSDate().hour()
+        
         let sourceTask = sourceSession.dataTaskWithURL(sourceURL, completionHandler: {(data, response, error) -> Void in
             sourceData = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: nil)
-            let newHeight:Int = sourceData![currentHour]!["size"]! as Int // the json response has 24 hourly forecasts in an array. We use currentHour to select the right one
+            
+            // the json response has 24 hourly forecasts in an array. We use currentHour to select the right one
+            let newHeight:Int = sourceData![currentHour]!["size"]! as Int
+            
             self.waveDataDictionary[spotID]!.spotHeight = newHeight
         })
         sourceTask.resume()
     }
     
     func name(id:Int) -> String { return self.waveDataDictionary[id]!.spotName }
-    func height(id:Int) -> Int { return self.waveDataDictionary[id]!.spotHeight }
+    func height(id:Int) -> Int? { return self.waveDataDictionary[id]!.spotHeight }
 }
 
 

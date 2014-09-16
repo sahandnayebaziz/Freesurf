@@ -31,9 +31,10 @@ class AddNewSpotsTableViewController: UITableViewController, NSURLSessionDelegat
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let rowID = addSpotLibrary.allWaveIDs[indexPath.row]
         var cell:UITableViewCell = self.addNewSpotsTableView.dequeueReusableCellWithIdentifier("addNewSpotCell") as UITableViewCell
-        cell.textLabel!.text = addSpotLibrary.waveDataDictionary[addSpotLibrary.allWaveIDs[indexPath.row]]!.spotName
-        if contains(addSpotLibrary.selectedWaveIDs, addSpotLibrary.allWaveIDs[indexPath.row]) {
+        cell.textLabel!.text = addSpotLibrary.name(rowID)
+        if contains(addSpotLibrary.selectedWaveIDs, rowID) {
             cell.accessoryType = .Checkmark
         }
         else {
@@ -43,14 +44,15 @@ class AddNewSpotsTableViewController: UITableViewController, NSURLSessionDelegat
     }
 
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath:NSIndexPath) {
+        let rowID = addSpotLibrary.allWaveIDs[indexPath.row]
         addNewSpotsTableView.deselectRowAtIndexPath(indexPath, animated: false)
-        if contains(addSpotLibrary.selectedWaveIDs, addSpotLibrary.allWaveIDs[indexPath.row]) {
-            addSpotLibrary.selectedWaveIDs.removeAtIndex(find(addSpotLibrary.selectedWaveIDs, addSpotLibrary.allWaveIDs[indexPath.row])!)
+        if contains(addSpotLibrary.selectedWaveIDs, rowID) {
+            addSpotLibrary.selectedWaveIDs.removeAtIndex(find(addSpotLibrary.selectedWaveIDs, rowID)!)
         }
         else {
-            addSpotLibrary.selectedWaveIDs.append(addSpotLibrary.allWaveIDs[indexPath.row])
+            addSpotLibrary.selectedWaveIDs.append(rowID)
             dispatch_to_background_queue {
-                self.addSpotLibrary.getSwell(self.addSpotLibrary.allWaveIDs[indexPath.row])
+                self.addSpotLibrary.getSwell(rowID)
             }
         }
         self.addNewSpotsTableView.reloadData()
