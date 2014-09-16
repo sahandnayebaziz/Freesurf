@@ -45,14 +45,17 @@ class SpotLibrary: NSObject, NSURLSessionDelegate {
         var sourceSession:NSURLSession = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
         var sourceData:AnyObject? = nil
         var newHeightMap:[(spotID:Int, height:Int)] = []
-        var currentHour:Int = NSDate().hour()
+        var currentHour:Int = NSDate().hour() // this line saves a single integer marking the hour of day in 24-hour time ("0", "10", "16")
         let sourceTask = sourceSession.dataTaskWithURL(sourceURL, completionHandler: {(data, response, error) -> Void in
             sourceData = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: nil)
-            let newHeight:Int = sourceData![currentHour]!["size"]! as Int
+            let newHeight:Int = sourceData![currentHour]!["size"]! as Int // the json response has 24 hourly forecasts in an array. We use currentHour to select the right one
             self.waveDataDictionary[spotID]!.spotHeight = newHeight
         })
         sourceTask.resume()
     }
+    
+    func name(id:Int) -> String { return self.waveDataDictionary[id]!.spotName }
+    func height(id:Int) -> Int { return self.waveDataDictionary[id]!.spotHeight }
 }
 
 
