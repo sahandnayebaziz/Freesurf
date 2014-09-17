@@ -19,23 +19,43 @@ class YourSpotsTableViewController: UITableViewController {
         self.tableView.reloadData()
     }
     
-    @IBAction func fetchSwellHeights(sender: AnyObject) {
-        for spot in self.yourSpotLibrary.selectedWaveIDs {
-            if (self.yourSpotLibrary.height(spot) == nil) {
-                self.yourSpotLibrary.getSwell(spot)
+    @IBAction func refreshSpotLibrary(sender: AnyObject) {
+        checkInternetConnection(self)
+        
+        if isConnectedToNetwork() {
+            if self.yourSpotLibrary.waveDataDictionary.isEmpty {
+                dispatch_to_background_queue {
+                    self.yourSpotLibrary.getSpots()
+                }
             }
+            for spot in self.yourSpotLibrary.selectedWaveIDs {
+                if (self.yourSpotLibrary.height(spot) == nil) {
+                    dispatch_to_background_queue {
+                        self.yourSpotLibrary.getSwell(spot)
+                    }
+                }
+            }
+            
+            yourSpotsTableView.reloadData()
         }
-        yourSpotsTableView.reloadData()
+        
         yourSpotsRefreshControl.endRefreshing()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        dispatch_to_background_queue {
-            self.yourSpotLibrary.getSpots()
-        }
+        checkInternetConnection(self)
         self.yourSpotsTableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "yourSpotsTableViewCell")
-        yourSpotsRefreshControl.addTarget(self, action: "fetchSwellHeights:", forControlEvents: UIControlEvents.ValueChanged)
+        yourSpotsRefreshControl.addTarget(self, action: "refreshSpotLibrary:", forControlEvents: UIControlEvents.ValueChanged)
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        checkInternetConnection(self)
+        if isConnectedToNetwork() {
+            dispatch_to_background_queue {
+                self.yourSpotLibrary.getSpots()
+            }
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -72,8 +92,10 @@ class YourSpotsTableViewController: UITableViewController {
             // since the user may return to the yourSpots view before this information has been retrieved, the table view cell is given an activity indicator to
             // show that this information is on the way. A call to reloadData is also added to the main queue to allow for the cell that's being created here to
             // be returned before the data is read once more and hopefully filled in for this spot.
-            dispatch_to_main_queue {
-                self.yourSpotsTableView.reloadData()
+            if isConnectedToNetwork() {
+                dispatch_to_main_queue {
+                    self.refreshSpotLibrary(self)
+                }
             }
         }
         return cell
