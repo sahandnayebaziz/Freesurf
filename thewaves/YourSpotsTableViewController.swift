@@ -11,7 +11,6 @@ import UIKit
 class YourSpotsTableViewController: UITableViewController {
     var yourSpotLibrary:SpotLibrary = SpotLibrary()
     @IBOutlet var yourSpotsTableView: UITableView!
-    @IBOutlet weak var yourSpotsRefreshControl: UIRefreshControl!
     
     @IBAction func unwindToList(segue:UIStoryboardSegue) {
         var source:AddNewSpotsTableViewController = segue.sourceViewController as AddNewSpotsTableViewController
@@ -19,43 +18,50 @@ class YourSpotsTableViewController: UITableViewController {
         self.tableView.reloadData()
     }
     
-    @IBAction func refreshSpotLibrary(sender: AnyObject) {
-        checkInternetConnection(self)
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.yourSpotsTableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "yourSpotsTableViewCell")
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        // if there isn't internet, set a flag, while wait until we are connected to the internet, and as soon as we are break
+        if !(isConnectedToNetwork()) {
+            dispatch_to_background_queue {
+                self.waitForConnection()
+            }
+        }
         
-        if isConnectedToNetwork() {
-            if self.yourSpotLibrary.waveDataDictionary.isEmpty {
+        if yourSpotLibrary.waveDataDictionary.isEmpty {
+            if isConnectedToNetwork() {
                 dispatch_to_background_queue {
                     self.yourSpotLibrary.getSpots()
                 }
             }
-            for spot in self.yourSpotLibrary.selectedWaveIDs {
-                if (self.yourSpotLibrary.height(spot) == nil) {
-                    dispatch_to_background_queue {
-                        self.yourSpotLibrary.getSwell(spot)
+        }
+        
+        if yourSpotLibrary.selectedWaveIDs.count > 0 {
+            for spot in yourSpotLibrary.selectedWaveIDs {
+                if yourSpotLibrary.height(spot) == nil {
+                    if isConnectedToNetwork() {
+                        dispatch_to_background_queue {
+                            self.yourSpotLibrary.getSwell(spot)
+                        }
                     }
                 }
             }
-            
-            yourSpotsTableView.reloadData()
         }
         
-        yourSpotsRefreshControl.endRefreshing()
+        yourSpotsTableView.reloadData()
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        checkInternetConnection(self)
-        self.yourSpotsTableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "yourSpotsTableViewCell")
-        yourSpotsRefreshControl.addTarget(self, action: "refreshSpotLibrary:", forControlEvents: UIControlEvents.ValueChanged)
-    }
-    
-    override func viewWillAppear(animated: Bool) {
-        checkInternetConnection(self)
-        if isConnectedToNetwork() {
-            dispatch_to_background_queue {
-                self.yourSpotLibrary.getSpots()
+    func waitForConnection() {
+        var connectionFlag:Bool = false
+        while !(connectionFlag) {
+            if isConnectedToNetwork() {
+                connectionFlag = true
             }
         }
+        self.viewWillAppear(false)
     }
 
     override func didReceiveMemoryWarning() {
@@ -74,28 +80,13 @@ class YourSpotsTableViewController: UITableViewController {
         let rowID = yourSpotLibrary.selectedWaveIDs[indexPath.row]
         var cell:UITableViewCell = UITableViewCell(style: UITableViewCellStyle.Value1, reuseIdentifier: "yourSpotsTableViewCell")
         cell.textLabel!.text = yourSpotLibrary.name(rowID)
-        
-        // remember spotHeight is an optional int, this statement checks to see if the spotHeight has been retrieved and is no longer nil.
-        // if spotHeight is not nil, the height will be displayed
         if let height:Int = yourSpotLibrary.height(rowID) {
             cell.detailTextLabel!.text = "\(height)ft"
         }
-            
-        // if the spotHeight is still nil, an activity indicator is displayed on the cell and a reloadData() is added to the main queue
         else {
-            var spinner = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
-            spinner.hidesWhenStopped = true
-            spinner.startAnimating()
-            cell.accessoryView = spinner
-            
-            // remember getSwell, the function that retrieves the height of a spot, runs in the background. It is called when a cell in the addNewSpots view is selected.
-            // since the user may return to the yourSpots view before this information has been retrieved, the table view cell is given an activity indicator to
-            // show that this information is on the way. A call to reloadData is also added to the main queue to allow for the cell that's being created here to
-            // be returned before the data is read once more and hopefully filled in for this spot.
-            if isConnectedToNetwork() {
-                dispatch_to_main_queue {
-                    self.refreshSpotLibrary(self)
-                }
+            cell.detailTextLabel!.text = "- - ft"
+            dispatch_to_main_queue {
+                self.yourSpotsTableView.reloadData()
             }
         }
         return cell
@@ -126,6 +117,5 @@ class YourSpotsTableViewController: UITableViewController {
             destinationView.addSpotLibrary = yourSpotLibrary
         }
     }
-
 }
 
