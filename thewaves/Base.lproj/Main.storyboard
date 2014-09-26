@@ -4,63 +4,6 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
     </dependencies>
     <scenes>
-        <!--Add New Spots-->
-        <scene sceneID="RZq-0X-Euu">
-            <objects>
-                <tableViewController id="5XE-DB-ExB" customClass="AddNewSpotsTableViewController" customModule="thewaves" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="FLr-ty-VUk">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="addNewSpotCell" textLabel="9zP-m1-sPN" detailTextLabel="JMq-Nt-6Jx" style="IBUITableViewCellStyleValue1" id="SIY-Lv-fWe">
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="SIY-Lv-fWe" id="Cft-qB-zWS">
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="9zP-m1-sPN">
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="JMq-Nt-6Jx">
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                            <color key="textColor" red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="calibratedRGB"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                    </subviews>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="5XE-DB-ExB" id="DYK-hC-H1R"/>
-                            <outlet property="delegate" destination="5XE-DB-ExB" id="j7C-oZ-iCh"/>
-                        </connections>
-                    </tableView>
-                    <navigationItem key="navigationItem" title="Add New Spots" id="cLg-13-sKj">
-                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="q1O-6b-qJ6">
-                            <connections>
-                                <segue destination="KQb-3S-8K1" kind="unwind" unwindAction="unwindToList:" id="wdq-Xc-swH"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="Done" id="rCM-aA-lz8">
-                            <connections>
-                                <segue destination="KQb-3S-8K1" kind="unwind" unwindAction="unwindToList:" id="9TD-kh-uoh"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
-                    <connections>
-                        <outlet property="addNewSpotsTableView" destination="FLr-ty-VUk" id="QZE-pY-O9Y"/>
-                        <outlet property="cancelButton" destination="q1O-6b-qJ6" id="cRk-VZ-0Bp"/>
-                    </connections>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="7NF-XH-mCm" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <exit id="KQb-3S-8K1" userLabel="Exit" sceneMemberID="exit"/>
-            </objects>
-            <point key="canvasLocation" x="926" y="-385"/>
-        </scene>
         <!--Your Surf Spots-->
         <scene sceneID="amA-PY-fmU">
             <objects>
@@ -97,9 +40,9 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Your Surf Spots" id="ieq-dx-M15">
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="YoI-kh-8L9">
+                        <barButtonItem key="rightBarButtonItem" title="Item" systemItem="add" id="ZfB-J3-T8i">
                             <connections>
-                                <segue destination="QcY-Pl-8hc" kind="showDetail" identifier="openAddNewSpots" id="22M-tw-27U"/>
+                                <segue destination="uoL-s9-yKG" kind="showDetail" identifier="openSearchForNewSpots" id="lGh-ok-F8D"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -110,6 +53,57 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0ve-Xx-3Je" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="926" y="347"/>
+        </scene>
+        <!--Search For New Spots-->
+        <scene sceneID="PIG-0K-W1d">
+            <objects>
+                <tableViewController title="Search For New Spots" id="jiR-Kb-Inu" customClass="SearchForNewSpotsTableViewController" customModule="thewaves" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="FeD-IE-fZz">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="searchForNewSpotsCell" id="OXm-E6-BGd">
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="OXm-E6-BGd" id="Dhl-I5-I0U">
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <segue destination="1Cr-UW-nOq" kind="unwind" unwindAction="unwindToList:" id="5Gk-k9-pJc"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="jiR-Kb-Inu" id="VXl-TO-Ixz"/>
+                            <outlet property="delegate" destination="jiR-Kb-Inu" id="dj6-og-VOA"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" prompt="Enter name of surf spot" id="DsW-zd-Jgg">
+                        <nil key="title"/>
+                        <textField key="titleView" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="wn6-uC-9Qx">
+                            <rect key="frame" x="180" y="37" width="240" height="30"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardAppearance="alert"/>
+                            <connections>
+                                <action selector="editingchanged:" destination="jiR-Kb-Inu" eventType="editingChanged" id="1XZ-6Q-56j"/>
+                            </connections>
+                        </textField>
+                        <barButtonItem key="rightBarButtonItem" systemItem="cancel" id="8TW-hz-sGe">
+                            <connections>
+                                <segue destination="1Cr-UW-nOq" kind="unwind" unwindAction="unwindToList:" id="05S-LS-O3R"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="searchField" destination="wn6-uC-9Qx" id="ccM-qO-iqP"/>
+                        <outlet property="searchForNewSpotsTableView" destination="FeD-IE-fZz" id="vPX-9l-wWN"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Vo5-6O-zJx" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="1Cr-UW-nOq" userLabel="Exit" sceneMemberID="exit"/>
+            </objects>
+            <point key="canvasLocation" x="1674" y="-399"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="20t-p0-PdO">
@@ -130,22 +124,22 @@
             <point key="canvasLocation" x="114" y="347"/>
         </scene>
         <!--Navigation Controller-->
-        <scene sceneID="Kse-sk-PJ0">
+        <scene sceneID="R3f-sS-lJ0">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="QcY-Pl-8hc" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="uoL-s9-yKG" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="05v-dJ-GqN">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="emi-Gd-kS7">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="5XE-DB-ExB" kind="relationship" relationship="rootViewController" id="IEl-oC-OPW"/>
+                        <segue destination="jiR-Kb-Inu" kind="relationship" relationship="rootViewController" id="L6u-jo-Xob"/>
                     </connections>
                 </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="XPq-35-bvX" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="itH-T9-wf3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="114" y="-385"/>
+            <point key="canvasLocation" x="1666" y="347"/>
         </scene>
     </scenes>
 </document>

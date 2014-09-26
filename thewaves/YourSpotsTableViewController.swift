@@ -13,8 +13,9 @@ class YourSpotsTableViewController: UITableViewController {
     @IBOutlet var yourSpotsTableView: UITableView!
     
     @IBAction func unwindToList(segue:UIStoryboardSegue) {
-        var source:AddNewSpotsTableViewController = segue.sourceViewController as AddNewSpotsTableViewController
-        self.yourSpotLibrary = source.addSpotLibrary
+        var source:SearchForNewSpotsTableViewController = segue.sourceViewController as SearchForNewSpotsTableViewController
+        source.searchField.resignFirstResponder()
+        self.yourSpotLibrary = source.searchSpotLibrary
         self.tableView.reloadData()
     }
     
@@ -115,6 +116,12 @@ class YourSpotsTableViewController: UITableViewController {
             var nav:UINavigationController = segue.destinationViewController as UINavigationController
             let destinationView:AddNewSpotsTableViewController = nav.topViewController as AddNewSpotsTableViewController
             destinationView.addSpotLibrary = yourSpotLibrary
+        }
+        
+        if (segue.identifier == "openSearchForNewSpots") {
+            var nav:UINavigationController = segue.destinationViewController as UINavigationController
+            let destinationView:SearchForNewSpotsTableViewController = nav.topViewController as SearchForNewSpotsTableViewController
+            destinationView.searchSpotLibrary = yourSpotLibrary
         }
     }
 }

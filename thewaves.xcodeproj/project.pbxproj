@@ -17,6 +17,8 @@
 		D86F621D198F02DF0070B713 /* YourSpotsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86F621C198F02DF0070B713 /* YourSpotsTableViewController.swift */; };
 		D8B5681619C8914E000817AA /* threading.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B5681519C8914E000817AA /* threading.swift */; };
 		D8B63A3619C90027004A1398 /* networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B63A3519C90027004A1398 /* networking.swift */; };
+		D8F6636519D5EF87000B062C /* search.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8F6636419D5EF87000B062C /* search.swift */; };
+		D8F6636919D5F14F000B062C /* SearchForNewSpotsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8F6636819D5F14F000B062C /* SearchForNewSpotsTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +46,8 @@
 		D86F621C198F02DF0070B713 /* YourSpotsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YourSpotsTableViewController.swift; sourceTree = "<group>"; };
 		D8B5681519C8914E000817AA /* threading.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = threading.swift; sourceTree = "<group>"; };
 		D8B63A3519C90027004A1398 /* networking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = networking.swift; sourceTree = "<group>"; };
+		D8F6636419D5EF87000B062C /* search.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = search.swift; sourceTree = "<group>"; };
+		D8F6636819D5F14F000B062C /* SearchForNewSpotsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchForNewSpotsTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -126,6 +130,7 @@
 				D84F16FB19C76E6E0050E4FC /* af-date-extension.swift */,
 				D8B63A3519C90027004A1398 /* networking.swift */,
 				D8B5681519C8914E000817AA /* threading.swift */,
+				D8F6636419D5EF87000B062C /* search.swift */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -134,6 +139,7 @@
 			isa = PBXGroup;
 			children = (
 				D803A3C5198F23900094AAE4 /* AddNewSpotsTableViewController.swift */,
+				D8F6636819D5F14F000B062C /* SearchForNewSpotsTableViewController.swift */,
 				D801177A198D64C200509A27 /* AppDelegate.swift */,
 				D86F621C198F02DF0070B713 /* YourSpotsTableViewController.swift */,
 			);
@@ -261,6 +267,8 @@
 				D8B5681619C8914E000817AA /* threading.swift in Sources */,
 				D8B63A3619C90027004A1398 /* networking.swift in Sources */,
 				D803A3C6198F23900094AAE4 /* AddNewSpotsTableViewController.swift in Sources */,
+				D8F6636919D5F14F000B062C /* SearchForNewSpotsTableViewController.swift in Sources */,
+				D8F6636519D5EF87000B062C /* search.swift in Sources */,
 				D84F16FC19C76E6E0050E4FC /* af-date-extension.swift in Sources */,
 				D801177B198D64C200509A27 /* AppDelegate.swift in Sources */,
 			);
