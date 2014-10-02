@@ -45,6 +45,7 @@ class SearchForNewSpotsTableViewController: UITableViewController {
         let rowID = self.results[indexPath.row]
         var cell:UITableViewCell = self.searchForNewSpotsTableView.dequeueReusableCellWithIdentifier("searchForNewSpotsCell") as UITableViewCell
         cell.textLabel!.text = searchSpotLibrary.name(rowID)
+        cell.detailTextLabel!.text = searchSpotLibrary.county(rowID)
         return cell
     }
     
@@ -102,18 +103,17 @@ class SearchForNewSpotsTableViewController: UITableViewController {
     */
     
     @IBAction func editingchanged(sender: UITextField) {
-        if (countElements(sender.text) != 1) {
-            let input:String = sender.text
-            self.results = []
-            
-            for id in self.searchSpotLibrary.allWaveIDs {
-                if self.searchSpotLibrary.waveDataDictionary[id]!.spotName.contains(input) {
-                    self.results.append(id)
+        let input:String = sender.text
+        self.results = []
+        
+        if (countElements(sender.text) != 0) {
+            for key in self.searchSpotLibrary.waveDataDictionary.keys {
+                if (self.searchSpotLibrary.waveDataDictionary[key]!.spotName.contains(input) || self.searchSpotLibrary.waveDataDictionary[key]!.spotCounty.contains(input)) {
+                    self.results.append(key)
                 }
             }
-            
-            self.searchForNewSpotsTableView.reloadData()
-            
         }
+        
+        self.searchForNewSpotsTableView.reloadData()
     }
 }

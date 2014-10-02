@@ -9,18 +9,40 @@
 import UIKit
 
 class SpotLibrary: NSObject, NSURLSessionDelegate {
+    var countyList:[String] = []
     var allWaveIDs:[Int] = []
     var selectedWaveIDs:[Int] = []
     
     // spotHeight is an optional because it may take longer than expected for the getSwell method to retrieve the height
-    var waveDataDictionary:[Int:(spotName:String, spotHeight:Int?)] = [:]
+    var waveDataDictionary:[Int:(spotName:String, spotCounty:String, spotHeight:Int?)] = [:]
     
     override init() {
         super.init()
     }
     
-    func getSpots() {
-        let sourceURL:NSURL = NSURL(string: "http://api.spitcast.com/api/county/spots/orange-county/")
+    func getCounties() {
+        let sourceURL:NSURL = NSURL(string: "http://api.spitcast.com/api/spot/all")
+        var sourceSession:NSURLSession = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
+        var sourceData:AnyObject? = nil
+        let sourceTask = sourceSession.dataTaskWithURL(sourceURL, completionHandler: {(data, response, error) -> Void in
+            sourceData = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: nil)
+            let numberInData = sourceData!.count
+            for var index = 0; index < numberInData; index++ {
+                let newSpotCounty:String = sourceData![index]!["county_name"]! as String
+                if !(contains(self.countyList, newSpotCounty)) {
+                    self.countyList.append(newSpotCounty)
+                    dispatch_to_background_queue {
+                        self.getSpots(newSpotCounty)
+                    }
+                }
+            }
+        })
+        sourceTask.resume()
+    }
+    
+    func getSpots(county:String) {
+        let countyString:String = county.stringByReplacingOccurrencesOfString(" ", withString: "-", options: NSStringCompareOptions.LiteralSearch, range: nil).lowercaseString
+        let sourceURL:NSURL = NSURL(string: "http://api.spitcast.com/api/county/spots/\(countyString)/")
         var sourceSession:NSURLSession = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
         var sourceData:AnyObject? = nil
         let sourceTask = sourceSession.dataTaskWithURL(sourceURL, completionHandler: {(data, response, error) -> Void in
@@ -29,14 +51,15 @@ class SpotLibrary: NSObject, NSURLSessionDelegate {
             for var index = 0; index < numberInData; index++ {
                 let newSpotName:String = sourceData![index]!["spot_name"]! as String
                 let newSpotID:Int = sourceData![index]!["spot_id"]! as Int
+                let newSpotCounty:String = sourceData![index]!["county"]! as String
                 
-                // remember that spotHeight is an optional, so here it is initially set to nil. It will be 
-                self.waveDataDictionary[newSpotID] = (newSpotName, nil)
-                
+                self.waveDataDictionary[newSpotID] = (newSpotName, newSpotCounty, nil)
                 self.allWaveIDs.append(newSpotID)
             }
         })
+        NSLog("downloaded spots for: \(county)")
         sourceTask.resume()
+        
     }
     
     func getSwell(spotID:Int) {
@@ -60,6 +83,7 @@ class SpotLibrary: NSObject, NSURLSessionDelegate {
     }
     
     func name(id:Int) -> String { return self.waveDataDictionary[id]!.spotName }
+    func county(id:Int) -> String { return self.waveDataDictionary[id]!.spotCounty }
     func height(id:Int) -> Int? { return self.waveDataDictionary[id]!.spotHeight }
 }
 

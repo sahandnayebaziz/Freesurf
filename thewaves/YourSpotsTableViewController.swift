@@ -35,7 +35,7 @@ class YourSpotsTableViewController: UITableViewController {
         if yourSpotLibrary.waveDataDictionary.isEmpty {
             if isConnectedToNetwork() {
                 dispatch_to_background_queue {
-                    self.yourSpotLibrary.getSpots()
+                    self.yourSpotLibrary.getCounties()
                 }
             }
         }
@@ -64,7 +64,7 @@ class YourSpotsTableViewController: UITableViewController {
         }
         self.viewWillAppear(false)
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
@@ -72,11 +72,11 @@ class YourSpotsTableViewController: UITableViewController {
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
-
+    
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return yourSpotLibrary.selectedWaveIDs.count
     }
-
+    
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let rowID = yourSpotLibrary.selectedWaveIDs[indexPath.row]
         var cell:UITableViewCell = UITableViewCell(style: UITableViewCellStyle.Value1, reuseIdentifier: "yourSpotsTableViewCell")
@@ -112,17 +112,9 @@ class YourSpotsTableViewController: UITableViewController {
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!)
     {
-        if (segue.identifier == "openAddNewSpots") {
-            var nav:UINavigationController = segue.destinationViewController as UINavigationController
-            let destinationView:AddNewSpotsTableViewController = nav.topViewController as AddNewSpotsTableViewController
-            destinationView.addSpotLibrary = yourSpotLibrary
-        }
-        
-        if (segue.identifier == "openSearchForNewSpots") {
-            var nav:UINavigationController = segue.destinationViewController as UINavigationController
-            let destinationView:SearchForNewSpotsTableViewController = nav.topViewController as SearchForNewSpotsTableViewController
-            destinationView.searchSpotLibrary = yourSpotLibrary
-        }
+        var nav:UINavigationController = segue.destinationViewController as UINavigationController
+        let destinationView:SearchForNewSpotsTableViewController = nav.topViewController as SearchForNewSpotsTableViewController
+        destinationView.searchSpotLibrary = yourSpotLibrary
     }
 }
 
