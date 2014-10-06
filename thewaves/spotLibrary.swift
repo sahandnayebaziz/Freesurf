@@ -15,6 +15,7 @@ class SpotLibrary: NSObject, NSURLSessionDelegate {
     
     // spotHeight is an optional because it may take longer than expected for the getSwell method to retrieve the height
     var waveDataDictionary:[Int:(spotName:String, spotCounty:String, spotHeight:Int?)] = [:]
+    var countyDataDictionary:[String:(waterTemp:Int?, filler:Int?)] = [:]
     
     override init() {
         super.init()
@@ -54,6 +55,7 @@ class SpotLibrary: NSObject, NSURLSessionDelegate {
                 let newSpotCounty:String = sourceData![index]!["county"]! as String
                 
                 self.waveDataDictionary[newSpotID] = (newSpotName, newSpotCounty, nil)
+                self.countyDataDictionary[county] = (nil, nil)
                 self.allWaveIDs.append(newSpotID)
             }
         })
@@ -62,7 +64,7 @@ class SpotLibrary: NSObject, NSURLSessionDelegate {
         
     }
     
-    func getSwell(spotID:Int) {
+    func getSpotSwell(spotID:Int) {
         let sourceURL:NSURL = NSURL(string: "http://api.spitcast.com/api/spot/forecast/\(spotID)")
         var sourceSession:NSURLSession = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
         var sourceData:AnyObject? = nil
@@ -82,9 +84,23 @@ class SpotLibrary: NSObject, NSURLSessionDelegate {
         sourceTask.resume()
     }
     
+    func getCountyWaterTemp(county:String) {
+        let countyString:String = county.stringByReplacingOccurrencesOfString(" ", withString: "-", options: NSStringCompareOptions.LiteralSearch, range: nil).lowercaseString
+        NSLog("trying http://api.spitcast.com/api/county/water-temperature/\(countyString)/")
+        let sourceURL:NSURL = NSURL(string: "http://api.spitcast.com/api/county/water-temperature/\(countyString)/")
+        var sourceSession:NSURLSession = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
+        var sourceData:AnyObject? = nil
+        let sourceTask = sourceSession.dataTaskWithURL(sourceURL, completionHandler: {(data, response, error) -> Void in
+            sourceData = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: nil)
+            self.countyDataDictionary[county]!.waterTemp = sourceData!["fahrenheit"]! as Int?
+        })
+        sourceTask.resume()
+    }
+    
     func name(id:Int) -> String { return self.waveDataDictionary[id]!.spotName }
     func county(id:Int) -> String { return self.waveDataDictionary[id]!.spotCounty }
     func height(id:Int) -> Int? { return self.waveDataDictionary[id]!.spotHeight }
+    func waterTemp(county:String) -> Int? { return self.countyDataDictionary[county]!.waterTemp }
 }
 
 

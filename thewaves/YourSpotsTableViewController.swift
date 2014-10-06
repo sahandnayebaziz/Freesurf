@@ -45,7 +45,14 @@ class YourSpotsTableViewController: UITableViewController {
                 if yourSpotLibrary.height(spot) == nil {
                     if isConnectedToNetwork() {
                         dispatch_to_background_queue {
-                            self.yourSpotLibrary.getSwell(spot)
+                            self.yourSpotLibrary.getSpotSwell(spot)
+                        }
+                    }
+                }
+                if yourSpotLibrary.waterTemp(yourSpotLibrary.county(spot)) == nil {
+                    if isConnectedToNetwork() {
+                        dispatch_to_background_queue {
+                            self.yourSpotLibrary.getCountyWaterTemp(self.yourSpotLibrary.county(spot))
                         }
                     }
                 }
