@@ -11,6 +11,7 @@ import UIKit
 class YourSpotsTableViewController: UITableViewController {
     var yourSpotLibrary:SpotLibrary = SpotLibrary()
     @IBOutlet var yourSpotsTableView: UITableView!
+    var currentHour:Int = NSDate().hour()
     
     @IBAction func unwindToList(segue:UIStoryboardSegue) {
         var source:SearchForNewSpotsTableViewController = segue.sourceViewController as SearchForNewSpotsTableViewController
@@ -32,7 +33,7 @@ class YourSpotsTableViewController: UITableViewController {
             }
         }
         
-        if yourSpotLibrary.waveDataDictionary.isEmpty {
+        if yourSpotLibrary.spotDataDictionary.isEmpty {
             if isConnectedToNetwork() {
                 dispatch_to_background_queue {
                     self.yourSpotLibrary.getCounties()
@@ -40,16 +41,16 @@ class YourSpotsTableViewController: UITableViewController {
             }
         }
         
-        if yourSpotLibrary.selectedWaveIDs.count > 0 {
-            for spot in yourSpotLibrary.selectedWaveIDs {
-                if yourSpotLibrary.height(spot) == nil {
+        if yourSpotLibrary.selectedSpotIDs.count > 0 {
+            for spot in yourSpotLibrary.selectedSpotIDs {
+                if yourSpotLibrary.heightAtHour(spot, hour: self.currentHour) == nil {
                     if isConnectedToNetwork() {
                         dispatch_to_background_queue {
                             self.yourSpotLibrary.getSpotSwell(spot)
                         }
                     }
                 }
-                if yourSpotLibrary.waterTemp(yourSpotLibrary.county(spot)) == nil {
+                if yourSpotLibrary.waterTemp(spot) == nil {
                     if isConnectedToNetwork() {
                         dispatch_to_background_queue {
                             self.yourSpotLibrary.getCountyWaterTemp(self.yourSpotLibrary.county(spot))
@@ -81,18 +82,20 @@ class YourSpotsTableViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return yourSpotLibrary.selectedWaveIDs.count
+        return yourSpotLibrary.selectedSpotIDs.count
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let rowID = yourSpotLibrary.selectedWaveIDs[indexPath.row]
+        let rowID = yourSpotLibrary.selectedSpotIDs[indexPath.row]
         var cell:UITableViewCell = UITableViewCell(style: UITableViewCellStyle.Value1, reuseIdentifier: "yourSpotsTableViewCell")
         cell.textLabel!.text = yourSpotLibrary.name(rowID)
-        if let height:Int = yourSpotLibrary.height(rowID) {
-            cell.detailTextLabel!.text = "\(height)ft"
+        if let height:Int = yourSpotLibrary.heightAtHour(rowID, hour: self.currentHour) {
+            if let temp:Int = yourSpotLibrary.waterTemp(rowID) {
+                cell.detailTextLabel!.text = "\(height)ft \(temp)°"
+            }
         }
         else {
-            cell.detailTextLabel!.text = "- - ft"
+            cell.detailTextLabel!.text = "--ft --°"
             dispatch_to_main_queue {
                 self.yourSpotsTableView.reloadData()
             }
@@ -111,7 +114,7 @@ class YourSpotsTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if (editingStyle == UITableViewCellEditingStyle.Delete) {
             self.yourSpotsTableView.beginUpdates()
-            yourSpotLibrary.selectedWaveIDs.removeAtIndex(indexPath.row)
+            yourSpotLibrary.selectedSpotIDs.removeAtIndex(indexPath.row)
             yourSpotsTableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Top)
             self.yourSpotsTableView.endUpdates()
         }

@@ -51,8 +51,8 @@ class SearchForNewSpotsTableViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath:NSIndexPath) {
         self.searchField.resignFirstResponder()
-        if !(contains(self.searchSpotLibrary.selectedWaveIDs, results[indexPath.row])) {
-            searchSpotLibrary.selectedWaveIDs.append(results[indexPath.row])
+        if !(contains(self.searchSpotLibrary.selectedSpotIDs, results[indexPath.row])) {
+            searchSpotLibrary.selectedSpotIDs.append(results[indexPath.row])
         }
     }
     
@@ -107,8 +107,8 @@ class SearchForNewSpotsTableViewController: UITableViewController {
         self.results = []
         
         if (countElements(sender.text) != 0) {
-            for key in self.searchSpotLibrary.waveDataDictionary.keys {
-                if (self.searchSpotLibrary.waveDataDictionary[key]!.spotName.contains(input) || self.searchSpotLibrary.waveDataDictionary[key]!.spotCounty.contains(input)) {
+            for key in self.searchSpotLibrary.spotDataDictionary.keys {
+                if (self.searchSpotLibrary.spotDataDictionary[key]!.spotName.contains(input) || self.searchSpotLibrary.spotDataDictionary[key]!.spotCounty.contains(input)) {
                     self.results.append(key)
                 }
             }
