@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="14A379b" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="X1z-ag-Bq9">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="14A388b" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="X1z-ag-Bq9">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
     </dependencies>
@@ -7,7 +7,7 @@
         <!--Your Surf Spots-->
         <scene sceneID="amA-PY-fmU">
             <objects>
-                <tableViewController title="Your Surf Spots" id="DdE-yk-Q9I" customClass="YourSpotsTableViewController" customModule="thewaves" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="DdE-yk-Q9I" customClass="YourSpotsTableViewController" customModule="thewaves" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="6lc-s5-bZy">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -40,7 +40,7 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Your Surf Spots" id="ieq-dx-M15">
-                        <barButtonItem key="rightBarButtonItem" title="Item" systemItem="add" id="ZfB-J3-T8i">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="ZfB-J3-T8i">
                             <connections>
                                 <segue destination="uoL-s9-yKG" kind="showDetail" identifier="openSearchForNewSpots" id="lGh-ok-F8D"/>
                             </connections>
@@ -92,7 +92,7 @@
                             <outlet property="delegate" destination="jiR-Kb-Inu" id="dj6-og-VOA"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" prompt="Enter name of surf spot" id="DsW-zd-Jgg">
+                    <navigationItem key="navigationItem" prompt="Enter name of surf spot or county" id="DsW-zd-Jgg">
                         <nil key="title"/>
                         <textField key="titleView" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" clearButtonMode="whileEditing" id="wn6-uC-9Qx">
                             <rect key="frame" x="180" y="37" width="240" height="30"/>

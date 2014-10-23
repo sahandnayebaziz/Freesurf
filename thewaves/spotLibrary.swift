@@ -9,11 +9,12 @@
 import UIKit
 
 class SpotLibrary: NSObject, NSURLSessionDelegate {
+    var allSpotIDs:[Int] = []
+    var allCountyNames:[String] = []
     var spotDataDictionary:[Int:(spotName:String, spotCounty:String, spotHeight:[Int]?)] = [:]
     var countyDataDictionary:[String:(waterTemp:Int?, tide:Int?)] = [:]
-    var allSpotIDs:[Int] = []
     var selectedSpotIDs:[Int] = []
-    var allCountyNames:[String] = []
+    
 
     func getCounties() {
         let sourceURL:NSURL = NSURL(string: "http://api.spitcast.com/api/spot/all")
@@ -31,7 +32,6 @@ class SpotLibrary: NSObject, NSURLSessionDelegate {
                     }
                 }
             }
-            NSLog("downloaded all counties")
         })
         sourceTask.resume()
     }
@@ -58,12 +58,9 @@ class SpotLibrary: NSObject, NSURLSessionDelegate {
     }
     
     func getSpotSwell(spotID:Int) {
-        NSLog("called getSpotSwell with id: \(spotID)")
-        
         let sourceURL:NSURL = NSURL(string: "http://api.spitcast.com/api/spot/forecast/\(spotID)")
         var sourceSession:NSURLSession = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
         var sourceData:AnyObject? = nil
-        // var currentHour:Int = NSDate().hour() // this line saves a single integer marking the hour of day in 24-hour time ("0", "10", "16")
         let sourceTask = sourceSession.dataTaskWithURL(sourceURL, completionHandler: {(data, response, error) -> Void in
             sourceData = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: nil)
             let numberOfHoursReported:Int = sourceData!.count
