@@ -33,6 +33,7 @@ class YourSpotsTableViewController: UITableViewController {
             }
         }
         
+        // if no data has been loaded
         if yourSpotLibrary.spotDataDictionary.isEmpty {
             if isConnectedToNetwork() {
                 dispatch_to_background_queue {
@@ -41,6 +42,7 @@ class YourSpotsTableViewController: UITableViewController {
             }
         }
         
+        // if anything has been selected
         if yourSpotLibrary.selectedSpotIDs.count > 0 {
             for spot in yourSpotLibrary.selectedSpotIDs {
                 if yourSpotLibrary.heightAtHour(spot, hour: self.currentHour) == nil {
@@ -57,12 +59,20 @@ class YourSpotsTableViewController: UITableViewController {
                         }
                     }
                 }
+                if yourSpotLibrary.currentTide(spot) == nil {
+                    if isConnectedToNetwork() {
+                        dispatch_to_background_queue {
+                            self.yourSpotLibrary.getCountyTide(self.yourSpotLibrary.county(spot))
+                        }
+                    }
+                }
             }
         }
         
         yourSpotsTableView.reloadData()
     }
     
+    // falls here if we are waiting for reconnect
     func waitForConnection() {
         var connectionFlag:Bool = false
         while !(connectionFlag) {
@@ -89,10 +99,13 @@ class YourSpotsTableViewController: UITableViewController {
         let rowID = yourSpotLibrary.selectedSpotIDs[indexPath.row]
         var cell:UITableViewCell = UITableViewCell(style: UITableViewCellStyle.Value1, reuseIdentifier: "yourSpotsTableViewCell")
         cell.textLabel!.text = yourSpotLibrary.name(rowID)
-        if let height:Int = yourSpotLibrary.heightAtHour(rowID, hour: self.currentHour) {
-            if let temp:Int = yourSpotLibrary.waterTemp(rowID) {
-                cell.detailTextLabel!.text = "\(height)ft \(temp)°"
-            }
+        
+        let height = yourSpotLibrary.heightAtHour(rowID, hour: currentHour)
+        let temp = yourSpotLibrary.waterTemp(rowID)
+        let tide = yourSpotLibrary.currentTide(rowID)
+        
+        if height != nil && temp != nil && tide != nil {
+            cell.detailTextLabel!.text = "t:\(tide!) \(height!)ft \(temp!)°"
         }
         else {
             cell.detailTextLabel!.text = "--ft --°"
@@ -100,6 +113,7 @@ class YourSpotsTableViewController: UITableViewController {
                 self.yourSpotsTableView.reloadData()
             }
         }
+
         return cell
     }
     

@@ -9,13 +9,14 @@
 import UIKit
 
 class SpotLibrary: NSObject, NSURLSessionDelegate {
-    var allSpotIDs:[Int] = []
     var allCountyNames:[String] = []
-    var spotDataDictionary:[Int:(spotName:String, spotCounty:String, spotHeight:[Int]?)] = [:]
-    var countyDataDictionary:[String:(waterTemp:Int?, tide:Int?)] = [:]
+    var allSpotIDs:[Int] = []
     var selectedSpotIDs:[Int] = []
+    var spotDataDictionary:[Int:(spotName:String, spotCounty:String, spotHeights:[Int]?)] = [:]
+    var countyDataDictionary:[String:(waterTemp:Int?, tides:[Int]?)] = [:]
     
-
+    var currentHour:Int = NSDate().hour() // helper for current time
+    
     func getCounties() {
         let sourceURL:NSURL = NSURL(string: "http://api.spitcast.com/api/spot/all")
         var sourceSession:NSURLSession = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
@@ -34,6 +35,7 @@ class SpotLibrary: NSObject, NSURLSessionDelegate {
             }
         })
         sourceTask.resume()
+        NSLog("dispatched all spots")
     }
     
     func getSpots(county:String) {
@@ -68,7 +70,7 @@ class SpotLibrary: NSObject, NSURLSessionDelegate {
             for var index = 0; index < numberOfHoursReported; index++ {
                 newArrayOfHourHeights.append(sourceData![index]!["size"]! as Int)
             }
-            self.spotDataDictionary[spotID]!.spotHeight = newArrayOfHourHeights
+            self.spotDataDictionary[spotID]!.spotHeights = newArrayOfHourHeights
         })
         sourceTask.resume()
     }
@@ -85,10 +87,28 @@ class SpotLibrary: NSObject, NSURLSessionDelegate {
         sourceTask.resume()
     }
     
+    func getCountyTide(county:String) {
+        let countyString:String = county.stringByReplacingOccurrencesOfString(" ", withString: "-", options: NSStringCompareOptions.LiteralSearch, range: nil).lowercaseString
+        let sourceURL:NSURL = NSURL(string: "http://api.spitcast.com/api/county/tide/\(countyString)/")
+        var sourceSession:NSURLSession = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
+        var sourceData:AnyObject? = nil
+        let sourceTask = sourceSession.dataTaskWithURL(sourceURL, completionHandler: {(data, response, error) -> Void in
+            sourceData = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: nil)
+            let numberOfTidesReportred:Int = sourceData!.count
+            var newArrayOfHourTides:[Int] = []
+            for var index = 0; index < numberOfTidesReportred; index++ {
+                newArrayOfHourTides.append(sourceData![index]!["tide"]! as Int)
+            }
+            self.countyDataDictionary[county]!.tides = newArrayOfHourTides
+        })
+        sourceTask.resume()
+    }
+    
     func name(id:Int) -> String { return self.spotDataDictionary[id]!.spotName }
     func county(id:Int) -> String { return self.spotDataDictionary[id]!.spotCounty }
-    func heightAtHour(id:Int, hour:Int) -> Int? { return self.spotDataDictionary[id]!.spotHeight?[hour] }
+    func heightAtHour(id:Int, hour:Int) -> Int? { return self.spotDataDictionary[id]!.spotHeights?[hour] }
     func waterTemp(id:Int) -> Int? { return self.countyDataDictionary[self.county(id)]!.waterTemp }
+    func currentTide(id:Int) -> Int? { return self.countyDataDictionary[self.county(id)]!.tides?[currentHour] }
 }
 
 
