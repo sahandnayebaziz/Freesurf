@@ -97,12 +97,13 @@ class YourSpotsTableViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let rowID = yourSpotLibrary.selectedSpotIDs[indexPath.row]
-        var cell:UITableViewCell = UITableViewCell(style: UITableViewCellStyle.Value1, reuseIdentifier: "yourSpotsTableViewCell")
-        cell.textLabel!.text = yourSpotLibrary.name(rowID)
+        let cell:YourSpotsCell = yourSpotsTableView.dequeueReusableCellWithIdentifier("yourSpotsCell") as YourSpotsCell
         
-        let height = yourSpotLibrary.heightAtHour(rowID, hour: currentHour)
-        let temp = yourSpotLibrary.waterTemp(rowID)
-        let tide = yourSpotLibrary.currentTide(rowID)
+        // set name, height, and temp for now
+        
+        let libraryHeight = yourSpotLibrary.heightAtHour(rowID, hour: currentHour)
+        let libraryTemp = yourSpotLibrary.waterTemp(rowID)
+        /*let tide = yourSpotLibrary.currentTide(rowID)
         
         if height != nil && temp != nil && tide != nil {
             cell.detailTextLabel!.text = "t:\(tide!) \(height!)ft \(temp!)°"
@@ -113,7 +114,17 @@ class YourSpotsTableViewController: UITableViewController {
                 self.yourSpotsTableView.reloadData()
             }
         }
-
+*/
+        if libraryHeight != nil && libraryTemp != nil {
+            cell.setCellLabels(yourSpotLibrary.name(rowID), height: libraryHeight, temp: libraryTemp)
+        }
+        else {
+            cell.setCellLabels(yourSpotLibrary.name(rowID), height: nil, temp: nil)
+            dispatch_to_main_queue {
+                self.yourSpotsTableView.reloadData()
+            }
+        }
+        
         return cell
     }
     
