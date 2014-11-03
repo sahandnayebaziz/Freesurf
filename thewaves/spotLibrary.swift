@@ -28,35 +28,38 @@ class SpotLibrary: NSObject, NSURLSessionDelegate {
                 let newSpotCounty:String = sourceData![index]!["county_name"]! as String
                 if !(contains(self.allCountyNames, newSpotCounty)) {
                     self.allCountyNames.append(newSpotCounty)
-                    dispatch_to_background_queue {
-                        self.getSpots(newSpotCounty)
-                    }
                 }
             }
+            self.getNextSpots(self.allCountyNames)
         })
         sourceTask.resume()
-        NSLog("dispatched all spots")
     }
     
-    func getSpots(county:String) {
-        let countyString:String = county.stringByReplacingOccurrencesOfString(" ", withString: "-", options: NSStringCompareOptions.LiteralSearch, range: nil).lowercaseString
-        let sourceURL:NSURL = NSURL(string: "http://api.spitcast.com/api/county/spots/\(countyString)/")
-        var sourceSession:NSURLSession = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
-        var sourceData:AnyObject? = nil
-        let sourceTask = sourceSession.dataTaskWithURL(sourceURL, completionHandler: {(data, response, error) -> Void in
-            sourceData = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: nil)
-            let numberOfSpotsInCounty = sourceData!.count
-            for var index = 0; index < numberOfSpotsInCounty; index++ {
-                let newSpotID:Int = sourceData![index]!["spot_id"]! as Int
-                let newSpotName:String = sourceData![index]!["spot_name"]! as String
-                let newSpotCounty:String = sourceData![index]!["county"]! as String
-                
-                self.spotDataDictionary[newSpotID] = (newSpotName, newSpotCounty, nil)
-                self.countyDataDictionary[county] = (nil, nil)
-                self.allSpotIDs.append(newSpotID)
-            }
-        })
-        sourceTask.resume()
+    func getNextSpots(counties:[String]) {
+        if counties.count > 0 {
+            var county = counties[0]
+            let countyString:String = counties[0].stringByReplacingOccurrencesOfString(" ", withString: "-", options: NSStringCompareOptions.LiteralSearch, range: nil).lowercaseString
+            let sourceURL:NSURL = NSURL(string: "http://api.spitcast.com/api/county/spots/\(countyString)/")
+            var sourceSession:NSURLSession = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
+            var sourceData:AnyObject? = nil
+            let sourceTask = sourceSession.dataTaskWithURL(sourceURL, completionHandler: {(data, response, error) -> Void in
+                sourceData = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: nil)
+                let numberOfSpotsInCounty = sourceData!.count
+                for var index = 0; index < numberOfSpotsInCounty; index++ {
+                    let newSpotID:Int = sourceData![index]!["spot_id"]! as Int
+                    let newSpotName:String = sourceData![index]!["spot_name"]! as String
+                    let newSpotCounty:String = sourceData![index]!["county"]! as String
+                    
+                    self.spotDataDictionary[newSpotID] = (newSpotName, newSpotCounty, nil)
+                    self.countyDataDictionary[county] = (nil, nil)
+                    self.allSpotIDs.append(newSpotID)
+                }
+                var newCounties = counties
+                newCounties.removeAtIndex(0)
+                self.getNextSpots(newCounties)
+            })
+            sourceTask.resume()
+        }
     }
     
     func getSpotSwell(spotID:Int) {
