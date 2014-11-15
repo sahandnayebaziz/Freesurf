@@ -12,6 +12,7 @@ class YourSpotsTableViewController: UITableViewController {
     var yourSpotLibrary:SpotLibrary = SpotLibrary()
     @IBOutlet var yourSpotsTableView: UITableView!
     var currentHour:Int = NSDate().hour()
+    var importedUserSpots:Bool = false
     
     @IBAction func unwindToList(segue:UIStoryboardSegue) {
         var source:SearchForNewSpotsTableViewController = segue.sourceViewController as SearchForNewSpotsTableViewController
@@ -23,6 +24,12 @@ class YourSpotsTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.yourSpotsTableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "yourSpotsTableViewCell")
+        let defaults:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        if let exportString = defaults.objectForKey("userSelectedSpots") as? String {
+            importedUserSpots = true
+            self.yourSpotLibrary.initLibraryFromString(exportString)
+            self.yourSpotsTableView.reloadData()
+        }
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -34,7 +41,8 @@ class YourSpotsTableViewController: UITableViewController {
         }
         
         // if no data has been loaded
-        if yourSpotLibrary.spotDataDictionary.isEmpty {
+        // TODO: make loading a dictionary non-destructive, and do it every time
+        if yourSpotLibrary.spotDataDictionary.isEmpty || importedUserSpots {
             if isConnectedToNetwork() {
                 dispatch_to_background_queue {
                     self.yourSpotLibrary.getCounties()

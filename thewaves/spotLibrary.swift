@@ -14,11 +14,10 @@ class SpotLibrary: NSObject, NSURLSessionDelegate {
     var selectedSpotIDs:[Int] = []
     var spotDataDictionary:[Int:(spotName:String, spotCounty:String, spotHeights:[Int]?)] = [:]
     var countyDataDictionary:[String:(waterTemp:Int?, tides:[Int]?)] = [:]
-    
-    var currentHour:Int = NSDate().hour() // helper for current time
+    var currentHour:Int = NSDate().hour()
     
     func getCounties() {
-        let sourceURL:NSURL = NSURL(string: "http://api.spitcast.com/api/spot/all")
+        let sourceURL:NSURL = NSURL(string: "http://api.spitcast.com/api/spot/all")!
         var sourceSession:NSURLSession = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
         var sourceData:AnyObject? = nil
         let sourceTask = sourceSession.dataTaskWithURL(sourceURL, completionHandler: {(data, response, error) -> Void in
@@ -39,7 +38,7 @@ class SpotLibrary: NSObject, NSURLSessionDelegate {
         if counties.count > 0 {
             var county = counties[0]
             let countyString:String = counties[0].stringByReplacingOccurrencesOfString(" ", withString: "-", options: NSStringCompareOptions.LiteralSearch, range: nil).lowercaseString
-            let sourceURL:NSURL = NSURL(string: "http://api.spitcast.com/api/county/spots/\(countyString)/")
+            let sourceURL:NSURL = NSURL(string: "http://api.spitcast.com/api/county/spots/\(countyString)/")!
             var sourceSession:NSURLSession = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
             var sourceData:AnyObject? = nil
             let sourceTask = sourceSession.dataTaskWithURL(sourceURL, completionHandler: {(data, response, error) -> Void in
@@ -50,8 +49,16 @@ class SpotLibrary: NSObject, NSURLSessionDelegate {
                     let newSpotName:String = sourceData![index]!["spot_name"]! as String
                     let newSpotCounty:String = sourceData![index]!["county"]! as String
                     
-                    self.spotDataDictionary[newSpotID] = (newSpotName, newSpotCounty, nil)
-                    self.countyDataDictionary[county] = (nil, nil)
+                    if let existingHeights:[Int] = self.heights(newSpotID) {
+                        self.spotDataDictionary[newSpotID] = (newSpotName, newSpotCounty, existingHeights)
+                    }
+                    else {
+                        self.spotDataDictionary[newSpotID] = (newSpotName, newSpotCounty, nil)
+                    }
+                    
+                    if (!contains(self.countyDataDictionary.keys.array, newSpotCounty)) {
+                        self.countyDataDictionary[county] = (nil, nil)
+                    }
                     self.allSpotIDs.append(newSpotID)
                 }
                 var newCounties = counties
@@ -63,7 +70,7 @@ class SpotLibrary: NSObject, NSURLSessionDelegate {
     }
     
     func getSpotSwell(spotID:Int) {
-        let sourceURL:NSURL = NSURL(string: "http://api.spitcast.com/api/spot/forecast/\(spotID)")
+        let sourceURL:NSURL = NSURL(string: "http://api.spitcast.com/api/spot/forecast/\(spotID)")!
         var sourceSession:NSURLSession = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
         var sourceData:AnyObject? = nil
         let sourceTask = sourceSession.dataTaskWithURL(sourceURL, completionHandler: {(data, response, error) -> Void in
@@ -80,7 +87,7 @@ class SpotLibrary: NSObject, NSURLSessionDelegate {
     
     func getCountyWaterTemp(county:String) {
         let countyString:String = county.stringByReplacingOccurrencesOfString(" ", withString: "-", options: NSStringCompareOptions.LiteralSearch, range: nil).lowercaseString
-        let sourceURL:NSURL = NSURL(string: "http://api.spitcast.com/api/county/water-temperature/\(countyString)/")
+        let sourceURL:NSURL = NSURL(string: "http://api.spitcast.com/api/county/water-temperature/\(countyString)/")!
         var sourceSession:NSURLSession = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
         var sourceData:AnyObject? = nil
         let sourceTask = sourceSession.dataTaskWithURL(sourceURL, completionHandler: {(data, response, error) -> Void in
@@ -92,7 +99,7 @@ class SpotLibrary: NSObject, NSURLSessionDelegate {
     
     func getCountyTide(county:String) {
         let countyString:String = county.stringByReplacingOccurrencesOfString(" ", withString: "-", options: NSStringCompareOptions.LiteralSearch, range: nil).lowercaseString
-        let sourceURL:NSURL = NSURL(string: "http://api.spitcast.com/api/county/tide/\(countyString)/")
+        let sourceURL:NSURL = NSURL(string: "http://api.spitcast.com/api/county/tide/\(countyString)/")!
         var sourceSession:NSURLSession = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
         var sourceData:AnyObject? = nil
         let sourceTask = sourceSession.dataTaskWithURL(sourceURL, completionHandler: {(data, response, error) -> Void in
@@ -109,9 +116,36 @@ class SpotLibrary: NSObject, NSURLSessionDelegate {
     
     func name(id:Int) -> String { return self.spotDataDictionary[id]!.spotName }
     func county(id:Int) -> String { return self.spotDataDictionary[id]!.spotCounty }
+    func heights(id:Int) -> [Int]? { return self.spotDataDictionary[id]?.spotHeights? }
     func heightAtHour(id:Int, hour:Int) -> Int? { return self.spotDataDictionary[id]!.spotHeights?[hour] }
     func waterTemp(id:Int) -> Int? { return self.countyDataDictionary[self.county(id)]!.waterTemp }
     func currentTide(id:Int) -> Int? { return self.countyDataDictionary[self.county(id)]!.tides?[currentHour] }
+    
+    func exportLibraryToString() -> String {
+        var exportString:String = ""
+        
+        for spotID in self.selectedSpotIDs {
+            exportString += "\(spotID).\(name(spotID)).\(county(spotID)),"
+        }
+        
+        return exportString
+    }
+    
+    func initLibraryFromString(exportString: String) {
+        var listOfSpotExports:[String] = exportString.componentsSeparatedByString(",")
+        for spotExport in listOfSpotExports {
+            var spotAttributes:[String] = spotExport.componentsSeparatedByString(".")
+            if spotAttributes.count == 3 {
+                let spotID:Int = spotAttributes[0].toInt()!
+                let spotName:String = spotAttributes[1]
+                let spotCounty:String = spotAttributes[2]
+                
+                self.selectedSpotIDs.append(spotID)
+                self.spotDataDictionary[spotID] = (spotName, spotCounty, nil)
+                self.countyDataDictionary[spotCounty] = (nil, nil)
+            }
+        }
+    }
 }
 
 

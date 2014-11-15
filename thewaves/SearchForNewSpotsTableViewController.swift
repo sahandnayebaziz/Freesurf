@@ -44,7 +44,7 @@ class SearchForNewSpotsTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let rowID = self.results[indexPath.row]
         var cell:UITableViewCell = self.searchForNewSpotsTableView.dequeueReusableCellWithIdentifier("searchForNewSpotsCell") as UITableViewCell
-        cell.textLabel!.text = searchSpotLibrary.name(rowID)
+        cell.textLabel.text = searchSpotLibrary.name(rowID)
         cell.detailTextLabel!.text = searchSpotLibrary.county(rowID)
         return cell
     }
