@@ -67,6 +67,9 @@ class SpotLibrary: NSObject, NSURLSessionDelegate {
             })
             sourceTask.resume()
         }
+        else {
+            NSLog("Downloaded all spots")
+        }
     }
     
     func getSpotSwell(spotID:Int) {

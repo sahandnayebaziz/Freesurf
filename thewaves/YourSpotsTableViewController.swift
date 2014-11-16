@@ -9,24 +9,17 @@
 import UIKit
 
 class YourSpotsTableViewController: UITableViewController {
-    var yourSpotLibrary:SpotLibrary = SpotLibrary()
     @IBOutlet var yourSpotsTableView: UITableView!
+    var yourSpotLibrary:SpotLibrary = SpotLibrary()
     var currentHour:Int = NSDate().hour()
-    var importedUserSpots:Bool = false
-    
-    @IBAction func unwindToList(segue:UIStoryboardSegue) {
-        var source:SearchForNewSpotsTableViewController = segue.sourceViewController as SearchForNewSpotsTableViewController
-        source.searchField.resignFirstResponder()
-        self.yourSpotLibrary = source.searchSpotLibrary
-        self.tableView.reloadData()
-    }
+    var usingUserDefaults:Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.yourSpotsTableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "yourSpotsTableViewCell")
         let defaults:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         if let exportString = defaults.objectForKey("userSelectedSpots") as? String {
-            importedUserSpots = true
+            usingUserDefaults = true
             self.yourSpotLibrary.initLibraryFromString(exportString)
             self.yourSpotsTableView.reloadData()
         }
@@ -42,7 +35,7 @@ class YourSpotsTableViewController: UITableViewController {
         
         // if no data has been loaded
         // TODO: make loading a dictionary non-destructive, and do it every time
-        if yourSpotLibrary.spotDataDictionary.isEmpty || importedUserSpots {
+        if yourSpotLibrary.spotDataDictionary.isEmpty || usingUserDefaults {
             if isConnectedToNetwork() {
                 dispatch_to_background_queue {
                     self.yourSpotLibrary.getCounties()
@@ -76,9 +69,19 @@ class YourSpotsTableViewController: UITableViewController {
                 }
             }
         }
-        
         yourSpotsTableView.reloadData()
     }
+    
+    @IBAction func unwindToList(segue:UIStoryboardSegue) {
+        var source:SearchForNewSpotsTableViewController = segue.sourceViewController as SearchForNewSpotsTableViewController
+        source.searchField.resignFirstResponder()
+        self.yourSpotLibrary = source.searchSpotLibrary
+        self.tableView.reloadData()
+    }
+    
+    
+    
+    
     
     // falls here if we are waiting for reconnect
     func waitForConnection() {
@@ -107,22 +110,9 @@ class YourSpotsTableViewController: UITableViewController {
         let rowID = yourSpotLibrary.selectedSpotIDs[indexPath.row]
         let cell:YourSpotsCell = yourSpotsTableView.dequeueReusableCellWithIdentifier("yourSpotsCell") as YourSpotsCell
         
-        // set name, height, and temp for now
-        
         let libraryHeight = yourSpotLibrary.heightAtHour(rowID, hour: currentHour)
         let libraryTemp = yourSpotLibrary.waterTemp(rowID)
-        /*let tide = yourSpotLibrary.currentTide(rowID)
-        
-        if height != nil && temp != nil && tide != nil {
-            cell.detailTextLabel!.text = "t:\(tide!) \(height!)ft \(temp!)°"
-        }
-        else {
-            cell.detailTextLabel!.text = "--ft --°"
-            dispatch_to_main_queue {
-                self.yourSpotsTableView.reloadData()
-            }
-        }
-*/
+
         if libraryHeight != nil && libraryTemp != nil {
             cell.setCellLabels(yourSpotLibrary.name(rowID), height: libraryHeight, temp: libraryTemp)
         }
@@ -132,7 +122,6 @@ class YourSpotsTableViewController: UITableViewController {
                 self.yourSpotsTableView.reloadData()
             }
         }
-        
         return cell
     }
     
