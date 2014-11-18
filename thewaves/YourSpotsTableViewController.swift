@@ -23,6 +23,12 @@ class YourSpotsTableViewController: UITableViewController {
             self.yourSpotLibrary.initLibraryFromString(exportString)
             self.yourSpotsTableView.reloadData()
         }
+
+        self.yourSpotsTableView.backgroundColor = UIColor.clearColor()
+        let blurEffect:UIBlurEffect = UIBlurEffect(style: UIBlurEffectStyle.Dark)
+        let blurEffectView:UIVisualEffectView = UIVisualEffectView(effect: blurEffect)
+        blurEffectView.frame = yourSpotsTableView.bounds
+        self.yourSpotsTableView.backgroundView = blurEffectView
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -110,6 +116,7 @@ class YourSpotsTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let rowID = yourSpotLibrary.selectedSpotIDs[indexPath.row]
         let cell:YourSpotsCell = yourSpotsTableView.dequeueReusableCellWithIdentifier("yourSpotsCell") as YourSpotsCell
+        cell.backgroundColor = UIColor.clearColor()
         
         let libraryHeight = yourSpotLibrary.heightAtHour(rowID, hour: currentHour)
         let libraryTemp = yourSpotLibrary.waterTemp(rowID)
@@ -123,6 +130,7 @@ class YourSpotsTableViewController: UITableViewController {
                 self.yourSpotsTableView.reloadData()
             }
         }
+        
         return cell
     }
     
