@@ -30,11 +30,11 @@ class YourSpotsCell: UITableViewCell {
     func setCellLabels(name: String, height: Int?, temp: Int?) {
         nameLabel.text = name;
         if height == nil || temp == nil {
-            heightLabel.text = "--'"
+            heightLabel.text = "--ft"
             tempLabel.text = "--°"
         }
         else {
-            heightLabel.text = "\(height!)'"
+            heightLabel.text = "\(height!)ft"
             tempLabel.text = "\(temp!)°"
         }
     }
