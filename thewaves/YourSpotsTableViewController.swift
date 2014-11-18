@@ -40,6 +40,7 @@ class YourSpotsTableViewController: UITableViewController {
                 dispatch_to_background_queue {
                     self.yourSpotLibrary.getCounties()
                 }
+                usingUserDefaults = false;
             }
         }
         
