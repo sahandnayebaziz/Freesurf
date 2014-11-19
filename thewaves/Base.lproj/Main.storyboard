@@ -8,7 +8,7 @@
         <!--yourSurfSpotsTableViewController-->
         <scene sceneID="amA-PY-fmU">
             <objects>
-                <tableViewController title="yourSurfSpotsTableViewController" id="DdE-yk-Q9I" customClass="YourSpotsTableViewController" customModule="thewaves" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController title="yourSurfSpotsTableViewController" automaticallyAdjustsScrollViewInsets="NO" id="DdE-yk-Q9I" customClass="YourSpotsTableViewController" customModule="thewaves" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" keyboardDismissMode="onDrag" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="113" sectionHeaderHeight="22" sectionFooterHeight="22" id="6lc-s5-bZy">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -277,13 +277,10 @@
                             <outlet property="delegate" destination="DdE-yk-Q9I" id="49E-43-zU8"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Your Surf Spots" id="ieq-dx-M15">
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="ZfB-J3-T8i">
-                            <connections>
-                                <segue destination="uoL-s9-yKG" kind="showDetail" identifier="openSearchForNewSpots" id="lGh-ok-F8D"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" id="ieq-dx-M15"/>
+                    <nil key="simulatedStatusBarMetrics"/>
+                    <nil key="simulatedTopBarMetrics"/>
+                    <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="yourSpotsTableView" destination="6lc-s5-bZy" id="3jo-QM-8OS"/>
                     </connections>
@@ -357,11 +354,12 @@
             </objects>
             <point key="canvasLocation" x="1674" y="-399"/>
         </scene>
-        <!--hello world!-->
+        <!--mainNav-->
         <scene sceneID="20t-p0-PdO">
             <objects>
-                <navigationController title="hello world!" automaticallyAdjustsScrollViewInsets="NO" id="X1z-ag-Bq9" sceneMemberID="viewController">
+                <navigationController title="mainNav" automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="X1z-ag-Bq9" sceneMemberID="viewController">
                     <toolbarItems/>
+                    <nil key="simulatedTopBarMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="KfF-5S-CYH">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>

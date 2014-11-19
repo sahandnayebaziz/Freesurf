@@ -131,6 +131,15 @@ class YourSpotsTableViewController: UITableViewController {
         return cell
     }
     
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        if indexPath.row == 0 {
+            return 130.0
+        }
+        else {
+            return 113.0
+        }
+    }
+    
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath:NSIndexPath) {
         yourSpotsTableView.deselectRowAtIndexPath(indexPath, animated: false)
     }
@@ -146,6 +155,10 @@ class YourSpotsTableViewController: UITableViewController {
             yourSpotsTableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Top)
             self.yourSpotsTableView.endUpdates()
         }
+    }
+    
+    override func preferredStatusBarStyle() -> UIStatusBarStyle {
+        return UIStatusBarStyle.LightContent
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!)
