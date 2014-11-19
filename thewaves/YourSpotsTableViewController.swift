@@ -23,6 +23,8 @@ class YourSpotsTableViewController: UITableViewController {
             self.yourSpotLibrary.initLibraryFromString(exportString)
             self.yourSpotsTableView.reloadData()
         }
+
+        self.yourSpotsTableView.backgroundColor = UIColor.clearColor()
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -40,6 +42,7 @@ class YourSpotsTableViewController: UITableViewController {
                 dispatch_to_background_queue {
                     self.yourSpotLibrary.getCounties()
                 }
+                usingUserDefaults = false;
             }
         }
         
@@ -60,7 +63,7 @@ class YourSpotsTableViewController: UITableViewController {
                         }
                     }
                 }
-                if yourSpotLibrary.currentTide(spot) == nil {
+                if yourSpotLibrary.next24Tides(spot) == nil {
                     if isConnectedToNetwork() {
                         dispatch_to_background_queue {
                             self.yourSpotLibrary.getCountyTide(self.yourSpotLibrary.county(spot))
@@ -109,19 +112,22 @@ class YourSpotsTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let rowID = yourSpotLibrary.selectedSpotIDs[indexPath.row]
         let cell:YourSpotsCell = yourSpotsTableView.dequeueReusableCellWithIdentifier("yourSpotsCell") as YourSpotsCell
+        cell.backgroundColor = UIColor.clearColor()
         
         let libraryHeight = yourSpotLibrary.heightAtHour(rowID, hour: currentHour)
         let libraryTemp = yourSpotLibrary.waterTemp(rowID)
+        let libraryTides = yourSpotLibrary.next24Tides(rowID)
 
-        if libraryHeight != nil && libraryTemp != nil {
-            cell.setCellLabels(yourSpotLibrary.name(rowID), height: libraryHeight, temp: libraryTemp)
+        if libraryHeight != nil && libraryTemp != nil && libraryTides != nil {
+            cell.setCellLabels(yourSpotLibrary.name(rowID), height: libraryHeight, temp: libraryTemp, tides: libraryTides)
         }
         else {
-            cell.setCellLabels(yourSpotLibrary.name(rowID), height: nil, temp: nil)
+            cell.setCellLabels(yourSpotLibrary.name(rowID), height: nil, temp: nil, tides: nil)
             dispatch_to_main_queue {
                 self.yourSpotsTableView.reloadData()
             }
         }
+        
         return cell
     }
     
