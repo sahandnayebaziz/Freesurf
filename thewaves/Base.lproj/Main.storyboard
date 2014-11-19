@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="14B23" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="X1z-ag-Bq9">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -25,8 +26,8 @@
                                                 <constraint firstAttribute="width" constant="85" id="lVf-LN-X5v"/>
                                                 <constraint firstAttribute="width" constant="96" id="qPA-Cs-8Dh"/>
                                             </constraints>
-                                            <fontDescription key="fontDescription" name="HelveticaNeue-UltraLight" family="Helvetica Neue" pointSize="60"/>
-                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <fontDescription key="fontDescription" name="HelveticaNeue-UltraLight" family="Helvetica Neue" pointSize="56"/>
+                                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                             <variation key="default">
                                                 <mask key="constraints">
@@ -61,7 +62,7 @@
                                                 </constraint>
                                             </constraints>
                                             <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="35"/>
-                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                             <variation key="default">
                                                 <mask key="constraints">
@@ -89,8 +90,8 @@
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="42" id="f8m-qT-EJa"/>
                                             </constraints>
-                                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
-                                            <color key="textColor" white="1" alpha="0.5" colorSpace="calibratedWhite"/>
+                                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
+                                            <color key="textColor" red="1" green="1" blue="1" alpha="0.75" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                             <variation key="default">
                                                 <mask key="constraints">
@@ -108,8 +109,14 @@
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="high tide: in 11 hours  low tide: in 11 hours" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0IH-H0-c28">
                                             <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
+                                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
+                                            <color key="textColor" red="1" green="1" blue="1" alpha="0.75" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="15s SW" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TJQ-nc-fnA">
+                                            <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
                                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
-                                            <color key="textColor" white="1" alpha="0.5" colorSpace="calibratedWhite"/>
+                                            <color key="textColor" red="1" green="1" blue="1" alpha="0.75" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
@@ -144,7 +151,7 @@
                                             <variation key="heightClass=regular-widthClass=compact" constant="7"/>
                                         </constraint>
                                         <constraint firstAttribute="bottomMargin" secondItem="Txr-CT-e0O" secondAttribute="bottom" constant="17" id="R51-DU-jGh">
-                                            <variation key="heightClass=regular-widthClass=compact" constant="17"/>
+                                            <variation key="heightClass=regular-widthClass=compact" constant="20"/>
                                         </constraint>
                                         <constraint firstItem="Q6v-AC-WoA" firstAttribute="leading" secondItem="Kgw-Sp-dX5" secondAttribute="leading" id="SpT-dO-kgK"/>
                                         <constraint firstItem="Txr-CT-e0O" firstAttribute="centerY" secondItem="3dQ-bI-6Hp" secondAttribute="centerY" id="VAI-rs-Fyh"/>
@@ -162,17 +169,22 @@
                                         <constraint firstItem="Q6v-AC-WoA" firstAttribute="top" secondItem="3dQ-bI-6Hp" secondAttribute="topMargin" constant="7" id="qQP-cO-hGq">
                                             <variation key="heightClass=compact-widthClass=regular" constant="8"/>
                                         </constraint>
+                                        <constraint firstAttribute="bottomMargin" secondItem="TJQ-nc-fnA" secondAttribute="bottom" constant="5" id="rrB-hS-FOq"/>
                                         <constraint firstAttribute="bottomMargin" secondItem="Txr-CT-e0O" secondAttribute="bottom" constant="26" id="ygM-1I-Fql"/>
                                         <constraint firstItem="Q6v-AC-WoA" firstAttribute="leading" secondItem="3dQ-bI-6Hp" secondAttribute="leadingMargin" constant="20" id="yo8-8f-9p7"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="TJQ-nc-fnA" secondAttribute="trailing" constant="8" id="z7R-Zk-d8i"/>
                                     </constraints>
                                     <variation key="default">
                                         <mask key="subviews">
                                             <exclude reference="0IH-H0-c28"/>
+                                            <exclude reference="TJQ-nc-fnA"/>
                                         </mask>
                                         <mask key="constraints">
                                             <exclude reference="EXm-v3-qfs"/>
                                             <exclude reference="NEn-OS-500"/>
                                             <exclude reference="VWA-Gs-JFz"/>
+                                            <exclude reference="rrB-hS-FOq"/>
+                                            <exclude reference="z7R-Zk-d8i"/>
                                             <exclude reference="2HG-eM-yQD"/>
                                             <exclude reference="2x2-Ho-UTf"/>
                                             <exclude reference="DPe-F2-AHV"/>
@@ -240,11 +252,14 @@
                                             <include reference="Txr-CT-e0O"/>
                                             <include reference="Q6v-AC-WoA"/>
                                             <include reference="0IH-H0-c28"/>
+                                            <include reference="TJQ-nc-fnA"/>
                                         </mask>
                                         <mask key="constraints">
                                             <include reference="EXm-v3-qfs"/>
                                             <include reference="NEn-OS-500"/>
                                             <include reference="VWA-Gs-JFz"/>
+                                            <include reference="rrB-hS-FOq"/>
+                                            <include reference="z7R-Zk-d8i"/>
                                             <exclude reference="2HG-eM-yQD"/>
                                             <include reference="2x2-Ho-UTf"/>
                                             <include reference="DPe-F2-AHV"/>

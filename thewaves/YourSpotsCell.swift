@@ -77,7 +77,7 @@ class YourSpotsCell: UITableViewCell {
             else { highTideHeadline = "in \(maxTideHoursFromNow) hours" }
             if minTideHoursFromNow <= 1 { lowTideHeadline = "now" }
             else { lowTideHeadline = "in \(minTideHoursFromNow) hours" }
-            tideLabel.text = "high tide: \(highTideHeadline)  low tide:\(lowTideHeadline)"
+            tideLabel.text = "high tide: \(highTideHeadline)  low tide: \(lowTideHeadline)"
             
         }
         gradient.colors = [colorTop, colorBottom]
