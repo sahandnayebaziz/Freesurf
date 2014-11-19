@@ -25,10 +25,6 @@ class YourSpotsTableViewController: UITableViewController {
         }
 
         self.yourSpotsTableView.backgroundColor = UIColor.clearColor()
-        let blurEffect:UIBlurEffect = UIBlurEffect(style: UIBlurEffectStyle.Dark)
-        let blurEffectView:UIVisualEffectView = UIVisualEffectView(effect: blurEffect)
-        blurEffectView.frame = yourSpotsTableView.bounds
-        self.yourSpotsTableView.backgroundView = blurEffectView
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -67,7 +63,7 @@ class YourSpotsTableViewController: UITableViewController {
                         }
                     }
                 }
-                if yourSpotLibrary.currentTide(spot) == nil {
+                if yourSpotLibrary.next24Tides(spot) == nil {
                     if isConnectedToNetwork() {
                         dispatch_to_background_queue {
                             self.yourSpotLibrary.getCountyTide(self.yourSpotLibrary.county(spot))
@@ -120,12 +116,13 @@ class YourSpotsTableViewController: UITableViewController {
         
         let libraryHeight = yourSpotLibrary.heightAtHour(rowID, hour: currentHour)
         let libraryTemp = yourSpotLibrary.waterTemp(rowID)
+        let libraryTides = yourSpotLibrary.next24Tides(rowID)
 
-        if libraryHeight != nil && libraryTemp != nil {
-            cell.setCellLabels(yourSpotLibrary.name(rowID), height: libraryHeight, temp: libraryTemp)
+        if libraryHeight != nil && libraryTemp != nil && libraryTides != nil {
+            cell.setCellLabels(yourSpotLibrary.name(rowID), height: libraryHeight, temp: libraryTemp, tides: libraryTides)
         }
         else {
-            cell.setCellLabels(yourSpotLibrary.name(rowID), height: nil, temp: nil)
+            cell.setCellLabels(yourSpotLibrary.name(rowID), height: nil, temp: nil, tides: nil)
             dispatch_to_main_queue {
                 self.yourSpotsTableView.reloadData()
             }

@@ -28,7 +28,7 @@ class YourSpotsCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
-    func setCellLabels(name: String, height: Int?, temp: Int?) {
+    func setCellLabels(name: String, height: Int?, temp: Int?, tides: [Int]?) {
         nameLabel.text = name;
         var colorTop:CGColorRef;
         var colorBottom:CGColorRef;
