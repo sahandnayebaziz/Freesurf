@@ -84,12 +84,6 @@
                                                 </mask>
                                             </variation>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="high tide: now   low tide: in 4 hours" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0IH-H0-c28">
-                                            <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
-                                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
-                                            <color key="textColor" white="1" alpha="0.5" colorSpace="calibratedWhite"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="68°" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Q6v-AC-WoA">
                                             <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
                                             <constraints>
@@ -112,6 +106,12 @@
                                                 </mask>
                                             </variation>
                                         </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="high tide: in 11 hours  low tide: in 11 hours" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0IH-H0-c28">
+                                            <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
+                                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
+                                            <color key="textColor" white="1" alpha="0.5" colorSpace="calibratedWhite"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="Txr-CT-e0O" firstAttribute="top" secondItem="3dQ-bI-6Hp" secondAttribute="topMargin" constant="28" id="0iK-4I-nNx">
@@ -127,7 +127,7 @@
                                         <constraint firstAttribute="bottomMargin" secondItem="Kgw-Sp-dX5" secondAttribute="bottom" constant="33" id="8NS-WM-TLq"/>
                                         <constraint firstItem="Q6v-AC-WoA" firstAttribute="leading" secondItem="0IH-H0-c28" secondAttribute="leading" id="DPe-F2-AHV"/>
                                         <constraint firstAttribute="bottomMargin" secondItem="0IH-H0-c28" secondAttribute="bottom" constant="5" id="EXm-v3-qfs">
-                                            <variation key="heightClass=regular-widthClass=compact" constant="6"/>
+                                            <variation key="heightClass=regular-widthClass=compact" constant="5"/>
                                         </constraint>
                                         <constraint firstItem="Kgw-Sp-dX5" firstAttribute="top" secondItem="3dQ-bI-6Hp" secondAttribute="topMargin" constant="26" id="ISd-Tg-zgG">
                                             <variation key="heightClass=compact-widthClass=regular" constant="27"/>
@@ -135,7 +135,7 @@
                                         <constraint firstItem="Txr-CT-e0O" firstAttribute="leading" secondItem="Kgw-Sp-dX5" secondAttribute="trailing" constant="59" id="M0o-x7-u0F"/>
                                         <constraint firstItem="Q6v-AC-WoA" firstAttribute="top" secondItem="3dQ-bI-6Hp" secondAttribute="topMargin" constant="5" id="Mza-8D-bZL"/>
                                         <constraint firstItem="0IH-H0-c28" firstAttribute="top" secondItem="Kgw-Sp-dX5" secondAttribute="bottom" constant="3" id="NEn-OS-500">
-                                            <variation key="heightClass=regular-widthClass=compact" constant="7"/>
+                                            <variation key="heightClass=regular-widthClass=compact" constant="8"/>
                                         </constraint>
                                         <constraint firstItem="Kgw-Sp-dX5" firstAttribute="leading" secondItem="3dQ-bI-6Hp" secondAttribute="leadingMargin" constant="8" id="OMF-OQ-mRQ">
                                             <variation key="heightClass=regular-widthClass=compact" constant="7"/>
@@ -149,7 +149,7 @@
                                         <constraint firstItem="Q6v-AC-WoA" firstAttribute="leading" secondItem="Kgw-Sp-dX5" secondAttribute="leading" id="SpT-dO-kgK"/>
                                         <constraint firstItem="Txr-CT-e0O" firstAttribute="centerY" secondItem="3dQ-bI-6Hp" secondAttribute="centerY" id="VAI-rs-Fyh"/>
                                         <constraint firstItem="0IH-H0-c28" firstAttribute="top" secondItem="Q6v-AC-WoA" secondAttribute="bottom" constant="49" id="VWA-Gs-JFz">
-                                            <variation key="heightClass=regular-widthClass=compact" constant="53"/>
+                                            <variation key="heightClass=regular-widthClass=compact" constant="54"/>
                                         </constraint>
                                         <constraint firstAttribute="bottomMargin" secondItem="Kgw-Sp-dX5" secondAttribute="bottom" constant="22" id="asP-ho-M66"/>
                                         <constraint firstItem="Q6v-AC-WoA" firstAttribute="leading" secondItem="Kgw-Sp-dX5" secondAttribute="leading" id="c2o-ms-10G"/>
@@ -238,8 +238,8 @@
                                     <variation key="heightClass=regular-widthClass=compact">
                                         <mask key="subviews">
                                             <include reference="Txr-CT-e0O"/>
-                                            <include reference="0IH-H0-c28"/>
                                             <include reference="Q6v-AC-WoA"/>
+                                            <include reference="0IH-H0-c28"/>
                                         </mask>
                                         <mask key="constraints">
                                             <include reference="EXm-v3-qfs"/>
@@ -268,6 +268,7 @@
                                     <outlet property="heightLabel" destination="Txr-CT-e0O" id="F6h-Bn-Tb6"/>
                                     <outlet property="nameLabel" destination="Kgw-Sp-dX5" id="f0i-5W-IuU"/>
                                     <outlet property="tempLabel" destination="Q6v-AC-WoA" id="aUq-Ea-9EU"/>
+                                    <outlet property="tideLabel" destination="0IH-H0-c28" id="fDL-Lh-TE9"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -289,7 +290,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0ve-Xx-3Je" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="870" y="337.5"/>
+            <point key="canvasLocation" x="882" y="346.5"/>
         </scene>
         <!--Search For New Spots-->
         <scene sceneID="PIG-0K-W1d">
