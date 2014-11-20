@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="14B23" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="X1z-ag-Bq9">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="X1z-ag-Bq9">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
@@ -27,7 +27,6 @@
                                     <state key="highlighted">
                                         <color key="titleColor" red="0.36137805451127825" green="0.49977816049432089" blue="0.60229675751879697" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </state>
-                                    <variation key="heightClass=regular-widthClass=compact"/>
                                     <connections>
                                         <segue destination="uoL-s9-yKG" kind="showDetail" id="RLf-Za-uKE"/>
                                     </connections>
@@ -36,20 +35,16 @@
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <rect key="contentStretch" x="0.0" y="0.0" width="0.0" height="0.0"/>
                             <constraints>
-                                <constraint firstAttribute="trailing" secondItem="8bN-1G-ZeV" secondAttribute="trailing" constant="22" id="18T-gD-bTJ">
-                                    <variation key="heightClass=regular-widthClass=compact" constant="23"/>
-                                </constraint>
-                                <constraint firstItem="8bN-1G-ZeV" firstAttribute="top" secondItem="9ui-3d-OlZ" secondAttribute="top" id="48N-Ro-MDf">
-                                    <variation key="heightClass=regular-widthClass=compact" constant="15"/>
-                                </constraint>
+                                <constraint firstAttribute="trailing" secondItem="8bN-1G-ZeV" secondAttribute="trailing" constant="23" id="T1V-Fe-xvy"/>
+                                <constraint firstItem="8bN-1G-ZeV" firstAttribute="top" secondItem="9ui-3d-OlZ" secondAttribute="top" constant="15" id="Ujz-i8-Gzd"/>
                             </constraints>
                             <variation key="default">
                                 <mask key="subviews">
                                     <exclude reference="8bN-1G-ZeV"/>
                                 </mask>
                                 <mask key="constraints">
-                                    <exclude reference="18T-gD-bTJ"/>
-                                    <exclude reference="48N-Ro-MDf"/>
+                                    <exclude reference="T1V-Fe-xvy"/>
+                                    <exclude reference="Ujz-i8-Gzd"/>
                                 </mask>
                             </variation>
                             <variation key="heightClass=regular-widthClass=compact">
@@ -57,8 +52,8 @@
                                     <include reference="8bN-1G-ZeV"/>
                                 </mask>
                                 <mask key="constraints">
-                                    <include reference="18T-gD-bTJ"/>
-                                    <include reference="48N-Ro-MDf"/>
+                                    <include reference="T1V-Fe-xvy"/>
+                                    <include reference="Ujz-i8-Gzd"/>
                                 </mask>
                             </variation>
                         </view>
