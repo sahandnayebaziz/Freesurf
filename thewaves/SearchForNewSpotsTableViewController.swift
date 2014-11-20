@@ -9,17 +9,17 @@
 import UIKit
 
 class SearchForNewSpotsTableViewController: UITableViewController {
-    @IBOutlet var searchForNewSpotsTableView: UITableView!
-    @IBOutlet weak var searchField: UITextField!
-    var searchSpotLibrary:SpotLibrary = SpotLibrary()
-    var results:[Int] = []
+    @IBOutlet var searchForNewSpotsTableView: UITableView! // this is the table view
+    @IBOutlet weak var searchField: UITextField! // this is the text field used for input
+    var searchSpotLibrary:SpotLibrary = SpotLibrary() // this is the SpotLibrary object that always comes from the first view controller
+    var results:[Int] = [] // this is an array that is populated by spots that contain the string the user has entered into the text field
     
     override func viewDidLoad() {
         super.viewDidLoad()
     }
     
     override func viewWillAppear(animated: Bool) {
-        self.searchField.becomeFirstResponder()
+        self.searchField.becomeFirstResponder() // this calls up the keyboard for the search text field
     }
     
     override func didReceiveMemoryWarning() {
@@ -29,20 +29,18 @@ class SearchForNewSpotsTableViewController: UITableViewController {
     // MARK: - Table view data source
     
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        // #warning Potentially incomplete method implementation.
-        // Return the number of sections.
         return 1
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete method implementation.
-        // Return the number of rows in the section.
-        return results.count
+        return results.count // returns the number of spots that have matched with the input string
     }
     
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let rowID = self.results[indexPath.row]
+        let rowID = self.results[indexPath.row] // helper to store the spotID of the spot being displayed at given row
+        
+        // create and return a cell that displays the name and county name of a spot for this match in the results array
         var cell:UITableViewCell = self.searchForNewSpotsTableView.dequeueReusableCellWithIdentifier("searchForNewSpotsCell") as UITableViewCell
         cell.textLabel.text = searchSpotLibrary.name(rowID)
         cell.detailTextLabel!.text = searchSpotLibrary.county(rowID)
@@ -50,62 +48,26 @@ class SearchForNewSpotsTableViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath:NSIndexPath) {
+        // if the user taps an item that lists as a result, dismiss the keyboard,
+        // add the spot to the list of selectedSpots if it's not already there,
+        //
+        // each cell is connected to the unwind segue, so after these lines are executed,
+        // we will teleport back to the main view
         self.searchField.resignFirstResponder()
+        
         if !(contains(self.searchSpotLibrary.selectedSpotIDs, results[indexPath.row])) {
             searchSpotLibrary.selectedSpotIDs.append(results[indexPath.row])
         }
     }
     
-    
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(tableView: UITableView!, canEditRowAtIndexPath indexPath: NSIndexPath!) -> Bool {
-    // Return NO if you do not want the specified item to be editable.
-    return true
-    }
-    */
-    
-    /*
-    // Override to support editing the table view.
-    override func tableView(tableView: UITableView!, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath!) {
-    if editingStyle == .Delete {
-    // Delete the row from the data source
-    tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-    } else if editingStyle == .Insert {
-    // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }
-    }
-    */
-    
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(tableView: UITableView!, moveRowAtIndexPath fromIndexPath: NSIndexPath!, toIndexPath: NSIndexPath!) {
-    
-    }
-    */
-    
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(tableView: UITableView!, canMoveRowAtIndexPath indexPath: NSIndexPath!) -> Bool {
-    // Return NO if you do not want the item to be re-orderable.
-    return true
-    }
-    */
-    
-    /*
-    // MARK: - Navigation
-    
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue!, sender: AnyObject!) {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-    }
-    */
-    
+    // this function runs on every keystroke in the searchField
     @IBAction func editingchanged(sender: UITextField) {
+        // capture the input and empty the results array before we match with this new input
         let input:String = sender.text
         self.results = []
         
+        // if the user has entered at least one character, search for all spots with
+        // a name or a county containing the input string. Add all of those to the results array
         if (countElements(sender.text) != 0) {
             for key in self.searchSpotLibrary.spotDataDictionary.keys {
                 if (self.searchSpotLibrary.spotDataDictionary[key]!.spotName.contains(input) || self.searchSpotLibrary.spotDataDictionary[key]!.spotCounty.contains(input)) {
@@ -114,6 +76,7 @@ class SearchForNewSpotsTableViewController: UITableViewController {
             }
         }
         
+        // reload the table view to display the new matches in the cells
         self.searchForNewSpotsTableView.reloadData()
     }
 }
