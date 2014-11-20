@@ -10,9 +10,13 @@ import UIKit
 
 class YourSpotsTableViewController: UITableViewController {
     @IBOutlet var yourSpotsTableView: UITableView!
+    
+    @IBOutlet weak var footer: UIView!
+    
     var yourSpotLibrary:SpotLibrary = SpotLibrary()
     var currentHour:Int = NSDate().hour()
     var usingUserDefaults:Bool = false
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,7 +28,7 @@ class YourSpotsTableViewController: UITableViewController {
             self.yourSpotsTableView.reloadData()
         }
 
-        self.yourSpotsTableView.backgroundColor = UIColor.clearColor()
+        self.yourSpotsTableView.backgroundColor = UIColor(red: 32/255.0, green: 32/255.0, blue: 32/255.0, alpha: 1.0)
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -73,6 +77,9 @@ class YourSpotsTableViewController: UITableViewController {
             }
         }
         yourSpotsTableView.reloadData()
+        footer.frame = CGRect(x: 0, y: 130, width: 375, height: 100)
+        yourSpotsTableView.tableFooterView = footer
+        NSLog("the footer view is \(yourSpotsTableView.tableFooterView!)")
     }
     
     @IBAction func unwindToList(segue:UIStoryboardSegue) {
@@ -81,10 +88,6 @@ class YourSpotsTableViewController: UITableViewController {
         self.yourSpotLibrary = source.searchSpotLibrary
         self.tableView.reloadData()
     }
-    
-    
-    
-    
     
     // falls here if we are waiting for reconnect
     func waitForConnection() {
@@ -145,7 +148,7 @@ class YourSpotsTableViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool  {
-        return true
+        return self.yourSpotLibrary.selectedSpotIDs.count > 1
     }
     
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
