@@ -41,63 +41,30 @@ class YourSpotsTableViewController: UITableViewController {
             }
         }
         
-        // if no data has been loaded
-        if yourSpotLibrary.spotDataDictionary.isEmpty || usingUserDefaults {
-            if isConnectedToNetwork() {
-                dispatch_to_background_queue {
-                    self.yourSpotLibrary.getCounties()
-                }
-                usingUserDefaults = false; // return this flag to false, so this getCounties call doesn't trip every time this view appears
-            }
-        }
-        
-        // dispatch calls for the swell, temp, and tide info for any selected spots
-        if yourSpotLibrary.selectedSpotIDs.count > 0 { // if any spots have been selected
-            for spot in yourSpotLibrary.selectedSpotIDs {
-                if yourSpotLibrary.heightAtHour(spot, hour: self.currentHour) == nil { // call getter, if nil dispatch JSON download
-                    if isConnectedToNetwork() {
-                        dispatch_to_background_queue {
-                            self.yourSpotLibrary.getSpotSwell(spot)
-                        }
-                    }
-                }
-                if yourSpotLibrary.waterTemp(spot) == nil { // call getter, if nil dispatch JSON download
-                    if isConnectedToNetwork() {
-                        dispatch_to_background_queue {
-                            self.yourSpotLibrary.getCountyWaterTemp(self.yourSpotLibrary.county(spot))
-                        }
-                    }
-                }
-                if yourSpotLibrary.next24Tides(spot) == nil { // call getter, if nil dispatch JSON download
-                    if isConnectedToNetwork() {
-                        dispatch_to_background_queue {
-                            self.yourSpotLibrary.getCountyTide(self.yourSpotLibrary.county(spot))
-                        }
-                    }
-                }
-            }
-        }
-        
-        yourSpotsTableView.reloadData() // reload the data in the table
+        downloadMissingSpotInfo()
         
         // sets the footer view of the table view, sets the height of the view to be 100
         footer.frame = CGRect(x: footer.frame.minX, y: footer.frame.minY, width: footer.frame.maxX, height: 100)
         yourSpotsTableView.tableFooterView = footer
     }
     
+    
+    
     // this is function is called when we return from another view with the "unwindToList" segue
     @IBAction func unwindToList(segue:UIStoryboardSegue) {
         // identify the view we're coming from
         var source:SearchForNewSpotsTableViewController = segue.sourceViewController as SearchForNewSpotsTableViewController
         
-        // dismiss the keyboard
-        source.searchField.resignFirstResponder()
-        
         // replace this controller's SpotLibrary object with the newer one coming back from the view
         self.yourSpotLibrary = source.searchSpotLibrary
         
+        // dismiss the keyboard
+        source.searchField.resignFirstResponder()
+        source.dismissViewControllerAnimated(true, completion: nil)
+        
         // reload this table view's data with the new SpotLibrary object
         self.tableView.reloadData()
+        self.downloadMissingSpotInfo()
     }
     
     // this is a hacky solution to wait for a connection, but it works. this application is meant to be transient, so we can afford overly-active checks like this
@@ -136,7 +103,7 @@ class YourSpotsTableViewController: UITableViewController {
         let libraryTides:[Int]? = yourSpotLibrary.next24Tides(rowID)
         
         // create and return the cell
-        let cell:YourSpotsCell = yourSpotsTableView.dequeueReusableCellWithIdentifier("yourSpotsCell") as YourSpotsCell
+        let cell:YourSpotsCell = yourSpotsTableView.dequeueReusableCellWithIdentifier("yourSpotsCell", forIndexPath: indexPath) as YourSpotsCell
         cell.backgroundColor = UIColor.clearColor() // the cell starts with a clear background before getting a gradient color.
         if libraryHeight != nil && libraryTemp != nil && libraryTides != nil { // if spot values are all here, send to the cell
             cell.setCellLabels(yourSpotLibrary.name(rowID), height: libraryHeight, temp: libraryTemp, tides: libraryTides)
@@ -194,6 +161,47 @@ class YourSpotsTableViewController: UITableViewController {
         // pass our SpotLibrary object to the destination view controller for a new spot to be added. 
         // This will be passed back when we leave that view, whether changed or unchanged
         destinationView.searchSpotLibrary = yourSpotLibrary
+    }
+    
+    func downloadMissingSpotInfo() {
+        // if no data has been loaded
+        if yourSpotLibrary.spotDataDictionary.isEmpty || usingUserDefaults {
+            if isConnectedToNetwork() {
+                dispatch_to_background_queue {
+                    self.yourSpotLibrary.getCounties()
+                }
+                usingUserDefaults = false; // return this flag to false, so this getCounties call doesn't trip every time this view appears
+            }
+        }
+        
+        // dispatch calls for the swell, temp, and tide info for any selected spots
+        if yourSpotLibrary.selectedSpotIDs.count > 0 { // if any spots have been selected
+            for spot in yourSpotLibrary.selectedSpotIDs {
+                if yourSpotLibrary.heightAtHour(spot, hour: self.currentHour) == nil { // call getter, if nil dispatch JSON download
+                    if isConnectedToNetwork() {
+                        dispatch_to_background_queue {
+                            self.yourSpotLibrary.getSpotSwell(spot)
+                        }
+                    }
+                }
+                if yourSpotLibrary.waterTemp(spot) == nil { // call getter, if nil dispatch JSON download
+                    if isConnectedToNetwork() {
+                        dispatch_to_background_queue {
+                            self.yourSpotLibrary.getCountyWaterTemp(self.yourSpotLibrary.county(spot))
+                        }
+                    }
+                }
+                if yourSpotLibrary.next24Tides(spot) == nil { // call getter, if nil dispatch JSON download
+                    if isConnectedToNetwork() {
+                        dispatch_to_background_queue {
+                            self.yourSpotLibrary.getCountyTide(self.yourSpotLibrary.county(spot))
+                        }
+                    }
+                }
+            }
+        }
+        
+        yourSpotsTableView.reloadData() // reload the data in the table
     }
 }
 
