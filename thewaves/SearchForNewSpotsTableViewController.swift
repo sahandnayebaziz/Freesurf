@@ -51,22 +51,21 @@ class SearchForNewSpotsTableViewController: UITableViewController, UIScrollViewD
         cell.detailTextLabel!.text = searchSpotLibrary.county(rowID)
         return cell
     }
-    
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath:NSIndexPath) {
-        // if the user taps an item that lists as a result, dismiss the keyboard,
-        // add the spot to the list of selectedSpots if it's not already there,
-        //
-        // each cell is connected to the unwind segue, so after these lines are executed,
-        // we will teleport back to the main view
-        self.searchField.resignFirstResponder()
-        
-        if !(contains(self.searchSpotLibrary.selectedSpotIDs, results[indexPath.row])) {
-            searchSpotLibrary.selectedSpotIDs.append(results[indexPath.row])
-        }
-    }
 
     override func scrollViewWillBeginDragging(scrollView: UIScrollView) {
         self.searchField.resignFirstResponder()
+    }
+
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if sender!.isKindOfClass(UIBarButtonItem) {
+            // do nothing
+        }
+        if sender!.isKindOfClass(UITableViewCell) {
+            var indexPath:NSIndexPath = searchForNewSpotsTableView.indexPathForSelectedRow()!
+            if !(contains(self.searchSpotLibrary.selectedSpotIDs, results[indexPath.row])) {
+                searchSpotLibrary.selectedSpotIDs.append(results[indexPath.row])
+            }
+        }
     }
     
     // this function runs on every keystroke in the searchField
