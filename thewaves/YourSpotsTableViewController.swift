@@ -92,6 +92,7 @@ class YourSpotsTableViewController: UITableViewController {
         
         // dismiss the keyboard
         source.searchField.resignFirstResponder()
+        source.dismissViewControllerAnimated(true, completion: nil)
         
         // replace this controller's SpotLibrary object with the newer one coming back from the view
         self.yourSpotLibrary = source.searchSpotLibrary

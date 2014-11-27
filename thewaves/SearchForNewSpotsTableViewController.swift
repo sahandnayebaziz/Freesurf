@@ -16,6 +16,12 @@ class SearchForNewSpotsTableViewController: UITableViewController, UIScrollViewD
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.searchForNewSpotsTableView.separatorStyle = UITableViewCellSeparatorStyle.None
+        self.searchForNewSpotsTableView.backgroundColor = UIColor.clearColor()
+        let blurEffect:UIBlurEffect = UIBlurEffect(style: UIBlurEffectStyle.Dark)
+        let blurEffectView:UIVisualEffectView = UIVisualEffectView(effect: blurEffect)
+        blurEffectView.frame = searchForNewSpotsTableView.bounds
+        self.searchForNewSpotsTableView.backgroundView = blurEffectView
     }
     
     override func viewWillAppear(animated: Bool) {
