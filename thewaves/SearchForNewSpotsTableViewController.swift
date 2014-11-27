@@ -42,7 +42,7 @@ class SearchForNewSpotsTableViewController: UITableViewController {
         
         // create and return a cell that displays the name and county name of a spot for this match in the results array
         var cell:UITableViewCell = self.searchForNewSpotsTableView.dequeueReusableCellWithIdentifier("searchForNewSpotsCell") as UITableViewCell
-        cell.textLabel.text = searchSpotLibrary.name(rowID)
+        cell.textLabel!.text = searchSpotLibrary.name(rowID)
         cell.detailTextLabel!.text = searchSpotLibrary.county(rowID)
         return cell
     }
