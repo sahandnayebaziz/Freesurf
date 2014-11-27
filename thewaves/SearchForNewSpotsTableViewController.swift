@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SearchForNewSpotsTableViewController: UITableViewController {
+class SearchForNewSpotsTableViewController: UITableViewController, UIScrollViewDelegate {
     @IBOutlet var searchForNewSpotsTableView: UITableView! // this is the table view
     @IBOutlet weak var searchField: UITextField! // this is the text field used for input
     var searchSpotLibrary:SpotLibrary = SpotLibrary() // this is the SpotLibrary object that always comes from the first view controller
@@ -36,7 +36,6 @@ class SearchForNewSpotsTableViewController: UITableViewController {
         return results.count // returns the number of spots that have matched with the input string
     }
     
-    
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let rowID = self.results[indexPath.row] // helper to store the spotID of the spot being displayed at given row
         
@@ -58,6 +57,10 @@ class SearchForNewSpotsTableViewController: UITableViewController {
         if !(contains(self.searchSpotLibrary.selectedSpotIDs, results[indexPath.row])) {
             searchSpotLibrary.selectedSpotIDs.append(results[indexPath.row])
         }
+    }
+
+    override func scrollViewWillBeginDragging(scrollView: UIScrollView) {
+        self.searchField.resignFirstResponder()
     }
     
     // this function runs on every keystroke in the searchField
