@@ -103,7 +103,7 @@ class YourSpotsTableViewController: UITableViewController {
         let libraryTides:[Int]? = yourSpotLibrary.next24Tides(rowID)
         
         // create and return the cell
-        let cell:YourSpotsCell = yourSpotsTableView.dequeueReusableCellWithIdentifier("yourSpotsCell") as YourSpotsCell
+        let cell:YourSpotsCell = yourSpotsTableView.dequeueReusableCellWithIdentifier("yourSpotsCell", forIndexPath: indexPath) as YourSpotsCell
         cell.backgroundColor = UIColor.clearColor() // the cell starts with a clear background before getting a gradient color.
         if libraryHeight != nil && libraryTemp != nil && libraryTides != nil { // if spot values are all here, send to the cell
             cell.setCellLabels(yourSpotLibrary.name(rowID), height: libraryHeight, temp: libraryTemp, tides: libraryTides)
