@@ -120,10 +120,10 @@ class YourSpotsTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         // give the first cell a taller height to make up for the status bar
         if indexPath.row == 0 {
-            return 130.0
+            return 93.0
         }
         else { // give every other cell a height that is slightly smaller
-            return 113.0
+            return 76.0
         }
     }
     
