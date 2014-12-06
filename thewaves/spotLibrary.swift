@@ -13,7 +13,7 @@ class SpotLibrary: NSObject, NSURLSessionDelegate {
     var allSpotIDs:[Int] = []
     var selectedSpotIDs:[Int] = []
     var spotDataDictionary:[Int:(spotName:String, spotCounty:String, spotHeights:[Int]?)] = [:]
-    var countyDataDictionary:[String:(waterTemp:Int?, tides:[Int]?)] = [:]
+    var countyDataDictionary:[String:(waterTemp:Int?, tides:[Int]?, swellHeights:[[Int]]?, swellDirections:[[String]]?, swellPeriods:[[Int]]?)] = [:]
     var currentHour:Int = NSDate().hour()
     
     func getCounties() {
@@ -57,7 +57,7 @@ class SpotLibrary: NSObject, NSURLSessionDelegate {
                     }
                     
                     if (!contains(self.countyDataDictionary.keys.array, newSpotCounty)) {
-                        self.countyDataDictionary[county] = (nil, nil)
+                        self.countyDataDictionary[county] = (nil, nil, nil, nil, nil)
                     }
                     self.allSpotIDs.append(newSpotID)
                 }
@@ -141,16 +141,139 @@ class SpotLibrary: NSObject, NSURLSessionDelegate {
         sourceTask.resume()
     }
     
-    func name(id:Int) -> String { return self.spotDataDictionary[id]!.spotName }
-    func county(id:Int) -> String { return self.spotDataDictionary[id]!.spotCounty }
-    func heights(id:Int) -> [Int]? { return self.spotDataDictionary[id]?.spotHeights? }
-    func heightAtHour(id:Int, hour:Int) -> Int? { return self.spotDataDictionary[id]!.spotHeights?[hour] }
-    func waterTemp(id:Int) -> Int? { return self.countyDataDictionary[self.county(id)]!.waterTemp }
-    func next24Tides(id:Int) -> [Int]? {
-        return self.countyDataDictionary[self.county(id)]!.tides?
+    func getCountySwell(county:String) {
+        NSLog("asking for county swell")
+        let hoursToday:Int = 24 - self.currentHour
+        let hoursTomorrow:Int = 24 - hoursToday
+        
+        var newListOfHeights:[[Int]] = []
+        var newListOfPeriods:[[Int]] = []
+        var newListOfDirections:[[String]] = []
+        
+        let countyString:String = county.stringByReplacingOccurrencesOfString(" ", withString: "-", options: NSStringCompareOptions.LiteralSearch, range: nil).lowercaseString
+        let sourceURL:NSURL = NSURL(string: "http://api.spitcast.com/api/county/swell/\(countyString)/")!
+        var sourceSession:NSURLSession = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
+        var sourceData:AnyObject? = nil
+        let sourceTask = sourceSession.dataTaskWithURL(sourceURL, completionHandler: {(data, response, error) -> Void in
+            sourceData = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: nil)
+            
+            self.countyDataDictionary[county]!.swellDirections = []
+            self.countyDataDictionary[county]!.swellHeights = []
+            self.countyDataDictionary[county]!.swellPeriods = []
+            
+            for var index = self.currentHour; index <= 24; index++ {
+                var listOfSigHeightsForHour:[Int] = []
+                var listOfDirectionsForHour:[String] = []
+                var listOfPeriodsForHour:[Int] = []
+                
+                let listOfPossibleSwellKeys = ["0", "1", "2", "3", "4", "5"]
+                
+                for possibleKey in listOfPossibleSwellKeys {
+                    var direction:Int? = sourceData![index]![possibleKey]!!["dir"] as? Int
+                    var heightInMeters:Float? = sourceData![index]![possibleKey]!!["hs"] as? Float
+                    var periodInSeconds:Float? = sourceData![index]![possibleKey]!!["tp"] as? Float
+                    
+                    if direction != nil && heightInMeters != nil && periodInSeconds != nil {
+                        var heightInFeet:Int = self.swellMetersToFeet(heightInMeters!)
+                        var directionInHeading:String = self.degreesToDirection(direction!)
+                        listOfDirectionsForHour.append(directionInHeading)
+                        listOfSigHeightsForHour.append(heightInFeet)
+                        listOfPeriodsForHour.append(Int(periodInSeconds!))
+                    }
+                }
+                newListOfDirections.append(listOfDirectionsForHour)
+                newListOfHeights.append(listOfSigHeightsForHour)
+                newListOfPeriods.append(listOfPeriodsForHour)
+            }
+            
+            var today = NSDate()
+            today = today.dateByAddingDays(1)
+            
+            let jsonTomorrowParameter:String = today.toString(format: .Custom("yyyyMMdd"))
+            let sourceURLTomorrow:NSURL = NSURL(string: "http://api.spitcast.com/api/county/swell/\(countyString)/?dval=" + jsonTomorrowParameter)!
+            var sourceSessionTomorrow:NSURLSession = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
+            var sourceDataTomorrow:AnyObject? = nil
+            let sourceTaskTomorrow = sourceSessionTomorrow.dataTaskWithURL(sourceURLTomorrow, completionHandler: {(data, response, error) -> Void in
+                sourceDataTomorrow = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: nil)
+                
+                for var index = 0; index <= hoursTomorrow; index++ {
+                    var listOfSigHeightsForHour:[Int] = []
+                    var listOfDirectionsForHour:[String] = []
+                    var listOfPeriodsForHour:[Int] = []
+                    
+                    let listOfPossibleSwellKeys = ["0", "1", "2", "3", "4", "5"]
+                    
+                    for possibleKey in listOfPossibleSwellKeys {
+                        var direction:Int? = sourceData![index]![possibleKey]!!["dir"] as? Int
+                        var heightInMeters:Float? = sourceData![index]![possibleKey]!!["hs"] as? Float
+                        var periodInSeconds:Float? = sourceData![index]![possibleKey]!!["tp"] as? Float
+                        
+                        if direction != nil && heightInMeters != nil && periodInSeconds != nil {
+                            var heightInFeet:Int = self.swellMetersToFeet(heightInMeters!)
+                            var directionInHeading:String = self.degreesToDirection(direction!)
+                            listOfDirectionsForHour.append(directionInHeading)
+                            listOfSigHeightsForHour.append(heightInFeet)
+                            listOfPeriodsForHour.append(Int(periodInSeconds!))
+                        }
+                    }
+                    newListOfDirections.append(listOfDirectionsForHour)
+                    newListOfHeights.append(listOfSigHeightsForHour)
+                    newListOfPeriods.append(listOfPeriodsForHour)
+                }
+                
+                self.countyDataDictionary[county]!.swellDirections = newListOfDirections
+                self.countyDataDictionary[county]!.swellHeights = newListOfHeights
+                self.countyDataDictionary[county]!.swellPeriods = newListOfPeriods
+                
+                NSLog("\(self.countyDataDictionary[county]!)")
+                
+            })
+            sourceTaskTomorrow.resume()
+            
+        })
+        sourceTask.resume()
     }
     
+    func name(id:Int) -> String { return self.spotDataDictionary[id]!.spotName }
+    func county(id:Int) -> String { return self.spotDataDictionary[id]!.spotCounty }
+    func heights(id:Int) -> [Int]? { return self.spotDataDictionary[id]?.spotHeights }
+    func heightAtHour(id:Int, hour:Int) -> Int? { return self.spotDataDictionary[id]!.spotHeights?[hour] }
+    func waterTemp(id:Int) -> Int? { return self.countyDataDictionary[self.county(id)]!.waterTemp }
+    func next24Tides(id:Int) -> [Int]? { return self.countyDataDictionary[self.county(id)]!.tides }
+    func swellMetersToFeet(height:Float) -> Int { return Int(height * 3.2) }
+    func degreesToDirection(degrees:Int) -> String {
+        if degrees == 0 || degrees == 360 {
+            return "N"
+        }
+        else if degrees == 90 {
+            return "E"
+        }
+        else if degrees == 180 {
+            return "S"
+        }
+        else if degrees == 270 {
+            return "W"
+        }
+        else if degrees > 0 && degrees < 90 {
+            return "NE"
+        }
+        else if degrees > 90 && degrees < 180 {
+            return "SE"
+        }
+        else if degrees > 180 && degrees < 270 {
+            return "SW"
+        }
+        else if degrees > 270 && degrees < 360 {
+            return "NW"
+        }
+        else {
+         return " "
+        }
+    }
+    func periodsAtHour(id:Int, hour:Int) -> [Int]? { return self.countyDataDictionary[self.county(id)]!.swellPeriods?[hour] }
     
+    
+
     func exportLibraryToString() -> String {
         var exportString:String = ""
         
@@ -172,7 +295,7 @@ class SpotLibrary: NSObject, NSURLSessionDelegate {
                 
                 self.selectedSpotIDs.append(spotID)
                 self.spotDataDictionary[spotID] = (spotName, spotCounty, nil)
-                self.countyDataDictionary[spotCounty] = (nil, nil)
+                self.countyDataDictionary[spotCounty] = (nil, nil, nil, nil, nil)
             }
         }
     }

@@ -120,7 +120,7 @@ class YourSpotsTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         // give the first cell a taller height to make up for the status bar
         if indexPath.row == 0 {
-            return 93.0
+            return 97.0
         }
         else { // give every other cell a height that is slightly smaller
             return 76.0
@@ -195,6 +195,13 @@ class YourSpotsTableViewController: UITableViewController {
                     if isConnectedToNetwork() {
                         dispatch_to_background_queue {
                             self.yourSpotLibrary.getCountyTide(self.yourSpotLibrary.county(spot))
+                        }
+                    }
+                }
+                if yourSpotLibrary.periodsAtHour(spot, hour: self.currentHour) == nil {
+                    if isConnectedToNetwork() {
+                        dispatch_to_background_queue {
+                            self.yourSpotLibrary.getCountySwell(self.yourSpotLibrary.county(spot))
                         }
                     }
                 }
