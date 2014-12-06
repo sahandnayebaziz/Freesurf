@@ -48,7 +48,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="19ft" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Txr-CT-e0O">
-                                            <rect key="frame" x="491" y="11" width="92" height="50"/>
+                                            <rect key="frame" x="494" y="11" width="92" height="50"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="50" id="VGJ-m0-kQ3"/>
                                                 <constraint firstAttribute="width" constant="92" id="ecc-Uh-13Y"/>
@@ -67,7 +67,7 @@
                                             </variation>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Doheny" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.80000000000000027" translatesAutoresizingMaskIntoConstraints="NO" id="Kgw-Sp-dX5">
-                                            <rect key="frame" x="19" y="28" width="467" height="35"/>
+                                            <rect key="frame" x="14" y="30" width="475" height="35"/>
                                             <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="29"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
@@ -91,7 +91,7 @@
                                             </variation>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="68°" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Q6v-AC-WoA">
-                                            <rect key="frame" x="19" y="9" width="22" height="17"/>
+                                            <rect key="frame" x="14" y="11" width="22" height="17"/>
                                             <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="14"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
@@ -107,10 +107,12 @@
                                         </label>
                                     </subviews>
                                     <constraints>
+                                        <constraint firstItem="Kgw-Sp-dX5" firstAttribute="leading" secondItem="3dQ-bI-6Hp" secondAttribute="leadingMargin" constant="6" id="503-IA-x6m"/>
+                                        <constraint firstItem="Q6v-AC-WoA" firstAttribute="leading" secondItem="3dQ-bI-6Hp" secondAttribute="leadingMargin" constant="6" id="CYm-ig-dQ7"/>
                                         <constraint firstItem="Kgw-Sp-dX5" firstAttribute="top" secondItem="Q6v-AC-WoA" secondAttribute="bottom" constant="2" id="D0H-MX-3Ub"/>
                                         <constraint firstAttribute="centerY" secondItem="Txr-CT-e0O" secondAttribute="centerY" id="IQx-fZ-2OP"/>
-                                        <constraint firstItem="Txr-CT-e0O" firstAttribute="trailing" secondItem="3dQ-bI-6Hp" secondAttribute="trailingMargin" constant="-9" id="JCL-wG-RW4"/>
-                                        <constraint firstAttribute="bottomMargin" secondItem="Kgw-Sp-dX5" secondAttribute="bottom" constant="5" id="K5g-y5-98S"/>
+                                        <constraint firstItem="Txr-CT-e0O" firstAttribute="trailing" secondItem="3dQ-bI-6Hp" secondAttribute="trailingMargin" constant="-6" id="JCL-wG-RW4"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="Kgw-Sp-dX5" secondAttribute="bottom" constant="3" id="K5g-y5-98S"/>
                                         <constraint firstItem="Kgw-Sp-dX5" firstAttribute="leading" secondItem="3dQ-bI-6Hp" secondAttribute="leadingMargin" constant="11" id="KDj-5W-REx"/>
                                         <constraint firstItem="Kgw-Sp-dX5" firstAttribute="leading" secondItem="3dQ-bI-6Hp" secondAttribute="leadingMargin" constant="8" id="OMF-OQ-mRQ">
                                             <variation key="heightClass=regular-widthClass=compact" constant="7"/>
@@ -122,6 +124,8 @@
                                     </constraints>
                                     <variation key="default">
                                         <mask key="constraints">
+                                            <exclude reference="tqG-0H-IDP"/>
+                                            <exclude reference="KDj-5W-REx"/>
                                             <exclude reference="OMF-OQ-mRQ"/>
                                             <exclude reference="IQx-fZ-2OP"/>
                                             <exclude reference="rFc-MN-6mG"/>

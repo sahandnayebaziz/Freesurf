@@ -34,7 +34,7 @@ class YourSpotsCell: UITableViewCell {
         var colorBottom:CGColorRef;
         if height == nil || temp == nil || periods == nil || heights == nil || directions == nil {
             heightLabel.text = "--ft"
-            tempLabel.text = "--° --s --"
+            tempLabel.text = "--°   --s --"
             colorTop = UIColor(red: 70/255.0, green: 104/255.0, blue: 130/255.0, alpha: 0.4).CGColor!
             colorBottom = UIColor(red: 58/255.0, green: 100/255.0, blue: 131/255.0, alpha: 0.4).CGColor!
         }
@@ -70,7 +70,7 @@ class YourSpotsCell: UITableViewCell {
             
             // fill labels
             heightLabel.text = "\(height!)ft"
-            tempLabel.text = "\(temp!)° \(periodOfMostSignificantSwellInSwellData)s \(directionOfMostSignificantSwellInSwellData)"
+            tempLabel.text = "\(temp!)°   \(periodOfMostSignificantSwellInSwellData)s \(directionOfMostSignificantSwellInSwellData)"
             
             /*
             var maxTide:Int = 0;
