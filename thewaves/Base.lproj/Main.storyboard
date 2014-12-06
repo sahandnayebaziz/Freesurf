@@ -40,7 +40,6 @@
                                 <constraint firstAttribute="trailing" secondItem="8bN-1G-ZeV" secondAttribute="trailing" constant="23" id="DlX-dO-7SU"/>
                                 <constraint firstItem="8bN-1G-ZeV" firstAttribute="top" secondItem="9ui-3d-OlZ" secondAttribute="top" constant="20" id="MT5-wT-9eh"/>
                             </constraints>
-                            <variation key="heightClass=regular-widthClass=compact"/>
                         </view>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" restorationIdentifier="yourSpotsCell" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="yourSpotsCell" rowHeight="76" id="z2K-Sb-MQ6" customClass="YourSpotsCell" customModule="thewaves" customModuleProvider="target">
@@ -49,7 +48,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="19ft" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Txr-CT-e0O">
-                                            <rect key="frame" x="490" y="13" width="92" height="50"/>
+                                            <rect key="frame" x="491" y="11" width="92" height="50"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="50" id="VGJ-m0-kQ3"/>
                                                 <constraint firstAttribute="width" constant="92" id="ecc-Uh-13Y"/>
@@ -68,7 +67,7 @@
                                             </variation>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Doheny" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.80000000000000027" translatesAutoresizingMaskIntoConstraints="NO" id="Kgw-Sp-dX5">
-                                            <rect key="frame" x="18" y="28" width="467" height="35"/>
+                                            <rect key="frame" x="19" y="28" width="467" height="35"/>
                                             <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="29"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
@@ -92,7 +91,7 @@
                                             </variation>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="68°" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Q6v-AC-WoA">
-                                            <rect key="frame" x="18" y="10" width="22" height="17"/>
+                                            <rect key="frame" x="19" y="9" width="22" height="17"/>
                                             <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="14"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
@@ -108,18 +107,18 @@
                                         </label>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="Kgw-Sp-dX5" firstAttribute="top" secondItem="Q6v-AC-WoA" secondAttribute="bottom" constant="1" id="D0H-MX-3Ub"/>
+                                        <constraint firstItem="Kgw-Sp-dX5" firstAttribute="top" secondItem="Q6v-AC-WoA" secondAttribute="bottom" constant="2" id="D0H-MX-3Ub"/>
                                         <constraint firstAttribute="centerY" secondItem="Txr-CT-e0O" secondAttribute="centerY" id="IQx-fZ-2OP"/>
-                                        <constraint firstItem="Txr-CT-e0O" firstAttribute="trailing" secondItem="3dQ-bI-6Hp" secondAttribute="trailingMargin" constant="-10" id="JCL-wG-RW4"/>
+                                        <constraint firstItem="Txr-CT-e0O" firstAttribute="trailing" secondItem="3dQ-bI-6Hp" secondAttribute="trailingMargin" constant="-9" id="JCL-wG-RW4"/>
                                         <constraint firstAttribute="bottomMargin" secondItem="Kgw-Sp-dX5" secondAttribute="bottom" constant="5" id="K5g-y5-98S"/>
-                                        <constraint firstItem="Kgw-Sp-dX5" firstAttribute="leading" secondItem="3dQ-bI-6Hp" secondAttribute="leadingMargin" constant="10" id="KDj-5W-REx"/>
+                                        <constraint firstItem="Kgw-Sp-dX5" firstAttribute="leading" secondItem="3dQ-bI-6Hp" secondAttribute="leadingMargin" constant="11" id="KDj-5W-REx"/>
                                         <constraint firstItem="Kgw-Sp-dX5" firstAttribute="leading" secondItem="3dQ-bI-6Hp" secondAttribute="leadingMargin" constant="8" id="OMF-OQ-mRQ">
                                             <variation key="heightClass=regular-widthClass=compact" constant="7"/>
                                         </constraint>
                                         <constraint firstItem="Txr-CT-e0O" firstAttribute="leading" secondItem="Kgw-Sp-dX5" secondAttribute="trailing" constant="5" id="W7P-fs-TCU"/>
-                                        <constraint firstAttribute="bottomMargin" secondItem="Txr-CT-e0O" secondAttribute="bottom" constant="5" id="Y54-It-wVL"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="Txr-CT-e0O" secondAttribute="bottom" constant="7" id="Y54-It-wVL"/>
                                         <constraint firstItem="Txr-CT-e0O" firstAttribute="leading" secondItem="Kgw-Sp-dX5" secondAttribute="trailing" constant="20" id="rFc-MN-6mG"/>
-                                        <constraint firstItem="Q6v-AC-WoA" firstAttribute="leading" secondItem="3dQ-bI-6Hp" secondAttribute="leadingMargin" constant="10" id="tqG-0H-IDP"/>
+                                        <constraint firstItem="Q6v-AC-WoA" firstAttribute="leading" secondItem="3dQ-bI-6Hp" secondAttribute="leadingMargin" constant="11" id="tqG-0H-IDP"/>
                                     </constraints>
                                     <variation key="default">
                                         <mask key="constraints">
