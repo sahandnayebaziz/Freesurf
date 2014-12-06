@@ -17,7 +17,7 @@
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="contactAdd" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8bN-1G-ZeV">
-                                    <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                    <rect key="frame" x="555" y="20" width="22" height="22"/>
                                     <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="60"/>
                                     <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <state key="normal">
@@ -26,6 +26,9 @@
                                     <state key="highlighted">
                                         <color key="titleColor" red="0.36137805451127825" green="0.49977816049432089" blue="0.60229675751879697" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </state>
+                                    <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
+                                        <rect key="frame" x="0.0" y="0.0" width="22" height="22"/>
+                                    </variation>
                                     <connections>
                                         <segue destination="uoL-s9-yKG" kind="presentation" modalPresentationStyle="overCurrentContext" id="RLf-Za-uKE"/>
                                     </connections>
@@ -34,27 +37,10 @@
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <rect key="contentStretch" x="0.0" y="0.0" width="0.0" height="0.0"/>
                             <constraints>
-                                <constraint firstAttribute="trailing" secondItem="8bN-1G-ZeV" secondAttribute="trailing" constant="23" id="T1V-Fe-xvy"/>
-                                <constraint firstItem="8bN-1G-ZeV" firstAttribute="top" secondItem="9ui-3d-OlZ" secondAttribute="top" constant="15" id="Ujz-i8-Gzd"/>
+                                <constraint firstAttribute="trailing" secondItem="8bN-1G-ZeV" secondAttribute="trailing" constant="23" id="DlX-dO-7SU"/>
+                                <constraint firstItem="8bN-1G-ZeV" firstAttribute="top" secondItem="9ui-3d-OlZ" secondAttribute="top" constant="20" id="MT5-wT-9eh"/>
                             </constraints>
-                            <variation key="default">
-                                <mask key="subviews">
-                                    <exclude reference="8bN-1G-ZeV"/>
-                                </mask>
-                                <mask key="constraints">
-                                    <exclude reference="T1V-Fe-xvy"/>
-                                    <exclude reference="Ujz-i8-Gzd"/>
-                                </mask>
-                            </variation>
-                            <variation key="heightClass=regular-widthClass=compact">
-                                <mask key="subviews">
-                                    <include reference="8bN-1G-ZeV"/>
-                                </mask>
-                                <mask key="constraints">
-                                    <include reference="T1V-Fe-xvy"/>
-                                    <include reference="Ujz-i8-Gzd"/>
-                                </mask>
-                            </variation>
+                            <variation key="heightClass=regular-widthClass=compact"/>
                         </view>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" restorationIdentifier="yourSpotsCell" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="yourSpotsCell" rowHeight="76" id="z2K-Sb-MQ6" customClass="YourSpotsCell" customModule="thewaves" customModuleProvider="target">
@@ -71,13 +57,13 @@
                                             <fontDescription key="fontDescription" name="HelveticaNeue-UltraLight" family="Helvetica Neue" pointSize="59"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
-                                            <variation key="widthClass=compact" ambiguous="YES" misplaced="YES">
+                                            <variation key="widthClass=compact" misplaced="YES">
                                                 <rect key="frame" x="292" y="13" width="92" height="50"/>
                                             </variation>
                                             <variation key="heightClass=compact-widthClass=regular" ambiguous="YES" misplaced="YES">
                                                 <rect key="frame" x="674" y="37" width="96" height="42"/>
                                             </variation>
-                                            <variation key="heightClass=regular-widthClass=compact" ambiguous="YES" misplaced="YES">
+                                            <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
                                                 <rect key="frame" x="0.0" y="-21" width="92" height="21"/>
                                             </variation>
                                         </label>
@@ -89,7 +75,7 @@
                                             <variation key="heightClass=regular" ambiguous="YES" misplaced="YES">
                                                 <rect key="frame" x="243" y="14" width="114" height="48"/>
                                             </variation>
-                                            <variation key="widthClass=compact" ambiguous="YES" misplaced="YES">
+                                            <variation key="widthClass=compact" misplaced="YES">
                                                 <rect key="frame" x="17" y="24" width="215" height="39"/>
                                             </variation>
                                             <variation key="heightClass=compact-widthClass=compact" ambiguous="YES" misplaced="YES">
@@ -98,7 +84,7 @@
                                             <variation key="heightClass=compact-widthClass=regular" ambiguous="YES" misplaced="YES">
                                                 <rect key="frame" x="28" y="35" width="339" height="48"/>
                                             </variation>
-                                            <variation key="heightClass=regular-widthClass=compact" ambiguous="YES" misplaced="YES">
+                                            <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
                                                 <rect key="frame" x="0.0" y="14" width="400" height="48"/>
                                             </variation>
                                             <variation key="heightClass=regular-widthClass=regular" ambiguous="YES" misplaced="YES">
@@ -110,13 +96,13 @@
                                             <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="14"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
-                                            <variation key="widthClass=compact" ambiguous="YES" misplaced="YES">
+                                            <variation key="widthClass=compact" misplaced="YES">
                                                 <rect key="frame" x="17" y="8" width="22" height="17"/>
                                             </variation>
                                             <variation key="heightClass=compact-widthClass=regular" ambiguous="YES" misplaced="YES">
                                                 <rect key="frame" x="28" y="16" width="42" height="17"/>
                                             </variation>
-                                            <variation key="heightClass=regular-widthClass=compact" ambiguous="YES" misplaced="YES">
+                                            <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
                                                 <rect key="frame" x="0.0" y="-21" width="92" height="21"/>
                                             </variation>
                                         </label>

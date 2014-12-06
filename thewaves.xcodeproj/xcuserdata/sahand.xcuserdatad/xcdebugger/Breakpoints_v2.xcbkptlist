@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "thewaves/SpotLibrary.swift"
-            timestampString = "439425367.54183"
+            timestampString = "439544095.176944"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "272"
-            endingLineNumber = "272"
+            startingLineNumber = "283"
+            endingLineNumber = "283"
             landmarkName = "degreesToDirection(_:)"
             landmarkType = "5">
          </BreakpointContent>

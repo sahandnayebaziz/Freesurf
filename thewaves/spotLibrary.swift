@@ -15,6 +15,7 @@ class SpotLibrary: NSObject, NSURLSessionDelegate {
     var spotDataDictionary:[Int:(spotName:String, spotCounty:String, spotHeights:[Int]?)] = [:]
     var countyDataDictionary:[String:(waterTemp:Int?, tides:[Int]?, swellHeights:[[Int]]?, swellDirections:[[String]]?, swellPeriods:[[Int]]?)] = [:]
     var currentHour:Int = NSDate().hour()
+    var callLog:[String:[String]] = [:]
     
     func getCounties() {
         let sourceURL:NSURL = NSURL(string: "http://api.spitcast.com/api/spot/all")!
@@ -89,114 +90,89 @@ class SpotLibrary: NSObject, NSURLSessionDelegate {
     }
     
     func getCountyWaterTemp(county:String) {
-        let countyString:String = county.stringByReplacingOccurrencesOfString(" ", withString: "-", options: NSStringCompareOptions.LiteralSearch, range: nil).lowercaseString
-        let sourceURL:NSURL = NSURL(string: "http://api.spitcast.com/api/county/water-temperature/\(countyString)/")!
-        var sourceSession:NSURLSession = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
-        var sourceData:AnyObject? = nil
-        let sourceTask = sourceSession.dataTaskWithURL(sourceURL, completionHandler: {(data, response, error) -> Void in
-            sourceData = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: nil)
-            self.countyDataDictionary[county]!.waterTemp = sourceData!["fahrenheit"]! as Int?
-        })
-        sourceTask.resume()
+        if (!contains(self.callLog[county]!, "CountyWaterTemp")) {
+            self.callLog[county]!.append("CountyWaterTemp") // log this download
+            
+            let countyString:String = county.stringByReplacingOccurrencesOfString(" ", withString: "-", options: NSStringCompareOptions.LiteralSearch, range: nil).lowercaseString
+            let sourceURL:NSURL = NSURL(string: "http://api.spitcast.com/api/county/water-temperature/\(countyString)/")!
+            var sourceSession:NSURLSession = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
+            var sourceData:AnyObject? = nil
+            let sourceTask = sourceSession.dataTaskWithURL(sourceURL, completionHandler: {(data, response, error) -> Void in
+                sourceData = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: nil)
+                self.countyDataDictionary[county]!.waterTemp = sourceData!["fahrenheit"]! as Int?
+            })
+            sourceTask.resume()
+        }
     }
     
     func getCountyTide(county:String) {
-        let hoursToday:Int = 24 - self.currentHour
-        let hoursTomorrow:Int = 24 - hoursToday
-        
-        var next24HoursOfTides:[Int] = []
-        
-        let countyString:String = county.stringByReplacingOccurrencesOfString(" ", withString: "-", options: NSStringCompareOptions.LiteralSearch, range: nil).lowercaseString
-        let sourceURL:NSURL = NSURL(string: "http://api.spitcast.com/api/county/tide/\(countyString)/")!
-        var sourceSession:NSURLSession = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
-        var sourceData:AnyObject? = nil
-        let sourceTask = sourceSession.dataTaskWithURL(sourceURL, completionHandler: {(data, response, error) -> Void in
-            sourceData = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: nil)
+        if (!contains(self.callLog[county]!, "CountyTide")) {
+            self.callLog[county]!.append("CountyTide") // log this download
             
-            for var index = self.currentHour; index <= 24; index++ {
-                next24HoursOfTides.append(sourceData![index]!["tide"]! as Int)
-            }
+            let hoursToday:Int = 24 - self.currentHour
+            let hoursTomorrow:Int = 24 - hoursToday
             
+            var next24HoursOfTides:[Int] = []
             
-            var today = NSDate()
-            today = today.dateByAddingDays(1)
-            
-            let jsonTomorrowParameter:String = today.toString(format: .Custom("yyyyMMdd"))
-            let sourceURLTomorrow:NSURL = NSURL(string: "http://api.spitcast.com/api/county/tide/\(countyString)/?dval=" + jsonTomorrowParameter)!
-            var sourceSessionTomorrow:NSURLSession = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
-            var sourceDataTomorrow:AnyObject? = nil
-            let sourceTaskTomorrow = sourceSessionTomorrow.dataTaskWithURL(sourceURLTomorrow, completionHandler: {(data, response, error) -> Void in
-                sourceDataTomorrow = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: nil)
+            let countyString:String = county.stringByReplacingOccurrencesOfString(" ", withString: "-", options: NSStringCompareOptions.LiteralSearch, range: nil).lowercaseString
+            let sourceURL:NSURL = NSURL(string: "http://api.spitcast.com/api/county/tide/\(countyString)/")!
+            var sourceSession:NSURLSession = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
+            var sourceData:AnyObject? = nil
+            let sourceTask = sourceSession.dataTaskWithURL(sourceURL, completionHandler: {(data, response, error) -> Void in
+                sourceData = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: nil)
                 
-                for var index = 0; index < hoursTomorrow; index++ {
-                    next24HoursOfTides.append(sourceDataTomorrow![index]!["tide"]! as Int)
+                for var index = self.currentHour; index <= 24; index++ {
+                    next24HoursOfTides.append(sourceData![index]!["tide"]! as Int)
                 }
                 
-                self.countyDataDictionary[county]!.tides = next24HoursOfTides
+                
+                var today = NSDate()
+                today = today.dateByAddingDays(1)
+                
+                let jsonTomorrowParameter:String = today.toString(format: .Custom("yyyyMMdd"))
+                let sourceURLTomorrow:NSURL = NSURL(string: "http://api.spitcast.com/api/county/tide/\(countyString)/?dval=" + jsonTomorrowParameter)!
+                var sourceSessionTomorrow:NSURLSession = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
+                var sourceDataTomorrow:AnyObject? = nil
+                let sourceTaskTomorrow = sourceSessionTomorrow.dataTaskWithURL(sourceURLTomorrow, completionHandler: {(data, response, error) -> Void in
+                    sourceDataTomorrow = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: nil)
+                    
+                    for var index = 0; index < hoursTomorrow; index++ {
+                        next24HoursOfTides.append(sourceDataTomorrow![index]!["tide"]! as Int)
+                    }
+                    
+                    self.countyDataDictionary[county]!.tides = next24HoursOfTides
+                    
+                })
+                sourceTaskTomorrow.resume()
                 
             })
-            sourceTaskTomorrow.resume()
-            
-        })
-        sourceTask.resume()
+            sourceTask.resume()
+        }
     }
     
     func getCountySwell(county:String) {
-        NSLog("asking for county swell")
-        let hoursToday:Int = 24 - self.currentHour
-        let hoursTomorrow:Int = 24 - hoursToday
-        
-        var newListOfHeights:[[Int]] = []
-        var newListOfPeriods:[[Int]] = []
-        var newListOfDirections:[[String]] = []
-        
-        let countyString:String = county.stringByReplacingOccurrencesOfString(" ", withString: "-", options: NSStringCompareOptions.LiteralSearch, range: nil).lowercaseString
-        let sourceURL:NSURL = NSURL(string: "http://api.spitcast.com/api/county/swell/\(countyString)/")!
-        var sourceSession:NSURLSession = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
-        var sourceData:AnyObject? = nil
-        let sourceTask = sourceSession.dataTaskWithURL(sourceURL, completionHandler: {(data, response, error) -> Void in
-            sourceData = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: nil)
+        if (!contains(self.callLog[county]!, "CountySwell")) {
+            self.callLog[county]!.append("CountySwell") // log this download
+
+            let hoursToday:Int = 24 - self.currentHour
+            let hoursTomorrow:Int = 24 - hoursToday
             
-            self.countyDataDictionary[county]!.swellDirections = []
-            self.countyDataDictionary[county]!.swellHeights = []
-            self.countyDataDictionary[county]!.swellPeriods = []
+            var newListOfHeights:[[Int]] = []
+            var newListOfPeriods:[[Int]] = []
+            var newListOfDirections:[[String]] = []
             
-            for var index = self.currentHour; index <= 24; index++ {
-                var listOfSigHeightsForHour:[Int] = []
-                var listOfDirectionsForHour:[String] = []
-                var listOfPeriodsForHour:[Int] = []
+            let countyString:String = county.stringByReplacingOccurrencesOfString(" ", withString: "-", options: NSStringCompareOptions.LiteralSearch, range: nil).lowercaseString
+            let sourceURL:NSURL = NSURL(string: "http://api.spitcast.com/api/county/swell/\(countyString)/")!
+            var sourceSession:NSURLSession = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
+            var sourceData:AnyObject? = nil
+            let sourceTask = sourceSession.dataTaskWithURL(sourceURL, completionHandler: {(data, response, error) -> Void in
+                sourceData = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: nil)
                 
-                let listOfPossibleSwellKeys = ["0", "1", "2", "3", "4", "5"]
+                self.countyDataDictionary[county]!.swellDirections = []
+                self.countyDataDictionary[county]!.swellHeights = []
+                self.countyDataDictionary[county]!.swellPeriods = []
                 
-                for possibleKey in listOfPossibleSwellKeys {
-                    var direction:Int? = sourceData![index]![possibleKey]!!["dir"] as? Int
-                    var heightInMeters:Float? = sourceData![index]![possibleKey]!!["hs"] as? Float
-                    var periodInSeconds:Float? = sourceData![index]![possibleKey]!!["tp"] as? Float
-                    
-                    if direction != nil && heightInMeters != nil && periodInSeconds != nil {
-                        var heightInFeet:Int = self.swellMetersToFeet(heightInMeters!)
-                        var directionInHeading:String = self.degreesToDirection(direction!)
-                        listOfDirectionsForHour.append(directionInHeading)
-                        listOfSigHeightsForHour.append(heightInFeet)
-                        listOfPeriodsForHour.append(Int(periodInSeconds!))
-                    }
-                }
-                newListOfDirections.append(listOfDirectionsForHour)
-                newListOfHeights.append(listOfSigHeightsForHour)
-                newListOfPeriods.append(listOfPeriodsForHour)
-            }
-            
-            var today = NSDate()
-            today = today.dateByAddingDays(1)
-            
-            let jsonTomorrowParameter:String = today.toString(format: .Custom("yyyyMMdd"))
-            let sourceURLTomorrow:NSURL = NSURL(string: "http://api.spitcast.com/api/county/swell/\(countyString)/?dval=" + jsonTomorrowParameter)!
-            var sourceSessionTomorrow:NSURLSession = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
-            var sourceDataTomorrow:AnyObject? = nil
-            let sourceTaskTomorrow = sourceSessionTomorrow.dataTaskWithURL(sourceURLTomorrow, completionHandler: {(data, response, error) -> Void in
-                sourceDataTomorrow = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: nil)
-                
-                for var index = 0; index <= hoursTomorrow; index++ {
+                for var index = self.currentHour; index <= 24; index++ {
                     var listOfSigHeightsForHour:[Int] = []
                     var listOfDirectionsForHour:[String] = []
                     var listOfPeriodsForHour:[Int] = []
@@ -221,17 +197,52 @@ class SpotLibrary: NSObject, NSURLSessionDelegate {
                     newListOfPeriods.append(listOfPeriodsForHour)
                 }
                 
-                self.countyDataDictionary[county]!.swellDirections = newListOfDirections
-                self.countyDataDictionary[county]!.swellHeights = newListOfHeights
-                self.countyDataDictionary[county]!.swellPeriods = newListOfPeriods
+                var today = NSDate()
+                today = today.dateByAddingDays(1)
                 
-                NSLog("\(self.countyDataDictionary[county]!)")
+                let jsonTomorrowParameter:String = today.toString(format: .Custom("yyyyMMdd"))
+                let sourceURLTomorrow:NSURL = NSURL(string: "http://api.spitcast.com/api/county/swell/\(countyString)/?dval=" + jsonTomorrowParameter)!
+                var sourceSessionTomorrow:NSURLSession = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
+                var sourceDataTomorrow:AnyObject? = nil
+                let sourceTaskTomorrow = sourceSessionTomorrow.dataTaskWithURL(sourceURLTomorrow, completionHandler: {(data, response, error) -> Void in
+                    sourceDataTomorrow = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: nil)
+                    
+                    for var index = 0; index <= hoursTomorrow; index++ {
+                        var listOfSigHeightsForHour:[Int] = []
+                        var listOfDirectionsForHour:[String] = []
+                        var listOfPeriodsForHour:[Int] = []
+                        
+                        let listOfPossibleSwellKeys = ["0", "1", "2", "3", "4", "5"]
+                        
+                        for possibleKey in listOfPossibleSwellKeys {
+                            var direction:Int? = sourceData![index]![possibleKey]!!["dir"] as? Int
+                            var heightInMeters:Float? = sourceData![index]![possibleKey]!!["hs"] as? Float
+                            var periodInSeconds:Float? = sourceData![index]![possibleKey]!!["tp"] as? Float
+                            
+                            if direction != nil && heightInMeters != nil && periodInSeconds != nil {
+                                var heightInFeet:Int = self.swellMetersToFeet(heightInMeters!)
+                                var directionInHeading:String = self.degreesToDirection(direction!)
+                                listOfDirectionsForHour.append(directionInHeading)
+                                listOfSigHeightsForHour.append(heightInFeet)
+                                listOfPeriodsForHour.append(Int(periodInSeconds!))
+                            }
+                        }
+                        newListOfDirections.append(listOfDirectionsForHour)
+                        newListOfHeights.append(listOfSigHeightsForHour)
+                        newListOfPeriods.append(listOfPeriodsForHour)
+                    }
+                    
+                    self.countyDataDictionary[county]!.swellDirections = newListOfDirections
+                    self.countyDataDictionary[county]!.swellHeights = newListOfHeights
+                    self.countyDataDictionary[county]!.swellPeriods = newListOfPeriods
+
+                    
+                })
+                sourceTaskTomorrow.resume()
                 
             })
-            sourceTaskTomorrow.resume()
-            
-        })
-        sourceTask.resume()
+            sourceTask.resume()
+        } // end if
     }
     
     func name(id:Int) -> String { return self.spotDataDictionary[id]!.spotName }
@@ -296,6 +307,7 @@ class SpotLibrary: NSObject, NSURLSessionDelegate {
                 self.selectedSpotIDs.append(spotID)
                 self.spotDataDictionary[spotID] = (spotName, spotCounty, nil)
                 self.countyDataDictionary[spotCounty] = (nil, nil, nil, nil, nil)
+                self.callLog[spotCounty] = []
             }
         }
     }
