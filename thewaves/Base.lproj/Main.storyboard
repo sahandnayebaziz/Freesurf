@@ -30,7 +30,7 @@
                                         <rect key="frame" x="0.0" y="0.0" width="22" height="22"/>
                                     </variation>
                                     <connections>
-                                        <segue destination="uoL-s9-yKG" kind="presentation" modalPresentationStyle="overCurrentContext" id="RLf-Za-uKE"/>
+                                        <segue destination="uoL-s9-yKG" kind="presentation" identifier="openSearchForSpots" modalPresentationStyle="overCurrentContext" id="RLf-Za-uKE"/>
                                     </connections>
                                 </button>
                             </subviews>

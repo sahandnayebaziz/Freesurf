@@ -156,13 +156,15 @@ class YourSpotsTableViewController: UITableViewController {
     // this function is called right before we segue to another controller
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!)
     {
-        // identify destination controller
-        var nav:UINavigationController = segue.destinationViewController as UINavigationController
-        let destinationView:SearchForNewSpotsTableViewController = nav.topViewController as SearchForNewSpotsTableViewController
-        
-        // pass our SpotLibrary object to the destination view controller for a new spot to be added. 
-        // This will be passed back when we leave that view, whether changed or unchanged
-        destinationView.searchSpotLibrary = yourSpotLibrary
+        if segue.identifier! == "openSearchForSpots" {
+            // identify destination controller
+            var nav:UINavigationController = segue.destinationViewController as UINavigationController
+            let destinationView:SearchForNewSpotsTableViewController = nav.topViewController as SearchForNewSpotsTableViewController
+            
+            // pass our SpotLibrary object to the destination view controller for a new spot to be added.
+            // This will be passed back when we leave that view, whether changed or unchanged
+            destinationView.searchSpotLibrary = yourSpotLibrary
+        }
     }
     
     func downloadMissingSpotInfo() {
