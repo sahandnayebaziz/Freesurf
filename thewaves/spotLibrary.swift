@@ -28,6 +28,7 @@ class SpotLibrary: NSObject, NSURLSessionDelegate {
                 let newSpotCounty:String = sourceData![index]!["county_name"]! as String
                 if !(contains(self.allCountyNames, newSpotCounty)) {
                     self.allCountyNames.append(newSpotCounty)
+                    self.callLog[newSpotCounty] = []
                 }
             }
             self.getNextSpots(self.allCountyNames)
@@ -168,10 +169,6 @@ class SpotLibrary: NSObject, NSURLSessionDelegate {
             let sourceTask = sourceSession.dataTaskWithURL(sourceURL, completionHandler: {(data, response, error) -> Void in
                 sourceData = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: nil)
                 
-                self.countyDataDictionary[county]!.swellDirections = []
-                self.countyDataDictionary[county]!.swellHeights = []
-                self.countyDataDictionary[county]!.swellPeriods = []
-                
                 for var index = self.currentHour; index <= 24; index++ {
                     var listOfSigHeightsForHour:[Int] = []
                     var listOfDirectionsForHour:[String] = []
@@ -232,11 +229,10 @@ class SpotLibrary: NSObject, NSURLSessionDelegate {
                         newListOfPeriods.append(listOfPeriodsForHour)
                     }
                     
+                    // the next three lines put the directions, heights, and periods into our model
                     self.countyDataDictionary[county]!.swellDirections = newListOfDirections
                     self.countyDataDictionary[county]!.swellHeights = newListOfHeights
                     self.countyDataDictionary[county]!.swellPeriods = newListOfPeriods
-
-                    
                 })
                 sourceTaskTomorrow.resume()
                 
@@ -282,6 +278,8 @@ class SpotLibrary: NSObject, NSURLSessionDelegate {
         }
     }
     func periodsAtHour(id:Int, hour:Int) -> [Int]? { return self.countyDataDictionary[self.county(id)]!.swellPeriods?[hour] }
+    func heightsAtHour(id:Int, hour:Int) -> [Int]? { return self.countyDataDictionary[self.county(id)]!.swellHeights?[hour] }
+    func directionsAtHour(id:Int, hour:Int) -> [String]? { return self.countyDataDictionary[self.county(id)]!.swellDirections?[hour] }
     
     
 

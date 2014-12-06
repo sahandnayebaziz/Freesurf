@@ -100,16 +100,18 @@ class YourSpotsTableViewController: UITableViewController {
         // get values necessary for a cell. May be nil.
         let libraryHeight:Int? = yourSpotLibrary.heightAtHour(rowID, hour: currentHour)
         let libraryTemp:Int? = yourSpotLibrary.waterTemp(rowID)
-        let libraryTides:[Int]? = yourSpotLibrary.next24Tides(rowID)
+        let libraryPeriods:[Int]? = yourSpotLibrary.periodsAtHour(rowID, hour: currentHour)
+        let libraryHeights:[Int]? = yourSpotLibrary.heightsAtHour(rowID, hour: currentHour)
+        let libraryDirections:[String]? = yourSpotLibrary.directionsAtHour(rowID, hour: currentHour)
         
         // create and return the cell
         let cell:YourSpotsCell = yourSpotsTableView.dequeueReusableCellWithIdentifier("yourSpotsCell", forIndexPath: indexPath) as YourSpotsCell
         cell.backgroundColor = UIColor.clearColor() // the cell starts with a clear background before getting a gradient color.
-        if libraryHeight != nil && libraryTemp != nil && libraryTides != nil { // if spot values are all here, send to the cell
-            cell.setCellLabels(yourSpotLibrary.name(rowID), height: libraryHeight, temp: libraryTemp, tides: libraryTides)
+        if libraryHeight != nil && libraryTemp != nil && libraryPeriods != nil && libraryHeights != nil && libraryDirections != nil { // if spot values are all here, send to the cell
+            cell.setCellLabels(yourSpotLibrary.name(rowID), height: libraryHeight, temp: libraryTemp, periods: libraryPeriods, heights: libraryHeights, directions: libraryDirections)
         }
         else { // if any of the values are still nil, keep the cell blank
-            cell.setCellLabels(yourSpotLibrary.name(rowID), height: nil, temp: nil, tides: nil)
+            cell.setCellLabels(yourSpotLibrary.name(rowID), height: nil, temp: nil, periods: nil, heights: nil, directions: nil)
             dispatch_to_main_queue { // check again to see if the values are here yet at the end of the main queue
                 self.yourSpotsTableView.reloadData()
             }
