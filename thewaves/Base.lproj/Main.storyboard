@@ -9,7 +9,7 @@
         <scene sceneID="amA-PY-fmU">
             <objects>
                 <tableViewController title="yourSurfSpotsTableViewController" automaticallyAdjustsScrollViewInsets="NO" id="DdE-yk-Q9I" customClass="YourSpotsTableViewController" customModule="thewaves" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" keyboardDismissMode="onDrag" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="76" sectionHeaderHeight="22" sectionFooterHeight="22" id="6lc-s5-bZy">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" keyboardDismissMode="onDrag" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="76" sectionHeaderHeight="22" sectionFooterHeight="22" id="6lc-s5-bZy">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <view key="tableFooterView" autoresizesSubviews="NO" contentMode="redraw" verticalHuggingPriority="1000" id="9ui-3d-OlZ">
@@ -153,6 +153,7 @@
                                     <outlet property="heightLabel" destination="Txr-CT-e0O" id="F6h-Bn-Tb6"/>
                                     <outlet property="nameLabel" destination="Kgw-Sp-dX5" id="f0i-5W-IuU"/>
                                     <outlet property="tempLabel" destination="Q6v-AC-WoA" id="aUq-Ea-9EU"/>
+                                    <segue destination="OnT-2U-tEt" kind="show" identifier="openSpotDetail" id="mok-l7-2ag"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -204,7 +205,7 @@
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <connections>
-                                    <segue destination="1Cr-UW-nOq" kind="unwind" unwindAction="unwindToList:" id="5Gk-k9-pJc"/>
+                                    <segue destination="1Cr-UW-nOq" kind="unwind" identifier="unwindFromSearchCell" unwindAction="unwindToList:" id="Gfq-oL-xFY"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -229,7 +230,7 @@
                         <barButtonItem key="rightBarButtonItem" systemItem="cancel" id="8TW-hz-sGe">
                             <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
-                                <segue destination="1Cr-UW-nOq" kind="unwind" unwindAction="unwindToList:" id="05S-LS-O3R"/>
+                                <segue destination="1Cr-UW-nOq" kind="unwind" identifier="unwindFromSearchCancelButton" unwindAction="unwindToList:" id="bVL-V0-S2C"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -241,7 +242,44 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Vo5-6O-zJx" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="1Cr-UW-nOq" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="1674" y="-399"/>
+            <point key="canvasLocation" x="2584" y="-347"/>
+        </scene>
+        <!--Spot Detail View Controller-->
+        <scene sceneID="r53-SH-RAb">
+            <objects>
+                <viewController id="bn6-1s-YiW" customClass="SpotDetailViewController" customModule="thewaves" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="bsZ-2Q-wyo"/>
+                        <viewControllerLayoutGuide type="bottom" id="MIv-FO-w2f"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="dgR-1f-3UH">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="c7Q-Er-h2U">
+                                <rect key="frame" x="16" y="62" width="46" height="30"/>
+                                <state key="normal" title="Return">
+                                    <color key="titleColor" cocoaTouchSystemColor="lightTextColor"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <segue destination="P47-C2-JSb" kind="unwind" identifier="unwindFromSpotDetail" unwindAction="unwindToList:" id="YeH-OI-q66"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <gestureRecognizers/>
+                        <constraints>
+                            <constraint firstItem="c7Q-Er-h2U" firstAttribute="leading" secondItem="dgR-1f-3UH" secondAttribute="leadingMargin" id="5s5-2f-dCF"/>
+                            <constraint firstItem="c7Q-Er-h2U" firstAttribute="top" secondItem="bsZ-2Q-wyo" secondAttribute="bottom" constant="18" id="ZYz-cO-AuP"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="P2n-Yy-ri6"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="HNA-gT-3uI" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="P47-C2-JSb" userLabel="Exit" sceneMemberID="exit"/>
+            </objects>
+            <point key="canvasLocation" x="2584" y="629"/>
         </scene>
         <!--mainNav-->
         <scene sceneID="20t-p0-PdO">
@@ -279,7 +317,25 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="itH-T9-wf3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1666" y="347"/>
+            <point key="canvasLocation" x="1802" y="-347"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="EhW-Lf-lFZ">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="OnT-2U-tEt" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="990-On-Pe4">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="bn6-1s-YiW" kind="relationship" relationship="rootViewController" id="E7v-4Y-Kin"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Iny-Zu-yIp" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1802" y="629"/>
         </scene>
     </scenes>
 </document>

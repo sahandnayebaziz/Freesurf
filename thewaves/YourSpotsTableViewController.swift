@@ -52,19 +52,29 @@ class YourSpotsTableViewController: UITableViewController {
     
     // this is function is called when we return from another view with the "unwindToList" segue
     @IBAction func unwindToList(segue:UIStoryboardSegue) {
-        // identify the view we're coming from
-        var source:SearchForNewSpotsTableViewController = segue.sourceViewController as SearchForNewSpotsTableViewController
-        
-        // replace this controller's SpotLibrary object with the newer one coming back from the view
-        self.yourSpotLibrary = source.searchSpotLibrary
-        
-        // dismiss the keyboard
-        source.searchField.resignFirstResponder()
-        source.dismissViewControllerAnimated(true, completion: nil)
-        
-        // reload this table view's data with the new SpotLibrary object
-        self.tableView.reloadData()
-        self.downloadMissingSpotInfo()
+        if segue.identifier != nil {
+            if segue.identifier! == "unwindFromSearchCell" || segue.identifier! == "unwindFromSearchCancelButton" {
+                // identify the view we're coming from
+                var source:SearchForNewSpotsTableViewController = segue.sourceViewController as SearchForNewSpotsTableViewController
+                
+                // replace this controller's SpotLibrary object with the newer one coming back from the view
+                self.yourSpotLibrary = source.searchSpotLibrary
+                
+                // dismiss the keyboard
+                source.searchField.resignFirstResponder()
+                source.dismissViewControllerAnimated(true, completion: nil)
+                
+                // reload this table view's data with the new SpotLibrary object
+                self.tableView.reloadData()
+                self.downloadMissingSpotInfo()
+            }
+            else if segue.identifier! == "unwindFromSpotDetail" {
+                
+            }
+        }
+        else {
+            NSLog("All segues should be named")
+        }
     }
     
     // this is a hacky solution to wait for a connection, but it works. this application is meant to be transient, so we can afford overly-active checks like this
@@ -156,14 +166,31 @@ class YourSpotsTableViewController: UITableViewController {
     // this function is called right before we segue to another controller
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!)
     {
-        if segue.identifier! == "openSearchForSpots" {
-            // identify destination controller
-            var nav:UINavigationController = segue.destinationViewController as UINavigationController
-            let destinationView:SearchForNewSpotsTableViewController = nav.topViewController as SearchForNewSpotsTableViewController
-            
-            // pass our SpotLibrary object to the destination view controller for a new spot to be added.
-            // This will be passed back when we leave that view, whether changed or unchanged
-            destinationView.searchSpotLibrary = yourSpotLibrary
+        if segue.identifier != nil {
+            if segue.identifier! == "openSearchForSpots" {
+                // identify destination controller
+                let nav:UINavigationController = segue.destinationViewController as UINavigationController
+                let destinationView:SearchForNewSpotsTableViewController = nav.topViewController as SearchForNewSpotsTableViewController
+                
+                // pass our SpotLibrary object to the destination view controller for a new spot to be added.
+                // This will be passed back when we leave that view, whether changed or unchanged
+                destinationView.searchSpotLibrary = self.yourSpotLibrary
+            }
+            if segue.identifier! == "openSpotDetail" {
+                let nav:UINavigationController = segue.destinationViewController as UINavigationController
+                let destinationView:SpotDetailViewController = nav.topViewController as SpotDetailViewController
+                
+                let indexPath:NSIndexPath = yourSpotsTableView.indexPathForSelectedRow()!
+                let rowID = yourSpotLibrary.selectedSpotIDs[indexPath.row]
+                
+                NSLog("rowID is \(rowID)")
+                
+                destinationView.spotDetailSpotLibrary = self.yourSpotLibrary
+                destinationView.selectedSpotID = rowID
+            }
+        }
+        else {
+            NSLog("segues should all be named")
         }
     }
     
