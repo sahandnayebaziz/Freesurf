@@ -277,9 +277,9 @@ class SpotLibrary: NSObject, NSURLSessionDelegate {
          return " "
         }
     }
-    func periodsAtHour(id:Int, hour:Int) -> [Int]? { return self.countyDataDictionary[self.county(id)]!.swellPeriods?[hour] }
-    func heightsAtHour(id:Int, hour:Int) -> [Int]? { return self.countyDataDictionary[self.county(id)]!.swellHeights?[hour] }
-    func directionsAtHour(id:Int, hour:Int) -> [String]? { return self.countyDataDictionary[self.county(id)]!.swellDirections?[hour] }
+    func periodsForNext24Hours(id:Int, hour:Int) -> [Int]? { return self.countyDataDictionary[self.county(id)]!.swellPeriods?[hour] }
+    func heightsForNext24Hours(id:Int, hour:Int) -> [Int]? { return self.countyDataDictionary[self.county(id)]!.swellHeights?[hour] }
+    func directionsForNext24Hours(id:Int, hour:Int) -> [String]? { return self.countyDataDictionary[self.county(id)]!.swellDirections?[hour] }
     
     
 
