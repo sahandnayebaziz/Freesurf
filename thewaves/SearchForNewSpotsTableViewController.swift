@@ -8,14 +8,20 @@
 
 import UIKit
 
-class SearchForNewSpotsTableViewController: UITableViewController {
+class SearchForNewSpotsTableViewController: UITableViewController, UIScrollViewDelegate {
     @IBOutlet var searchForNewSpotsTableView: UITableView! // this is the table view
     @IBOutlet weak var searchField: UITextField! // this is the text field used for input
-    var searchSpotLibrary:SpotLibrary = SpotLibrary() // this is the SpotLibrary object that always comes from the first view controller
+    var searchSpotLibrary:SpotLibrary! // this is the SpotLibrary object that always comes from the first view controller
     var results:[Int] = [] // this is an array that is populated by spots that contain the string the user has entered into the text field
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.searchForNewSpotsTableView.separatorStyle = UITableViewCellSeparatorStyle.None
+        self.searchForNewSpotsTableView.backgroundColor = UIColor.clearColor()
+        let blurEffect:UIBlurEffect = UIBlurEffect(style: UIBlurEffectStyle.Dark)
+        let blurEffectView:UIVisualEffectView = UIVisualEffectView(effect: blurEffect)
+        blurEffectView.frame = searchForNewSpotsTableView.bounds
+        self.searchForNewSpotsTableView.backgroundView = blurEffectView
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -36,7 +42,6 @@ class SearchForNewSpotsTableViewController: UITableViewController {
         return results.count // returns the number of spots that have matched with the input string
     }
     
-    
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let rowID = self.results[indexPath.row] // helper to store the spotID of the spot being displayed at given row
         
@@ -46,17 +51,20 @@ class SearchForNewSpotsTableViewController: UITableViewController {
         cell.detailTextLabel!.text = searchSpotLibrary.county(rowID)
         return cell
     }
-    
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath:NSIndexPath) {
-        // if the user taps an item that lists as a result, dismiss the keyboard,
-        // add the spot to the list of selectedSpots if it's not already there,
-        //
-        // each cell is connected to the unwind segue, so after these lines are executed,
-        // we will teleport back to the main view
+
+    override func scrollViewWillBeginDragging(scrollView: UIScrollView) {
         self.searchField.resignFirstResponder()
-        
-        if !(contains(self.searchSpotLibrary.selectedSpotIDs, results[indexPath.row])) {
-            searchSpotLibrary.selectedSpotIDs.append(results[indexPath.row])
+    }
+
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if sender!.isKindOfClass(UIBarButtonItem) {
+            // do nothing
+        }
+        if sender!.isKindOfClass(UITableViewCell) {
+            var indexPath:NSIndexPath = searchForNewSpotsTableView.indexPathForSelectedRow()!
+            if !(contains(self.searchSpotLibrary.selectedSpotIDs, results[indexPath.row])) {
+                searchSpotLibrary.selectedSpotIDs.append(results[indexPath.row])
+            }
         }
     }
     
