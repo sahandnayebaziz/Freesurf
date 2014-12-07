@@ -11,11 +11,10 @@ import UIKit
 class YourSpotsTableViewController: UITableViewController {
     @IBOutlet var yourSpotsTableView: UITableView! // the main table view
     @IBOutlet weak var footer: UIView! // the view at the bottom
-    var yourSpotLibrary:SpotLibrary = SpotLibrary() // this object is created here, and then passed back and forth between this controller and the search controller
+    var spotLibrary:SpotLibrary = SpotLibrary() // this object is created here, and then passed back and forth between this controller and the search controller
     var currentHour:Int = NSDate().hour() // this is passed to SpotLibrary methods to populate the cells
     var usingUserDefaults:Bool = false // this flag is set when we use NSUserDefaults to load the user's selected spots. Tells controller to download the remaining spots
-    
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -26,7 +25,7 @@ class YourSpotsTableViewController: UITableViewController {
         let defaults:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         if let exportString = defaults.objectForKey("userSelectedSpots") as? String {
             usingUserDefaults = true // set flag to true, so we know to download the remaining spots
-            self.yourSpotLibrary.initLibraryFromString(exportString) // calls the deserialize function on the string saved in NSUserDefaults
+            self.spotLibrary.initLibraryFromString(exportString) // calls the deserialize function on the string saved in NSUserDefaults
             self.yourSpotsTableView.reloadData() // reloads the data
         }
 
@@ -42,6 +41,8 @@ class YourSpotsTableViewController: UITableViewController {
             }
         }
         
+        // checks to see if information like swell height and tides has been downloaded for spots that have been selected
+        // this is where this information is downloaded and the spotLibrary dictionary is filled
         downloadMissingSpotInfo()
         
         // sets the footer view of the table view, sets the height of the view to be 100
@@ -55,11 +56,11 @@ class YourSpotsTableViewController: UITableViewController {
     @IBAction func unwindToList(segue:UIStoryboardSegue) {
         if segue.identifier != nil {
             if segue.identifier! == "unwindFromSearchCell" || segue.identifier! == "unwindFromSearchCancelButton" {
-                // identify the view we're coming from
+                // identify the view we're coming from as the searchForNewSpots view
                 var source:SearchForNewSpotsTableViewController = segue.sourceViewController as SearchForNewSpotsTableViewController
                 
                 // replace this controller's SpotLibrary object with the newer one coming back from the view
-                self.yourSpotLibrary = source.searchSpotLibrary
+                self.spotLibrary = source.spotLibrary
                 
                 // dismiss the keyboard
                 source.searchField.resignFirstResponder()
@@ -74,11 +75,11 @@ class YourSpotsTableViewController: UITableViewController {
             }
         }
         else {
-            NSLog("All segues should be named")
+            NSLog("Error. Returned to main view with an unnamed segue.")
         }
     }
     
-    // this is a hacky solution to wait for a connection, but it works. this application is meant to be transient, so we can afford overly-active checks like this
+    // this is a hacky solution to wait for a connection, but it works.
     func waitForConnection() {
         // set a flag for us to loop on
         var connectionFlag:Bool = false
@@ -101,28 +102,28 @@ class YourSpotsTableViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return yourSpotLibrary.selectedSpotIDs.count // the number of rows comes from the count of array selectedSpotIDs in this controller's current SpotLibrary object
+        return spotLibrary.selectedSpotIDs.count // the number of rows comes from the count of array selectedSpotIDs in this controller's current SpotLibrary object
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         // this is the ID of the cell at this indexPath
-        let rowID = yourSpotLibrary.selectedSpotIDs[indexPath.row]
+        let rowID = spotLibrary.selectedSpotIDs[indexPath.row]
         
         // get values necessary for a cell. May be nil.
-        let libraryHeight:Int? = yourSpotLibrary.heightAtHour(rowID, hour: currentHour)
-        let libraryTemp:Int? = yourSpotLibrary.waterTemp(rowID)
-        let libraryPeriods:[Int]? = yourSpotLibrary.periodsAtHour(rowID, hour: currentHour)
-        let libraryHeights:[Int]? = yourSpotLibrary.heightsAtHour(rowID, hour: currentHour)
-        let libraryDirections:[String]? = yourSpotLibrary.directionsAtHour(rowID, hour: currentHour)
+        let libraryHeight:Int? = spotLibrary.heightAtHour(rowID, hour: currentHour)
+        let libraryTemp:Int? = spotLibrary.waterTemp(rowID)
+        let libraryPeriods:[Int]? = spotLibrary.periodsForNext24Hours(rowID, hour: 0)
+        let libraryHeights:[Int]? = spotLibrary.heightsForNext24Hours(rowID, hour: 0)
+        let libraryDirections:[String]? = spotLibrary.directionsForNext24Hours(rowID, hour: 0)
         
         // create and return the cell
         let cell:YourSpotsCell = yourSpotsTableView.dequeueReusableCellWithIdentifier("yourSpotsCell", forIndexPath: indexPath) as YourSpotsCell
         cell.backgroundColor = UIColor.clearColor() // the cell starts with a clear background before getting a gradient color.
         if libraryHeight != nil && libraryTemp != nil && libraryPeriods != nil && libraryHeights != nil && libraryDirections != nil { // if spot values are all here, send to the cell
-            cell.setCellLabels(yourSpotLibrary.name(rowID), height: libraryHeight, temp: libraryTemp, periods: libraryPeriods, heights: libraryHeights, directions: libraryDirections)
+            cell.setCellLabels(spotLibrary.name(rowID), height: libraryHeight, temp: libraryTemp, periods: libraryPeriods, heights: libraryHeights, directions: libraryDirections)
         }
         else { // if any of the values are still nil, keep the cell blank
-            cell.setCellLabels(yourSpotLibrary.name(rowID), height: nil, temp: nil, periods: nil, heights: nil, directions: nil)
+            cell.setCellLabels(spotLibrary.name(rowID), height: nil, temp: nil, periods: nil, heights: nil, directions: nil)
             dispatch_to_main_queue { // check again to see if the values are here yet at the end of the main queue
                 self.yourSpotsTableView.reloadData()
             }
@@ -146,14 +147,14 @@ class YourSpotsTableViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool  {
-        return self.yourSpotLibrary.selectedSpotIDs.count > 1
+        return self.spotLibrary.selectedSpotIDs.count > 1
     }
     
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if (editingStyle == UITableViewCellEditingStyle.Delete) {
             // beginUpdates and endUpdates allow us to animate cells being deleted
             self.yourSpotsTableView.beginUpdates()
-            yourSpotLibrary.selectedSpotIDs.removeAtIndex(indexPath.row) // delete the entry in selectedSpotIDs in the SpotLibrary object
+            spotLibrary.selectedSpotIDs.removeAtIndex(indexPath.row) // delete the entry in selectedSpotIDs in the SpotLibrary object
             yourSpotsTableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Top)
             self.yourSpotsTableView.endUpdates()
         }
@@ -175,18 +176,16 @@ class YourSpotsTableViewController: UITableViewController {
                 
                 // pass our SpotLibrary object to the destination view controller for a new spot to be added.
                 // This will be passed back when we leave that view, whether changed or unchanged
-                destinationView.searchSpotLibrary = self.yourSpotLibrary
+                destinationView.spotLibrary = self.spotLibrary
             }
             if segue.identifier! == "openSpotDetail" {
                 let nav:UINavigationController = segue.destinationViewController as UINavigationController
                 let destinationView:SpotDetailViewController = nav.topViewController as SpotDetailViewController
                 
                 let indexPath:NSIndexPath = yourSpotsTableView.indexPathForSelectedRow()!
-                let rowID = yourSpotLibrary.selectedSpotIDs[indexPath.row]
+                let rowID = spotLibrary.selectedSpotIDs[indexPath.row]
                 
-                NSLog("rowID is \(rowID)")
-                
-                destinationView.spotDetailSpotLibrary = self.yourSpotLibrary
+                destinationView.spotLibrary = self.spotLibrary
                 destinationView.selectedSpotID = rowID
             }
         }
@@ -197,41 +196,41 @@ class YourSpotsTableViewController: UITableViewController {
     
     func downloadMissingSpotInfo() {
         // if no data has been loaded
-        if yourSpotLibrary.spotDataDictionary.isEmpty || usingUserDefaults {
+        if spotLibrary.spotDataDictionary.isEmpty || usingUserDefaults {
             if isConnectedToNetwork() {
                 dispatch_to_background_queue {
-                    self.yourSpotLibrary.getCounties()
+                    self.spotLibrary.getCounties()
                 }
                 usingUserDefaults = false; // return this flag to false, so this getCounties call doesn't trip every time this view appears
             }
         }
         
         // dispatch calls for the swell, temp, and tide info for any selected spots
-        if yourSpotLibrary.selectedSpotIDs.count > 0 { // if any spots have been selected
-            for spot in yourSpotLibrary.selectedSpotIDs {
+        if spotLibrary.selectedSpotIDs.count > 0 { // if any spots have been selected
+            for spot in spotLibrary.selectedSpotIDs {
                 if isConnectedToNetwork() {
                     
-                    if yourSpotLibrary.heightAtHour(spot, hour: self.currentHour) == nil { // call getter, if nil dispatch JSON download
+                    if spotLibrary.heightAtHour(spot, hour: self.currentHour) == nil { // call getter, if nil dispatch JSON download
                         dispatch_to_background_queue {
-                            self.yourSpotLibrary.getSpotSwell(spot)
+                            self.spotLibrary.getSpotSwell(spot)
                         }
                     }
                     
-                    if yourSpotLibrary.waterTemp(spot) == nil { // call getter, if nil dispatch JSON download
+                    if spotLibrary.waterTemp(spot) == nil { // call getter, if nil dispatch JSON download
                         dispatch_to_background_queue {
-                            self.yourSpotLibrary.getCountyWaterTemp(self.yourSpotLibrary.county(spot))
+                            self.spotLibrary.getCountyWaterTemp(self.spotLibrary.county(spot))
                         }
                     }
                     
-                    if yourSpotLibrary.next24Tides(spot) == nil { // call getter, if nil dispatch JSON download
+                    if spotLibrary.next24Tides(spot) == nil { // call getter, if nil dispatch JSON download
                         dispatch_to_background_queue {
-                            self.yourSpotLibrary.getCountyTide(self.yourSpotLibrary.county(spot))
+                            self.spotLibrary.getCountyTide(self.spotLibrary.county(spot))
                         }
                     }
                     
-                    if yourSpotLibrary.periodsAtHour(spot, hour: self.currentHour) == nil {
+                    if spotLibrary.periodsForNext24Hours(spot, hour: self.currentHour) == nil {
                         dispatch_to_background_queue {
-                            self.yourSpotLibrary.getCountySwell(self.yourSpotLibrary.county(spot))
+                            self.spotLibrary.getCountySwell(self.spotLibrary.county(spot))
                         }
                     }
                 }

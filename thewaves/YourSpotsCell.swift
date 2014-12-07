@@ -58,7 +58,9 @@ class YourSpotsCell: UITableViewCell {
             var heightOfMostSignificantSwellInSwellData:Int = -1
             
             for (var possibleMaxHeightIndex:Int = 0; possibleMaxHeightIndex < heights!.count; possibleMaxHeightIndex++) {
+                
                 if heights![possibleMaxHeightIndex] > heightOfMostSignificantSwellInSwellData {
+                    heightOfMostSignificantSwellInSwellData = heights![possibleMaxHeightIndex]
                     indexOfMostSignifcantSwellInSwellData = possibleMaxHeightIndex
                 }
             }
