@@ -15,6 +15,7 @@ class YourSpotsTableViewController: UITableViewController {
     var currentHour:Int = NSDate().hour() // this is passed to SpotLibrary methods to populate the cells
     var usingUserDefaults:Bool = false // this flag is set when we use NSUserDefaults to load the user's selected spots. Tells controller to download the remaining spots
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -32,7 +33,7 @@ class YourSpotsTableViewController: UITableViewController {
         // set the background color of the view
         self.yourSpotsTableView.backgroundColor = UIColor(red: 32/255.0, green: 32/255.0, blue: 32/255.0, alpha: 1.0)
     }
-    
+
     override func viewWillAppear(animated: Bool) {
         // if there isn't internet, set a flag, while wait until we are connected to the internet, and as soon as we are break
         if !(isConnectedToNetwork()) {
@@ -208,29 +209,27 @@ class YourSpotsTableViewController: UITableViewController {
         // dispatch calls for the swell, temp, and tide info for any selected spots
         if yourSpotLibrary.selectedSpotIDs.count > 0 { // if any spots have been selected
             for spot in yourSpotLibrary.selectedSpotIDs {
-                if yourSpotLibrary.heightAtHour(spot, hour: self.currentHour) == nil { // call getter, if nil dispatch JSON download
-                    if isConnectedToNetwork() {
+                if isConnectedToNetwork() {
+                    
+                    if yourSpotLibrary.heightAtHour(spot, hour: self.currentHour) == nil { // call getter, if nil dispatch JSON download
                         dispatch_to_background_queue {
                             self.yourSpotLibrary.getSpotSwell(spot)
                         }
                     }
-                }
-                if yourSpotLibrary.waterTemp(spot) == nil { // call getter, if nil dispatch JSON download
-                    if isConnectedToNetwork() {
+                    
+                    if yourSpotLibrary.waterTemp(spot) == nil { // call getter, if nil dispatch JSON download
                         dispatch_to_background_queue {
                             self.yourSpotLibrary.getCountyWaterTemp(self.yourSpotLibrary.county(spot))
                         }
                     }
-                }
-                if yourSpotLibrary.next24Tides(spot) == nil { // call getter, if nil dispatch JSON download
-                    if isConnectedToNetwork() {
+                    
+                    if yourSpotLibrary.next24Tides(spot) == nil { // call getter, if nil dispatch JSON download
                         dispatch_to_background_queue {
                             self.yourSpotLibrary.getCountyTide(self.yourSpotLibrary.county(spot))
                         }
                     }
-                }
-                if yourSpotLibrary.periodsAtHour(spot, hour: self.currentHour) == nil {
-                    if isConnectedToNetwork() {
+                    
+                    if yourSpotLibrary.periodsAtHour(spot, hour: self.currentHour) == nil {
                         dispatch_to_background_queue {
                             self.yourSpotLibrary.getCountySwell(self.yourSpotLibrary.county(spot))
                         }
