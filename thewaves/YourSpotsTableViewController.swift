@@ -15,6 +15,7 @@ class YourSpotsTableViewController: UITableViewController {
     var currentHour:Int = NSDate().hour() // this is passed to SpotLibrary methods to populate the cells
     var usingUserDefaults:Bool = false // this flag is set when we use NSUserDefaults to load the user's selected spots. Tells controller to download the remaining spots
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -32,7 +33,7 @@ class YourSpotsTableViewController: UITableViewController {
         // set the background color of the view
         self.yourSpotsTableView.backgroundColor = UIColor(red: 32/255.0, green: 32/255.0, blue: 32/255.0, alpha: 1.0)
     }
-    
+
     override func viewWillAppear(animated: Bool) {
         // if there isn't internet, set a flag, while wait until we are connected to the internet, and as soon as we are break
         if !(isConnectedToNetwork()) {
@@ -52,19 +53,29 @@ class YourSpotsTableViewController: UITableViewController {
     
     // this is function is called when we return from another view with the "unwindToList" segue
     @IBAction func unwindToList(segue:UIStoryboardSegue) {
-        // identify the view we're coming from
-        var source:SearchForNewSpotsTableViewController = segue.sourceViewController as SearchForNewSpotsTableViewController
-        
-        // replace this controller's SpotLibrary object with the newer one coming back from the view
-        self.yourSpotLibrary = source.searchSpotLibrary
-        
-        // dismiss the keyboard
-        source.searchField.resignFirstResponder()
-        source.dismissViewControllerAnimated(true, completion: nil)
-        
-        // reload this table view's data with the new SpotLibrary object
-        self.tableView.reloadData()
-        self.downloadMissingSpotInfo()
+        if segue.identifier != nil {
+            if segue.identifier! == "unwindFromSearchCell" || segue.identifier! == "unwindFromSearchCancelButton" {
+                // identify the view we're coming from
+                var source:SearchForNewSpotsTableViewController = segue.sourceViewController as SearchForNewSpotsTableViewController
+                
+                // replace this controller's SpotLibrary object with the newer one coming back from the view
+                self.yourSpotLibrary = source.searchSpotLibrary
+                
+                // dismiss the keyboard
+                source.searchField.resignFirstResponder()
+                source.dismissViewControllerAnimated(true, completion: nil)
+                
+                // reload this table view's data with the new SpotLibrary object
+                self.tableView.reloadData()
+                self.downloadMissingSpotInfo()
+            }
+            else if segue.identifier! == "unwindFromSpotDetail" {
+                
+            }
+        }
+        else {
+            NSLog("All segues should be named")
+        }
     }
     
     // this is a hacky solution to wait for a connection, but it works. this application is meant to be transient, so we can afford overly-active checks like this
@@ -100,16 +111,18 @@ class YourSpotsTableViewController: UITableViewController {
         // get values necessary for a cell. May be nil.
         let libraryHeight:Int? = yourSpotLibrary.heightAtHour(rowID, hour: currentHour)
         let libraryTemp:Int? = yourSpotLibrary.waterTemp(rowID)
-        let libraryTides:[Int]? = yourSpotLibrary.next24Tides(rowID)
+        let libraryPeriods:[Int]? = yourSpotLibrary.periodsAtHour(rowID, hour: currentHour)
+        let libraryHeights:[Int]? = yourSpotLibrary.heightsAtHour(rowID, hour: currentHour)
+        let libraryDirections:[String]? = yourSpotLibrary.directionsAtHour(rowID, hour: currentHour)
         
         // create and return the cell
         let cell:YourSpotsCell = yourSpotsTableView.dequeueReusableCellWithIdentifier("yourSpotsCell", forIndexPath: indexPath) as YourSpotsCell
         cell.backgroundColor = UIColor.clearColor() // the cell starts with a clear background before getting a gradient color.
-        if libraryHeight != nil && libraryTemp != nil && libraryTides != nil { // if spot values are all here, send to the cell
-            cell.setCellLabels(yourSpotLibrary.name(rowID), height: libraryHeight, temp: libraryTemp, tides: libraryTides)
+        if libraryHeight != nil && libraryTemp != nil && libraryPeriods != nil && libraryHeights != nil && libraryDirections != nil { // if spot values are all here, send to the cell
+            cell.setCellLabels(yourSpotLibrary.name(rowID), height: libraryHeight, temp: libraryTemp, periods: libraryPeriods, heights: libraryHeights, directions: libraryDirections)
         }
         else { // if any of the values are still nil, keep the cell blank
-            cell.setCellLabels(yourSpotLibrary.name(rowID), height: nil, temp: nil, tides: nil)
+            cell.setCellLabels(yourSpotLibrary.name(rowID), height: nil, temp: nil, periods: nil, heights: nil, directions: nil)
             dispatch_to_main_queue { // check again to see if the values are here yet at the end of the main queue
                 self.yourSpotsTableView.reloadData()
             }
@@ -120,10 +133,10 @@ class YourSpotsTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         // give the first cell a taller height to make up for the status bar
         if indexPath.row == 0 {
-            return 130.0
+            return 97.0
         }
         else { // give every other cell a height that is slightly smaller
-            return 113.0
+            return 76.0
         }
     }
     
@@ -154,13 +167,32 @@ class YourSpotsTableViewController: UITableViewController {
     // this function is called right before we segue to another controller
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!)
     {
-        // identify destination controller
-        var nav:UINavigationController = segue.destinationViewController as UINavigationController
-        let destinationView:SearchForNewSpotsTableViewController = nav.topViewController as SearchForNewSpotsTableViewController
-        
-        // pass our SpotLibrary object to the destination view controller for a new spot to be added. 
-        // This will be passed back when we leave that view, whether changed or unchanged
-        destinationView.searchSpotLibrary = yourSpotLibrary
+        if segue.identifier != nil {
+            if segue.identifier! == "openSearchForSpots" {
+                // identify destination controller
+                let nav:UINavigationController = segue.destinationViewController as UINavigationController
+                let destinationView:SearchForNewSpotsTableViewController = nav.topViewController as SearchForNewSpotsTableViewController
+                
+                // pass our SpotLibrary object to the destination view controller for a new spot to be added.
+                // This will be passed back when we leave that view, whether changed or unchanged
+                destinationView.searchSpotLibrary = self.yourSpotLibrary
+            }
+            if segue.identifier! == "openSpotDetail" {
+                let nav:UINavigationController = segue.destinationViewController as UINavigationController
+                let destinationView:SpotDetailViewController = nav.topViewController as SpotDetailViewController
+                
+                let indexPath:NSIndexPath = yourSpotsTableView.indexPathForSelectedRow()!
+                let rowID = yourSpotLibrary.selectedSpotIDs[indexPath.row]
+                
+                NSLog("rowID is \(rowID)")
+                
+                destinationView.spotDetailSpotLibrary = self.yourSpotLibrary
+                destinationView.selectedSpotID = rowID
+            }
+        }
+        else {
+            NSLog("segues should all be named")
+        }
     }
     
     func downloadMissingSpotInfo() {
@@ -177,24 +209,29 @@ class YourSpotsTableViewController: UITableViewController {
         // dispatch calls for the swell, temp, and tide info for any selected spots
         if yourSpotLibrary.selectedSpotIDs.count > 0 { // if any spots have been selected
             for spot in yourSpotLibrary.selectedSpotIDs {
-                if yourSpotLibrary.heightAtHour(spot, hour: self.currentHour) == nil { // call getter, if nil dispatch JSON download
-                    if isConnectedToNetwork() {
+                if isConnectedToNetwork() {
+                    
+                    if yourSpotLibrary.heightAtHour(spot, hour: self.currentHour) == nil { // call getter, if nil dispatch JSON download
                         dispatch_to_background_queue {
                             self.yourSpotLibrary.getSpotSwell(spot)
                         }
                     }
-                }
-                if yourSpotLibrary.waterTemp(spot) == nil { // call getter, if nil dispatch JSON download
-                    if isConnectedToNetwork() {
+                    
+                    if yourSpotLibrary.waterTemp(spot) == nil { // call getter, if nil dispatch JSON download
                         dispatch_to_background_queue {
                             self.yourSpotLibrary.getCountyWaterTemp(self.yourSpotLibrary.county(spot))
                         }
                     }
-                }
-                if yourSpotLibrary.next24Tides(spot) == nil { // call getter, if nil dispatch JSON download
-                    if isConnectedToNetwork() {
+                    
+                    if yourSpotLibrary.next24Tides(spot) == nil { // call getter, if nil dispatch JSON download
                         dispatch_to_background_queue {
                             self.yourSpotLibrary.getCountyTide(self.yourSpotLibrary.county(spot))
+                        }
+                    }
+                    
+                    if yourSpotLibrary.periodsAtHour(spot, hour: self.currentHour) == nil {
+                        dispatch_to_background_queue {
+                            self.yourSpotLibrary.getCountySwell(self.yourSpotLibrary.county(spot))
                         }
                     }
                 }

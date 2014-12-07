@@ -11,7 +11,7 @@ import UIKit
 class SearchForNewSpotsTableViewController: UITableViewController, UIScrollViewDelegate {
     @IBOutlet var searchForNewSpotsTableView: UITableView! // this is the table view
     @IBOutlet weak var searchField: UITextField! // this is the text field used for input
-    var searchSpotLibrary:SpotLibrary = SpotLibrary() // this is the SpotLibrary object that always comes from the first view controller
+    var searchSpotLibrary:SpotLibrary! // this is the SpotLibrary object that always comes from the first view controller
     var results:[Int] = [] // this is an array that is populated by spots that contain the string the user has entered into the text field
     
     override func viewDidLoad() {
