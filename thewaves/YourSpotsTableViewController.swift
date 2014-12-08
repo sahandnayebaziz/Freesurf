@@ -30,7 +30,7 @@ class YourSpotsTableViewController: UITableViewController {
         }
 
         // set the background color of the view
-        self.yourSpotsTableView.backgroundColor = UIColor(red: 32/255.0, green: 32/255.0, blue: 32/255.0, alpha: 1.0)
+        self.yourSpotsTableView.backgroundColor = UIColor(red: 13/255.0, green: 13/255.0, blue: 13/255.0, alpha: 1.0)
     }
 
     override func viewWillAppear(animated: Bool) {

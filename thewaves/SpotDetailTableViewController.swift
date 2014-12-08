@@ -112,7 +112,10 @@ class SpotDetailViewController: UIViewController, UITableViewDelegate, UITableVi
         // now lets deal with different states that the gesture recognizer sends
         switch (pan.state) {
             
-        case UIGestureRecognizerState.Began:
+        case UIGestureRecognizerState.Cancelled:
+            break
+            
+        case UIGestureRecognizerState.Ended:
             // trigger the start of the transition
             self.performSegueWithIdentifier("unwindFromSpotDetail", sender: self)
             break
