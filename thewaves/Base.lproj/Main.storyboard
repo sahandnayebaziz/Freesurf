@@ -33,12 +33,27 @@
                                         <segue destination="uoL-s9-yKG" kind="presentation" identifier="openSearchForSpots" modalPresentationStyle="overCurrentContext" id="RLf-Za-uKE"/>
                                     </connections>
                                 </button>
+                                <button opaque="NO" alpha="0.39999999999999997" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="omc-jI-8jk">
+                                    <rect key="frame" x="278" y="46" width="45" height="45"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="45" id="2Gv-1r-v08"/>
+                                        <constraint firstAttribute="width" constant="45" id="CX6-FL-gUb"/>
+                                    </constraints>
+                                    <state key="normal" image="SpitcastLogo">
+                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="openSpitcast:" destination="DdE-yk-Q9I" eventType="touchUpInside" id="eNt-GA-3TY"/>
+                                    </connections>
+                                </button>
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <rect key="contentStretch" x="0.0" y="0.0" width="0.0" height="0.0"/>
                             <constraints>
                                 <constraint firstAttribute="trailing" secondItem="8bN-1G-ZeV" secondAttribute="trailing" constant="23" id="DlX-dO-7SU"/>
                                 <constraint firstItem="8bN-1G-ZeV" firstAttribute="top" secondItem="9ui-3d-OlZ" secondAttribute="top" constant="20" id="MT5-wT-9eh"/>
+                                <constraint firstItem="omc-jI-8jk" firstAttribute="centerX" secondItem="9ui-3d-OlZ" secondAttribute="centerX" id="eEc-9h-Rnx"/>
+                                <constraint firstItem="omc-jI-8jk" firstAttribute="top" secondItem="9ui-3d-OlZ" secondAttribute="top" constant="46" id="h2F-15-Nh2"/>
                             </constraints>
                         </view>
                         <prototypes>
@@ -173,7 +188,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0ve-Xx-3Je" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="883.5" y="346"/>
+            <point key="canvasLocation" x="883" y="346"/>
         </scene>
         <!--Search For New Spots-->
         <scene sceneID="PIG-0K-W1d">
@@ -407,5 +422,6 @@
     </scenes>
     <resources>
         <image name="InterfaceImages" width="120" height="216"/>
+        <image name="SpitcastLogo" width="152" height="152"/>
     </resources>
 </document>

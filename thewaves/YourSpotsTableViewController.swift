@@ -50,6 +50,9 @@ class YourSpotsTableViewController: UITableViewController {
         yourSpotsTableView.tableFooterView = footer
     }
     
+    @IBAction func openSpitcast(sender: AnyObject) {
+        UIApplication.sharedApplication().openURL(NSURL(string: "http://www.spitcast.com")!)
+    }
     
     
     // this is function is called when we return from another view with the "unwindToList" segue
