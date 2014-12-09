@@ -160,6 +160,11 @@ class YourSpotsTableViewController: UITableViewController {
             spotLibrary.selectedSpotIDs.removeAtIndex(indexPath.row) // delete the entry in selectedSpotIDs in the SpotLibrary object
             yourSpotsTableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Top)
             self.yourSpotsTableView.endUpdates()
+            self.yourSpotsTableView.beginUpdates()
+                if indexPath.row == 0 {
+                    self.yourSpotsTableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.None)
+                }
+            self.yourSpotsTableView.endUpdates()
         }
     }
     

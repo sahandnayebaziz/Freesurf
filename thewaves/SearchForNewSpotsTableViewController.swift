@@ -49,6 +49,7 @@ class SearchForNewSpotsTableViewController: UITableViewController, UIScrollViewD
         var cell:UITableViewCell = self.searchForNewSpotsTableView.dequeueReusableCellWithIdentifier("searchForNewSpotsCell") as UITableViewCell
         cell.textLabel!.text = spotLibrary.name(rowID)
         cell.detailTextLabel!.text = spotLibrary.county(rowID)
+        cell.backgroundColor = UIColor.clearColor()
         return cell
     }
 

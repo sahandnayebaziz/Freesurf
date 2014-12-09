@@ -12,6 +12,7 @@ class SpotDetailViewController: UIViewController, UITableViewDelegate, UITableVi
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var heightLabel: UILabel!
     @IBOutlet weak var weekdayLabel: UILabel!
+    @IBOutlet weak var tempLabel: UILabel!
 
     var spotLibrary:SpotLibrary!
     var selectedSpotID:Int!
@@ -168,6 +169,7 @@ class SpotDetailViewController: UIViewController, UITableViewDelegate, UITableVi
         self.nameLabel.text = self.spotLibrary.name(selectedSpotID)
         self.heightLabel.text = "\(self.spotLibrary.heightAtHour(selectedSpotID, hour: currentHour)!)ft \(periodOfMostSignificantSwellInSwellData)s \(directionOfMostSignificantSwellInSwellData)"
         self.weekdayLabel.text = NSDate().weekdayToString()
+        self.tempLabel.text = "\(self.spotLibrary.waterTemp(selectedSpotID)!)°"
     }
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
