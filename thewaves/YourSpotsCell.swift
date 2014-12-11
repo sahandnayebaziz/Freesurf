@@ -73,32 +73,6 @@ class YourSpotsCell: UITableViewCell {
             // fill labels
             heightLabel.text = "\(height!)ft"
             tempLabel.text = "\(temp!)°   \(periodOfMostSignificantSwellInSwellData)s \(directionOfMostSignificantSwellInSwellData)"
-            
-            /*
-            var maxTide:Int = 0;
-            var maxTideHoursFromNow:Int = 0;
-            var minTide:Int = 999;
-            var minTideHoursFromNow:Int = 999;
-            
-            for var index = 12; index >= 0; index-- {
-                if (tides![index] >= maxTide) {
-                    maxTide = tides![index]
-                    maxTideHoursFromNow = index
-                }
-                if (tides![index] <= minTide) {
-                    minTide = tides![index]
-                    minTideHoursFromNow = index
-                }
-            }
-            
-            var highTideHeadline:String
-            var lowTideHeadline:String
-            if maxTideHoursFromNow <= 1 { highTideHeadline = "now" }
-            else { highTideHeadline = "in \(maxTideHoursFromNow) hours" }
-            if minTideHoursFromNow <= 1 { lowTideHeadline = "now" }
-            else { lowTideHeadline = "in \(minTideHoursFromNow) hours" }
-            */ // tide code not yet necessary
-            
         }
         gradient.colors = [colorTop, colorBottom]
         gradient.frame = self.bounds
