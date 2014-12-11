@@ -9,14 +9,6 @@
 import UIKit
 
 class SpotDetailViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate {
-//    @IBOutlet weak var nameLabel: UILabel!
-//    @IBOutlet weak var heightLabel: UILabel!
-//    @IBOutlet weak var tempLabel: UILabel!
-//    @IBOutlet weak var currentTideLabel: UILabel!
-//    @IBOutlet weak var currentTideIsLabel: UILabel!
-//    @IBOutlet weak var lowTideLabel: UILabel!
-//    @IBOutlet weak var highTideLabel: UILabel!
-    
     var spotLibrary:SpotLibrary!
     var selectedSpotID:Int!
     var enterPanGesture: UIScreenEdgePanGestureRecognizer!
@@ -35,7 +27,6 @@ class SpotDetailViewController: UIViewController, UITableViewDelegate, UITableVi
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(false)
         self.setBackgroundColor(self.spotLibrary.heightAtHour(selectedSpotID, hour: currentHour)!)
-        self.setLabels()
     }
 
     override func didReceiveMemoryWarning() {
@@ -147,70 +138,6 @@ class SpotDetailViewController: UIViewController, UITableViewDelegate, UITableVi
         gradient.colors = [colorTop, colorBottom]
         gradient.frame = self.view.bounds
         self.view.layer.insertSublayer(gradient, atIndex: 0)
-    }
-    
-    func setLabels() {
-//        let heights = self.spotLibrary.heightsForNext24Hours(selectedSpotID, hour: 0)
-//        let periods = self.spotLibrary.periodsForNext24Hours(selectedSpotID, hour: 0)
-//        let directions = self.spotLibrary.directionsForNext24Hours(selectedSpotID, hour: 0)
-//        let tides = self.spotLibrary.next24Tides(selectedSpotID)
-//        
-//        var indexOfMostSignifcantSwellInSwellData:Int = 0
-//        var heightOfMostSignificantSwellInSwellData:Int = -1
-//        
-//        for (var possibleMaxHeightIndex:Int = 0; possibleMaxHeightIndex < heights!.count; possibleMaxHeightIndex++) {
-//            
-//            if heights![possibleMaxHeightIndex] > heightOfMostSignificantSwellInSwellData {
-//                heightOfMostSignificantSwellInSwellData = heights![possibleMaxHeightIndex]
-//                indexOfMostSignifcantSwellInSwellData = possibleMaxHeightIndex
-//            }
-//        }
-//        
-//        let periodOfMostSignificantSwellInSwellData:Int = periods![indexOfMostSignifcantSwellInSwellData]
-//        let directionOfMostSignificantSwellInSwellData:String = directions![indexOfMostSignifcantSwellInSwellData]
-//        
-//        var currentTideComment:String
-//        if tides![2] > tides![0] {
-//            currentTideComment = "coming in"
-//        }
-//        else {
-//            currentTideComment = "going out"
-//        }
-//        
-//
-//        var maxTide:Int = 0;
-//        var maxTideHoursFromNow:Int = 0;
-//        var minTide:Int = 999;
-//        var minTideHoursFromNow:Int = 999;
-//        
-//        for var index = 12; index >= 0; index-- {
-//        if (tides![index] >= maxTide) {
-//        maxTide = tides![index]
-//        maxTideHoursFromNow = index
-//        }
-//        if (tides![index] <= minTide) {
-//        minTide = tides![index]
-//        minTideHoursFromNow = index
-//        }
-//        }
-//        
-//        var highTideHeadline:String
-//        var lowTideHeadline:String
-//        if maxTideHoursFromNow <= 1 { highTideHeadline = "now" }
-//        else { highTideHeadline = "in \(maxTideHoursFromNow) hours" }
-//        if minTideHoursFromNow <= 1 { lowTideHeadline = "now" }
-//        else { lowTideHeadline = "in \(minTideHoursFromNow) hours" }
-//        
-//        
-//        
-//        
-//        self.nameLabel.text = self.spotLibrary.name(selectedSpotID)
-//        self.heightLabel.text = "\(self.spotLibrary.heightAtHour(selectedSpotID, hour: currentHour)!)ft \(periodOfMostSignificantSwellInSwellData)s \(directionOfMostSignificantSwellInSwellData)"
-//        self.tempLabel.text = "\(self.spotLibrary.waterTemp(selectedSpotID)!)°"
-//        self.currentTideLabel.text = "\(tides![0])ft"
-//        self.currentTideIsLabel.text = currentTideComment
-//        self.highTideLabel.text = highTideHeadline
-//        self.lowTideLabel.text = lowTideHeadline
     }
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {

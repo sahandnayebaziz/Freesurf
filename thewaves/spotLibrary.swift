@@ -17,6 +17,7 @@ class SpotLibrary: NSObject, NSURLSessionDelegate {
     var currentHour:Int = NSDate().hour()
     var callLog:[String:[String]] = [:]
     
+    // MARK: downloading JSON from Spitcast
     func getCounties() {
         let sourceURL:NSURL = NSURL(string: "http://api.spitcast.com/api/spot/all")!
         var sourceSession:NSURLSession = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
@@ -35,7 +36,6 @@ class SpotLibrary: NSObject, NSURLSessionDelegate {
         })
         sourceTask.resume()
     }
-    
     func getNextSpots(counties:[String]) {
         if counties.count > 0 {
             var county = counties[0]
@@ -73,7 +73,6 @@ class SpotLibrary: NSObject, NSURLSessionDelegate {
             NSLog("Downloaded all spots")
         }
     }
-    
     func getSpotSwell(spotID:Int) {
         let sourceURL:NSURL = NSURL(string: "http://api.spitcast.com/api/spot/forecast/\(spotID)")!
         var sourceSession:NSURLSession = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
@@ -89,7 +88,6 @@ class SpotLibrary: NSObject, NSURLSessionDelegate {
         })
         sourceTask.resume()
     }
-    
     func getCountyWaterTemp(county:String) {
         if (!contains(self.callLog[county]!, "CountyWaterTemp")) {
             self.callLog[county]!.append("CountyWaterTemp") // log this download
@@ -105,7 +103,6 @@ class SpotLibrary: NSObject, NSURLSessionDelegate {
             sourceTask.resume()
         }
     }
-    
     func getCountyTide(county:String) {
         if (!contains(self.callLog[county]!, "CountyTide")) {
             self.callLog[county]!.append("CountyTide") // log this download
@@ -150,7 +147,6 @@ class SpotLibrary: NSObject, NSURLSessionDelegate {
             sourceTask.resume()
         }
     }
-    
     func getCountySwell(county:String) {
         if (!contains(self.callLog[county]!, "CountySwell")) {
             self.callLog[county]!.append("CountySwell") // log this download
@@ -241,12 +237,47 @@ class SpotLibrary: NSObject, NSURLSessionDelegate {
         } // end if
     }
     
+    // MARK: getting information about a spotID
     func name(id:Int) -> String { return self.spotDataDictionary[id]!.spotName }
     func county(id:Int) -> String { return self.spotDataDictionary[id]!.spotCounty }
     func heights(id:Int) -> [Int]? { return self.spotDataDictionary[id]?.spotHeights }
     func heightAtHour(id:Int, hour:Int) -> Int? { return self.spotDataDictionary[id]!.spotHeights?[hour] }
+    
+    // MARK: getting information about a county
     func waterTemp(id:Int) -> Int? { return self.countyDataDictionary[self.county(id)]!.waterTemp }
     func next24Tides(id:Int) -> [Int]? { return self.countyDataDictionary[self.county(id)]!.tides }
+    func periodsForNext24Hours(id:Int, hour:Int) -> [Int]? { return self.countyDataDictionary[self.county(id)]!.swellPeriods?[hour] }
+    func heightsForNext24Hours(id:Int, hour:Int) -> [Int]? { return self.countyDataDictionary[self.county(id)]!.swellHeights?[hour] }
+    func directionsForNext24Hours(id:Int, hour:Int) -> [String]? { return self.countyDataDictionary[self.county(id)]!.swellDirections?[hour] }
+    
+    // MARK: serialization and de-serialization of a spotLibrary object
+    func exportLibraryToString() -> String {
+        var exportString:String = ""
+        
+        for spotID in self.selectedSpotIDs {
+            exportString += "\(spotID).\(name(spotID)).\(county(spotID)),"
+        }
+        
+        return exportString
+    }
+    func initLibraryFromString(exportString: String) {
+        var listOfSpotExports:[String] = exportString.componentsSeparatedByString(",")
+        for spotExport in listOfSpotExports {
+            var spotAttributes:[String] = spotExport.componentsSeparatedByString(".")
+            if spotAttributes.count == 3 {
+                let spotID:Int = spotAttributes[0].toInt()!
+                let spotName:String = spotAttributes[1]
+                let spotCounty:String = spotAttributes[2]
+                
+                self.selectedSpotIDs.append(spotID)
+                self.spotDataDictionary[spotID] = (spotName, spotCounty, nil)
+                self.countyDataDictionary[spotCounty] = (nil, nil, nil, nil, nil)
+                self.callLog[spotCounty] = []
+            }
+        }
+    }
+    
+    // MARK: math operations for spot and swell data
     func swellMetersToFeet(height:Float) -> Int { return Int(height * 3.2) }
     func degreesToDirection(degrees:Int) -> String {
         if degrees == 0 || degrees == 360 {
@@ -274,39 +305,7 @@ class SpotLibrary: NSObject, NSURLSessionDelegate {
             return "NW"
         }
         else {
-         return " "
-        }
-    }
-    func periodsForNext24Hours(id:Int, hour:Int) -> [Int]? { return self.countyDataDictionary[self.county(id)]!.swellPeriods?[hour] }
-    func heightsForNext24Hours(id:Int, hour:Int) -> [Int]? { return self.countyDataDictionary[self.county(id)]!.swellHeights?[hour] }
-    func directionsForNext24Hours(id:Int, hour:Int) -> [String]? { return self.countyDataDictionary[self.county(id)]!.swellDirections?[hour] }
-    
-    
-
-    func exportLibraryToString() -> String {
-        var exportString:String = ""
-        
-        for spotID in self.selectedSpotIDs {
-            exportString += "\(spotID).\(name(spotID)).\(county(spotID)),"
-        }
-        
-        return exportString
-    }
-    
-    func initLibraryFromString(exportString: String) {
-        var listOfSpotExports:[String] = exportString.componentsSeparatedByString(",")
-        for spotExport in listOfSpotExports {
-            var spotAttributes:[String] = spotExport.componentsSeparatedByString(".")
-            if spotAttributes.count == 3 {
-                let spotID:Int = spotAttributes[0].toInt()!
-                let spotName:String = spotAttributes[1]
-                let spotCounty:String = spotAttributes[2]
-                
-                self.selectedSpotIDs.append(spotID)
-                self.spotDataDictionary[spotID] = (spotName, spotCounty, nil)
-                self.countyDataDictionary[spotCounty] = (nil, nil, nil, nil, nil)
-                self.callLog[spotCounty] = []
-            }
+            return " "
         }
     }
 }
