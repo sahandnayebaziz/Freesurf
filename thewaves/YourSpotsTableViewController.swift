@@ -8,93 +8,118 @@
 
 import UIKit
 
+// YourSpotsTableViewController controls the intial view for this app.
+// :: the contained table view displays cells as instances of the class YourSpotsCell.
+// :: this view controller initializes the SpotLibrary object that will be used throughout the app's lifecycle. This SpotLibrary object is initialized in viewDidLoad() from data saved in
+//    NSUserDefaults if this is not the user's first session.
+// :: once this controller contains a SpotLibrary object with spot ids saved in its selectedSpotIDs array, it will call SpotLibrary methods on a separate thread to populate
+//    the SpotLibrary object with data relevant to the selected spots.
 class YourSpotsTableViewController: UITableViewController {
-    @IBOutlet var yourSpotsTableView: UITableView! // the main table view
-    @IBOutlet weak var footer: UIView! // the view at the bottom
-    var spotLibrary:SpotLibrary = SpotLibrary() // this object is created here, and then passed back and forth between this controller and the search controller
-    var currentHour:Int = NSDate().hour() // this is passed to SpotLibrary methods to populate the cells
-    var usingUserDefaults:Bool = false // this flag is set when we use NSUserDefaults to load the user's selected spots. Tells controller to download the remaining spots
-
+    
+    // yourSpotsTableView is populated with YourSpotsCells for each spot the user has selected in the SearchForNewSpots view
+    @IBOutlet var yourSpotsTableView: UITableView!
+    
+    // this view contains the "add spot" button that moves the user to the SearchForNewSpots view as well as the Spitcast logo
+    @IBOutlet weak var footer: UIView!
+    
+    // this is where the SpotLibrary object is first constructed. This object will be passed to the SearchForNewSpotsController
+    var spotLibrary:SpotLibrary = SpotLibrary()
+    
+    // usingUserDefaults is set to true when data from NSUserDefaults was used to initialize the SpotLibrary object.
+    // :: when set to true, this boolean value tells the controller to download the list of spots from Spitcast.
+    //    the list of spots is downloaded from Spitcast when the spotDataDictionary is empty, or when the spotDataDictionary object is not empty but only contains the spots
+    //    read and restored from NSUserDefaults
+    var usingUserDefaults:Bool = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // registers our custom cell
+        // register the cell identifier set in the storyboard for this view
         self.yourSpotsTableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "yourSpotsTableViewCell")
         
-        // loads the a serialized string that contains the names and IDs of spots the user had added the last time the app was used
+        // if data exists in NSUserDefaults under the key "userSelectedSpots", the data is restored using a SpotLibrary method
+        // and the boolean variable usingUserDefaults is set to true to make YourSpotsTableViewController request a list of all spots from Spitcast.
+        // reloadData() is called on this tableView if data is restored from NSUserDefaults
         let defaults:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        
         if let exportString = defaults.objectForKey("userSelectedSpots") as? String {
-            usingUserDefaults = true // set flag to true, so we know to download the remaining spots
-            self.spotLibrary.initLibraryFromString(exportString) // calls the deserialize function on the string saved in NSUserDefaults
-            self.yourSpotsTableView.reloadData() // reloads the data
+            usingUserDefaults = true
+            self.spotLibrary.initLibraryFromString(exportString)
+            self.yourSpotsTableView.reloadData()
         }
-
-        // set the background color of the view
+        
+        // set the background color of this view to be a dark, near-black gray
         self.yourSpotsTableView.backgroundColor = UIColor(red: 13/255.0, green: 13/255.0, blue: 13/255.0, alpha: 1.0)
-    }
-
-    override func viewWillAppear(animated: Bool) {
-        // if there isn't internet, set a flag, while wait until we are connected to the internet, and as soon as we are break
-        if !(isConnectedToNetwork()) {
-            dispatch_to_background_queue { // dispatch to background queue takes a function and pushes it onto a background thread
-                self.waitForConnection()
-            }
-        }
         
-        // checks to see if information like swell height and tides has been downloaded for spots that have been selected
-        // this is where this information is downloaded and the spotLibrary dictionary is filled
-        downloadMissingSpotInfo()
-        
-        // sets the footer view of the table view, sets the height of the view to be 100
+        // set footer to be the tableFooterView of yourSpotsTableView and give footer a height of 100
         footer.frame = CGRect(x: footer.frame.minX, y: footer.frame.minY, width: footer.frame.maxX, height: 100)
         yourSpotsTableView.tableFooterView = footer
     }
     
+    override func viewWillAppear(animated: Bool) {
+        
+        // isConnectedToNetwork returns true if the user's device has a network connection. If isConnectedToNetwork() returns false,
+        // control is sent to a method that waits for a network connection to be established before returning control to viewWillAppear
+        if !(isConnectedToNetwork()) {
+            dispatch_to_background_queue {
+                self.waitForConnection()
+            }
+        }
+        
+        // downloadMissingSpotInfo() checks to see if data for the user's selected spots has been downloaded. If data hasn't been stored
+        // for the user's spots, the data is then requested from Spitcast
+        downloadMissingSpotInfo()
+    }
+    
+    // openSpitcast opens the Spitcast website in Safari when the user taps on the Spitcast logo in the footer view
     @IBAction func openSpitcast(sender: AnyObject) {
         UIApplication.sharedApplication().openURL(NSURL(string: "http://www.spitcast.com")!)
     }
     
-    
-    // this is function is called when we return from another view with the "unwindToList" segue
+    // unwindToList is a segue back to this view from other views. This method updates this view's data with anything new that might have happened in another view.
+    // :: The view we're coming from is stored in this method as "source". Only two views segue back to this view: SearchForNewSpots and SpotDetail. Their segues are
+    //    named and identified in this method so that unwindToList operates with the right idea of where the user is coming from.
     @IBAction func unwindToList(segue:UIStoryboardSegue) {
-        if segue.identifier != nil {
-            if segue.identifier! == "unwindFromSearchCell" || segue.identifier! == "unwindFromSearchCancelButton" {
-                // identify the view we're coming from as the searchForNewSpots view
-                var source:SearchForNewSpotsTableViewController = segue.sourceViewController as SearchForNewSpotsTableViewController
-                
-                // replace this controller's SpotLibrary object with the newer one coming back from the view
-                self.spotLibrary = source.spotLibrary
-                
-                // dismiss the keyboard
-                source.searchField.resignFirstResponder()
-                source.dismissViewControllerAnimated(true, completion: nil)
-                
-                // reload this table view's data with the new SpotLibrary object
-                self.tableView.reloadData()
-                self.downloadMissingSpotInfo()
-            }
-            else if segue.identifier! == "unwindFromSpotDetail" {
-                
-            }
+        
+        // all segues are named in interface builder and used here to decide what to do
+        if segue.identifier! == "unwindFromSearchCell" || segue.identifier! == "unwindFromSearchCancelButton" {
+            
+            // identify the view we're coming from as the searchForNewSpots view
+            var source:SearchForNewSpotsTableViewController = segue.sourceViewController as SearchForNewSpotsTableViewController
+            
+            // replace this controller's SpotLibrary object with the newer one coming back from the view
+            self.spotLibrary = source.spotLibrary
+            
+            // dismiss the keyboard
+            source.searchField.resignFirstResponder()
+            source.dismissViewControllerAnimated(true, completion: nil)
+            
+            // reload this table view's data with the new SpotLibrary object
+            self.tableView.reloadData()
+            self.downloadMissingSpotInfo()
         }
-        else {
-            NSLog("Error. Returned to main view with an unnamed segue.")
+        else if segue.identifier! == "unwindFromSpotDetail" {
+            // as of now, do nothing
         }
     }
     
-    // this is a hacky solution to wait for a connection, but it works.
+    // waitForConnection waits for a network connection to be established before returning control to viewWillAppear
     func waitForConnection() {
-        // set a flag for us to loop on
-        var connectionFlag:Bool = false
         
-        // keep checking for an internet connection until we get one, then exit and call viewWillApear again
-        while !(connectionFlag) {
+        // connectedToNetwork is false until set to true to by the waiting while loop
+        var connectedToNetwork:Bool = false
+        
+        // this loop waits for a network connection to be made, when it will set connectedToNetwork to true and break the while loop
+        while !(connectedToNetwork) {
             if isConnectedToNetwork() {
-                connectionFlag = true
+                connectedToNetwork = true
             }
         }
+        
+        // control is sent back to viewWillAppear
         self.viewWillAppear(false)
     }
+    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -105,7 +130,8 @@ class YourSpotsTableViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return spotLibrary.selectedSpotIDs.count // the number of rows comes from the count of array selectedSpotIDs in this controller's current SpotLibrary object
+        // the number of rows comes from the count of array selectedSpotIDs in this controller's current SpotLibrary object
+        return spotLibrary.selectedSpotIDs.count
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -125,7 +151,7 @@ class YourSpotsTableViewController: UITableViewController {
         else {
             
             // if getValuesForYourSpotsCell is returning nil, this means that all of the data for the spot that is being
-            // display at this cell hasn't been stored yet. In this case, we pass setCellLabels the name of the spot, 
+            // display at this cell hasn't been stored yet. In this case, we pass setCellLabels the name of the spot,
             // to display to the user that their cell was successfully added to their list and nil for valuesForSpotAtThisCell.
             // setCellLabels will gracefully display a blank cell when receiving nil for valuesForSpotAtTheCell while we wait
             // for data to be stored for this spot
@@ -145,17 +171,19 @@ class YourSpotsTableViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        // give the first cell a taller height to make up for the status bar
+        // give the first cell a taller height to give the cell padding beneath the status bar
         if indexPath.row == 0 {
             return 97.0
         }
-        else { // give every other cell a height that is slightly smaller
+            
+            // give every other cell a height that is slightly smaller
+        else {
             return 76.0
         }
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath:NSIndexPath) {
-        // selecting a cell is currently disabled. When you select it, it just gets disabled real quick.
+        // selecting a cell is currently disabled
         yourSpotsTableView.deselectRowAtIndexPath(indexPath, animated: false)
     }
     
@@ -163,94 +191,103 @@ class YourSpotsTableViewController: UITableViewController {
         return self.spotLibrary.selectedSpotIDs.count > 1
     }
     
+    // swipe to delete is enabled for this table view
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        
         if (editingStyle == UITableViewCellEditingStyle.Delete) {
-            // beginUpdates and endUpdates allow us to animate cells being deleted
+            
+            // begin updates to the tableView's data
             self.yourSpotsTableView.beginUpdates()
-            spotLibrary.selectedSpotIDs.removeAtIndex(indexPath.row) // delete the entry in selectedSpotIDs in the SpotLibrary object
+            
+            // delete the entry in selectedSpotIDs in the SpotLibrary object
+            spotLibrary.selectedSpotIDs.removeAtIndex(indexPath.row)
+            
+            // remove the row from the table
             yourSpotsTableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Top)
+            
+            // end updates to the tableView's data
             self.yourSpotsTableView.endUpdates()
+            
+            // set the background for each visible table cell in the table to the be the size of the cell. This method maintains consistency
+            // on the table view after deleting a cell causes the heights of the first and second cell to change.
             for cell in self.yourSpotsTableView.visibleCells() as [YourSpotsCell] {
                 cell.gradient.frame = cell.bounds
             }
         }
     }
     
-    // set the statusBar to be light
+    // set the statusBar's fill to white
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
         return UIStatusBarStyle.LightContent
     }
     
-    // this function is called right before we segue to another controller
+    // prepareForSegue is called before a segue is completed to another view.
+    // :: this method is used to pass data between this view controller and the destination view controller.
+    // :: The view we're moving to is stored in this method as destinationView. segues are named and identified 
+    //    in this method so that unwindToList operates with the right idea of where the user is coming from.
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!)
     {
-        if segue.identifier != nil {
-            if segue.identifier! == "openSearchForSpots" {
-                // identify destination controller
-                let nav:UINavigationController = segue.destinationViewController as UINavigationController
-                let destinationView:SearchForNewSpotsTableViewController = nav.topViewController as SearchForNewSpotsTableViewController
-                
-                // pass our SpotLibrary object to the destination view controller for a new spot to be added.
-                // This will be passed back when we leave that view, whether changed or unchanged
-                destinationView.spotLibrary = self.spotLibrary
-            }
-            if segue.identifier! == "openSpotDetail" {
-                let nav:UINavigationController = segue.destinationViewController as UINavigationController
-                let destinationView:SpotDetailViewController = nav.topViewController as SpotDetailViewController
-                
-                let indexPath:NSIndexPath = yourSpotsTableView.indexPathForSelectedRow()!
-                let rowID = self.spotLibrary.selectedSpotIDs[indexPath.row]
-                
-                destinationView.spotLibrary = self.spotLibrary
-                destinationView.selectedSpotID = rowID
-            }
+        
+        if segue.identifier! == "openSearchForSpots" {
+            
+            // identify destination controller
+            let nav:UINavigationController = segue.destinationViewController as UINavigationController
+            let destinationView:SearchForNewSpotsTableViewController = nav.topViewController as SearchForNewSpotsTableViewController
+            
+            // pass our SpotLibrary object to the destination view controller for a new spot to be added.
+            // This will be passed back when we leave that view, whether changed or unchanged
+            destinationView.spotLibrary = self.spotLibrary
         }
-        else {
-            NSLog("segues should all be named")
+        if segue.identifier! == "openSpotDetail" {
+            // identify destination controller
+            let nav:UINavigationController = segue.destinationViewController as UINavigationController
+            let destinationView:SpotDetailViewController = nav.topViewController as SpotDetailViewController
+            
+            // identify the row that was selected and the id of this row's spot
+            let indexPath:NSIndexPath = yourSpotsTableView.indexPathForSelectedRow()!
+            let rowID = self.spotLibrary.selectedSpotIDs[indexPath.row]
+            
+            // pass our SpotLibrary object to the destination view controller to access spot data
+            destinationView.spotLibrary = self.spotLibrary
+            
+            // pass the id of the selected spot to the destination view controller
+            destinationView.selectedSpotID = rowID
         }
     }
     
+    // downloadMissingSpotInfo() checks to see if data for the user's selected spots has been downloaded. 
+    // :: if data hasn't been stored for the spots the user has selected, the data is then requested from Spitcast
     func downloadMissingSpotInfo() {
-        // if no data has been loaded
+        
+        // request the list of counties and spots after initializing a SpotLibrary object. This runs if a SpotLibrary
+        // object has an empty spotDataDictionary, or if the SpotLibrary object was initialized from data stored in NSUserDefaults
         if spotLibrary.spotDataDictionary.isEmpty || usingUserDefaults {
             if isConnectedToNetwork() {
                 dispatch_to_background_queue {
                     self.spotLibrary.getCounties()
                 }
-                usingUserDefaults = false; // return this flag to false, so this getCounties call doesn't trip every time this view appears
+                
+                // set usingUserDefaults to false now that spots and counties have been requested from Spitcast
+                usingUserDefaults = false;
             }
         }
         
-        // dispatch calls for the swell, temp, and tide info for any selected spots
-        if spotLibrary.selectedSpotIDs.count > 0 { // if any spots have been selected
+        // if the user has selected any spots
+        if spotLibrary.selectedSpotIDs.count > 0 {
+            
+            // loop through each id in the list of selectedSpot
             for spot in spotLibrary.selectedSpotIDs {
+                
+                // if there is an internet connection
                 if isConnectedToNetwork() {
                     
-                    if spotLibrary.currentHeight(spot) == nil { // call getter, if nil dispatch JSON download
+                    // request spot data on a separate thread from the UI if all data for a spot has not been stored
+                    if spotLibrary.getValuesForYourSpotsCell(spot) == nil {
                         dispatch_to_background_queue {
                             self.spotLibrary.getSpotSwell(spot)
-                        }
-                    }
-                    
-                    if spotLibrary.waterTemp(spot) == nil { // call getter, if nil dispatch JSON download
-                        dispatch_to_background_queue {
                             self.spotLibrary.getCountyWaterTemp(self.spotLibrary.county(spot))
-                        }
-                    }
-                    
-                    if spotLibrary.next24Tides(spot) == nil { // call getter, if nil dispatch JSON download
-                        dispatch_to_background_queue {
                             self.spotLibrary.getCountyTide(self.spotLibrary.county(spot))
-                        }
-                    }
-                    
-                    if spotLibrary.significantSwell(spot) == nil {
-                        dispatch_to_background_queue {
                             self.spotLibrary.getCountySwell(self.spotLibrary.county(spot))
-                        }
-                    }
-                    if spotLibrary.wind(spot) == nil {
-                        dispatch_to_background_queue {
                             self.spotLibrary.getCountyWind(self.spotLibrary.county(spot))
                         }
                     }
@@ -258,7 +295,8 @@ class YourSpotsTableViewController: UITableViewController {
             }
         }
         
-        yourSpotsTableView.reloadData() // reload the data in the table
+        // call reloadData() on tableView to refresh with any new data
+        yourSpotsTableView.reloadData()
     }
 }
 

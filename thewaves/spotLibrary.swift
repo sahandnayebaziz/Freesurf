@@ -25,7 +25,7 @@ class SpotLibrary: NSObject, NSURLSessionDelegate {
     var selectedSpotIDs:[Int] = []
     
     // spotDataDictionary holds of a tuple of surf spot swell data (value) for each surf spot ID (key)
-    // :: spotDataDictionary is initialized to be empty when each spot ID is first seen in the
+    // :: spotDataDictionary is initialized to be empty when each spot ID is seen in the app for the first time
     var spotDataDictionary:[Int:(spotName:String, spotCounty:String, spotHeights:[Int]?)] = [:]
     
     // countyDataDictionary holds a tuple of county weather data (value) for each county name (key)
