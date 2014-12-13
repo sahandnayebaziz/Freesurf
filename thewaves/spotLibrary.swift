@@ -356,11 +356,14 @@ class SpotLibrary: NSObject, NSURLSessionDelegate {
     func significantSwell(id:Int) -> (height:Int, period:Int, direction:String)? {
         if let swells = self.countyDataDictionary[self.county(id)]!.swells {
             
-            var mostSignificantSwell:(height:Int, period:Int, direction:String) = (-1, -1, "")
+            // this value is initialzied as the first swell in the list
+            var mostSignificantSwell = swells[0]
             
-            for swell in swells {
-                if swell.height > mostSignificantSwell.height {
-                    mostSignificantSwell = swell
+            // loop through the rest of the swells in the list and compare their heights with the default mostSignificantSwell, swell[0].
+            // update mostSignificantSwell if another swell has a stronger height
+            for var index = 1; index < swells.count; index++ {
+                if swells[index].height > mostSignificantSwell.height {
+                    mostSignificantSwell = swells[index]
                 }
             }
             
