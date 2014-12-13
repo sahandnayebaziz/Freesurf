@@ -112,23 +112,35 @@ class YourSpotsTableViewController: UITableViewController {
         // this is the ID of the cell at this indexPath
         let rowID = self.spotLibrary.selectedSpotIDs[indexPath.row]
         
-        // get values necessary for a cell. May be nil.
-        let libraryHeight:Int? = self.spotLibrary.currentHeight(rowID)
-        let libraryTemp:Int? = self.spotLibrary.waterTemp(rowID)
-        let librarySwell:(height:Int, period:Int, direction:String)? = self.spotLibrary.significantSwell(rowID)
-        
-        // create and return the cell
+        // create cell object as an instance of YourSpotsCell
         let cell:YourSpotsCell = yourSpotsTableView.dequeueReusableCellWithIdentifier("yourSpotsCell", forIndexPath: indexPath) as YourSpotsCell
-        cell.backgroundColor = UIColor.clearColor() // the cell starts with a clear background before getting a gradient color.
-        if libraryHeight != nil && libraryTemp != nil && librarySwell != nil { // if spot values are all here, send to the cell
-            cell.setCellLabels(spotLibrary.name(rowID), height: libraryHeight, temp: libraryTemp, swell: librarySwell)
+        
+        // clear the cell's background before the cell is assigned a background gradient
+        cell.backgroundColor = UIColor.clearColor()
+        
+        // if values have been stored this cell's spot pass this data to the cell
+        if let spotValues = self.spotLibrary.getValuesForYourSpotsCell(rowID) {
+            cell.setCellLabels(self.spotLibrary.name(rowID), valuesForSpotAtThisCell: spotValues)
         }
-        else { // if any of the values are still nil, keep the cell blank
-            cell.setCellLabels(spotLibrary.name(rowID), height: nil, temp: nil, swell: nil)
-            dispatch_to_main_queue { // check again to see if the values are here yet at the end of the main queue
+        else {
+            
+            // if getValuesForYourSpotsCell is returning nil, this means that all of the data for the spot that is being
+            // display at this cell hasn't been stored yet. In this case, we pass setCellLabels the name of the spot, 
+            // to display to the user that their cell was successfully added to their list and nil for valuesForSpotAtThisCell.
+            // setCellLabels will gracefully display a blank cell when receiving nil for valuesForSpotAtTheCell while we wait
+            // for data to be stored for this spot
+            cell.setCellLabels(self.spotLibrary.name(rowID), valuesForSpotAtThisCell: nil)
+            
+            // a reloadData() call is attached to the end of the main_queue, or the UI thread, to allow us to return to
+            // cellForRowAtIndexPath. When we return, if valuesForSpotAtThisCell does not return nil, then it's value are passed to setCellLabels,
+            // the cell is displayed, and we can move on from this cell. If valuesForSpotAtTheCell is nil, another reloadData is attached to the end of the
+            // UI thread and we repeat.
+            dispatch_to_main_queue {
                 self.yourSpotsTableView.reloadData()
             }
         }
+        
+        // return the cell object. At this point, setCellLabels has completed and returned control
         return cell
     }
     
@@ -235,6 +247,11 @@ class YourSpotsTableViewController: UITableViewController {
                     if spotLibrary.significantSwell(spot) == nil {
                         dispatch_to_background_queue {
                             self.spotLibrary.getCountySwell(self.spotLibrary.county(spot))
+                        }
+                    }
+                    if spotLibrary.wind(spot) == nil {
+                        dispatch_to_background_queue {
+                            self.spotLibrary.getCountyWind(self.spotLibrary.county(spot))
                         }
                     }
                 }

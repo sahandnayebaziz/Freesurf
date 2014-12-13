@@ -32,7 +32,7 @@ class SpotLibrary: NSObject, NSURLSessionDelegate {
     // :: values in the tuple are optionals because at runtime, an HTTP request is made to Spitcast for these values
     //    and we may not receive this data for a noticable amount of time. Optionals allow us to plan ahead and
     //    gracefully handle the absence of these values
-    var countyDataDictionary:[String:(waterTemp:Int?, tides:[Int]?, swells:[(height:Int, period:Int, direction:String)]?)] = [:]
+    var countyDataDictionary:[String:(waterTemp:Int?, tides:[Int]?, swells:[(height:Int, period:Int, direction:String)]?, wind:(speedInMPH:Int, direction:String)?)] = [:]
     
     // currentHour is an integer representing the current hour of the day in 24-hour time
     // :: midnight is "0" and 11PM is "23"
@@ -253,14 +253,10 @@ class SpotLibrary: NSObject, NSURLSessionDelegate {
         sourceTask.resume()
     }
     
-    // getCountySwell takes a county and saves the county's current swells in
+    // getCountySwell takes a county and saves the county's current swells in countyDataDictionary
     func getCountySwell(county:String) {
         if (!contains(self.callLog[county]!, "CountySwell")) {
             self.callLog[county]!.append("CountySwell") // log this request
-            
-            // hoursTomorrow is the number of hours left between midnight tonight and 24 hours from the current hour
-            // :: this is the number of hours we must store from the Spitcast data for tomorrow
-            let hoursTomorrow:Int = self.currentHour
             
             // the array we will store the new data in before storing the array in the correct key in spotDataDictionary
             var newListOfSwells:[(height:Int, period:Int, direction:String)] = []
@@ -307,6 +303,34 @@ class SpotLibrary: NSObject, NSURLSessionDelegate {
         }
     }
     
+    // getCountyWind takes a county and saves the county's current wind data in countyDataDictionary
+    func getCountyWind(county:String) {
+        if (!contains(self.callLog[county]!, "CountyWind")) {
+            self.callLog[county]!.append("CountyWind") // log this request
+
+            // format the name of the county into the format Spitcast can understand
+            let countyString:String = county.stringByReplacingOccurrencesOfString(" ", withString: "-", options: NSStringCompareOptions.LiteralSearch, range: nil).lowercaseString
+            
+            let sourceURL:NSURL = NSURL(string: "http://api.spitcast.com/api/county/wind/\(countyString)/")!
+            var sourceSession:NSURLSession = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
+            var sourceData:AnyObject? = nil
+            let sourceTask = sourceSession.dataTaskWithURL(sourceURL, completionHandler: {(data, response, error) -> Void in
+                sourceData = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: nil)
+                
+                // begin callback operation
+                
+                // store data from Spitcast into temporary variables
+                var speedInMPHFloat:Float = sourceData![self.currentHour]!["speed_mph"]! as Float
+                let directionInHeading:String = sourceData![self.currentHour]!["direction_text"]! as String
+                
+                // store this data into countyDataDictionary
+                let newWindData = (speedInMPH:Int(speedInMPHFloat), direction:directionInHeading)
+                self.countyDataDictionary[county]!.wind = newWindData
+            })
+            sourceTask.resume()
+        }
+    }
+    
     // MARK: initializing data entries
     // initializeCountyDataEntriesIfNeeded takes a county and creates empty entries where necessary in countyDataDictionary.
     // :: this method comes in handy because the user can save spots as they desire and it's unknown at compile time if the app
@@ -321,7 +345,7 @@ class SpotLibrary: NSObject, NSURLSessionDelegate {
             self.callLog[countyName] = []
             
             // create a key for this county in countyDataDictionary
-            self.countyDataDictionary[countyName] = (nil, nil, nil)
+            self.countyDataDictionary[countyName] = (waterTemp:nil, tides:nil, swells:nil, wind:nil)
         }
     }
     
@@ -349,6 +373,9 @@ class SpotLibrary: NSObject, NSURLSessionDelegate {
     // has been stored for the county
     func swells(id:Int) -> [(height:Int, period:Int, direction:String)]? { return self.countyDataDictionary[self.county(id)]!.swells }
     
+    // wind takes the id of a spot and returns the wind currently affect the spot's county if wind data has been stored for the county
+    func wind(id:Int) -> (speedInMPH:Int, direction:String)? { return self.countyDataDictionary[self.county(id)]!.wind }
+    
     // significantSwell takes the id of a spot and returns data for only the most significant swell affecting the spot's county
     // if swell data has been stored for the county. 
     // :: The most significant swell is chosen by finding the swell with the largest significant height (Hs), or the swell 
@@ -368,6 +395,20 @@ class SpotLibrary: NSObject, NSURLSessionDelegate {
             }
             
             return mostSignificantSwell
+        }
+        else {
+            return nil
+        }
+    }
+    
+    // getValuesForYourSpotsCell takes the id of a spot and returns a tuple of data that can be consumed by an instance of YourSpotsCell for this spot
+    // if all data for this spot has been stored and it is safe to display this cell to the user and allow the cell to be tapped for more detail.
+    func getValuesForYourSpotsCell(id: Int) -> (height:Int, waterTemp:Int, swell:(height:Int, period:Int, direction:String))? {
+        
+        // getValuesForYourSpotsCell returns a tuple of values only when everything we use to display data about a spot, both within a YourSpotsCell and
+        // SpotDetail
+        if self.currentHeight(id) != nil && self.waterTemp(id) != nil && self.next24Tides(id) != nil && self.significantSwell(id) != nil && self.wind(id) != nil {
+            return (height: self.currentHeight(id)!, waterTemp: self.waterTemp(id)!, swell:self.significantSwell(id)!)
         }
         else {
             return nil

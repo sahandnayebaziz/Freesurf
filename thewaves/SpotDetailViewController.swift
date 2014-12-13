@@ -1,5 +1,5 @@
 //
-//  SpotDetailTableViewController.swift
+//  SpotDetailViewController.swift
 //  thewaves
 //
 //  Created by Sahand Nayebaziz on 12/6/14.
