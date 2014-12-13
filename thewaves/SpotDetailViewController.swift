@@ -8,16 +8,27 @@
 
 import UIKit
 
+// SpotDetailViewController displays detailed forecast information for a surf spot.
+// :: the user enters this view when they select a cell in the YourSpotsTableViewController
 class SpotDetailViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate {
+    
+    // spotLibrary is the SpotLibrary object containing spot and county data passed to this view controller from YourSpotsTableView
     var spotLibrary:SpotLibrary!
+    
+    // this is the id of the spot selected by the user
     var selectedSpotID:Int!
+    
+    // this is the gesture recognizer that will allow edge swipes to be detected
     var enterPanGesture: UIScreenEdgePanGestureRecognizer!
-    var currentHour:Int = NSDate().hour()
+    
+    // this gradient layer will be used to give the entire view a background color similar to the one of the cell for this spot 
+    // in YourSpotsTableView
     let gradient:CAGradientLayer = CAGradientLayer()
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        // add an edge swipe gesture recognizer to the left edge of the display
         self.enterPanGesture = UIScreenEdgePanGestureRecognizer()
         self.enterPanGesture.addTarget(self, action:"handleOnstagePan:")
         self.enterPanGesture.edges = UIRectEdge.Left
@@ -26,7 +37,11 @@ class SpotDetailViewController: UIViewController, UITableViewDelegate, UITableVi
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(false)
+        
+        // set the background color of the view based on the size of this spot's swell height
         self.setBackgroundColor(self.spotLibrary.currentHeight(selectedSpotID)!)
+        
+        
     }
 
     override func didReceiveMemoryWarning() {
