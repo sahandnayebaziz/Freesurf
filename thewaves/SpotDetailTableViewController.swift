@@ -26,7 +26,7 @@ class SpotDetailViewController: UIViewController, UITableViewDelegate, UITableVi
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(false)
-        self.setBackgroundColor(self.spotLibrary.heightAtHour(selectedSpotID, hour: currentHour)!)
+        self.setBackgroundColor(self.spotLibrary.currentHeight(selectedSpotID)!)
     }
 
     override func didReceiveMemoryWarning() {

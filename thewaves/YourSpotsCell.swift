@@ -28,13 +28,13 @@ class YourSpotsCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
-    func setCellLabels(name: String, height: Int?, temp: Int?, periods: [Int]?, heights: [Int]?, directions: [String]?) {
+    func setCellLabels(name: String, height: Int?, temp: Int?, swell:(height:Int, period:Int, direction:String)?) {
         nameLabel.text = name;
         var colorTop:CGColorRef;
         var colorBottom:CGColorRef;
-        if height == nil || temp == nil || periods == nil || heights == nil || directions == nil {
+        if height == nil || temp == nil || swell == nil {
             heightLabel.text = "--ft"
-            tempLabel.text = "--°   --s --"
+            tempLabel.text = "--° --s --"
             colorTop = UIColor(red: 70/255.0, green: 104/255.0, blue: 130/255.0, alpha: 0.4).CGColor!
             colorBottom = UIColor(red: 58/255.0, green: 100/255.0, blue: 131/255.0, alpha: 0.4).CGColor!
         }
@@ -53,26 +53,9 @@ class YourSpotsCell: UITableViewCell {
                 colorBottom = UIColor(red: 97/255.0, green: 179/255.0, blue: 242/255.0, alpha: 1.0).CGColor!
             }
             
-            // figure most significant swell
-            var indexOfMostSignifcantSwellInSwellData:Int = 0
-            var heightOfMostSignificantSwellInSwellData:Int = -1
-            
-            for (var possibleMaxHeightIndex:Int = 0; possibleMaxHeightIndex < heights!.count; possibleMaxHeightIndex++) {
-                
-                if heights![possibleMaxHeightIndex] > heightOfMostSignificantSwellInSwellData {
-                    heightOfMostSignificantSwellInSwellData = heights![possibleMaxHeightIndex]
-                    indexOfMostSignifcantSwellInSwellData = possibleMaxHeightIndex
-                }
-            }
-            
-            let periodOfMostSignificantSwellInSwellData:Int = periods![indexOfMostSignifcantSwellInSwellData]
-            let directionOfMostSignificantSwellInSwellData:String = directions![indexOfMostSignifcantSwellInSwellData]
-            
-            
-            
             // fill labels
             heightLabel.text = "\(height!)ft"
-            tempLabel.text = "\(temp!)°   \(periodOfMostSignificantSwellInSwellData)s \(directionOfMostSignificantSwellInSwellData)"
+            tempLabel.text = "\(temp!)° \(swell!.period)s \(swell!.direction)"
         }
         gradient.colors = [colorTop, colorBottom]
         gradient.frame = self.bounds

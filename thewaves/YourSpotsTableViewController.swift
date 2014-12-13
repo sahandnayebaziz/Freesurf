@@ -110,23 +110,21 @@ class YourSpotsTableViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         // this is the ID of the cell at this indexPath
-        let rowID = spotLibrary.selectedSpotIDs[indexPath.row]
+        let rowID = self.spotLibrary.selectedSpotIDs[indexPath.row]
         
         // get values necessary for a cell. May be nil.
-        let libraryHeight:Int? = spotLibrary.heightAtHour(rowID, hour: currentHour)
-        let libraryTemp:Int? = spotLibrary.waterTemp(rowID)
-        let libraryPeriods:[Int]? = spotLibrary.periodsForNext24Hours(rowID, hour: 0)
-        let libraryHeights:[Int]? = spotLibrary.heightsForNext24Hours(rowID, hour: 0)
-        let libraryDirections:[String]? = spotLibrary.directionsForNext24Hours(rowID, hour: 0)
+        let libraryHeight:Int? = self.spotLibrary.currentHeight(rowID)
+        let libraryTemp:Int? = self.spotLibrary.waterTemp(rowID)
+        let librarySwell:(height:Int, period:Int, direction:String)? = self.spotLibrary.significantSwell(rowID)
         
         // create and return the cell
         let cell:YourSpotsCell = yourSpotsTableView.dequeueReusableCellWithIdentifier("yourSpotsCell", forIndexPath: indexPath) as YourSpotsCell
         cell.backgroundColor = UIColor.clearColor() // the cell starts with a clear background before getting a gradient color.
-        if libraryHeight != nil && libraryTemp != nil && libraryPeriods != nil && libraryHeights != nil && libraryDirections != nil { // if spot values are all here, send to the cell
-            cell.setCellLabels(spotLibrary.name(rowID), height: libraryHeight, temp: libraryTemp, periods: libraryPeriods, heights: libraryHeights, directions: libraryDirections)
+        if libraryHeight != nil && libraryTemp != nil && librarySwell != nil { // if spot values are all here, send to the cell
+            cell.setCellLabels(spotLibrary.name(rowID), height: libraryHeight, temp: libraryTemp, swell: librarySwell)
         }
         else { // if any of the values are still nil, keep the cell blank
-            cell.setCellLabels(spotLibrary.name(rowID), height: nil, temp: nil, periods: nil, heights: nil, directions: nil)
+            cell.setCellLabels(spotLibrary.name(rowID), height: nil, temp: nil, swell: nil)
             dispatch_to_main_queue { // check again to see if the values are here yet at the end of the main queue
                 self.yourSpotsTableView.reloadData()
             }
@@ -189,7 +187,7 @@ class YourSpotsTableViewController: UITableViewController {
                 let destinationView:SpotDetailViewController = nav.topViewController as SpotDetailViewController
                 
                 let indexPath:NSIndexPath = yourSpotsTableView.indexPathForSelectedRow()!
-                let rowID = spotLibrary.selectedSpotIDs[indexPath.row]
+                let rowID = self.spotLibrary.selectedSpotIDs[indexPath.row]
                 
                 destinationView.spotLibrary = self.spotLibrary
                 destinationView.selectedSpotID = rowID
@@ -216,7 +214,7 @@ class YourSpotsTableViewController: UITableViewController {
             for spot in spotLibrary.selectedSpotIDs {
                 if isConnectedToNetwork() {
                     
-                    if spotLibrary.heightAtHour(spot, hour: self.currentHour) == nil { // call getter, if nil dispatch JSON download
+                    if spotLibrary.currentHeight(spot) == nil { // call getter, if nil dispatch JSON download
                         dispatch_to_background_queue {
                             self.spotLibrary.getSpotSwell(spot)
                         }
@@ -234,7 +232,7 @@ class YourSpotsTableViewController: UITableViewController {
                         }
                     }
                     
-                    if spotLibrary.periodsForNext24Hours(spot, hour: self.currentHour) == nil {
+                    if spotLibrary.significantSwell(spot) == nil {
                         dispatch_to_background_queue {
                             self.spotLibrary.getCountySwell(self.spotLibrary.county(spot))
                         }
