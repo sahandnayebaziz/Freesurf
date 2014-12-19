@@ -51,7 +51,7 @@ class YourSpotsCell: UITableViewCell {
         if let values = valuesForSpotAtThisCell {
             nameLabel.text = name
             heightLabel.text = "\(values.height)ft"
-            tempLabel.text = "\(values.waterTemp)° \(values.swell.direction) \(values.swell.period)s"
+            tempLabel.text = "\(values.waterTemp)° \(values.swell.period)s \(values.swell.direction)"
             
             // depending on the size of the current swell height for this spot, color the backgrounds of the cells
             if values.height <= 2 {
@@ -71,7 +71,7 @@ class YourSpotsCell: UITableViewCell {
         else {
             nameLabel.text = name
             heightLabel.text = "--ft"
-            tempLabel.text = "--° -- --s"
+            tempLabel.text = "--° --s --"
             
             // set the background to a dark gradient of blues to indicate that data has not been received
             colorTop = UIColor(red: 70/255.0, green: 104/255.0, blue: 130/255.0, alpha: 0.4).CGColor!

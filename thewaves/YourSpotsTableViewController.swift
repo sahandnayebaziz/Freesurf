@@ -52,7 +52,7 @@ class YourSpotsTableViewController: UITableViewController {
         self.yourSpotsTableView.backgroundColor = UIColor(red: 13/255.0, green: 13/255.0, blue: 13/255.0, alpha: 1.0)
         
         // set footer to be the tableFooterView of yourSpotsTableView and give footer a height of 100
-        footer.frame = CGRect(x: footer.frame.minX, y: footer.frame.minY, width: footer.frame.maxX, height: 100)
+        footer.frame = CGRect(x: footer.frame.minX, y: footer.frame.minY, width: footer.frame.maxX, height: 130)
         yourSpotsTableView.tableFooterView = footer
     }
     

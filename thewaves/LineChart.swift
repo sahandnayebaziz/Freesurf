@@ -548,11 +548,35 @@ class LineChart: UIControl {
         var xAxisData = self.dataStore[0]
         var scaledDataXAxis = scaleDataXAxis(xAxisData)
         for (index, scaledValue) in enumerate(scaledDataXAxis) {
-            var label = UILabel(frame: CGRect(x: scaledValue + (axisInset/2), y: self.bounds.height-axisInset, width: axisInset, height: axisInset))
-            label.font = UIFont.systemFontOfSize(10)
-            label.textAlignment = NSTextAlignment.Center
-            label.text = String(index)
-            self.addSubview(label)
+            // MARK: mod - added modulo for division of label number display
+            if index % 6 == 0 {
+                var label = UILabel(frame: CGRect(x: scaledValue + (axisInset/2), y: self.bounds.height-axisInset, width: axisInset + 4, height: axisInset))
+                label.font = UIFont.systemFontOfSize(12)
+                // MARK: mod - changed justification
+                label.textAlignment = NSTextAlignment.Left
+                
+                
+                // MARK: mod - hour time
+                var timeStringIn12HourTime:String = ""
+                var hourOfDay = index + NSDate().hour()
+                if hourOfDay >= 24 {
+                    hourOfDay = hourOfDay - 24
+                }
+                if hourOfDay >= 12 {
+                    hourOfDay = hourOfDay - 12
+                }
+                if hourOfDay == 0 {
+                    timeStringIn12HourTime = "12"
+                }
+                else {
+                    timeStringIn12HourTime = "\(hourOfDay)"
+                }
+                
+                
+                label.text = timeStringIn12HourTime
+                
+                self.addSubview(label)
+            }
         }
     }
     

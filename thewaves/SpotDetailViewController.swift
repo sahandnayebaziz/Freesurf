@@ -21,7 +21,7 @@ class SpotDetailViewController: UIViewController, UIScrollViewDelegate, LineChar
     // this is the gesture recognizer that will allow edge swipes to be detected
     var enterPanGesture: UIScreenEdgePanGestureRecognizer!
     
-    // this gradient layer will be used to give the entire view a background color similar to the one of the cell for this spot 
+    // this gradient layer will be used to give the entire view a background color similar to the one of the cell for this spot
     // in YourSpotsTableView
     let gradient:CAGradientLayer = CAGradientLayer()
     
@@ -38,6 +38,14 @@ class SpotDetailViewController: UIViewController, UIScrollViewDelegate, LineChar
     @IBOutlet weak var tideChartTimeLabel: UILabel!
     @IBOutlet weak var tideChartHeightLabel: UILabel!
     
+    @IBOutlet weak var spotNameLabel: UILabel!
+    @IBOutlet weak var spotSwellSummaryLabel: UILabel!
+    @IBOutlet weak var spotWaterTempSummaryLabel: UILabel!
+    @IBOutlet weak var spotWindSummaryLabel: UILabel!
+    @IBOutlet weak var spotHighTideSummaryLabel: UILabel!
+    @IBOutlet weak var spotLowTideSummaryLabel: UILabel!
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,11 +58,14 @@ class SpotDetailViewController: UIViewController, UIScrollViewDelegate, LineChar
         // set the background color of the view based on the size of this spot's swell height
         self.setBackgroundColor(self.spotLibrary.currentHeight(selectedSpotID)!)
         
+        // set the labels
+        self.setViewLabels()
+        
         // create the tide chart
         self.createChartsForDetailView()
         
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -87,30 +98,80 @@ class SpotDetailViewController: UIViewController, UIScrollViewDelegate, LineChar
     }
     
     // MARK: Create and manage colors, labels, and display
-    func setBackgroundColor(height:Int) {
-        var colorTop:CGColorRef;
-        var colorBottom:CGColorRef;
-        if height <= 2 {
-            colorTop = UIColor(red: 70/255.0, green: 104/255.0, blue: 130/255.0, alpha: 1.0).CGColor!
-            colorBottom = UIColor(red: 58/255.0, green: 100/255.0, blue: 131/255.0, alpha: 1.0).CGColor!
+    func setViewLabels() {
+        // set name
+        self.spotNameLabel.text = self.spotLibrary.name(selectedSpotID)
+        
+        // set swell summary
+        let swell = self.spotLibrary.significantSwell(selectedSpotID)!
+        let spotHeight = self.spotLibrary.currentHeight(selectedSpotID)!
+        let wind = self.spotLibrary.wind(selectedSpotID)!
+        let temp = self.spotLibrary.waterTemp(selectedSpotID)!
+        let tides = self.spotLibrary.next24Tides(selectedSpotID)!
+        
+        // set tide summary
+        var maxTide:Float = 0;
+        var maxTideHoursFromNow:Int = 0;
+        var minTide:Float = 999;
+        var minTideHoursFromNow:Int = 999;
+        
+        for var index = 12; index >= 0; index-- {
+            if (tides[index] >= maxTide) {
+                maxTide = tides[index]
+                maxTideHoursFromNow = index
+            }
+            if (tides[index] <= minTide) {
+                minTide = tides[index]
+                minTideHoursFromNow = index
+            }
         }
-        else if height <= 4 {
-            colorTop = UIColor(red: 95/255.0, green: 146/255.0, blue: 185/255.0, alpha: 1.0).CGColor!
-            colorBottom = UIColor(red: 77/255.0, green: 139/255.0, blue: 186/255.0, alpha: 1.0).CGColor!
+        
+
+        if maxTideHoursFromNow <= 1 {
+           self.spotHighTideSummaryLabel.text = "now"
         }
         else {
-            colorTop = UIColor(red: 120/255.0, green: 188/255.0, blue: 240/255.0, alpha: 1.0).CGColor!
-            colorBottom = UIColor(red: 97/255.0, green: 179/255.0, blue: 242/255.0, alpha: 1.0).CGColor!
+            self.spotHighTideSummaryLabel.text = "in \(maxTideHoursFromNow) hours"
         }
-        gradient.colors = [colorTop, colorBottom]
-        gradient.frame = self.view.bounds
-        self.view.layer.insertSublayer(gradient, atIndex: 0)
+        if minTideHoursFromNow <= 1 {
+            self.spotLowTideSummaryLabel.text = "now"
+        }
+        else {
+            self.spotLowTideSummaryLabel.text = "in \(minTideHoursFromNow) hours"
+        }
+        
+        self.spotSwellSummaryLabel.text = "\(spotHeight)ft \(swell.period)s \(swell.direction)"
+        self.spotWindSummaryLabel.text = "\(wind.speedInMPH)mph \(wind.direction)"
+        self.spotWaterTempSummaryLabel.text = "\(temp)°"
+    }
+    
+    func setBackgroundColor(height:Int) {
+        //        var colorTop:CGColorRef;
+        //        var colorBottom:CGColorRef;
+        //        if height <= 2 {
+        //            colorTop = UIColor(red: 70/255.0, green: 104/255.0, blue: 130/255.0, alpha: 1.0).CGColor!
+        //            colorBottom = UIColor(red: 58/255.0, green: 100/255.0, blue: 131/255.0, alpha: 1.0).CGColor!
+        //        }
+        //        else if height <= 4 {
+        //            colorTop = UIColor(red: 95/255.0, green: 146/255.0, blue: 185/255.0, alpha: 1.0).CGColor!
+        //            colorBottom = UIColor(red: 77/255.0, green: 139/255.0, blue: 186/255.0, alpha: 1.0).CGColor!
+        //        }
+        //        else {
+        //            colorTop = UIColor(red: 120/255.0, green: 188/255.0, blue: 240/255.0, alpha: 1.0).CGColor!
+        //            colorBottom = UIColor(red: 97/255.0, green: 179/255.0, blue: 242/255.0, alpha: 1.0).CGColor!
+        //        }
+        //        gradient.colors = [colorTop, colorBottom]
+        //        gradient.frame = self.view.bounds
+        //        self.view.layer.insertSublayer(gradient, atIndex: 0)
+        // set the background color of this view to be a dark, near-black gray
+        self.view.backgroundColor = UIColor(red: 13/255.0, green: 13/255.0, blue: 13/255.0, alpha: 1.0)
+        
     }
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
         return UIStatusBarStyle.LightContent
     }
-
+    
     
     // MARK: Creating and managing charts
     func createChartsForDetailView() {
@@ -135,13 +196,16 @@ class SpotDetailViewController: UIViewController, UIScrollViewDelegate, LineChar
         tideChart.areaUnderLinesVisible = true
         tideChart.axesColor = lightGray
         tideChart.gridColor = lightGray
+        tideChart.labelsXVisible = true
+        tideChart.axisInset = 24
+        tideChart.numberOfGridLinesX = 6
         
         // add tideChart to the view
         targetView.addSubview(tideChart)
         
         // add self as delegate
         tideChart.delegate = self
-
+        
     }
     
     func didSelectDataPoint(x: CGFloat, yValues: Array<CGFloat>) {
@@ -172,7 +236,7 @@ class SpotDetailViewController: UIViewController, UIScrollViewDelegate, LineChar
         
         tideChartTimeLabel.text = timeStringIn12HourTime
     }
-
+    
     // MARK: View delegate methods
     override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
         self.gradient.frame = self.view.bounds
