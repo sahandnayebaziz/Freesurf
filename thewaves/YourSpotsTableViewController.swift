@@ -183,8 +183,24 @@ class YourSpotsTableViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath:NSIndexPath) {
-        // selecting a cell is currently disabled
+        //log
+        println("called did select row")
+        
+        // this is the ID of the cell at this indexPath
+        let rowID = self.spotLibrary.selectedSpotIDs[indexPath.row]
+        
+        // if values have been stored this cell's spot, perform the segue to the spot details controller
+        if let spotValues = self.spotLibrary.getValuesForYourSpotsCell(rowID) {
+            println("segueable")
+            self.performSegueWithIdentifier("openSpotDetail", sender: nil)
+        }
+        else {
+            println("not segueable")
+        }
+        
+        // visually deselect the cell
         yourSpotsTableView.deselectRowAtIndexPath(indexPath, animated: false)
+        
     }
     
     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool  {
@@ -239,6 +255,7 @@ class YourSpotsTableViewController: UITableViewController {
             destinationView.spotLibrary = self.spotLibrary
         }
         if segue.identifier! == "openSpotDetail" {
+            println("preparting for right segue")
             // identify destination controller
             let nav:UINavigationController = segue.destinationViewController as UINavigationController
             let destinationView:SpotDetailViewController = nav.topViewController as SpotDetailViewController

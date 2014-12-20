@@ -209,32 +209,32 @@ class SpotDetailViewController: UIViewController, UIScrollViewDelegate, LineChar
     }
     
     func didSelectDataPoint(x: CGFloat, yValues: Array<CGFloat>) {
-        tideChartHeightLabel.text = "\(Int(yValues.first!))ft"
-        
-        var timeStringIn12HourTime:String = ""
-        var hourOfDay = Int(x) + self.spotLibrary.currentHour
-        if hourOfDay >= 24 {
-            hourOfDay = hourOfDay - 24
-        }
-        if hourOfDay < 12 {
-            if hourOfDay == 0 {
-                timeStringIn12HourTime = "12AM"
-            }
-            else {
-                timeStringIn12HourTime = "\(hourOfDay)AM"
-            }
-        }
-        else if hourOfDay >= 12 {
-            hourOfDay = hourOfDay - 12
-            if hourOfDay == 0 {
-                timeStringIn12HourTime = "12PM"
-            }
-            else {
-                timeStringIn12HourTime = "\(hourOfDay)PM"
-            }
-        }
-        
-        tideChartTimeLabel.text = timeStringIn12HourTime
+//        tideChartHeightLabel.text = "\(Int(yValues.first!))ft"
+//        
+//        var timeStringIn12HourTime:String = ""
+//        var hourOfDay = Int(x) + self.spotLibrary.currentHour
+//        if hourOfDay >= 24 {
+//            hourOfDay = hourOfDay - 24
+//        }
+//        if hourOfDay < 12 {
+//            if hourOfDay == 0 {
+//                timeStringIn12HourTime = "12AM"
+//            }
+//            else {
+//                timeStringIn12HourTime = "\(hourOfDay)AM"
+//            }
+//        }
+//        else if hourOfDay >= 12 {
+//            hourOfDay = hourOfDay - 12
+//            if hourOfDay == 0 {
+//                timeStringIn12HourTime = "12PM"
+//            }
+//            else {
+//                timeStringIn12HourTime = "\(hourOfDay)PM"
+//            }
+//        }
+//        
+//        tideChartTimeLabel.text = timeStringIn12HourTime
     }
     
     // MARK: View delegate methods

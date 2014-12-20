@@ -360,7 +360,6 @@ class SpotLibrary: NSObject, NSURLSessionDelegate {
     // if swell data has been stored
     func currentHeight(id:Int) -> Int? {
         if let height:Float = self.spotDataDictionary[id]!.spotHeights?[0] {
-            println("height is \(height)")
             return Int(height)
         }
         else {
