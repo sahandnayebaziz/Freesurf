@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "D8011774198D64C200509A27"
-               BuildableName = "thewaves.app"
-               BlueprintName = "thewaves"
-               ReferencedContainer = "container:thewaves.xcodeproj">
+               BuildableName = "Freesurf.app"
+               BlueprintName = "Freesurf"
+               ReferencedContainer = "container:Freesurf.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "D8011786198D64C200509A27"
-               BuildableName = "thewavesTests.xctest"
-               BlueprintName = "thewavesTests"
-               ReferencedContainer = "container:thewaves.xcodeproj">
+               BuildableName = "FreesurfTests.xctest"
+               BlueprintName = "FreesurfTests"
+               ReferencedContainer = "container:Freesurf.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -43,9 +43,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "D8011774198D64C200509A27"
-            BuildableName = "thewaves.app"
-            BlueprintName = "thewaves"
-            ReferencedContainer = "container:thewaves.xcodeproj">
+            BuildableName = "Freesurf.app"
+            BlueprintName = "Freesurf"
+            ReferencedContainer = "container:Freesurf.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </TestAction>
@@ -62,9 +62,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "D8011774198D64C200509A27"
-            BuildableName = "thewaves.app"
-            BlueprintName = "thewaves"
-            ReferencedContainer = "container:thewaves.xcodeproj">
+            BuildableName = "Freesurf.app"
+            BlueprintName = "Freesurf"
+            ReferencedContainer = "container:Freesurf.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -80,9 +80,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "D8011774198D64C200509A27"
-            BuildableName = "thewaves.app"
-            BlueprintName = "thewaves"
-            ReferencedContainer = "container:thewaves.xcodeproj">
+            BuildableName = "Freesurf.app"
+            BlueprintName = "Freesurf"
+            ReferencedContainer = "container:Freesurf.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

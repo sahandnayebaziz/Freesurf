@@ -11,7 +11,7 @@ import UIKit
 class SearchForNewSpotsTableViewController: UITableViewController, UIScrollViewDelegate {
     @IBOutlet var searchForNewSpotsTableView: UITableView! // this is the table view
     @IBOutlet weak var searchField: UITextField! // this is the text field used for input
-    var searchSpotLibrary:SpotLibrary! // this is the SpotLibrary object that always comes from the first view controller
+    var spotLibrary:SpotLibrary! // this is the SpotLibrary object that always comes from the first view controller
     var results:[Int] = [] // this is an array that is populated by spots that contain the string the user has entered into the text field
     
     override func viewDidLoad() {
@@ -47,8 +47,9 @@ class SearchForNewSpotsTableViewController: UITableViewController, UIScrollViewD
         
         // create and return a cell that displays the name and county name of a spot for this match in the results array
         var cell:UITableViewCell = self.searchForNewSpotsTableView.dequeueReusableCellWithIdentifier("searchForNewSpotsCell") as UITableViewCell
-        cell.textLabel!.text = searchSpotLibrary.name(rowID)
-        cell.detailTextLabel!.text = searchSpotLibrary.county(rowID)
+        cell.textLabel!.text = spotLibrary.name(rowID)
+        cell.detailTextLabel!.text = spotLibrary.county(rowID)
+        cell.backgroundColor = UIColor.clearColor()
         return cell
     }
 
@@ -62,8 +63,8 @@ class SearchForNewSpotsTableViewController: UITableViewController, UIScrollViewD
         }
         if sender!.isKindOfClass(UITableViewCell) {
             var indexPath:NSIndexPath = searchForNewSpotsTableView.indexPathForSelectedRow()!
-            if !(contains(self.searchSpotLibrary.selectedSpotIDs, results[indexPath.row])) {
-                searchSpotLibrary.selectedSpotIDs.append(results[indexPath.row])
+            if !(contains(self.spotLibrary.selectedSpotIDs, results[indexPath.row])) {
+                spotLibrary.selectedSpotIDs.append(results[indexPath.row])
             }
         }
     }
@@ -77,8 +78,8 @@ class SearchForNewSpotsTableViewController: UITableViewController, UIScrollViewD
         // if the user has entered at least one character, search for all spots with
         // a name or a county containing the input string. Add all of those to the results array
         if (countElements(sender.text) != 0) {
-            for key in self.searchSpotLibrary.spotDataDictionary.keys {
-                if (self.searchSpotLibrary.spotDataDictionary[key]!.spotName.contains(input) || self.searchSpotLibrary.spotDataDictionary[key]!.spotCounty.contains(input)) {
+            for key in self.spotLibrary.spotDataDictionary.keys {
+                if (self.spotLibrary.spotDataDictionary[key]!.spotName.contains(input) || self.spotLibrary.spotDataDictionary[key]!.spotCounty.contains(input)) {
                     self.results.append(key)
                 }
             }

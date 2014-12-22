@@ -30,7 +30,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let vc = self.window!.rootViewController!.childViewControllers[0] as YourSpotsTableViewController
         let defaults:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        defaults.setObject(vc.yourSpotLibrary.exportLibraryToString(), forKey: "userSelectedSpots")
+        defaults.setObject(vc.spotLibrary.exportLibraryToString(), forKey: "userSelectedSpots")
         defaults.setObject(NSDate().hoursAfterDate(NSDate(fromString: "13 July 1993", format: .Custom("dd MMM yyyy"))), forKey: "hoursMarker")
         defaults.synchronize()
     }
@@ -45,8 +45,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 NSLog("need to refresh")
                 if let exportString = defaults.objectForKey("userSelectedSpots") as? String {
                     vc.usingUserDefaults = true
-                    vc.yourSpotLibrary = SpotLibrary()
-                    vc.yourSpotLibrary.initLibraryFromString(exportString)
+                    vc.spotLibrary = SpotLibrary()
+                    vc.spotLibrary.initLibraryFromString(exportString)
                     vc.viewWillAppear(false)
                 }
             }

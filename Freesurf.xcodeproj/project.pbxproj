@@ -9,15 +9,17 @@
 /* Begin PBXBuildFile section */
 		D801177B198D64C200509A27 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D801177A198D64C200509A27 /* AppDelegate.swift */; };
 		D8011780198D64C200509A27 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D801177E198D64C200509A27 /* Main.storyboard */; };
-		D8011782198D64C200509A27 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D8011781198D64C200509A27 /* Images.xcassets */; };
 		D801178E198D64C200509A27 /* thewavesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D801178D198D64C200509A27 /* thewavesTests.swift */; };
+		D801B1641A3D172200C1751F /* DotCALayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D801B1621A3D172200C1751F /* DotCALayer.swift */; };
+		D801B1651A3D172200C1751F /* LineChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = D801B1631A3D172200C1751F /* LineChart.swift */; };
 		D811E9201A06DD1200EF9035 /* YourSpotsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D811E91F1A06DD1200EF9035 /* YourSpotsCell.swift */; };
 		D818F3D3198EEE390098FE82 /* SpotLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = D818F3D2198EEE390098FE82 /* SpotLibrary.swift */; };
+		D82C59711A33E69600896BBA /* SpotDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D82C59701A33E69600896BBA /* SpotDetailViewController.swift */; };
 		D84F16FC19C76E6E0050E4FC /* af-date-extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D84F16FB19C76E6E0050E4FC /* af-date-extension.swift */; };
 		D86F621D198F02DF0070B713 /* YourSpotsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86F621C198F02DF0070B713 /* YourSpotsTableViewController.swift */; };
 		D8B5681619C8914E000817AA /* threading.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B5681519C8914E000817AA /* threading.swift */; };
 		D8B63A3619C90027004A1398 /* networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B63A3519C90027004A1398 /* networking.swift */; };
-		D8ED19991A33755E001BCECB /* SpotDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8ED19981A33755E001BCECB /* SpotDetailViewController.swift */; };
+		D8B89E131A47BFE100BBEAD5 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D8B89E121A47BFE100BBEAD5 /* Images.xcassets */; };
 		D8F6636519D5EF87000B062C /* search.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8F6636419D5EF87000B062C /* search.swift */; };
 		D8F6636919D5F14F000B062C /* SearchForNewSpotsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8F6636819D5F14F000B062C /* SearchForNewSpotsTableViewController.swift */; };
 /* End PBXBuildFile section */
@@ -33,21 +35,23 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		D8011775198D64C200509A27 /* thewaves.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = thewaves.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D8011775198D64C200509A27 /* Freesurf.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Freesurf.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D8011779198D64C200509A27 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D801177A198D64C200509A27 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D801177F198D64C200509A27 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		D8011781198D64C200509A27 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		D8011787198D64C200509A27 /* thewavesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = thewavesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		D8011787198D64C200509A27 /* FreesurfTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FreesurfTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D801178C198D64C200509A27 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D801178D198D64C200509A27 /* thewavesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = thewavesTests.swift; sourceTree = "<group>"; };
+		D801B1621A3D172200C1751F /* DotCALayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DotCALayer.swift; sourceTree = "<group>"; };
+		D801B1631A3D172200C1751F /* LineChart.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LineChart.swift; sourceTree = "<group>"; };
 		D811E91F1A06DD1200EF9035 /* YourSpotsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YourSpotsCell.swift; sourceTree = "<group>"; };
 		D818F3D2198EEE390098FE82 /* SpotLibrary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpotLibrary.swift; sourceTree = "<group>"; };
+		D82C59701A33E69600896BBA /* SpotDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpotDetailViewController.swift; sourceTree = "<group>"; };
 		D84F16FB19C76E6E0050E4FC /* af-date-extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "af-date-extension.swift"; sourceTree = "<group>"; };
 		D86F621C198F02DF0070B713 /* YourSpotsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YourSpotsTableViewController.swift; sourceTree = "<group>"; };
 		D8B5681519C8914E000817AA /* threading.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = threading.swift; sourceTree = "<group>"; };
 		D8B63A3519C90027004A1398 /* networking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = networking.swift; sourceTree = "<group>"; };
-		D8ED19981A33755E001BCECB /* SpotDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpotDetailViewController.swift; sourceTree = "<group>"; };
+		D8B89E121A47BFE100BBEAD5 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = thewaves/Images.xcassets; sourceTree = "<group>"; };
 		D8F6636419D5EF87000B062C /* search.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = search.swift; sourceTree = "<group>"; };
 		D8F6636819D5F14F000B062C /* SearchForNewSpotsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchForNewSpotsTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -76,14 +80,15 @@
 				D8011777198D64C200509A27 /* thewaves */,
 				D801178A198D64C200509A27 /* thewavesTests */,
 				D8011776198D64C200509A27 /* Products */,
+				D8B89E121A47BFE100BBEAD5 /* Images.xcassets */,
 			);
 			sourceTree = "<group>";
 		};
 		D8011776198D64C200509A27 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				D8011775198D64C200509A27 /* thewaves.app */,
-				D8011787198D64C200509A27 /* thewavesTests.xctest */,
+				D8011775198D64C200509A27 /* Freesurf.app */,
+				D8011787198D64C200509A27 /* FreesurfTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -95,7 +100,6 @@
 				D86F621A198EFA9A0070B713 /* Models */,
 				D86F621B198EFAAA0070B713 /* Views */,
 				D86F6219198EFA910070B713 /* Controllers */,
-				D8011781198D64C200509A27 /* Images.xcassets */,
 				D8011778198D64C200509A27 /* Supporting Files */,
 			);
 			path = thewaves;
@@ -129,6 +133,8 @@
 		D84F16FA19C76E4E0050E4FC /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				D801B1621A3D172200C1751F /* DotCALayer.swift */,
+				D801B1631A3D172200C1751F /* LineChart.swift */,
 				D84F16FB19C76E6E0050E4FC /* af-date-extension.swift */,
 				D8B63A3519C90027004A1398 /* networking.swift */,
 				D8B5681519C8914E000817AA /* threading.swift */,
@@ -143,7 +149,7 @@
 				D8F6636819D5F14F000B062C /* SearchForNewSpotsTableViewController.swift */,
 				D801177A198D64C200509A27 /* AppDelegate.swift */,
 				D86F621C198F02DF0070B713 /* YourSpotsTableViewController.swift */,
-				D8ED19981A33755E001BCECB /* SpotDetailViewController.swift */,
+				D82C59701A33E69600896BBA /* SpotDetailViewController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -168,9 +174,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		D8011774198D64C200509A27 /* thewaves */ = {
+		D8011774198D64C200509A27 /* Freesurf */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D8011791198D64C200509A27 /* Build configuration list for PBXNativeTarget "thewaves" */;
+			buildConfigurationList = D8011791198D64C200509A27 /* Build configuration list for PBXNativeTarget "Freesurf" */;
 			buildPhases = (
 				D8011771198D64C200509A27 /* Sources */,
 				D8011772198D64C200509A27 /* Frameworks */,
@@ -180,14 +186,14 @@
 			);
 			dependencies = (
 			);
-			name = thewaves;
+			name = Freesurf;
 			productName = thewaves;
-			productReference = D8011775198D64C200509A27 /* thewaves.app */;
+			productReference = D8011775198D64C200509A27 /* Freesurf.app */;
 			productType = "com.apple.product-type.application";
 		};
-		D8011786198D64C200509A27 /* thewavesTests */ = {
+		D8011786198D64C200509A27 /* FreesurfTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D8011794198D64C200509A27 /* Build configuration list for PBXNativeTarget "thewavesTests" */;
+			buildConfigurationList = D8011794198D64C200509A27 /* Build configuration list for PBXNativeTarget "FreesurfTests" */;
 			buildPhases = (
 				D8011783198D64C200509A27 /* Sources */,
 				D8011784198D64C200509A27 /* Frameworks */,
@@ -198,9 +204,9 @@
 			dependencies = (
 				D8011789198D64C200509A27 /* PBXTargetDependency */,
 			);
-			name = thewavesTests;
+			name = FreesurfTests;
 			productName = thewavesTests;
-			productReference = D8011787198D64C200509A27 /* thewavesTests.xctest */;
+			productReference = D8011787198D64C200509A27 /* FreesurfTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -222,7 +228,7 @@
 					};
 				};
 			};
-			buildConfigurationList = D8011770198D64C200509A27 /* Build configuration list for PBXProject "thewaves" */;
+			buildConfigurationList = D8011770198D64C200509A27 /* Build configuration list for PBXProject "Freesurf" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -235,8 +241,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				D8011774198D64C200509A27 /* thewaves */,
-				D8011786198D64C200509A27 /* thewavesTests */,
+				D8011774198D64C200509A27 /* Freesurf */,
+				D8011786198D64C200509A27 /* FreesurfTests */,
 			);
 		};
 /* End PBXProject section */
@@ -247,7 +253,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D8011780198D64C200509A27 /* Main.storyboard in Resources */,
-				D8011782198D64C200509A27 /* Images.xcassets in Resources */,
+				D8B89E131A47BFE100BBEAD5 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -270,10 +276,12 @@
 				D8B5681619C8914E000817AA /* threading.swift in Sources */,
 				D8B63A3619C90027004A1398 /* networking.swift in Sources */,
 				D8F6636919D5F14F000B062C /* SearchForNewSpotsTableViewController.swift in Sources */,
-				D8ED19991A33755E001BCECB /* SpotDetailViewController.swift in Sources */,
 				D8F6636519D5EF87000B062C /* search.swift in Sources */,
+				D801B1641A3D172200C1751F /* DotCALayer.swift in Sources */,
 				D84F16FC19C76E6E0050E4FC /* af-date-extension.swift in Sources */,
+				D801B1651A3D172200C1751F /* LineChart.swift in Sources */,
 				D801177B198D64C200509A27 /* AppDelegate.swift in Sources */,
+				D82C59711A33E69600896BBA /* SpotDetailViewController.swift in Sources */,
 				D811E9201A06DD1200EF9035 /* YourSpotsCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -291,7 +299,7 @@
 /* Begin PBXTargetDependency section */
 		D8011789198D64C200509A27 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = D8011774198D64C200509A27 /* thewaves */;
+			target = D8011774198D64C200509A27 /* Freesurf */;
 			targetProxy = D8011788198D64C200509A27 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -394,7 +402,7 @@
 				INFOPLIST_FILE = thewaves/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Freesurf;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -408,7 +416,7 @@
 				INFOPLIST_FILE = thewaves/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Freesurf;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
@@ -427,7 +435,7 @@
 				);
 				INFOPLIST_FILE = thewavesTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = FreesurfTests;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 			};
 			name = Debug;
@@ -442,7 +450,7 @@
 				);
 				INFOPLIST_FILE = thewavesTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = FreesurfTests;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 			};
 			name = Release;
@@ -450,7 +458,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		D8011770198D64C200509A27 /* Build configuration list for PBXProject "thewaves" */ = {
+		D8011770198D64C200509A27 /* Build configuration list for PBXProject "Freesurf" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D801178F198D64C200509A27 /* Debug */,
@@ -459,7 +467,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D8011791198D64C200509A27 /* Build configuration list for PBXNativeTarget "thewaves" */ = {
+		D8011791198D64C200509A27 /* Build configuration list for PBXNativeTarget "Freesurf" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D8011792198D64C200509A27 /* Debug */,
@@ -468,7 +476,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D8011794198D64C200509A27 /* Build configuration list for PBXNativeTarget "thewavesTests" */ = {
+		D8011794198D64C200509A27 /* Build configuration list for PBXNativeTarget "FreesurfTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D8011795198D64C200509A27 /* Debug */,
