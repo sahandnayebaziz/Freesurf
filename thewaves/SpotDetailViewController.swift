@@ -18,6 +18,10 @@ class SpotDetailViewController: UIViewController, UIScrollViewDelegate, LineChar
     // this is the id of the spot selected by the user
     var selectedSpotID:Int!
     
+    // currentHour is an integer representing the current hour of the day in 24-hour time
+    // :: midnight is "0" and 11PM is "23"
+    var currentHour:Int = NSDate().hour()
+    
     // this is the gesture recognizer that will allow edge swipes to be detected
     var enterPanGesture: UIScreenEdgePanGestureRecognizer!
     
@@ -28,27 +32,32 @@ class SpotDetailViewController: UIViewController, UIScrollViewDelegate, LineChar
     // the tideChart object
     var tideChart:LineChart = LineChart()
     
-    // this view is the view that gives tideChart it's size
-    @IBOutlet weak var copyView: UIView!
+    // the swellChart object
+    var swellChart:LineChart = LineChart()
     
     // this view is the view that tideChart will be added to
+    @IBOutlet weak var tideChartView: UIView!
+    
+    // this view is the view that swellChart will be added to
+    @IBOutlet weak var swellChartView: UIView!
+    
+    // this is the view the charts will be added to
     @IBOutlet weak var targetView: UIView!
-    
-    // these labels display the tide that is selected by the user on the tide chart
-    @IBOutlet weak var tideChartTimeLabel: UILabel!
-    @IBOutlet weak var tideChartHeightLabel: UILabel!
-    
+
+    // labels need to be documented
     @IBOutlet weak var spotNameLabel: UILabel!
-    @IBOutlet weak var spotSwellSummaryLabel: UILabel!
-    @IBOutlet weak var spotWaterTempSummaryLabel: UILabel!
-    @IBOutlet weak var spotWindSummaryLabel: UILabel!
-    @IBOutlet weak var spotHighTideSummaryLabel: UILabel!
-    @IBOutlet weak var spotLowTideSummaryLabel: UILabel!
-    
-    
-    
+    @IBOutlet weak var spotCurrentHeightLabel: UILabel!
+    @IBOutlet weak var spotConditionsLabel: UILabel!
+    @IBOutlet weak var spotDirectionAndPeriodLabel: UILabel!
+    @IBOutlet weak var spotTideHeightAtHour: UILabel!
+    @IBOutlet weak var spotSwellHeightAtHour: UILabel!
+
+    // called once
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // add the gesture recognizer that will recognize edge swipes from the left side of the screen to the right
+        // to handle returning to the yourSpotsTableViewController
         self.createEdgePanGestureRecognizer()
     }
     
@@ -64,6 +73,17 @@ class SpotDetailViewController: UIViewController, UIScrollViewDelegate, LineChar
         // create the tide chart
         self.createChartsForDetailView()
         
+        // simulate touches for the current hour of both charts
+        // this will call the charts delegate method and set the labels for each chart before the user views the charts
+        self.tideChart.simulateTouchAtIndex(self.currentHour)
+        self.swellChart.simulateTouchAtIndex(self.currentHour)
+        
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        // highlight the data points for the current hour on both charts
+        self.tideChart.highlightDataPoints(self.currentHour)
+        self.swellChart.highlightDataPoints(self.currentHour)
     }
     
     override func didReceiveMemoryWarning() {
@@ -99,70 +119,20 @@ class SpotDetailViewController: UIViewController, UIScrollViewDelegate, LineChar
     
     // MARK: Create and manage colors, labels, and display
     func setViewLabels() {
-        // set name
-        self.spotNameLabel.text = self.spotLibrary.name(selectedSpotID)
-        
-        // set swell summary
+        // get values
+        let swellHeight = self.spotLibrary.currentHeight(selectedSpotID)!
+        let swellConditions = self.spotLibrary.currentConditions(selectedSpotID)!
         let swell = self.spotLibrary.significantSwell(selectedSpotID)!
-        let spotHeight = self.spotLibrary.currentHeight(selectedSpotID)!
-        let wind = self.spotLibrary.wind(selectedSpotID)!
-        let temp = self.spotLibrary.waterTemp(selectedSpotID)!
-        let tides = self.spotLibrary.next24Tides(selectedSpotID)!
-        
-        // set tide summary
-        var maxTide:Float = 0;
-        var maxTideHoursFromNow:Int = 0;
-        var minTide:Float = 999;
-        var minTideHoursFromNow:Int = 999;
-        
-        for var index = 12; index >= 0; index-- {
-            if (tides[index] >= maxTide) {
-                maxTide = tides[index]
-                maxTideHoursFromNow = index
-            }
-            if (tides[index] <= minTide) {
-                minTide = tides[index]
-                minTideHoursFromNow = index
-            }
-        }
-        
 
-        if maxTideHoursFromNow <= 1 {
-           self.spotHighTideSummaryLabel.text = "now"
-        }
-        else {
-            self.spotHighTideSummaryLabel.text = "in \(maxTideHoursFromNow) hours"
-        }
-        if minTideHoursFromNow <= 1 {
-            self.spotLowTideSummaryLabel.text = "now"
-        }
-        else {
-            self.spotLowTideSummaryLabel.text = "in \(minTideHoursFromNow) hours"
-        }
+        // set labels
+        self.spotNameLabel.text = self.spotLibrary.name(selectedSpotID)
+        self.spotCurrentHeightLabel.text = "\(swellHeight)ft"
+        self.spotConditionsLabel.text = "\(swellConditions.lowercaseString) conditions"
+        self.spotDirectionAndPeriodLabel.text = "\(swell.direction) @ \(swell.period)s"
         
-        self.spotSwellSummaryLabel.text = "\(spotHeight)ft \(swell.period)s \(swell.direction)"
-        self.spotWindSummaryLabel.text = "\(wind.speedInMPH)mph \(wind.direction)"
-        self.spotWaterTempSummaryLabel.text = "\(temp)°"
     }
     
     func setBackgroundColor(height:Int) {
-        //        var colorTop:CGColorRef;
-        //        var colorBottom:CGColorRef;
-        //        if height <= 2 {
-        //            colorTop = UIColor(red: 70/255.0, green: 104/255.0, blue: 130/255.0, alpha: 1.0).CGColor!
-        //            colorBottom = UIColor(red: 58/255.0, green: 100/255.0, blue: 131/255.0, alpha: 1.0).CGColor!
-        //        }
-        //        else if height <= 4 {
-        //            colorTop = UIColor(red: 95/255.0, green: 146/255.0, blue: 185/255.0, alpha: 1.0).CGColor!
-        //            colorBottom = UIColor(red: 77/255.0, green: 139/255.0, blue: 186/255.0, alpha: 1.0).CGColor!
-        //        }
-        //        else {
-        //            colorTop = UIColor(red: 120/255.0, green: 188/255.0, blue: 240/255.0, alpha: 1.0).CGColor!
-        //            colorBottom = UIColor(red: 97/255.0, green: 179/255.0, blue: 242/255.0, alpha: 1.0).CGColor!
-        //        }
-        //        gradient.colors = [colorTop, colorBottom]
-        //        gradient.frame = self.view.bounds
-        //        self.view.layer.insertSublayer(gradient, atIndex: 0)
         // set the background color of this view to be a dark, near-black gray
         self.view.backgroundColor = UIColor(red: 13/255.0, green: 13/255.0, blue: 13/255.0, alpha: 1.0)
         
@@ -176,65 +146,77 @@ class SpotDetailViewController: UIViewController, UIScrollViewDelegate, LineChar
     // MARK: Creating and managing charts
     func createChartsForDetailView() {
         
-        // set the frame for the chart
-        tideChart = LineChart(frame: CGRect(x: self.view.frame.minX, y: self.copyView.frame.minY, width: self.view.frame.width, height: self.copyView.frame.height))
+        // create tideChart object
+        tideChart = LineChart(frame: CGRect(x: self.view.frame.minX, y: self.tideChartView.frame.minY, width: self.view.frame.width, height: self.tideChartView.frame.height), identifier: "tideChart")
         
-        // add data to tide chart
+        // add data to tideChart
         var dataArray:Array<CGFloat> = []
-        var tides = self.spotLibrary.next24Tides(selectedSpotID)!
-        
+        var tides = self.spotLibrary.tidesForToday(selectedSpotID)!
         for tide in tides {
             dataArray.append(CGFloat(tide))
         }
-        
         tideChart.addLine(dataArray)
         
-        // modify tide chart
-        let lightGray:UIColor = UIColor(red: 243/255.0, green: 243/255.0, blue: 243/255.0, alpha: 0.13)
+        // create swellChart object
+        swellChart = LineChart(frame: CGRect(x: self.view.frame.minX, y: self.swellChartView.frame.minY, width: self.view.frame.width, height: self.swellChartView.frame.height), identifier: "swellChart")
         
-        tideChart.animationEnabled = false
-        tideChart.areaUnderLinesVisible = true
-        tideChart.axesColor = lightGray
-        tideChart.gridColor = lightGray
-        tideChart.labelsXVisible = true
-        tideChart.axisInset = 24
-        tideChart.numberOfGridLinesX = 6
+        // add data to swellChart
+        dataArray.removeAll(keepCapacity: true)
+        var heights = self.spotLibrary.heightsForToday(selectedSpotID)!
+        for height in heights {
+            dataArray.append(CGFloat(Int(height)))
+        }
+        swellChart.addLine(dataArray)
         
-        // add tideChart to the view
+        // modify tide charts
+        for chart in [tideChart, swellChart] {
+            chart.animationEnabled = true
+            chart.areaUnderLinesVisible = false
+            chart.axesColor = UIColor.clearColor()
+            chart.gridColor = UIColor.clearColor()
+            chart.labelsXVisible = false
+            chart.axisInset = 24
+        }
+        
+        // add charts to their views
         targetView.addSubview(tideChart)
+        targetView.addSubview(swellChart)
         
-        // add self as delegate
+        // set delegates for charts
         tideChart.delegate = self
+        swellChart.delegate = self
         
     }
     
-    func didSelectDataPoint(x: CGFloat, yValues: Array<CGFloat>) {
-//        tideChartHeightLabel.text = "\(Int(yValues.first!))ft"
-//        
-//        var timeStringIn12HourTime:String = ""
-//        var hourOfDay = Int(x) + self.spotLibrary.currentHour
-//        if hourOfDay >= 24 {
-//            hourOfDay = hourOfDay - 24
-//        }
-//        if hourOfDay < 12 {
-//            if hourOfDay == 0 {
-//                timeStringIn12HourTime = "12AM"
-//            }
-//            else {
-//                timeStringIn12HourTime = "\(hourOfDay)AM"
-//            }
-//        }
-//        else if hourOfDay >= 12 {
-//            hourOfDay = hourOfDay - 12
-//            if hourOfDay == 0 {
-//                timeStringIn12HourTime = "12PM"
-//            }
-//            else {
-//                timeStringIn12HourTime = "\(hourOfDay)PM"
-//            }
-//        }
-//        
-//        tideChartTimeLabel.text = timeStringIn12HourTime
+    func didSelectDataPoint(x: CGFloat, yValues: Array<CGFloat>, chartIdentifier: String) {
+        // get index of touch
+        var chartIndexTouched = x
+        if chartIndexTouched < 0 {
+            chartIndexTouched = 0
+        }
+        else if chartIndexTouched > 23 {
+            chartIndexTouched = 23
+        }
+        
+        var heightString = "\(Int(yValues.first!))ft"
+        var timeString = "\(graphIndexToTimeString(chartIndexTouched))"
+        var completeString = "\(heightString) @ \(timeString) Today"
+        var locationOfTimeString:Int = countElements(heightString) + 3
+        var attributedComplete:NSMutableAttributedString = NSMutableAttributedString(string: completeString)
+        if (Int(chartIndexTouched) == self.currentHour) {
+            var color:UIColor = UIColor(red: 97/255.0, green: 177/255.0, blue: 237/255.0, alpha: 1)
+            attributedComplete.addAttribute(NSForegroundColorAttributeName, value: color, range: NSMakeRange(locationOfTimeString, countElements(timeString)))
+        }
+        
+        if chartIdentifier == "tideChart" {
+            // set to label
+            self.spotTideHeightAtHour.attributedText = attributedComplete
+        }
+        else if chartIdentifier == "swellChart" {
+            // set to label
+            self.spotSwellHeightAtHour.attributedText = attributedComplete
+        }
+        
     }
     
     // MARK: View delegate methods
@@ -242,8 +224,37 @@ class SpotDetailViewController: UIViewController, UIScrollViewDelegate, LineChar
         self.gradient.frame = self.view.bounds
         self.setNeedsStatusBarAppearanceUpdate()
         self.gradient.setNeedsDisplay()
-        tideChart.frame = CGRect(x: self.view.frame.minX, y: self.copyView.frame.minY, width: self.view.frame.width, height: self.copyView.frame.height)
+        tideChart.frame = CGRect(x: self.view.frame.minX, y: self.tideChartView.frame.minY, width: self.view.frame.width, height: self.tideChartView.frame.height)
         tideChart.setNeedsDisplay()
+    }
+    
+    func graphIndexToTimeString(graphIndex: CGFloat) -> String {
+        var timeStringIn12HourTime = ""
+        var hourOfDay = Int(graphIndex)
+        if hourOfDay < 12 {
+            if hourOfDay == 0 {
+                timeStringIn12HourTime = "12AM"
+            }
+            else {
+                timeStringIn12HourTime = "\(hourOfDay)AM"
+            }
+        }
+        else if hourOfDay >= 12 {
+            if hourOfDay == 23 {
+                timeStringIn12HourTime = "11PM"
+            }
+            else {
+                hourOfDay = hourOfDay - 12
+                if hourOfDay == 0 {
+                    timeStringIn12HourTime = "12PM"
+                }
+                else {
+                    timeStringIn12HourTime = "\(hourOfDay)PM"
+                }
+            }
+        }
+        
+        return "\(timeStringIn12HourTime)"
     }
 }
 

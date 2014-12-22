@@ -27,14 +27,17 @@ func - (left: Array<CGFloat>, right: Array<CGFloat>) -> Array<CGFloat> {
 
 
 // delegate method
+// modified to send an identifier
 @objc protocol LineChartDelegate {
-    func didSelectDataPoint(x: CGFloat, yValues: Array<CGFloat>)
+    func didSelectDataPoint(x: CGFloat, yValues: Array<CGFloat>, chartIdentifier: String)
 }
 
 
 
 // LineChart class
 class LineChart: UIControl {
+    
+    var chartIdentifier:String = ""
     
     // default configuration
     var gridVisible = true
@@ -107,14 +110,30 @@ class LineChart: UIControl {
         ]
     }
     
-    
-    
     convenience override init() {
         self.init(frame: CGRectZero)
     }
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+    }
+    
+    init(frame: CGRect, identifier: String) {
+        super.init(frame: frame)
+        self.backgroundColor = UIColor.clearColor()
+        self.colors = [
+            UIColorFromHex(0x1f77b4),
+            UIColorFromHex(0xff7f0e),
+            UIColorFromHex(0x2ca02c),
+            UIColorFromHex(0xd62728),
+            UIColorFromHex(0x9467bd),
+            UIColorFromHex(0x8c564b),
+            UIColorFromHex(0xe377c2),
+            UIColorFromHex(0x7f7f7f),
+            UIColorFromHex(0xbcbd22),
+            UIColorFromHex(0x17becf)
+        ]
+        self.chartIdentifier = identifier
     }
     
     
@@ -236,15 +255,14 @@ class LineChart: UIControl {
         var closestXValueIndex = findClosestXValueInData(xValue)
         var yValues: Array<CGFloat> = getYValuesForXValue(closestXValueIndex)
         highlightDataPoints(closestXValueIndex)
-        delegate?.didSelectDataPoint(CGFloat(closestXValueIndex), yValues: yValues)
+        delegate?.didSelectDataPoint(CGFloat(closestXValueIndex), yValues: yValues, chartIdentifier: self.chartIdentifier)
     }
-    
-    
     
     /**
     * Listen on touch end event.
     */
-    override func touchesEnded(touches: NSSet, withEvent event: UIEvent) {
+    // modded to be touchesBegan
+    override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
         handleTouchEvents(touches, event: event)
     }
     
@@ -257,7 +275,12 @@ class LineChart: UIControl {
         handleTouchEvents(touches, event: event)
     }
     
-    
+    // simulateTouchAtIndex takes an index and calls the delegate's didSelectDataPoint function at the given index
+    func simulateTouchAtIndex(index: Int) {
+        var yValues: Array<CGFloat> = getYValuesForXValue(index)
+        highlightDataPoints(index)
+        delegate?.didSelectDataPoint(CGFloat(index), yValues: yValues, chartIdentifier: self.chartIdentifier)
+    }
     
     /**
     * Find closest value on x axis.
@@ -279,7 +302,12 @@ class LineChart: UIControl {
         for (lineIndex, dotsData) in enumerate(dotsDataStore) {
             // make all dots white again
             for dot in dotsData {
-                dot.backgroundColor = dotsBackgroundColor.CGColor
+                if dot != dotsData[NSDate().hour()] {
+                    dot.backgroundColor = dotsBackgroundColor.CGColor
+                }
+                else {
+                    dot.backgroundColor = colors[lineIndex].CGColor
+                }
             }
             // highlight current data point
             var dot: DotCALayer

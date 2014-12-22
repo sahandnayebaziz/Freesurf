@@ -26,7 +26,7 @@ class SpotLibrary: NSObject, NSURLSessionDelegate {
     
     // spotDataDictionary holds of a tuple of surf spot swell data (value) for each surf spot ID (key)
     // :: spotDataDictionary is initialized to be empty when each spot ID is seen in the app for the first time
-    var spotDataDictionary:[Int:(spotName:String, spotCounty:String, spotHeights:[Float]?)] = [:]
+    var spotDataDictionary:[Int:(spotName:String, spotCounty:String, spotHeights:[Float]?, spotConditions:String?)] = [:]
     
     // countyDataDictionary holds a tuple of county weather data (value) for each county name (key)
     // :: values in the tuple are optionals because at runtime, an HTTP request is made to Spitcast for these values
@@ -115,7 +115,7 @@ class SpotLibrary: NSObject, NSURLSessionDelegate {
                     // :: an entry may have been made when opening the app and initializing a user's saved spots. See initLibraryFromString()
                     if (!contains((self.allSpotIDs), newSpotID)) {
                         self.allSpotIDs.append(newSpotID)
-                        self.spotDataDictionary[newSpotID] = (newSpotName, countyNameForSpot, nil)
+                        self.spotDataDictionary[newSpotID] = (newSpotName, countyNameForSpot, nil, nil)
                     }
                     
                 }
@@ -133,7 +133,44 @@ class SpotLibrary: NSObject, NSURLSessionDelegate {
     }
     
     // getSpotSwell takes a spotID and saves a list of forecasted swell heights for the next 24 hours for this spot with one entry for each hour
-    func getSpotSwell(spotID:Int) {
+    func getSpotSwellsForToday(spotID:Int) {
+        
+        // hoursTomorrow is the number of hours left between midnight tonight and 24 hours from the current hour
+        // :: this is the number of hours we must store from the Spitcast data for tomorrow
+        let hoursTomorrow:Int = self.currentHour
+        
+        // the array we will store the new data in before storing the array in the correct key in spotDataDictionary
+        var hoursOfSwellHeights:[Float] = []
+        
+        // the string we will store the spot conditions in before storing the string in the correct key in spotDataDictionary
+        var currentConditionsString:String = ""
+        
+        let sourceURL:NSURL = NSURL(string: "http://api.spitcast.com/api/spot/forecast/\(spotID)")!
+        var sourceSession:NSURLSession = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
+        var sourceData:AnyObject? = nil
+        let sourceTask = sourceSession.dataTaskWithURL(sourceURL, completionHandler: {(data, response, error) -> Void in
+            sourceData = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: nil)
+            
+            // begin callback operation
+            
+            // store swell heights for now til midnight
+            for var index = 0; index < 24; index++ {
+                hoursOfSwellHeights.append(sourceData![index]!["size_ft"] as Float)
+            }
+            
+            // store conditions string
+            currentConditionsString = sourceData![0]!["shape_full"] as String
+            
+            // save the new data to the spotDataDictionary
+            self.spotDataDictionary[spotID]!.spotHeights = hoursOfSwellHeights
+            self.spotDataDictionary[spotID]!.spotConditions = currentConditionsString
+            
+        })
+        sourceTask.resume()
+    }
+    
+    // getSpotSwell takes a spotID and saves a list of forecasted swell heights for the next 24 hours for this spot with one entry for each hour
+    func getSpotSwellForNext24Hours(spotID:Int) {
         
         // hoursTomorrow is the number of hours left between midnight tonight and 24 hours from the current hour
         // :: this is the number of hours we must store from the Spitcast data for tomorrow
@@ -141,6 +178,9 @@ class SpotLibrary: NSObject, NSURLSessionDelegate {
         
         // the array we will store the new data in before storing the array in the correct key in spotDataDictionary
         var next24HoursOfSwellHeights:[Float] = []
+        
+        // the string we will store the spot conditions in before storing the string in the correct key in spotDataDictionary
+        var currentConditionsString:String = ""
         
         let sourceURL:NSURL = NSURL(string: "http://api.spitcast.com/api/spot/forecast/\(spotID)")!
         var sourceSession:NSURLSession = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
@@ -154,6 +194,9 @@ class SpotLibrary: NSObject, NSURLSessionDelegate {
             for var index = self.currentHour; index <= 24; index++ {
                 next24HoursOfSwellHeights.append(sourceData![index]!["size_ft"] as Float)
             }
+            
+            // store conditions string
+            currentConditionsString = sourceData![0]!["shape_full"] as String
             
             // put tomorrow's date into the format Spitcast can understand to return data for tomorrow
             let jsonTomorrowParameter:String = NSDate().dateByAddingDays(1).toString(format: .Custom("yyyyMMdd"))
@@ -172,6 +215,7 @@ class SpotLibrary: NSObject, NSURLSessionDelegate {
                 
                 // save the new data to the spotDataDictionary
                 self.spotDataDictionary[spotID]!.spotHeights = next24HoursOfSwellHeights
+                self.spotDataDictionary[spotID]!.spotConditions = currentConditionsString
                 
             })
             sourceTaskTomorrow.resume()
@@ -199,8 +243,39 @@ class SpotLibrary: NSObject, NSURLSessionDelegate {
         sourceTask.resume()
     }
     
-    // getCountyTide takes a county and saves a list of forecasted tide levels for the next 24 hours for this county with one entry for each hour
-    func getCountyTide(county:String) {
+    // getCountyTideForToday takes a county and saves a list of forecasted tide levels for every hour of the current day
+    func getCountyTideForToday(county:String) {
+        
+        // logs this request in the callLog
+        self.callLog[county]!.append("CountyTide")
+        
+        // the array we will store the new data in before storing the array in the correct key in countyDataDictionary
+        var tideLevelsForToday:[Float] = []
+        
+        // format the name of county into the format Spitcast can understand
+        let countyString:String = county.stringByReplacingOccurrencesOfString(" ", withString: "-", options: NSStringCompareOptions.LiteralSearch, range: nil).lowercaseString
+        
+        let sourceURL:NSURL = NSURL(string: "http://api.spitcast.com/api/county/tide/\(countyString)/")!
+        var sourceSession:NSURLSession = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
+        var sourceData:AnyObject? = nil
+        let sourceTask = sourceSession.dataTaskWithURL(sourceURL, completionHandler: {(data, response, error) -> Void in
+            sourceData = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: nil)
+            
+            // begin callback operation
+            
+            // store tide levels from midnight this morning to 11pm tonight
+            for var index = 0; index < 24; index++ {
+                tideLevelsForToday.append(sourceData![index]!["tide"]! as Float)
+            }
+            
+            // store this new data into countyDataDictionary
+            self.countyDataDictionary[county]!.tides = tideLevelsForToday
+        })
+        sourceTask.resume()
+    }
+    
+    // getCountyTideForNext24Hours takes a county and saves a list of forecasted tide levels for the next 24 hours for this county with one entry for each hour
+    func getCountyTideForNext24Hours(county:String) {
         
         // logs this request in the callLog
         self.callLog[county]!.append("CountyTide")
@@ -356,11 +431,22 @@ class SpotLibrary: NSObject, NSURLSessionDelegate {
     // county takes takes the id of a spot and returns the county the spot belongs to
     func county(id:Int) -> String { return self.spotDataDictionary[id]!.spotCounty }
     
-    // currentHeight takes takes the id of a spot and returns the spot's forecasted swell height for the current hour as an integer
+    // currentHeight takes the id of a spot and returns the spot's forecasted swell height for the current hour as an integer
     // if swell data has been stored
     func currentHeight(id:Int) -> Int? {
         if let height:Float = self.spotDataDictionary[id]!.spotHeights?[0] {
             return Int(height)
+        }
+        else {
+            return nil
+        }
+    }
+    
+    // currentConditions takes the id of a spot and returns a string description of the spot's current conditions
+    // if swell data has been stored
+    func currentConditions(id:Int) -> String? {
+        if let conditions:String = self.spotDataDictionary[id]!.spotConditions {
+            return conditions
         }
         else {
             return nil
@@ -372,9 +458,13 @@ class SpotLibrary: NSObject, NSURLSessionDelegate {
     // has been stored for the county
     func waterTemp(id:Int) -> Int? { return self.countyDataDictionary[self.county(id)]!.waterTemp }
     
-    // next24Tides takes the id of a spot and returns a list of the forecasted tide levels of the spot's county for the 
+    // tidesForToday takes the id of a spot and returns a list of the forecasted tide levels of the spot's county for the 
     // next 24 hours if tide data has been stored for the county
-    func next24Tides(id:Int) -> [Float]? { return self.countyDataDictionary[self.county(id)]!.tides }
+    func tidesForToday(id:Int) -> [Float]? { return self.countyDataDictionary[self.county(id)]!.tides }
+    
+    // heightsForToday takes the id of a spot and returns a list of the forecasted swell heights for the spot for the next 24 hours
+    // if the tide data has been stored for the county
+    func heightsForToday(id:Int) -> [Float]? { return self.spotDataDictionary[id]!.spotHeights }
     
     // swells takes the id of a spot and returns a list of the swells currently affecting the spot's county if swell data 
     // has been stored for the county
@@ -414,7 +504,7 @@ class SpotLibrary: NSObject, NSURLSessionDelegate {
         
         // getValuesForYourSpotsCell returns a tuple of values only when everything we use to display data about a spot, both within a YourSpotsCell and
         // SpotDetail
-        if self.currentHeight(id) != nil && self.waterTemp(id) != nil && self.next24Tides(id) != nil && self.significantSwell(id) != nil && self.wind(id) != nil {
+        if self.currentHeight(id) != nil && self.waterTemp(id) != nil && self.tidesForToday(id) != nil && self.significantSwell(id) != nil && self.wind(id) != nil {
             return (height: self.currentHeight(id)!, waterTemp: self.waterTemp(id)!, swell:self.significantSwell(id)!)
         }
         else {
@@ -461,7 +551,7 @@ class SpotLibrary: NSObject, NSURLSessionDelegate {
                 // create all data entries for this spot
                 self.allSpotIDs.append(spotID)
                 self.selectedSpotIDs.append(spotID)
-                self.spotDataDictionary[spotID] = (spotName, spotCounty, nil)
+                self.spotDataDictionary[spotID] = (spotName, spotCounty, nil, nil)
                 
                 // create all data entries for this county if one has not been made
                 initializeCountyDataEntriesIfNeeded(spotCounty)

@@ -183,19 +183,12 @@ class YourSpotsTableViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath:NSIndexPath) {
-        //log
-        println("called did select row")
-        
         // this is the ID of the cell at this indexPath
         let rowID = self.spotLibrary.selectedSpotIDs[indexPath.row]
         
         // if values have been stored this cell's spot, perform the segue to the spot details controller
         if let spotValues = self.spotLibrary.getValuesForYourSpotsCell(rowID) {
-            println("segueable")
             self.performSegueWithIdentifier("openSpotDetail", sender: nil)
-        }
-        else {
-            println("not segueable")
         }
         
         // visually deselect the cell
@@ -255,7 +248,6 @@ class YourSpotsTableViewController: UITableViewController {
             destinationView.spotLibrary = self.spotLibrary
         }
         if segue.identifier! == "openSpotDetail" {
-            println("preparting for right segue")
             // identify destination controller
             let nav:UINavigationController = segue.destinationViewController as UINavigationController
             let destinationView:SpotDetailViewController = nav.topViewController as SpotDetailViewController
@@ -301,9 +293,9 @@ class YourSpotsTableViewController: UITableViewController {
                     // request spot data on a separate thread from the UI if all data for a spot has not been stored
                     if spotLibrary.getValuesForYourSpotsCell(spot) == nil {
                         dispatch_to_background_queue {
-                            self.spotLibrary.getSpotSwell(spot)
+                            self.spotLibrary.getSpotSwellsForToday(spot)
                             self.spotLibrary.getCountyWaterTemp(self.spotLibrary.county(spot))
-                            self.spotLibrary.getCountyTide(self.spotLibrary.county(spot))
+                            self.spotLibrary.getCountyTideForToday(self.spotLibrary.county(spot))
                             self.spotLibrary.getCountySwell(self.spotLibrary.county(spot))
                             self.spotLibrary.getCountyWind(self.spotLibrary.county(spot))
                         }
