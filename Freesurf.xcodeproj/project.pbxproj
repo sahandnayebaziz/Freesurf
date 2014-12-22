@@ -35,11 +35,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		D8011775198D64C200509A27 /* thewaves.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = thewaves.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D8011775198D64C200509A27 /* Freesurf.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Freesurf.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D8011779198D64C200509A27 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D801177A198D64C200509A27 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D801177F198D64C200509A27 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		D8011787198D64C200509A27 /* thewavesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = thewavesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		D8011787198D64C200509A27 /* FreesurfTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FreesurfTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D801178C198D64C200509A27 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D801178D198D64C200509A27 /* thewavesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = thewavesTests.swift; sourceTree = "<group>"; };
 		D801B1621A3D172200C1751F /* DotCALayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DotCALayer.swift; sourceTree = "<group>"; };
@@ -87,8 +87,8 @@
 		D8011776198D64C200509A27 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				D8011775198D64C200509A27 /* thewaves.app */,
-				D8011787198D64C200509A27 /* thewavesTests.xctest */,
+				D8011775198D64C200509A27 /* Freesurf.app */,
+				D8011787198D64C200509A27 /* FreesurfTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -174,9 +174,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		D8011774198D64C200509A27 /* thewaves */ = {
+		D8011774198D64C200509A27 /* Freesurf */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D8011791198D64C200509A27 /* Build configuration list for PBXNativeTarget "thewaves" */;
+			buildConfigurationList = D8011791198D64C200509A27 /* Build configuration list for PBXNativeTarget "Freesurf" */;
 			buildPhases = (
 				D8011771198D64C200509A27 /* Sources */,
 				D8011772198D64C200509A27 /* Frameworks */,
@@ -186,14 +186,14 @@
 			);
 			dependencies = (
 			);
-			name = thewaves;
+			name = Freesurf;
 			productName = thewaves;
-			productReference = D8011775198D64C200509A27 /* thewaves.app */;
+			productReference = D8011775198D64C200509A27 /* Freesurf.app */;
 			productType = "com.apple.product-type.application";
 		};
-		D8011786198D64C200509A27 /* thewavesTests */ = {
+		D8011786198D64C200509A27 /* FreesurfTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D8011794198D64C200509A27 /* Build configuration list for PBXNativeTarget "thewavesTests" */;
+			buildConfigurationList = D8011794198D64C200509A27 /* Build configuration list for PBXNativeTarget "FreesurfTests" */;
 			buildPhases = (
 				D8011783198D64C200509A27 /* Sources */,
 				D8011784198D64C200509A27 /* Frameworks */,
@@ -204,9 +204,9 @@
 			dependencies = (
 				D8011789198D64C200509A27 /* PBXTargetDependency */,
 			);
-			name = thewavesTests;
+			name = FreesurfTests;
 			productName = thewavesTests;
-			productReference = D8011787198D64C200509A27 /* thewavesTests.xctest */;
+			productReference = D8011787198D64C200509A27 /* FreesurfTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -228,7 +228,7 @@
 					};
 				};
 			};
-			buildConfigurationList = D8011770198D64C200509A27 /* Build configuration list for PBXProject "thewaves" */;
+			buildConfigurationList = D8011770198D64C200509A27 /* Build configuration list for PBXProject "Freesurf" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -241,8 +241,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				D8011774198D64C200509A27 /* thewaves */,
-				D8011786198D64C200509A27 /* thewavesTests */,
+				D8011774198D64C200509A27 /* Freesurf */,
+				D8011786198D64C200509A27 /* FreesurfTests */,
 			);
 		};
 /* End PBXProject section */
@@ -299,7 +299,7 @@
 /* Begin PBXTargetDependency section */
 		D8011789198D64C200509A27 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = D8011774198D64C200509A27 /* thewaves */;
+			target = D8011774198D64C200509A27 /* Freesurf */;
 			targetProxy = D8011788198D64C200509A27 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -402,8 +402,8 @@
 				INFOPLIST_FILE = thewaves/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				PRODUCT_NAME = Freesurf;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -416,8 +416,8 @@
 				INFOPLIST_FILE = thewaves/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				PRODUCT_NAME = Freesurf;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -435,7 +435,7 @@
 				);
 				INFOPLIST_FILE = thewavesTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = FreesurfTests;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 			};
 			name = Debug;
@@ -450,7 +450,7 @@
 				);
 				INFOPLIST_FILE = thewavesTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = FreesurfTests;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 			};
 			name = Release;
@@ -458,7 +458,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		D8011770198D64C200509A27 /* Build configuration list for PBXProject "thewaves" */ = {
+		D8011770198D64C200509A27 /* Build configuration list for PBXProject "Freesurf" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D801178F198D64C200509A27 /* Debug */,
@@ -467,7 +467,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D8011791198D64C200509A27 /* Build configuration list for PBXNativeTarget "thewaves" */ = {
+		D8011791198D64C200509A27 /* Build configuration list for PBXNativeTarget "Freesurf" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D8011792198D64C200509A27 /* Debug */,
@@ -476,7 +476,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D8011794198D64C200509A27 /* Build configuration list for PBXNativeTarget "thewavesTests" */ = {
+		D8011794198D64C200509A27 /* Build configuration list for PBXNativeTarget "FreesurfTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D8011795198D64C200509A27 /* Debug */,
