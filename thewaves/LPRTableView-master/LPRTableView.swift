@@ -88,6 +88,7 @@ extension LPRTableView {
 		
 		let location = gesture.locationInView(self)
 		let indexPath = indexPathForRowAtPoint(location)
+        var originIndexPath:NSIndexPath
 		
 		let sections = numberOfSections()
 		var rows = 0
@@ -108,6 +109,9 @@ extension LPRTableView {
 		// Started.
 		if gesture.state == .Began {
 			if let indexPath = indexPath {
+                
+                originIndexPath = indexPath
+                
 				if var cell = cellForRowAtIndexPath(indexPath) {
 					
 					cell.setSelected(false, animated: false)
@@ -223,10 +227,15 @@ extension LPRTableView {
 						draggingView.removeFromSuperview()
 					}
 					
-					// Reload the rows that were affected just to be safe.
-					if let visibleRows = self.indexPathsForVisibleRows() {
-						self.reloadRowsAtIndexPaths(visibleRows, withRowAnimation: .None)
-					}
+                    var listOfIndexPathsToReload:[NSIndexPath] = [self.currentLocationIndexPath!]
+                    if self.initialIndexPath!.row == 0 {
+                        listOfIndexPathsToReload.append(NSIndexPath(forRow: 0, inSection: 0))
+                    }
+
+                    
+                    
+
+                    self.reloadRowsAtIndexPaths(listOfIndexPathsToReload, withRowAnimation: UITableViewRowAnimation.None)
 					
 					self.currentLocationIndexPath = nil
 					self.draggingView = nil

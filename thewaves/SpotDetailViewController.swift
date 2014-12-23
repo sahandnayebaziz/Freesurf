@@ -163,12 +163,22 @@ class SpotDetailViewController: UIViewController, UIScrollViewDelegate, LineChar
         // add data to swellChart
         dataArray.removeAll(keepCapacity: true)
         var heights = self.spotLibrary.heightsForToday(selectedSpotID)!
+        
+        // map data in swellChart to be even numbers only. Odd numbers get reduced to the closest smaller even number.
         for height in heights {
-            dataArray.append(CGFloat(Int(height)))
+            var heightToAdd = CGFloat(Int(height))
+            
+            if heightToAdd % 2 != 0 {
+                heightToAdd = heightToAdd - 1
+            }
+            dataArray.append(heightToAdd)
         }
         swellChart.addLine(dataArray)
         
+        
         // modify tide charts
+        let blueColorUsed:UIColor = UIColor(red: 97/255.0, green: 177/255.0, blue: 237/255.0, alpha: 1)
+        
         for chart in [tideChart, swellChart] {
             chart.animationEnabled = true
             chart.areaUnderLinesVisible = false
@@ -176,6 +186,7 @@ class SpotDetailViewController: UIViewController, UIScrollViewDelegate, LineChar
             chart.gridColor = UIColor.clearColor()
             chart.labelsXVisible = false
             chart.axisInset = 24
+            chart.dotsBackgroundColor = blueColorUsed
         }
         
         // add charts to their views
@@ -198,25 +209,34 @@ class SpotDetailViewController: UIViewController, UIScrollViewDelegate, LineChar
             chartIndexTouched = 23
         }
         
-        var heightString = "\(Int(yValues.first!))ft"
-        var timeString = "\(graphIndexToTimeString(chartIndexTouched))"
-        var completeString = "\(heightString) @ \(timeString) Today"
-        var locationOfTimeString:Int = countElements(heightString) + 3
-        var attributedComplete:NSMutableAttributedString = NSMutableAttributedString(string: completeString)
-        if (Int(chartIndexTouched) == self.currentHour) {
-            var color:UIColor = UIColor(red: 97/255.0, green: 177/255.0, blue: 237/255.0, alpha: 1)
-            attributedComplete.addAttribute(NSForegroundColorAttributeName, value: color, range: NSMakeRange(locationOfTimeString, countElements(timeString)))
-        }
-        
+        var heightString:String = ""
         if chartIdentifier == "tideChart" {
             // set to label
-            self.spotTideHeightAtHour.attributedText = attributedComplete
+            heightString = "\(Int(yValues.first!))ft"
         }
         else if chartIdentifier == "swellChart" {
             // set to label
+            heightString = "\(Int(yValues.first!))-\(Int(yValues.first!) + 1)ft"
+        }
+        
+        var timeString = "@ \(graphIndexToTimeString(chartIndexTouched)) Today"
+        var completeString = "\(heightString) \(timeString)"
+        var locationOfTimeString:Int = countElements(heightString) + 1
+        var attributedComplete:NSMutableAttributedString = NSMutableAttributedString(string: completeString)
+        attributedComplete.addAttribute(NSForegroundColorAttributeName, value: UIColor.lightGrayColor(), range: NSMakeRange(locationOfTimeString, countElements(timeString)))
+        
+        if chartIdentifier == "tideChart" {
+            self.spotTideHeightAtHour.attributedText = attributedComplete
+        }
+        else if chartIdentifier == "swellChart" {
             self.spotSwellHeightAtHour.attributedText = attributedComplete
         }
         
+        //        uncomment to highlight the time in the timeString to be the color blue
+        //        if (Int(chartIndexTouched) == self.currentHour) {
+        //            var color:UIColor = UIColor(red: 97/255.0, green: 177/255.0, blue: 237/255.0, alpha: 1)
+        //            attributedComplete.addAttribute(NSForegroundColorAttributeName, value: color, range: NSMakeRange(locationOfTimeString, countElements(timeString)))
+        //        }
     }
     
     // MARK: View delegate methods

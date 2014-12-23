@@ -144,6 +144,9 @@ class YourSpotsTableViewController: UITableViewController, LPRTableViewDelegate 
         // clear the cell's background before the cell is assigned a background gradient
         cell.backgroundColor = UIColor.clearColor()
         
+        // clip bounds
+        cell.clipsToBounds = true
+        
         // if values have been stored this cell's spot pass this data to the cell
         if let spotValues = self.spotLibrary.getValuesForYourSpotsCell(rowID) {
             cell.setCellLabels(self.spotLibrary.name(rowID), valuesForSpotAtThisCell: spotValues)

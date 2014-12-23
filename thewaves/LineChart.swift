@@ -318,7 +318,8 @@ class LineChart: UIControl {
             } else {
                 dot = dotsData[index]
             }
-            dot.backgroundColor = lightenUIColor(colors[lineIndex]).CGColor
+//            dot.backgroundColor = lightenUIColor(colors[lineIndex]).CGColor
+            dot.backgroundColor = UIColor.whiteColor().CGColor
         }
     }
     

@@ -353,57 +353,31 @@
                                         <rect key="frame" x="0.0" y="0.0" width="600" height="1500"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3ft" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="N78-Fy-pwy" userLabel="current height">
-                                                <rect key="frame" x="20" y="40" width="561" height="129"/>
-                                                <fontDescription key="fontDescription" name="HelveticaNeue-UltraLight" family="Helvetica Neue" pointSize="112"/>
-                                                <color key="textColor" red="0.38039215686274508" green="0.69411764705882351" blue="0.92941176470588238" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <rect key="frame" x="246" y="13" width="109" height="124"/>
+                                                <fontDescription key="fontDescription" name="HelveticaNeue-UltraLight" family="Helvetica Neue" pointSize="108"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Conditions here" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="JX3-mx-fbl" userLabel="conditions">
-                                                <rect key="frame" x="215" y="173" width="170" height="28"/>
-                                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="24"/>
+                                                <rect key="frame" x="229" y="145" width="142" height="25"/>
+                                                <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="21"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Direction @ Period" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="lMG-DP-qPD" userLabel="direction and period">
-                                                <rect key="frame" x="201" y="209" width="198" height="28"/>
-                                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="24"/>
-                                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                <rect key="frame" x="217" y="173" width="167" height="25"/>
+                                                <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="21"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tide Forecast" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="bxX-Fd-9nJ" userLabel="tide forecast">
-                                                <rect key="frame" x="227" y="305" width="147" height="28"/>
-                                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="24"/>
-                                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="HZj-oz-kGA" userLabel="tide height and hour">
-                                                <rect key="frame" x="154" y="341" width="292" height="28"/>
-                                                <attributedString key="attributedText">
-                                                    <fragment content="Swell height @ Time of Day">
-                                                        <attributes>
-                                                            <color key="NSColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                            <font key="NSFont" size="24" name="HelveticaNeue"/>
-                                                            <paragraphStyle key="NSParagraphStyle" alignment="right" lineBreakMode="truncatingTail" baseWritingDirection="natural"/>
-                                                        </attributes>
-                                                    </fragment>
-                                                </attributedString>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rXX-Ur-LDj" userLabel="tideChart view">
-                                                <rect key="frame" x="0.0" y="370" width="600" height="200"/>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="200" id="Es4-Ip-BVb"/>
-                                                </constraints>
-                                            </view>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Swell Forecast" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="bS2-uz-zCt" userLabel="swell forecast">
-                                                <rect key="frame" x="221" y="640" width="158" height="28"/>
+                                                <rect key="frame" x="221" y="700" width="158" height="28"/>
                                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="24"/>
                                                 <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="w2P-Eh-GJu" userLabel="swell height and hour">
-                                                <rect key="frame" x="154" y="676" width="292" height="28"/>
+                                                <rect key="frame" x="154" y="736" width="292" height="28"/>
                                                 <attributedString key="attributedText">
                                                     <fragment content="Swell height @ Time of Day">
                                                         <attributes>
@@ -416,11 +390,11 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6gI-1S-H2S" userLabel="swellChart view">
-                                                <rect key="frame" x="0.0" y="705" width="600" height="200"/>
+                                                <rect key="frame" x="0.0" y="789" width="600" height="100"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="200" id="4e7-zY-BdQ"/>
-                                                    <constraint firstAttribute="height" constant="200" id="Saj-tg-qqe"/>
+                                                    <constraint firstAttribute="height" constant="100" id="Saj-tg-qqe"/>
                                                     <constraint firstAttribute="height" relation="lessThanOrEqual" constant="200" id="mur-NH-bfF"/>
                                                 </constraints>
                                                 <variation key="default">
@@ -430,6 +404,32 @@
                                                     </mask>
                                                 </variation>
                                             </view>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tide Forecast" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="bxX-Fd-9nJ" userLabel="tide forecast">
+                                                <rect key="frame" x="238" y="231" width="124" height="25"/>
+                                                <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="21"/>
+                                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="HZj-oz-kGA" userLabel="tide height and hour">
+                                                <rect key="frame" x="160" y="259" width="281" height="29"/>
+                                                <attributedString key="attributedText">
+                                                    <fragment content="Swell height @ Time of Day">
+                                                        <attributes>
+                                                            <color key="NSColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                            <font key="NSFont" size="24" name="HelveticaNeue-Light"/>
+                                                            <paragraphStyle key="NSParagraphStyle" alignment="right" lineBreakMode="truncatingTail" baseWritingDirection="natural"/>
+                                                        </attributes>
+                                                    </fragment>
+                                                </attributedString>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rXX-Ur-LDj" userLabel="tideChart view">
+                                                <rect key="frame" x="0.0" y="302" width="600" height="200"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="200" id="Es4-Ip-BVb"/>
+                                                </constraints>
+                                            </view>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
@@ -438,31 +438,33 @@
                                             <constraint firstAttribute="centerX" secondItem="JX3-mx-fbl" secondAttribute="centerX" id="1eg-A4-XNu"/>
                                             <constraint firstAttribute="trailing" secondItem="6gI-1S-H2S" secondAttribute="trailing" id="5dZ-9t-bqJ"/>
                                             <constraint firstAttribute="centerX" secondItem="bxX-Fd-9nJ" secondAttribute="centerX" id="8JN-IK-qXm"/>
-                                            <constraint firstItem="6gI-1S-H2S" firstAttribute="top" secondItem="w2P-Eh-GJu" secondAttribute="bottom" constant="1" id="DiL-bJ-JrT"/>
-                                            <constraint firstItem="HZj-oz-kGA" firstAttribute="top" secondItem="bxX-Fd-9nJ" secondAttribute="bottom" constant="8" id="H87-yS-FnU"/>
+                                            <constraint firstItem="6gI-1S-H2S" firstAttribute="top" secondItem="w2P-Eh-GJu" secondAttribute="bottom" constant="25" id="DiL-bJ-JrT"/>
+                                            <constraint firstItem="HZj-oz-kGA" firstAttribute="top" secondItem="bxX-Fd-9nJ" secondAttribute="bottom" constant="3" id="H87-yS-FnU"/>
                                             <constraint firstAttribute="height" constant="1500" id="IoQ-ew-OTv"/>
-                                            <constraint firstItem="bxX-Fd-9nJ" firstAttribute="top" secondItem="lMG-DP-qPD" secondAttribute="bottom" constant="68" id="K5X-7f-bhe"/>
+                                            <constraint firstItem="bxX-Fd-9nJ" firstAttribute="top" secondItem="lMG-DP-qPD" secondAttribute="bottom" constant="33" id="K5X-7f-bhe"/>
                                             <constraint firstAttribute="bottom" secondItem="rXX-Ur-LDj" secondAttribute="bottom" constant="450" id="Lux-s8-ebh"/>
                                             <constraint firstAttribute="centerX" secondItem="HZj-oz-kGA" secondAttribute="centerX" id="NMM-cJ-FKF"/>
                                             <constraint firstAttribute="centerX" secondItem="6gI-1S-H2S" secondAttribute="centerX" id="NNB-hJ-dPa"/>
                                             <constraint firstItem="w2P-Eh-GJu" firstAttribute="top" secondItem="bS2-uz-zCt" secondAttribute="bottom" constant="8" id="OPn-aO-vrE"/>
                                             <constraint firstItem="rXX-Ur-LDj" firstAttribute="centerX" secondItem="qm9-Q9-RsY" secondAttribute="centerX" id="Pts-yb-gBx"/>
-                                            <constraint firstItem="bS2-uz-zCt" firstAttribute="top" secondItem="rXX-Ur-LDj" secondAttribute="bottom" constant="70" id="Ptu-mp-3M1"/>
+                                            <constraint firstItem="bS2-uz-zCt" firstAttribute="top" secondItem="rXX-Ur-LDj" secondAttribute="bottom" constant="198" id="Ptu-mp-3M1"/>
                                             <constraint firstItem="N78-Fy-pwy" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="qm9-Q9-RsY" secondAttribute="leading" constant="10" id="Pwj-Ki-2FN"/>
                                             <constraint firstItem="rXX-Ur-LDj" firstAttribute="leading" secondItem="qm9-Q9-RsY" secondAttribute="leading" id="SiB-cP-mmD"/>
-                                            <constraint firstItem="JX3-mx-fbl" firstAttribute="top" secondItem="qm9-Q9-RsY" secondAttribute="top" constant="173" id="WEg-X7-ufs"/>
-                                            <constraint firstItem="lMG-DP-qPD" firstAttribute="top" secondItem="JX3-mx-fbl" secondAttribute="bottom" constant="8" id="X1Z-RQ-2nl"/>
-                                            <constraint firstItem="rXX-Ur-LDj" firstAttribute="top" secondItem="qm9-Q9-RsY" secondAttribute="top" constant="370" id="X2z-TN-klJ"/>
+                                            <constraint firstItem="JX3-mx-fbl" firstAttribute="top" secondItem="qm9-Q9-RsY" secondAttribute="top" constant="145" id="WEg-X7-ufs"/>
+                                            <constraint firstItem="lMG-DP-qPD" firstAttribute="top" secondItem="JX3-mx-fbl" secondAttribute="bottom" constant="3" id="X1Z-RQ-2nl"/>
+                                            <constraint firstItem="rXX-Ur-LDj" firstAttribute="top" secondItem="qm9-Q9-RsY" secondAttribute="top" constant="302" id="X2z-TN-klJ"/>
                                             <constraint firstAttribute="trailing" secondItem="rXX-Ur-LDj" secondAttribute="trailing" id="bxq-XR-3tv"/>
                                             <constraint firstItem="w2P-Eh-GJu" firstAttribute="top" secondItem="bS2-uz-zCt" secondAttribute="bottom" constant="8" id="fGA-Sh-4Qg"/>
                                             <constraint firstAttribute="centerX" secondItem="N78-Fy-pwy" secondAttribute="centerX" id="jYf-Ta-O9w"/>
-                                            <constraint firstItem="N78-Fy-pwy" firstAttribute="top" secondItem="qm9-Q9-RsY" secondAttribute="top" constant="40" id="kG9-jr-Ffy"/>
+                                            <constraint firstItem="N78-Fy-pwy" firstAttribute="top" secondItem="qm9-Q9-RsY" secondAttribute="top" constant="13" id="kG9-jr-Ffy"/>
                                             <constraint firstItem="6gI-1S-H2S" firstAttribute="leading" secondItem="qm9-Q9-RsY" secondAttribute="leading" id="mZB-cL-X5a"/>
                                             <constraint firstAttribute="centerX" secondItem="lMG-DP-qPD" secondAttribute="centerX" id="mqh-xk-a1Z"/>
                                             <constraint firstAttribute="centerX" secondItem="bS2-uz-zCt" secondAttribute="centerX" id="yA8-o6-KRx"/>
                                         </constraints>
                                         <variation key="default">
                                             <mask key="constraints">
+                                                <exclude reference="0ZW-5x-nQZ"/>
+                                                <exclude reference="Pwj-Ki-2FN"/>
                                                 <exclude reference="Lux-s8-ebh"/>
                                             </mask>
                                         </variation>
