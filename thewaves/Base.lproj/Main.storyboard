@@ -8,8 +8,8 @@
         <!--yourSurfSpotsTableViewController-->
         <scene sceneID="amA-PY-fmU">
             <objects>
-                <tableViewController title="yourSurfSpotsTableViewController" automaticallyAdjustsScrollViewInsets="NO" id="DdE-yk-Q9I" customClass="YourSpotsTableViewController" customModule="thewaves" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" keyboardDismissMode="onDrag" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="76" sectionHeaderHeight="22" sectionFooterHeight="22" id="6lc-s5-bZy">
+                <tableViewController title="yourSurfSpotsTableViewController" automaticallyAdjustsScrollViewInsets="NO" id="DdE-yk-Q9I" customClass="YourSpotsTableViewController" customModule="Freesurf" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" keyboardDismissMode="onDrag" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="76" sectionHeaderHeight="22" sectionFooterHeight="22" id="6lc-s5-bZy" customClass="LPRTableView" customModule="Freesurf" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <view key="tableFooterView" autoresizesSubviews="NO" contentMode="redraw" verticalHuggingPriority="1000" id="9ui-3d-OlZ">
@@ -57,7 +57,7 @@
                             </constraints>
                         </view>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" restorationIdentifier="yourSpotsCell" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="yourSpotsCell" rowHeight="76" id="z2K-Sb-MQ6" customClass="YourSpotsCell" customModule="thewaves" customModuleProvider="target">
+                            <tableViewCell contentMode="scaleToFill" restorationIdentifier="yourSpotsCell" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="yourSpotsCell" rowHeight="76" id="z2K-Sb-MQ6" customClass="YourSpotsCell" customModule="Freesurf" customModuleProvider="target">
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="z2K-Sb-MQ6" id="3dQ-bI-6Hp">
                                     <autoresizingMask key="autoresizingMask"/>
@@ -194,7 +194,7 @@
         <!--Search For New Spots-->
         <scene sceneID="PIG-0K-W1d">
             <objects>
-                <tableViewController title="Search For New Spots" id="jiR-Kb-Inu" customClass="SearchForNewSpotsTableViewController" customModule="thewaves" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController title="Search For New Spots" id="jiR-Kb-Inu" customClass="SearchForNewSpotsTableViewController" customModule="Freesurf" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="FeD-IE-fZz">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -231,7 +231,7 @@
                             <outlet property="delegate" destination="jiR-Kb-Inu" id="dj6-og-VOA"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" prompt="Enter name of surf spot or county" id="DsW-zd-Jgg">
+                    <navigationItem key="navigationItem" prompt="Enter name of county or surf spot" id="DsW-zd-Jgg">
                         <nil key="title"/>
                         <textField key="titleView" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" clearButtonMode="whileEditing" id="wn6-uC-9Qx">
                             <rect key="frame" x="180" y="37" width="240" height="30"/>
@@ -302,7 +302,7 @@
         <!--Spot Detail View Controller-->
         <scene sceneID="ka8-v6-jrW">
             <objects>
-                <viewController automaticallyAdjustsScrollViewInsets="NO" id="lfQ-l3-qFW" customClass="SpotDetailViewController" customModule="thewaves" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="lfQ-l3-qFW" customClass="SpotDetailViewController" customModule="Freesurf" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="EKG-Sd-YIn"/>
                         <viewControllerLayoutGuide type="bottom" id="cfh-1g-clj"/>
