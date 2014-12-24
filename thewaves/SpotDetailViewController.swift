@@ -65,8 +65,13 @@ class SpotDetailViewController: UIViewController, UIScrollViewDelegate, LineChar
     // this is the label that dispalys the water temperature of the spot
     @IBOutlet weak var spotWaterTempLabel: UILabel!
     
-    // this is the label that displays the hour and height of the tide at a certain point of the spot
-    @IBOutlet weak var spotTideHourLabel: UILabel!
+    // this is the label that displays the hour of the tide at a certain point of the spot
+    @IBOutlet weak var spotTideTimeLabel: UILabel!
+    
+    // this is the label that displays the height of the tide at a certain point of the spot
+    @IBOutlet weak var spotTideHeightLabel: UILabel!
+    
+    
     
     // called once
     override func viewDidLoad() {
@@ -239,7 +244,8 @@ class SpotDetailViewController: UIViewController, UIScrollViewDelegate, LineChar
         }
         
         if chartIdentifier == "tideChart" {
-            self.spotTideHourLabel.text = "\(heightString) @ \(timeString)"
+            self.spotTideHeightLabel.text = heightString
+            self.spotTideTimeLabel.text = timeString
         }
     }
     

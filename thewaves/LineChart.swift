@@ -248,7 +248,8 @@ class LineChart: UIControl {
         var closestXValueIndex = findClosestXValueInData(xValue)
         var yValues: Array<CGFloat> = getYValuesForXValue(closestXValueIndex)
         highlightDataPoints(closestXValueIndex)
-        drawWordLine(xValue)
+//        drawWordLine(xValue)
+        drawWordLine(closestXValueIndex)
         delegate?.didSelectDataPoint(CGFloat(closestXValueIndex), yValues: yValues, chartIdentifier: self.chartIdentifier)
     }
     
@@ -448,14 +449,14 @@ class LineChart: UIControl {
         lineLayerStore.append(layer)
     }
     
-    func drawWordLine(lineIndex: CGFloat) {
+    func drawWordLine(lineIndex: Int) {
         // keep index within bounds
         var indexToDisplayLine = lineIndex
         if indexToDisplayLine < 0 {
             indexToDisplayLine = 0
         }
-        if indexToDisplayLine > 23.0 {
-            indexToDisplayLine = 23.0
+        if indexToDisplayLine > 23 {
+            indexToDisplayLine = 23
         }
         
         // get axis
@@ -463,8 +464,8 @@ class LineChart: UIControl {
         
         // create path and draw line
         var path = CGPathCreateMutable()
-        CGPathMoveToPoint(path, nil, xAxis[0] + lineIndex, self.bounds.minY + axisInset)
-        CGPathAddLineToPoint(path, nil, xAxis[0] + lineIndex, self.bounds.maxY + 10)
+        CGPathMoveToPoint(path, nil, xAxis[lineIndex] + axisInset, self.bounds.minY + axisInset)
+        CGPathAddLineToPoint(path, nil, xAxis[lineIndex] + axisInset, self.bounds.maxY + 10)
         
         // add line to screen
         var layer = CAShapeLayer()
