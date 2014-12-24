@@ -227,10 +227,8 @@ class YourSpotsTableViewController: UITableViewController, LPRTableViewDelegate 
     
     // swipe to delete is enabled for this table view
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        NSLog("called editing style")
         
         if editingStyle == UITableViewCellEditingStyle.Delete {
-            NSLog("Called delete")
             // begin updates to the tableView's data
             self.yourSpotsTableView.beginUpdates()
             

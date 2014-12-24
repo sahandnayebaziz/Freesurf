@@ -74,6 +74,7 @@ class LineChart: UIControl {
     var dataStore: Array<Array<CGFloat>> = []
     var dotsDataStore: Array<Array<DotCALayer>> = []
     var lineLayerStore: Array<CAShapeLayer> = []
+    var lineHighlightLayerStore: Array<CAShapeLayer> = []
     var colors: Array<UIColor> = []
     
     var removeAll: Bool = false
@@ -247,33 +248,32 @@ class LineChart: UIControl {
         var closestXValueIndex = findClosestXValueInData(xValue)
         var yValues: Array<CGFloat> = getYValuesForXValue(closestXValueIndex)
         highlightDataPoints(closestXValueIndex)
+        drawWordLine(xValue)
         delegate?.didSelectDataPoint(CGFloat(closestXValueIndex), yValues: yValues, chartIdentifier: self.chartIdentifier)
     }
     
-    /**
-    * Listen on touch end event.
-    */
-    // modded to be touchesBegan
+    // touchesBegan and touchesMoved are called if the user begins to or continues to touch
+    // a LineChart object
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
         handleTouchEvents(touches, event: event)
     }
-    
-    
-    
-    /**
-    * Listen on touch move event
-    */
     override func touchesMoved(touches: NSSet, withEvent event: UIEvent) {
+        removeWordLine()
         handleTouchEvents(touches, event: event)
     }
     
+    override func touchesEnded(touches: NSSet, withEvent event: UIEvent) {
+        removeWordLine()
+    }
+    
     // simulateTouchAtIndex takes an index and calls the delegate's didSelectDataPoint function at the given index
+    // to simulate a touch at a given index on a LineChart object.
     func simulateTouchAtIndex(index: Int) {
         var yValues: Array<CGFloat> = getYValuesForXValue(index)
         highlightDataPoints(index)
         delegate?.didSelectDataPoint(CGFloat(index), yValues: yValues, chartIdentifier: self.chartIdentifier)
     }
-    
+
     /**
     * Find closest value on x axis.
     */
@@ -284,8 +284,6 @@ class LineChart: UIControl {
         var roundedDividend = Int(round(Double(dividend)))
         return roundedDividend
     }
-    
-    
     
     /**
     * Highlight data points at index.
@@ -450,6 +448,42 @@ class LineChart: UIControl {
         lineLayerStore.append(layer)
     }
     
+    func drawWordLine(lineIndex: CGFloat) {
+        // keep index within bounds
+        var indexToDisplayLine = lineIndex
+        if indexToDisplayLine < 0 {
+            indexToDisplayLine = 0
+        }
+        if indexToDisplayLine > 23.0 {
+            indexToDisplayLine = 23.0
+        }
+        
+        // get axis
+        var xAxis:Array<CGFloat> = scaleDataXAxis(dataStore[0])
+        
+        // create path and draw line
+        var path = CGPathCreateMutable()
+        CGPathMoveToPoint(path, nil, xAxis[0] + lineIndex, self.bounds.minY + axisInset)
+        CGPathAddLineToPoint(path, nil, xAxis[0] + lineIndex, self.bounds.maxY + 10)
+        
+        // add line to screen
+        var layer = CAShapeLayer()
+        layer.frame = self.bounds
+        layer.path = path
+        layer.strokeColor = UIColor(red: 97/255.0, green: 177/255.0, blue: 237/255.0, alpha: 0.4).CGColor
+        layer.lineWidth = lineWidth * 2
+        self.layer.addSublayer(layer)
+        
+        // add line to the line store so it can be cleared when touch is moved/ended
+        lineHighlightLayerStore.append(layer)
+    }
+    
+    func removeWordLine() {
+        for lineLayer in lineHighlightLayerStore {
+            lineLayer.removeFromSuperlayer()
+        }
+        lineHighlightLayerStore.removeAll()
+    }
     
     /**
     * Fill area between line chart and x-axis.
@@ -574,7 +608,7 @@ class LineChart: UIControl {
                 var label = UILabel(frame: CGRect(x: scaledValue + (axisInset/2), y: self.bounds.height + axisInset, width: 44, height: axisInset))
                 label.font = UIFont(name: "HelveticaNeue-Light",
                     size: 15.0)
-                let lightGray:UIColor = UIColor(red: 255.0, green: 255.0, blue: 255.0, alpha: 0.2)
+                let lightGray:UIColor = UIColor(red: 255.0, green: 255.0, blue: 255.0, alpha: 0.4)
 
                 // MARK: mod - changed justification
                 label.textAlignment = NSTextAlignment.Center

@@ -50,9 +50,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     vc.viewWillAppear(false)
                 }
             }
-            else {
-                NSLog("don't need to refresh")
-            }
         }
     }
     

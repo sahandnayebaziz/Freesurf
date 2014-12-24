@@ -474,7 +474,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rXX-Ur-LDj" userLabel="tideChart view">
-                                                <rect key="frame" x="0.0" y="241" width="600" height="200"/>
+                                                <rect key="frame" x="20" y="241" width="560" height="200"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="200" id="Es4-Ip-BVb"/>
@@ -511,12 +511,12 @@
                                             <constraint firstItem="N78-Fy-pwy" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="qm9-Q9-RsY" secondAttribute="leading" constant="10" id="Pwj-Ki-2FN"/>
                                             <constraint firstItem="9If-Bc-iaV" firstAttribute="leading" secondItem="iqA-wg-xKD" secondAttribute="trailing" constant="20" id="QAW-DR-o4W"/>
                                             <constraint firstItem="bOh-8e-wUS" firstAttribute="leading" secondItem="qm9-Q9-RsY" secondAttribute="leading" constant="20" id="QTj-IH-X5Y"/>
-                                            <constraint firstItem="rXX-Ur-LDj" firstAttribute="leading" secondItem="qm9-Q9-RsY" secondAttribute="leading" id="SiB-cP-mmD"/>
+                                            <constraint firstItem="rXX-Ur-LDj" firstAttribute="leading" secondItem="qm9-Q9-RsY" secondAttribute="leading" constant="20" id="SiB-cP-mmD"/>
                                             <constraint firstItem="JX3-mx-fbl" firstAttribute="top" secondItem="qm9-Q9-RsY" secondAttribute="top" constant="140" id="WEg-X7-ufs"/>
                                             <constraint firstItem="iqA-wg-xKD" firstAttribute="leading" secondItem="qm9-Q9-RsY" secondAttribute="leading" constant="20" id="Wyj-e0-fLu"/>
                                             <constraint firstItem="lMG-DP-qPD" firstAttribute="top" secondItem="JX3-mx-fbl" secondAttribute="bottom" constant="3" id="X1Z-RQ-2nl"/>
                                             <constraint firstItem="rXX-Ur-LDj" firstAttribute="top" secondItem="qm9-Q9-RsY" secondAttribute="top" constant="241" id="X2z-TN-klJ"/>
-                                            <constraint firstAttribute="trailing" secondItem="rXX-Ur-LDj" secondAttribute="trailing" id="bxq-XR-3tv"/>
+                                            <constraint firstAttribute="trailing" secondItem="rXX-Ur-LDj" secondAttribute="trailing" constant="20" id="bxq-XR-3tv"/>
                                             <constraint firstItem="N78-Fy-pwy" firstAttribute="leading" secondItem="qFL-Z8-Fgw" secondAttribute="trailing" constant="20" id="eBR-GE-txW"/>
                                             <constraint firstItem="iqA-wg-xKD" firstAttribute="top" secondItem="bOh-8e-wUS" secondAttribute="bottom" constant="5" id="eq8-0G-46d"/>
                                             <constraint firstItem="w2P-Eh-GJu" firstAttribute="top" secondItem="bS2-uz-zCt" secondAttribute="bottom" constant="8" id="fGA-Sh-4Qg"/>
@@ -541,8 +541,8 @@
                                                 <exclude reference="X1Z-RQ-2nl"/>
                                                 <exclude reference="mqh-xk-a1Z"/>
                                                 <exclude reference="1eg-A4-XNu"/>
-                                                <exclude reference="9nD-4Y-ujK"/>
                                                 <exclude reference="Lux-s8-ebh"/>
+                                                <exclude reference="9nD-4Y-ujK"/>
                                             </mask>
                                         </variation>
                                     </view>
