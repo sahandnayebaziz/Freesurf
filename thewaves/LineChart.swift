@@ -4,15 +4,10 @@
 //
 //  Released under the MIT License at github.com/zemirco/swift-linechart
 //
-//  Modified by Sahand Nayebaziz for deployment in this application
-
-
-
+//  Modified by Sahand Nayebaziz for deployment in this application. Changes have been documented in this file.
 
 import UIKit
 import QuartzCore
-
-
 
 // make Arrays substractable
 func - (left: Array<CGFloat>, right: Array<CGFloat>) -> Array<CGFloat> {
@@ -24,19 +19,21 @@ func - (left: Array<CGFloat>, right: Array<CGFloat>) -> Array<CGFloat> {
     return result
 }
 
-
-
 // delegate method
-// modified to send an identifier
 @objc protocol LineChartDelegate {
+    
+    // modified to require a chartIdentifier to be sent to the delegate when this is called. This was added
+    // when I created two LineChart objects in with the same viewController as delegate and could no think
+    // of no other way to identify which LineChart object the touches were coming from.
     func didSelectDataPoint(x: CGFloat, yValues: Array<CGFloat>, chartIdentifier: String)
 }
-
-
 
 // LineChart class
 class LineChart: UIControl {
     
+    // chartIdentifier is a string that can be used to name an instance of LineChart object and later identify
+    // one instance of a LineChart object from another when one viewController is the delegate for two or more
+    // LineChart objects.
     var chartIdentifier:String = ""
     
     // default configuration
@@ -50,21 +47,13 @@ class LineChart: UIControl {
     var numberOfGridLinesY: CGFloat = 10
     var animationEnabled = true
     var animationDuration: CFTimeInterval = 1
-    
     var dotsBackgroundColor = UIColor.whiteColor()
-    
-    // #eeeeee
     var gridColor = UIColor(red: 238/255.0, green: 238/255.0, blue: 238/255.0, alpha: 1)
-    
-    // #607d8b
     var axesColor = UIColor(red: 96/255.0, green: 125/255.0, blue: 139/255.0, alpha: 1)
-    
-    // #f69988
     var positiveAreaColor = UIColor(red: 246/255.0, green: 153/255.0, blue: 136/255.0, alpha: 1)
-    
-    // #72d572
     var negativeAreaColor = UIColor(red: 114/255.0, green: 213/255.0, blue: 114/255.0, alpha: 1)
     
+    // not yet sure how this is used
     var areaBetweenLines = [-1, -1]
     
     // sizes
@@ -89,7 +78,7 @@ class LineChart: UIControl {
     
     var removeAll: Bool = false
     
-    
+    // necessary init
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -110,14 +99,17 @@ class LineChart: UIControl {
         ]
     }
     
+    // necessary init
     convenience override init() {
         self.init(frame: CGRectZero)
     }
     
+    // necessary init
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
+    // intitialization added to take indentifer to be used as chartIdentifier
     init(frame: CGRect, identifier: String) {
         super.init(frame: frame)
         self.backgroundColor = UIColor.clearColor()
@@ -579,30 +571,21 @@ class LineChart: UIControl {
         for (index, scaledValue) in enumerate(scaledDataXAxis) {
             // MARK: mod - added modulo for division of label number display
             if index % 6 == 0 {
-                var label = UILabel(frame: CGRect(x: scaledValue + (axisInset/2), y: self.bounds.height-axisInset, width: axisInset + 4, height: axisInset))
-                label.font = UIFont.systemFontOfSize(12)
+                var label = UILabel(frame: CGRect(x: scaledValue + (axisInset/2), y: self.bounds.height + axisInset, width: 44, height: axisInset))
+                label.font = UIFont(name: "HelveticaNeue-Light",
+                    size: 15.0)
+                let lightGray:UIColor = UIColor(red: 255.0, green: 255.0, blue: 255.0, alpha: 0.2)
+
                 // MARK: mod - changed justification
-                label.textAlignment = NSTextAlignment.Left
-                
-                
+                label.textAlignment = NSTextAlignment.Center
+
                 // MARK: mod - hour time
-                var timeStringIn12HourTime:String = ""
-                var hourOfDay = index + NSDate().hour()
-                if hourOfDay >= 24 {
-                    hourOfDay = hourOfDay - 24
-                }
-                if hourOfDay >= 12 {
-                    hourOfDay = hourOfDay - 12
-                }
-                if hourOfDay == 0 {
-                    timeStringIn12HourTime = "12"
-                }
-                else {
-                    timeStringIn12HourTime = "\(hourOfDay)"
-                }
+                var timeStringIn12HourTime:String = graphIndexToTimeString(index, false)
                 
+                var labelText:NSMutableAttributedString = NSMutableAttributedString(string: timeStringIn12HourTime)
+                labelText.addAttribute(NSForegroundColorAttributeName, value: lightGray, range: NSMakeRange(0, labelText.length))
                 
-                label.text = timeStringIn12HourTime
+                label.attributedText = labelText
                 
                 self.addSubview(label)
             }
@@ -660,4 +643,51 @@ class LineChart: UIControl {
         dataStore.removeAll()
         self.setNeedsDisplay()
     }
+
+}
+
+// graphIndexToTimeString takes a graphIndex and a boolean that relays whether or not we would like longform times (10:00 AM is long-form, 10AM isn't)
+// in return. This function is very specifically used by lineChart and SpotDetailViewController to respond to the user's touches on a LineChart object and
+// display the time represented by that x-coordinate on the graph to the user on a corresponding label somewhere in that view.
+func graphIndexToTimeString(graphIndex: Int, longForm: Bool) -> String {
+    
+    // temporary storage of strings
+    var stringHour = ""
+    var stringLongForm = ""
+    var string12HourExtension = ""
+    
+    // get hour of day
+    var hourOfDay = Int(graphIndex)
+    
+    // find stringHour
+    if hourOfDay < 12 {
+        string12HourExtension = "AM"
+        if hourOfDay == 0 {
+            stringHour = "12"
+        }
+        else {
+            stringHour = "\(hourOfDay)"
+        }
+    }
+    else if hourOfDay >= 12 {
+        string12HourExtension = "PM"
+        if hourOfDay == 23 {
+            stringHour = "11"
+        }
+        else {
+            hourOfDay = hourOfDay - 12
+            if hourOfDay == 0 {
+                stringHour = "12"
+            }
+            else {
+                stringHour = "\(hourOfDay)"
+            }
+        }
+    }
+    
+    if longForm {
+        stringLongForm = ":00"
+    }
+    
+    return "\(stringHour)\(stringLongForm) \(string12HourExtension)"
 }

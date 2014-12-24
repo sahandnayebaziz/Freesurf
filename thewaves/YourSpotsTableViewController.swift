@@ -325,14 +325,14 @@ class YourSpotsTableViewController: UITableViewController, LPRTableViewDelegate 
                             self.spotLibrary.getCountySwell(self.spotLibrary.county(spot))
                             self.spotLibrary.getCountyWind(self.spotLibrary.county(spot))
                         }
+                        
+                        // call reloadData() on tableView to refresh with any new data
+                        dispatch_to_main_queue {
+                            self.yourSpotsTableView.reloadData()
+                        }
                     }
                 }
             }
-        }
-        
-        // call reloadData() on tableView to refresh with any new data
-        dispatch_to_main_queue {
-            self.yourSpotsTableView.reloadData()
         }
     }
 }

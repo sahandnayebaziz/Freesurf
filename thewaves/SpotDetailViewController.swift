@@ -44,14 +44,30 @@ class SpotDetailViewController: UIViewController, UIScrollViewDelegate, LineChar
     // this is the view the charts will be added to
     @IBOutlet weak var targetView: UIView!
 
-    // labels need to be documented
+    // this is the label that displays the name of the spot
     @IBOutlet weak var spotNameLabel: UILabel!
+    
+    // this is the label that displays the current height of the spot
     @IBOutlet weak var spotCurrentHeightLabel: UILabel!
-    @IBOutlet weak var spotConditionsLabel: UILabel!
-    @IBOutlet weak var spotDirectionAndPeriodLabel: UILabel!
-    @IBOutlet weak var spotTideHeightAtHour: UILabel!
-    @IBOutlet weak var spotSwellHeightAtHour: UILabel!
-
+    
+    // this is the label that displays the direction of the most significant swell of the spot
+    @IBOutlet weak var spotDirectionLabel: UILabel!
+    
+    // this is the label that displays the period of the most significant swell of the spot
+    @IBOutlet weak var spotPeriodLabel: UILabel!
+    
+    // this is the label that displays the english-language condition of the spot
+    @IBOutlet weak var spotConditionLabel: UILabel!
+    
+    // this is the label that that displays the speed and direction of the wind of the spot
+    @IBOutlet weak var spotWindLabel: UILabel!
+    
+    // this is the label that dispalys the water temperature of the spot
+    @IBOutlet weak var spotWaterTempLabel: UILabel!
+    
+    // this is the label that displays the hour and height of the tide at a certain point of the spot
+    @IBOutlet weak var spotTideHourLabel: UILabel!
+    
     // called once
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -64,8 +80,8 @@ class SpotDetailViewController: UIViewController, UIScrollViewDelegate, LineChar
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(false)
         
-        // set the background color of the view based on the size of this spot's swell height
-        self.setBackgroundColor(self.spotLibrary.currentHeight(selectedSpotID)!)
+        // set the background color of the view to be the same background color as that of the main view
+        self.view.backgroundColor = UIColor(red: 13/255.0, green: 13/255.0, blue: 13/255.0, alpha: 1.0)
         
         // set the labels
         self.setViewLabels()
@@ -92,6 +108,8 @@ class SpotDetailViewController: UIViewController, UIScrollViewDelegate, LineChar
     }
     
     // MARK: Create and manage gesture recognizers
+    // createEdgePanGestureRecognizer does all necessary setup to allow the user to left-to-right edge swipe this view
+    // to perform a segue back to the main view. For more detail see handleOnstagePan below
     func createEdgePanGestureRecognizer() {
         // add an edge swipe gesture recognizer to the left edge of the display
         self.enterPanGesture = UIScreenEdgePanGestureRecognizer()
@@ -100,44 +118,43 @@ class SpotDetailViewController: UIViewController, UIScrollViewDelegate, LineChar
         self.view.addGestureRecognizer(self.enterPanGesture)
     }
     
+    // handleOnstagePan does nothing but perform a segue back to the main view when the user completes a 
+    // left-to-right edge swipe on this view
     func handleOnstagePan(pan: UIPanGestureRecognizer){
-        // now lets deal with different states that the gesture recognizer sends
         switch (pan.state) {
-            
-        case UIGestureRecognizerState.Cancelled:
-            break
-            
         case UIGestureRecognizerState.Ended:
-            // trigger the start of the transition
+            // perform segue back to the main view
             self.performSegueWithIdentifier("unwindFromSpotDetail", sender: self)
             break
-            
-        default: // .Ended, .Cancelled, .Failed ...
+        default:
             break
         }
+        
     }
     
     // MARK: Create and manage colors, labels, and display
+    // setViewLabels sets the name, height, direction, period, condition, water temperature, and wind labels of the view by calling methods
+    // of the SpotLibrary class to retrieve stored data for this spot
     func setViewLabels() {
         // get values
         let swellHeight = self.spotLibrary.currentHeight(selectedSpotID)!
-        let swellConditions = self.spotLibrary.currentConditions(selectedSpotID)!
         let swell = self.spotLibrary.significantSwell(selectedSpotID)!
+        let swellConditions = self.spotLibrary.currentConditions(selectedSpotID)!
+        let wind = self.spotLibrary.wind(selectedSpotID)!
+        let waterTemp = self.spotLibrary.waterTemp(selectedSpotID)!
 
         // set labels
         self.spotNameLabel.text = self.spotLibrary.name(selectedSpotID)
-        self.spotCurrentHeightLabel.text = "\(swellHeight)ft"
-        self.spotConditionsLabel.text = "\(swellConditions.lowercaseString) conditions"
-        self.spotDirectionAndPeriodLabel.text = "\(swell.direction) @ \(swell.period)s"
+        self.spotCurrentHeightLabel.text = "\(swellHeight)-\(swellHeight + 1)ft"
+        self.spotDirectionLabel.text = "\(swell.direction)"
+        self.spotPeriodLabel.text = "\(swell.period) SEC"
+        self.spotConditionLabel.text = "\(swellConditions.uppercaseString)"
+        self.spotWaterTempLabel.text = "\(waterTemp)°"
+        self.spotWindLabel.text = "\(wind.direction) @ \(wind.speedInMPH) MPH"
         
     }
     
-    func setBackgroundColor(height:Int) {
-        // set the background color of this view to be a dark, near-black gray
-        self.view.backgroundColor = UIColor(red: 13/255.0, green: 13/255.0, blue: 13/255.0, alpha: 1.0)
-        
-    }
-    
+    // set the status bar style to light so that the color of status bar elements is white
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
         return UIStatusBarStyle.LightContent
     }
@@ -177,16 +194,14 @@ class SpotDetailViewController: UIViewController, UIScrollViewDelegate, LineChar
         
         
         // modify tide charts
-        let blueColorUsed:UIColor = UIColor(red: 97/255.0, green: 177/255.0, blue: 237/255.0, alpha: 1)
-        
         for chart in [tideChart, swellChart] {
             chart.animationEnabled = true
             chart.areaUnderLinesVisible = false
             chart.axesColor = UIColor.clearColor()
             chart.gridColor = UIColor.clearColor()
-            chart.labelsXVisible = false
+            chart.labelsXVisible = true
             chart.axisInset = 24
-            chart.dotsBackgroundColor = blueColorUsed
+            chart.dotsBackgroundColor = UIColor(red: 97/255.0, green: 177/255.0, blue: 237/255.0, alpha: 1)
         }
         
         // add charts to their views
@@ -200,8 +215,9 @@ class SpotDetailViewController: UIViewController, UIScrollViewDelegate, LineChar
     }
     
     func didSelectDataPoint(x: CGFloat, yValues: Array<CGFloat>, chartIdentifier: String) {
-        // get index of touch
-        var chartIndexTouched = x
+        // get index of touch and set the index to 0 if the touch was made at an index less than 0
+        // and 23 if the touch was made at an index larger that 23
+        var chartIndexTouched:Int = Int(x)
         if chartIndexTouched < 0 {
             chartIndexTouched = 0
         }
@@ -209,37 +225,26 @@ class SpotDetailViewController: UIViewController, UIScrollViewDelegate, LineChar
             chartIndexTouched = 23
         }
         
+        // create strings for the tide value label. The format is different for the tideLabel vs. the swellChart label
+        // and those differences are separated here. chartIdentifier tells us which chart was touched, since this viewController
+        // is the delegate for two LineChart objects and we must know which chart was touched to update the appropriate chart.
         var heightString:String = ""
+        var timeString = "\(graphIndexToTimeString(chartIndexTouched, true))"
+        
         if chartIdentifier == "tideChart" {
-            // set to label
             heightString = "\(Int(yValues.first!))ft"
         }
         else if chartIdentifier == "swellChart" {
-            // set to label
             heightString = "\(Int(yValues.first!))-\(Int(yValues.first!) + 1)ft"
         }
         
-        var timeString = "@ \(graphIndexToTimeString(chartIndexTouched)) Today"
-        var completeString = "\(heightString) \(timeString)"
-        var locationOfTimeString:Int = countElements(heightString) + 1
-        var attributedComplete:NSMutableAttributedString = NSMutableAttributedString(string: completeString)
-        attributedComplete.addAttribute(NSForegroundColorAttributeName, value: UIColor.lightGrayColor(), range: NSMakeRange(locationOfTimeString, countElements(timeString)))
-        
         if chartIdentifier == "tideChart" {
-            self.spotTideHeightAtHour.attributedText = attributedComplete
+            self.spotTideHourLabel.text = "\(heightString) @ \(timeString)"
         }
-        else if chartIdentifier == "swellChart" {
-            self.spotSwellHeightAtHour.attributedText = attributedComplete
-        }
-        
-        //        uncomment to highlight the time in the timeString to be the color blue
-        //        if (Int(chartIndexTouched) == self.currentHour) {
-        //            var color:UIColor = UIColor(red: 97/255.0, green: 177/255.0, blue: 237/255.0, alpha: 1)
-        //            attributedComplete.addAttribute(NSForegroundColorAttributeName, value: color, range: NSMakeRange(locationOfTimeString, countElements(timeString)))
-        //        }
     }
     
-    // MARK: View delegate methods
+    // didRoateFromInterfaceOrientation redraws views that need to be updated when the user rotates
+    // their device from orientation to another.
     override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
         self.gradient.frame = self.view.bounds
         self.setNeedsStatusBarAppearanceUpdate()
@@ -248,34 +253,7 @@ class SpotDetailViewController: UIViewController, UIScrollViewDelegate, LineChar
         tideChart.setNeedsDisplay()
     }
     
-    func graphIndexToTimeString(graphIndex: CGFloat) -> String {
-        var timeStringIn12HourTime = ""
-        var hourOfDay = Int(graphIndex)
-        if hourOfDay < 12 {
-            if hourOfDay == 0 {
-                timeStringIn12HourTime = "12AM"
-            }
-            else {
-                timeStringIn12HourTime = "\(hourOfDay)AM"
-            }
-        }
-        else if hourOfDay >= 12 {
-            if hourOfDay == 23 {
-                timeStringIn12HourTime = "11PM"
-            }
-            else {
-                hourOfDay = hourOfDay - 12
-                if hourOfDay == 0 {
-                    timeStringIn12HourTime = "12PM"
-                }
-                else {
-                    timeStringIn12HourTime = "\(hourOfDay)PM"
-                }
-            }
-        }
-        
-        return "\(timeStringIn12HourTime)"
-    }
+
 }
 
 
