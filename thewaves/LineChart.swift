@@ -338,7 +338,7 @@ class LineChart: UIControl {
             // animate opacity
             if animationEnabled {
                 var animation = CABasicAnimation(keyPath: "opacity")
-                animation.duration = animationDuration
+                animation.duration = 0.25
                 animation.fromValue = 0
                 animation.toValue = 1
                 dotLayer.addAnimation(animation, forKey: "opacity")
@@ -451,6 +451,7 @@ class LineChart: UIControl {
     
     func drawWordLine(lineIndex: Int) {
         // keep index within bounds
+        NSLog("b: \(lineIndex)")
         var indexToDisplayLine = lineIndex
         if indexToDisplayLine < 0 {
             indexToDisplayLine = 0
@@ -458,14 +459,15 @@ class LineChart: UIControl {
         if indexToDisplayLine > 23 {
             indexToDisplayLine = 23
         }
+        NSLog("a: \(indexToDisplayLine)")
         
         // get axis
         var xAxis:Array<CGFloat> = scaleDataXAxis(dataStore[0])
         
         // create path and draw line
         var path = CGPathCreateMutable()
-        CGPathMoveToPoint(path, nil, xAxis[lineIndex] + axisInset, self.bounds.minY + axisInset)
-        CGPathAddLineToPoint(path, nil, xAxis[lineIndex] + axisInset, self.bounds.maxY + 10)
+        CGPathMoveToPoint(path, nil, xAxis[indexToDisplayLine] + axisInset, self.bounds.minY + axisInset)
+        CGPathAddLineToPoint(path, nil, xAxis[indexToDisplayLine] + axisInset, self.bounds.maxY + 10)
         
         // add line to screen
         var layer = CAShapeLayer()
@@ -606,7 +608,7 @@ class LineChart: UIControl {
         for (index, scaledValue) in enumerate(scaledDataXAxis) {
             // MARK: mod - added modulo for division of label number display
             if index % 6 == 0 {
-                var label = UILabel(frame: CGRect(x: scaledValue + (axisInset/2), y: self.bounds.height + axisInset, width: 44, height: axisInset))
+                var label = UILabel(frame: CGRect(x: scaledValue + (axisInset/2) + 2, y: self.bounds.height + axisInset, width: 44, height: axisInset))
                 label.font = UIFont(name: "HelveticaNeue-Light",
                     size: 15.0)
                 let lightGray:UIColor = UIColor(red: 255.0, green: 255.0, blue: 255.0, alpha: 0.4)

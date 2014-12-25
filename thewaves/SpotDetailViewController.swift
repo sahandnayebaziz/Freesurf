@@ -65,12 +65,19 @@ class SpotDetailViewController: UIViewController, UIScrollViewDelegate, LineChar
     // this is the label that dispalys the water temperature of the spot
     @IBOutlet weak var spotWaterTempLabel: UILabel!
     
-    // this is the label that displays the hour of the tide at a certain point of the spot
+    // this is the label that displays the hour of the tide at a certain time at this spot
     @IBOutlet weak var spotTideTimeLabel: UILabel!
     
-    // this is the label that displays the height of the tide at a certain point of the spot
+    // this is the label that displays the height of the tide at a certain time at this spot
     @IBOutlet weak var spotTideHeightLabel: UILabel!
     
+    // this is the label that displays the height of the swell at a certain time at this spot
+    @IBOutlet weak var spotHeightChartHeightLabel: UILabel!
+    
+    // this is the label that displays the hour of the swell at a certain at this spot
+    @IBOutlet weak var spotHeightChartTimeLabel: UILabel!
+    
+
     
     
     // called once
@@ -205,6 +212,7 @@ class SpotDetailViewController: UIViewController, UIScrollViewDelegate, LineChar
             chart.axesColor = UIColor.clearColor()
             chart.gridColor = UIColor.clearColor()
             chart.labelsXVisible = true
+            chart.labelsYVisible = false
             chart.axisInset = 24
             chart.dotsBackgroundColor = UIColor(red: 97/255.0, green: 177/255.0, blue: 237/255.0, alpha: 1)
         }
@@ -246,6 +254,10 @@ class SpotDetailViewController: UIViewController, UIScrollViewDelegate, LineChar
         if chartIdentifier == "tideChart" {
             self.spotTideHeightLabel.text = heightString
             self.spotTideTimeLabel.text = timeString
+        }
+        if chartIdentifier == "swellChart" {
+            self.spotHeightChartHeightLabel.text = heightString
+            self.spotHeightChartTimeLabel.text = timeString
         }
     }
     
