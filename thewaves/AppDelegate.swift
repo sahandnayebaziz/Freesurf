@@ -42,7 +42,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let hoursStored = defaults.objectForKey("hoursMarker") as? Int {
             let currentHours:Int = NSDate().hoursAfterDate(NSDate(fromString: "13 July 1993", format: .Custom("dd MMM yyyy")))
             if currentHours > hoursStored {
-                NSLog("need to refresh")
                 if let exportString = defaults.objectForKey("userSelectedSpots") as? String {
                     vc.usingUserDefaults = true
                     vc.spotLibrary = SpotLibrary()

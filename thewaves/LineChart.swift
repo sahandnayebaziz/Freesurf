@@ -256,6 +256,7 @@ class LineChart: UIControl {
     // touchesBegan and touchesMoved are called if the user begins to or continues to touch
     // a LineChart object
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
+        removeWordLine()
         handleTouchEvents(touches, event: event)
     }
     override func touchesMoved(touches: NSSet, withEvent event: UIEvent) {
@@ -264,6 +265,10 @@ class LineChart: UIControl {
     }
     
     override func touchesEnded(touches: NSSet, withEvent event: UIEvent) {
+        removeWordLine()
+    }
+    
+    override func touchesCancelled(touches: NSSet!, withEvent event: UIEvent!) {
         removeWordLine()
     }
     
@@ -309,7 +314,7 @@ class LineChart: UIControl {
             } else {
                 dot = dotsData[index]
             }
-//            dot.backgroundColor = lightenUIColor(colors[lineIndex]).CGColor
+
             dot.backgroundColor = UIColor.whiteColor().CGColor
         }
     }
@@ -451,7 +456,7 @@ class LineChart: UIControl {
     
     func drawWordLine(lineIndex: Int) {
         // keep index within bounds
-        NSLog("b: \(lineIndex)")
+
         var indexToDisplayLine = lineIndex
         if indexToDisplayLine < 0 {
             indexToDisplayLine = 0
@@ -459,7 +464,6 @@ class LineChart: UIControl {
         if indexToDisplayLine > 23 {
             indexToDisplayLine = 23
         }
-        NSLog("a: \(indexToDisplayLine)")
         
         // get axis
         var xAxis:Array<CGFloat> = scaleDataXAxis(dataStore[0])
@@ -695,6 +699,11 @@ func graphIndexToTimeString(graphIndex: Int, longForm: Bool) -> String {
     
     // get hour of day
     var hourOfDay = Int(graphIndex)
+    
+    // return "Now" if the user has touched an index on a 24-hour graph that represents the current hour of the day
+    if hourOfDay == NSDate().hour()  {
+        return "Now"
+    }
     
     // find stringHour
     if hourOfDay < 12 {
