@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import QuartzCore
 
 extension String {
     func contains(other: String) -> Bool{
