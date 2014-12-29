@@ -19,6 +19,10 @@ class YourSpotsTableViewController: UITableViewController, LPRTableViewDelegate 
     // yourSpotsTableView is populated with YourSpotsCells for each spot the user has selected in the SearchForNewSpots view
     @IBOutlet var yourSpotsTableView:LPRTableView!
     
+    // this view contains the onboarding instructions that are only displayed
+    // until the user has added their first spot to their list of saved spots
+    @IBOutlet weak var header: UIView!
+    
     // this view contains the "add spot" button that moves the user to the SearchForNewSpots view as well as the Spitcast logo
     @IBOutlet weak var footer: UIView!
     
@@ -51,9 +55,16 @@ class YourSpotsTableViewController: UITableViewController, LPRTableViewDelegate 
         // set the background color of this view to be a dark, near-black gray
         self.yourSpotsTableView.backgroundColor = UIColor(red: 13/255.0, green: 13/255.0, blue: 13/255.0, alpha: 1.0)
         
+        // set the header view
+        yourSpotsTableView.tableHeaderView = header
+        
         // set footer to be the tableFooterView of yourSpotsTableView and give footer a height of 100
         footer.frame = CGRect(x: footer.frame.minX, y: footer.frame.minY, width: footer.frame.maxX, height: 130)
         yourSpotsTableView.tableFooterView = footer
+        
+        if spotLibrary.selectedSpotIDs.count > 0 {
+            println("Don't need it")
+        }
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -94,9 +105,19 @@ class YourSpotsTableViewController: UITableViewController, LPRTableViewDelegate 
             source.searchField.resignFirstResponder()
             source.dismissViewControllerAnimated(true, completion: nil)
             
+            // dismiss the header view if it is still being displayed
+            // and the user has selected at least once spot
+            if self.tableView.tableHeaderView != nil {
+                if self.spotLibrary.selectedSpotIDs.count > 0 {
+                    self.header.hidden = true
+                    self.tableView.tableHeaderView = nil
+                }
+            }
+            
             // reload this table view's data with the new SpotLibrary object
             self.tableView.reloadData()
             self.downloadMissingSpotInfo()
+            
         }
         else if segue.identifier! == "unwindFromSpotDetail" {
             // as of now, do nothing

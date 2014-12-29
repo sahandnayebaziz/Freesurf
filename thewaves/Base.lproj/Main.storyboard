@@ -12,7 +12,30 @@
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" keyboardDismissMode="onDrag" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="76" sectionHeaderHeight="22" sectionFooterHeight="22" id="6lc-s5-bZy" customClass="LPRTableView" customModule="Freesurf" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <view key="tableFooterView" autoresizesSubviews="NO" contentMode="redraw" verticalHuggingPriority="1000" id="9ui-3d-OlZ">
+                        <view key="tableHeaderView" contentMode="scaleToFill" id="IYl-w4-4YW" userLabel="header view">
+                            <rect key="frame" x="0.0" y="0.0" width="600" height="202"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap      to add a surf spot" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="84L-Ag-k6Y">
+                                    <rect key="frame" x="170" y="100" width="261" height="29"/>
+                                    <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="24"/>
+                                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="contactAdd" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LIw-KY-QUw">
+                                    <rect key="frame" x="215" y="104" width="22" height="22"/>
+                                    <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                </button>
+                            </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstItem="84L-Ag-k6Y" firstAttribute="top" secondItem="IYl-w4-4YW" secondAttribute="top" constant="100" id="5Pu-R1-d7U"/>
+                                <constraint firstAttribute="centerX" secondItem="LIw-KY-QUw" secondAttribute="centerX" constant="74" id="bef-f2-Ku5"/>
+                                <constraint firstAttribute="centerX" secondItem="84L-Ag-k6Y" secondAttribute="centerX" id="dq6-gj-w90"/>
+                                <constraint firstItem="LIw-KY-QUw" firstAttribute="top" secondItem="IYl-w4-4YW" secondAttribute="top" constant="104" id="iSs-ib-jDN"/>
+                            </constraints>
+                        </view>
+                        <view key="tableFooterView" autoresizesSubviews="NO" contentMode="redraw" verticalHuggingPriority="1000" id="9ui-3d-OlZ" userLabel="footer">
                             <rect key="frame" x="0.0" y="135" width="600" height="568"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
@@ -183,6 +206,7 @@
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="footer" destination="9ui-3d-OlZ" id="WFv-nO-UeI"/>
+                        <outlet property="header" destination="IYl-w4-4YW" id="bih-vq-CBa"/>
                         <outlet property="yourSpotsTableView" destination="6lc-s5-bZy" id="3jo-QM-8OS"/>
                         <segue destination="dFv-Bc-1T1" kind="show" identifier="openSpotDetail" id="HVo-TB-VZA"/>
                     </connections>
@@ -349,8 +373,8 @@
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DDa-Wm-sYZ">
                                 <rect key="frame" x="0.0" y="50" width="600" height="550"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qm9-Q9-RsY" userLabel="view to scroll">
-                                        <rect key="frame" x="0.0" y="-500" width="600" height="880"/>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qm9-Q9-RsY" userLabel="view to scroll">
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="880"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3-4ft" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="N78-Fy-pwy" userLabel="value-height">
                                                 <rect key="frame" x="150" y="15" width="430" height="85"/>
