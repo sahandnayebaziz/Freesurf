@@ -14,6 +14,10 @@
 		D801B1651A3D172200C1751F /* LineChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = D801B1631A3D172200C1751F /* LineChart.swift */; };
 		D811E9201A06DD1200EF9035 /* YourSpotsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D811E91F1A06DD1200EF9035 /* YourSpotsCell.swift */; };
 		D818F3D3198EEE390098FE82 /* SpotLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = D818F3D2198EEE390098FE82 /* SpotLibrary.swift */; };
+		D81925631A48FE2700925B51 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = D81925621A48FE2700925B51 /* LICENSE */; };
+		D81925661A48FE8600925B51 /* LICENSE2 in Resources */ = {isa = PBXBuildFile; fileRef = D81925651A48FE8600925B51 /* LICENSE2 */; };
+		D819258A1A49020400925B51 /* LICENSE3 in Resources */ = {isa = PBXBuildFile; fileRef = D81925871A49020400925B51 /* LICENSE3 */; };
+		D819258B1A49020400925B51 /* LPRTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81925881A49020400925B51 /* LPRTableView.swift */; };
 		D82C59711A33E69600896BBA /* SpotDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D82C59701A33E69600896BBA /* SpotDetailViewController.swift */; };
 		D84F16FC19C76E6E0050E4FC /* af-date-extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D84F16FB19C76E6E0050E4FC /* af-date-extension.swift */; };
 		D86F621D198F02DF0070B713 /* YourSpotsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86F621C198F02DF0070B713 /* YourSpotsTableViewController.swift */; };
@@ -46,6 +50,10 @@
 		D801B1631A3D172200C1751F /* LineChart.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LineChart.swift; sourceTree = "<group>"; };
 		D811E91F1A06DD1200EF9035 /* YourSpotsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YourSpotsCell.swift; sourceTree = "<group>"; };
 		D818F3D2198EEE390098FE82 /* SpotLibrary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpotLibrary.swift; sourceTree = "<group>"; };
+		D81925621A48FE2700925B51 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		D81925651A48FE8600925B51 /* LICENSE2 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE2; sourceTree = "<group>"; };
+		D81925871A49020400925B51 /* LICENSE3 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE3; sourceTree = "<group>"; };
+		D81925881A49020400925B51 /* LPRTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LPRTableView.swift; sourceTree = "<group>"; };
 		D82C59701A33E69600896BBA /* SpotDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpotDetailViewController.swift; sourceTree = "<group>"; };
 		D84F16FB19C76E6E0050E4FC /* af-date-extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "af-date-extension.swift"; sourceTree = "<group>"; };
 		D86F621C198F02DF0070B713 /* YourSpotsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YourSpotsTableViewController.swift; sourceTree = "<group>"; };
@@ -130,12 +138,41 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		D81925611A48FDDB00925B51 /* AF Date Helper */ = {
+			isa = PBXGroup;
+			children = (
+				D81925621A48FE2700925B51 /* LICENSE */,
+				D84F16FB19C76E6E0050E4FC /* af-date-extension.swift */,
+			);
+			name = "AF Date Helper";
+			sourceTree = "<group>";
+		};
+		D81925641A48FE5500925B51 /* LineChart */ = {
+			isa = PBXGroup;
+			children = (
+				D81925651A48FE8600925B51 /* LICENSE2 */,
+				D801B1621A3D172200C1751F /* DotCALayer.swift */,
+				D801B1631A3D172200C1751F /* LineChart.swift */,
+			);
+			name = LineChart;
+			sourceTree = "<group>";
+		};
+		D81925851A49020400925B51 /* LPRTableView */ = {
+			isa = PBXGroup;
+			children = (
+				D81925871A49020400925B51 /* LICENSE3 */,
+				D81925881A49020400925B51 /* LPRTableView.swift */,
+			);
+			name = LPRTableView;
+			path = "LPRTableView-master";
+			sourceTree = "<group>";
+		};
 		D84F16FA19C76E4E0050E4FC /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				D801B1621A3D172200C1751F /* DotCALayer.swift */,
-				D801B1631A3D172200C1751F /* LineChart.swift */,
-				D84F16FB19C76E6E0050E4FC /* af-date-extension.swift */,
+				D81925851A49020400925B51 /* LPRTableView */,
+				D81925641A48FE5500925B51 /* LineChart */,
+				D81925611A48FDDB00925B51 /* AF Date Helper */,
 				D8B63A3519C90027004A1398 /* networking.swift */,
 				D8B5681519C8914E000817AA /* threading.swift */,
 				D8F6636419D5EF87000B062C /* search.swift */,
@@ -252,6 +289,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D819258A1A49020400925B51 /* LICENSE3 in Resources */,
+				D81925631A48FE2700925B51 /* LICENSE in Resources */,
+				D81925661A48FE8600925B51 /* LICENSE2 in Resources */,
 				D8011780198D64C200509A27 /* Main.storyboard in Resources */,
 				D8B89E131A47BFE100BBEAD5 /* Images.xcassets in Resources */,
 			);
@@ -272,6 +312,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D86F621D198F02DF0070B713 /* YourSpotsTableViewController.swift in Sources */,
+				D819258B1A49020400925B51 /* LPRTableView.swift in Sources */,
 				D818F3D3198EEE390098FE82 /* SpotLibrary.swift in Sources */,
 				D8B5681619C8914E000817AA /* threading.swift in Sources */,
 				D8B63A3619C90027004A1398 /* networking.swift in Sources */,

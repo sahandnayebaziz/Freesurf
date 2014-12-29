@@ -1,4 +1,10 @@
-// TODO: add license
+//
+//  DotCALayer.swift
+//  Created by Mirco Zeiss
+//
+//  Released under the MIT License at github.com/zemirco/swift-linechart
+//
+//  Modified by Sahand Nayebaziz for deployment in this application
 
 import UIKit
 import QuartzCore

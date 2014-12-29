@@ -14,10 +14,14 @@ import UIKit
 //    NSUserDefaults if this is not the user's first session.
 // :: once this controller contains a SpotLibrary object with spot ids saved in its selectedSpotIDs array, it will call SpotLibrary methods on a separate thread to populate
 //    the SpotLibrary object with data relevant to the selected spots.
-class YourSpotsTableViewController: UITableViewController {
+class YourSpotsTableViewController: UITableViewController, LPRTableViewDelegate {
     
     // yourSpotsTableView is populated with YourSpotsCells for each spot the user has selected in the SearchForNewSpots view
-    @IBOutlet var yourSpotsTableView: UITableView!
+    @IBOutlet var yourSpotsTableView:LPRTableView!
+    
+    // this view contains the onboarding instructions that are only displayed
+    // until the user has added their first spot to their list of saved spots
+    @IBOutlet weak var header: UIView!
     
     // this view contains the "add spot" button that moves the user to the SearchForNewSpots view as well as the Spitcast logo
     @IBOutlet weak var footer: UIView!
@@ -51,9 +55,16 @@ class YourSpotsTableViewController: UITableViewController {
         // set the background color of this view to be a dark, near-black gray
         self.yourSpotsTableView.backgroundColor = UIColor(red: 13/255.0, green: 13/255.0, blue: 13/255.0, alpha: 1.0)
         
+        // set the header view
+        yourSpotsTableView.tableHeaderView = header
+        
         // set footer to be the tableFooterView of yourSpotsTableView and give footer a height of 100
         footer.frame = CGRect(x: footer.frame.minX, y: footer.frame.minY, width: footer.frame.maxX, height: 130)
         yourSpotsTableView.tableFooterView = footer
+        
+        if spotLibrary.selectedSpotIDs.count > 0 {
+            println("Don't need it")
+        }
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -94,9 +105,19 @@ class YourSpotsTableViewController: UITableViewController {
             source.searchField.resignFirstResponder()
             source.dismissViewControllerAnimated(true, completion: nil)
             
+            // dismiss the header view if it is still being displayed
+            // and the user has selected at least once spot
+            if self.tableView.tableHeaderView != nil {
+                if self.spotLibrary.selectedSpotIDs.count > 0 {
+                    self.header.hidden = true
+                    self.tableView.tableHeaderView = nil
+                }
+            }
+            
             // reload this table view's data with the new SpotLibrary object
             self.tableView.reloadData()
             self.downloadMissingSpotInfo()
+            
         }
         else if segue.identifier! == "unwindFromSpotDetail" {
             // as of now, do nothing
@@ -143,6 +164,9 @@ class YourSpotsTableViewController: UITableViewController {
         
         // clear the cell's background before the cell is assigned a background gradient
         cell.backgroundColor = UIColor.clearColor()
+        
+        // clip bounds
+        cell.clipsToBounds = true
         
         // if values have been stored this cell's spot pass this data to the cell
         if let spotValues = self.spotLibrary.getValuesForYourSpotsCell(rowID) {
@@ -200,11 +224,32 @@ class YourSpotsTableViewController: UITableViewController {
         return self.spotLibrary.selectedSpotIDs.count > 1
     }
     
+    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        return self.spotLibrary.selectedSpotIDs.count == 1
+    }
+    
+    override func tableView(tableView: UITableView, moveRowAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath) {
+        // begin updates to the table view's data
+        tableView.beginUpdates()
+        
+        // mark the source cell that is being moved
+        let source = self.spotLibrary.selectedSpotIDs[sourceIndexPath.row]
+        
+        // mark the destination cell that this cell is being moved to
+        let destination = self.spotLibrary.selectedSpotIDs[destinationIndexPath.row]
+        
+        // switch the two spot ID's in the data source
+        self.spotLibrary.selectedSpotIDs[sourceIndexPath.row] = destination
+        self.spotLibrary.selectedSpotIDs[destinationIndexPath.row] = source
+        
+        // end updates to the table view
+        tableView.endUpdates()
+    }
+    
     // swipe to delete is enabled for this table view
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         
-        if (editingStyle == UITableViewCellEditingStyle.Delete) {
-            
+        if editingStyle == UITableViewCellEditingStyle.Delete {
             // begin updates to the tableView's data
             self.yourSpotsTableView.beginUpdates()
             
@@ -299,13 +344,15 @@ class YourSpotsTableViewController: UITableViewController {
                             self.spotLibrary.getCountySwell(self.spotLibrary.county(spot))
                             self.spotLibrary.getCountyWind(self.spotLibrary.county(spot))
                         }
+                        
+                        // call reloadData() on tableView to refresh with any new data
+                        dispatch_to_main_queue {
+                            self.yourSpotsTableView.reloadData()
+                        }
                     }
                 }
             }
         }
-        
-        // call reloadData() on tableView to refresh with any new data
-        yourSpotsTableView.reloadData()
     }
 }
 

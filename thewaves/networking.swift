@@ -30,19 +30,3 @@ func isConnectedToNetwork() -> Bool {
     
     return (isReachable && !needsConnection) ? true : false
 }
-
-func checkInternetConnection(view:UITableViewController) {
-    if !(isConnectedToNetwork()) {
-        view.navigationController!.navigationBar.barTintColor = UIColor.redColor()
-        view.navigationController!.navigationBar.tintColor = UIColor.redColor()
-        view.navigationItem.title = "No Internet Connection"
-        view.navigationController!.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor()]
-    }
-        
-    else {
-        view.navigationController!.navigationBar.barTintColor = nil
-        view.navigationController!.navigationBar.tintColor = nil
-        view.navigationItem.title = "Your Surf Spots"
-        view.navigationController!.navigationBar.titleTextAttributes = nil
-    }
-}
