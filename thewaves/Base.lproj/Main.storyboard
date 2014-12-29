@@ -16,16 +16,19 @@
                             <rect key="frame" x="0.0" y="0.0" width="600" height="202"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="contactAdd" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LIw-KY-QUw">
+                                    <rect key="frame" x="215" y="104" width="22" height="22"/>
+                                    <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                    <connections>
+                                        <segue destination="uoL-s9-yKG" kind="presentation" identifier="openSearchForSpots" modalPresentationStyle="overCurrentContext" id="nIj-UQ-8pQ"/>
+                                    </connections>
+                                </button>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap      to add a surf spot" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="84L-Ag-k6Y">
                                     <rect key="frame" x="170" y="100" width="261" height="29"/>
                                     <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="24"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="contactAdd" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LIw-KY-QUw">
-                                    <rect key="frame" x="215" y="104" width="22" height="22"/>
-                                    <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                </button>
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <constraints>
@@ -664,4 +667,7 @@
         <image name="SpitcastLogo" width="152" height="152"/>
         <image name="backButton" width="120" height="216"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="nIj-UQ-8pQ"/>
+    </inferredMetricsTieBreakers>
 </document>
