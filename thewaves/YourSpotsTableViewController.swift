@@ -55,16 +55,18 @@ class YourSpotsTableViewController: UITableViewController, LPRTableViewDelegate 
         // set the background color of this view to be a dark, near-black gray
         self.yourSpotsTableView.backgroundColor = UIColor(red: 13/255.0, green: 13/255.0, blue: 13/255.0, alpha: 1.0)
         
-        // set the header view
-        yourSpotsTableView.tableHeaderView = header
+        // set the header view with the on-boarding message if the user hasn't added any spots
+        if self.spotLibrary.selectedSpotIDs.count == 0 {
+            yourSpotsTableView.tableHeaderView = header
+        }
+        else {
+            self.header.hidden = true
+            self.yourSpotsTableView.tableHeaderView = nil
+        }
         
         // set footer to be the tableFooterView of yourSpotsTableView and give footer a height of 100
         footer.frame = CGRect(x: footer.frame.minX, y: footer.frame.minY, width: footer.frame.maxX, height: 130)
         yourSpotsTableView.tableFooterView = footer
-        
-        if spotLibrary.selectedSpotIDs.count > 0 {
-            println("Don't need it")
-        }
     }
     
     override func viewWillAppear(animated: Bool) {
