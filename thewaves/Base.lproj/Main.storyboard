@@ -20,7 +20,7 @@
                                     <rect key="frame" x="215" y="104" width="22" height="22"/>
                                     <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                     <connections>
-                                        <segue destination="uoL-s9-yKG" kind="presentation" identifier="openSearchForSpots" modalPresentationStyle="overCurrentContext" id="nIj-UQ-8pQ"/>
+                                        <segue destination="uoL-s9-yKG" kind="presentation" identifier="openSearchForSpotsOnBoarding" modalPresentationStyle="overCurrentContext" id="nIj-UQ-8pQ"/>
                                     </connections>
                                 </button>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap      to add a surf spot" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="84L-Ag-k6Y">

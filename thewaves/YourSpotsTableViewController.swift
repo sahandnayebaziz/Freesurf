@@ -284,7 +284,7 @@ class YourSpotsTableViewController: UITableViewController, LPRTableViewDelegate 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!)
     {
         
-        if segue.identifier! == "openSearchForSpots" {
+        if segue.identifier! == "openSearchForSpots" || segue.identifier! == "openSearchForSpotsOnBoarding" {
             
             // identify destination controller
             let nav:UINavigationController = segue.destinationViewController as UINavigationController
