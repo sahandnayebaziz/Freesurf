@@ -228,7 +228,13 @@ extension LPRTableView {
 					}
 					
                     var listOfIndexPathsToReload:[NSIndexPath] = [self.currentLocationIndexPath!]
-                    if self.initialIndexPath!.row == 0 {
+                    
+                    // If the user started dragging the first table view cell and moved that first table view cell
+                    // to any other spot in the table, refresh the cell that is now the first cell in the table view.
+                    // This is done to ensure that the first tableview cell has the correct height, in case the 
+                    // first table view cell is taller than the rest to go under the status bar.
+                    // If the user started dragging the first table view cell and left it there, do nothing.
+                    if self.initialIndexPath!.row == 0 && self.currentLocationIndexPath!.row != 0 {
                         listOfIndexPathsToReload.append(NSIndexPath(forRow: 0, inSection: 0))
                     }
 
