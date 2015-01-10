@@ -563,31 +563,31 @@ class SpotLibrary: NSObject, NSURLSessionDelegate {
     // swellMetersToFeet takes a floating pointer number representing a distance in meters and returns an integer representing that distance in feet
     func swellMetersToFeet(height:Float) -> Int { return Int(height * 3.2) }
     
-    // degreesToDirection takes a degree (0° ... 359°) and returns a string representing that degree as the abbreviation of a cardinal direction (NE, SW, S)
+    // degreesToDirection takes a degree (0° ... 359°) and returns a string representing that degree as the abbreviation of a cardinal direction (NE, SW, S) using compass directions
     func degreesToDirection(degrees:Int) -> String {
         if degrees == 0 || degrees == 360 {
-            return "N"
-        }
-        else if degrees == 90 {
-            return "E"
-        }
-        else if degrees == 180 {
             return "S"
         }
-        else if degrees == 270 {
+        else if degrees == 90 {
             return "W"
         }
+        else if degrees == 180 {
+            return "N"
+        }
+        else if degrees == 270 {
+            return "E"
+        }
         else if degrees > 0 && degrees < 90 {
-            return "NE"
-        }
-        else if degrees > 90 && degrees < 180 {
-            return "SE"
-        }
-        else if degrees > 180 && degrees < 270 {
             return "SW"
         }
-        else if degrees > 270 && degrees < 360 {
+        else if degrees > 90 && degrees < 180 {
             return "NW"
+        }
+        else if degrees > 180 && degrees < 270 {
+            return "NE"
+        }
+        else if degrees > 270 && degrees < 360 {
+            return "SE"
         }
         else {
             return " "
