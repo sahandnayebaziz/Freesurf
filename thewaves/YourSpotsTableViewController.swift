@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Alamofire
 
 // YourSpotsTableViewController controls the intial view for this app.
 // :: the contained table view displays cells as instances of the class YourSpotsCell.
@@ -171,8 +172,8 @@ class YourSpotsTableViewController: UITableViewController, LPRTableViewDelegate 
         cell.clipsToBounds = true
         
         // if values have been stored this cell's spot pass this data to the cell
-        if let spotValues = self.spotLibrary.getValuesForYourSpotsCell(rowID) {
-            cell.setCellLabels(self.spotLibrary.name(rowID), valuesForSpotAtThisCell: spotValues)
+        if let spotValues = self.spotLibrary.allRequestsMade(rowID) {
+            println(spotValues)
         }
         else {
             
@@ -337,8 +338,7 @@ class YourSpotsTableViewController: UITableViewController, LPRTableViewDelegate 
                 // if there is an internet connection
                 if isConnectedToNetwork() {
                     
-                    // request spot data on a separate thread from the UI if all data for a spot has not been stored
-                    if spotLibrary.getValuesForYourSpotsCell(spot) == nil {
+                    if self.spotLibrary.allRequestsMade(spot) == nil {
                         dispatch_to_background_queue {
                             self.spotLibrary.getSpotSwellsForToday(spot)
                             self.spotLibrary.getCountyWaterTemp(self.spotLibrary.county(spot))
@@ -347,11 +347,26 @@ class YourSpotsTableViewController: UITableViewController, LPRTableViewDelegate 
                             self.spotLibrary.getCountyWind(self.spotLibrary.county(spot))
                         }
                         
-                        // call reloadData() on tableView to refresh with any new data
                         dispatch_to_main_queue {
                             self.yourSpotsTableView.reloadData()
                         }
                     }
+                    
+//                    // request spot data on a separate thread from the UI if all data for a spot has not been stored
+//                    if spotLibrary.getValuesForYourSpotsCell(spot) == nil {
+//                        dispatch_to_background_queue {
+//                            self.spotLibrary.getSpotSwellsForToday(spot)
+//                            self.spotLibrary.getCountyWaterTemp(self.spotLibrary.county(spot))
+//                            self.spotLibrary.getCountyTideForToday(self.spotLibrary.county(spot))
+//                            self.spotLibrary.getCountySwell(self.spotLibrary.county(spot))
+//                            self.spotLibrary.getCountyWind(self.spotLibrary.county(spot))
+//                        }
+//                        
+//                        // call reloadData() on tableView to refresh with any new data
+//                        dispatch_to_main_queue {
+//                            self.yourSpotsTableView.reloadData()
+//                        }
+//                    }
                 }
             }
         }
