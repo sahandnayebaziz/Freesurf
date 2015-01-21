@@ -43,41 +43,40 @@ class YourSpotsCell: UITableViewCell {
     
     // setCellLabels updates the labels of this cell with placeholder values if data for this spot hasn't been stored, or real data
     // if data for this spot has been stored. setCellLabels also sets the colors of the cells background. TODO: separate gradient code from this method
-    func setCellLabels(name:String, valuesForSpotAtThisCell:(height:Int, waterTemp:Int, swell:(height:Int, period:Int, direction:String))?) {
+    func setCellLabels(name:String, values:(height:Int?, waterTemp:Int?, swell:(height:Int, period:Int, direction:String)?)?) {
         
-        // declare color objects for top and bottom of gradient
-        var colorTop:CGColorRef;
-        var colorBottom:CGColorRef;
+        nameLabel.text = name
+        heightLabel.text = "--ft"
+        tempLabel.text = "--° --s --"
+        var colorTop = UIColor(red: 70/255.0, green: 104/255.0, blue: 130/255.0, alpha: 0.4).CGColor!
+        var colorBottom = UIColor(red: 58/255.0, green: 100/255.0, blue: 131/255.0, alpha: 0.4).CGColor!
         
-        // if all values necessary to display spot data have been stored, display real data in this cell
-        if let values = valuesForSpotAtThisCell {
-            nameLabel.text = name
-            heightLabel.text = "\(values.height)ft"
-            tempLabel.text = "\(values.waterTemp)° \(values.swell.period)s \(values.swell.direction)"
+        if values != nil {
+            var tempText = ""
+            var swellText = ""
             
-            // depending on the size of the current swell height for this spot, color the backgrounds of the cells
-            if values.height <= 2 {
-                colorTop = UIColor(red: 70/255.0, green: 104/255.0, blue: 130/255.0, alpha: 1.0).CGColor!
-                colorBottom = UIColor(red: 58/255.0, green: 100/255.0, blue: 131/255.0, alpha: 1.0).CGColor!
+            if values!.height != nil {
+                heightLabel.text = "\(values!.height!)ft"
+                if values!.height! <= 2 {
+                    colorTop = UIColor(red: 70/255.0, green: 104/255.0, blue: 130/255.0, alpha: 1.0).CGColor!
+                    colorBottom = UIColor(red: 58/255.0, green: 100/255.0, blue: 131/255.0, alpha: 1.0).CGColor!
+                }
+                else if values!.height! <= 4 {
+                    colorTop = UIColor(red: 95/255.0, green: 146/255.0, blue: 185/255.0, alpha: 1.0).CGColor!
+                    colorBottom = UIColor(red: 77/255.0, green: 139/255.0, blue: 186/255.0, alpha: 1.0).CGColor!
+                }
+                else {
+                    colorTop = UIColor(red: 120/255.0, green: 188/255.0, blue: 240/255.0, alpha: 1.0).CGColor!
+                    colorBottom = UIColor(red: 97/255.0, green: 179/255.0, blue: 242/255.0, alpha: 1.0).CGColor!
+                }
             }
-            else if values.height <= 4 {
-                colorTop = UIColor(red: 95/255.0, green: 146/255.0, blue: 185/255.0, alpha: 1.0).CGColor!
-                colorBottom = UIColor(red: 77/255.0, green: 139/255.0, blue: 186/255.0, alpha: 1.0).CGColor!
+            if values!.swell != nil {
+                swellText = "\(values!.swell!.period)s \(values!.swell!.direction)"
             }
-            else {
-                colorTop = UIColor(red: 120/255.0, green: 188/255.0, blue: 240/255.0, alpha: 1.0).CGColor!
-                colorBottom = UIColor(red: 97/255.0, green: 179/255.0, blue: 242/255.0, alpha: 1.0).CGColor!
+            if values!.waterTemp != nil {
+                tempText = "\(values!.waterTemp!)° "
             }
-        }
-        // if all values necessary to display spot data have not been stored, display placeholder text in this cell
-        else {
-            nameLabel.text = name
-            heightLabel.text = "--ft"
-            tempLabel.text = "--° --s --"
-            
-            // set the background to a dark gradient of blues to indicate that data has not been received
-            colorTop = UIColor(red: 70/255.0, green: 104/255.0, blue: 130/255.0, alpha: 0.4).CGColor!
-            colorBottom = UIColor(red: 58/255.0, green: 100/255.0, blue: 131/255.0, alpha: 0.4).CGColor!
+            tempLabel.text = "\(tempText)\(swellText)"
         }
 
         // add the decided colors to the gradient object

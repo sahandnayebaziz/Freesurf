@@ -174,6 +174,7 @@ class YourSpotsTableViewController: UITableViewController, LPRTableViewDelegate 
         // if values have been stored this cell's spot pass this data to the cell
         if let spotValues = self.spotLibrary.allRequestsMade(rowID) {
             println(spotValues)
+            cell.setCellLabels(self.spotLibrary.name(rowID), values: spotValues)
         }
         else {
             
@@ -182,7 +183,7 @@ class YourSpotsTableViewController: UITableViewController, LPRTableViewDelegate 
             // to display to the user that their cell was successfully added to their list and nil for valuesForSpotAtThisCell.
             // setCellLabels will gracefully display a blank cell when receiving nil for valuesForSpotAtTheCell while we wait
             // for data to be stored for this spot
-            cell.setCellLabels(self.spotLibrary.name(rowID), valuesForSpotAtThisCell: nil)
+            cell.setCellLabels(self.spotLibrary.name(rowID), values: nil)
             
             // a reloadData() call is attached to the end of the main_queue, or the UI thread, to allow us to return to
             // cellForRowAtIndexPath. When we return, if valuesForSpotAtThisCell does not return nil, then it's value are passed to setCellLabels,
