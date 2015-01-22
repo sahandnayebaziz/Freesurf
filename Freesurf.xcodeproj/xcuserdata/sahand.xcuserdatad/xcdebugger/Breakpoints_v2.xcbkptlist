@@ -9,7 +9,7 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "thewaves/SpotLibrary.swift"
+            filePath = "freesurf/SpotLibrary.swift"
             timestampString = "443565362.921264"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
