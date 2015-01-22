@@ -134,8 +134,8 @@
 		D801176C198D64C200509A27 = {
 			isa = PBXGroup;
 			children = (
-				D8011777198D64C200509A27 /* thewaves */,
-				D801178A198D64C200509A27 /* thewavesTests */,
+				D8011777198D64C200509A27 /* freesurf */,
+				D801178A198D64C200509A27 /* freesurfTests */,
 				D8011776198D64C200509A27 /* Products */,
 				D8B89E121A47BFE100BBEAD5 /* Images.xcassets */,
 				D846B0C61A7041E40092BC85 /* Alamofire.xcodeproj */,
@@ -151,7 +151,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		D8011777198D64C200509A27 /* thewaves */ = {
+		D8011777198D64C200509A27 /* freesurf */ = {
 			isa = PBXGroup;
 			children = (
 				D84F16FA19C76E4E0050E4FC /* Libraries */,
@@ -160,6 +160,7 @@
 				D86F6219198EFA910070B713 /* Controllers */,
 				D8011778198D64C200509A27 /* Supporting Files */,
 			);
+			name = freesurf;
 			path = thewaves;
 			sourceTree = "<group>";
 		};
@@ -171,12 +172,13 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		D801178A198D64C200509A27 /* thewavesTests */ = {
+		D801178A198D64C200509A27 /* freesurfTests */ = {
 			isa = PBXGroup;
 			children = (
 				D801178D198D64C200509A27 /* thewavesTests.swift */,
 				D801178B198D64C200509A27 /* Supporting Files */,
 			);
+			name = freesurfTests;
 			path = thewavesTests;
 			sourceTree = "<group>";
 		};
