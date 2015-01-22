@@ -149,21 +149,39 @@ class SpotDetailViewController: UIViewController, UIScrollViewDelegate, LineChar
     // of the SpotLibrary class to retrieve stored data for this spot
     func setViewLabels() {
         // get values
-        let swellHeight = self.spotLibrary.currentHeight(selectedSpotID)!
-        let swell = self.spotLibrary.significantSwell(selectedSpotID)!
-        let swellConditions = self.spotLibrary.currentConditions(selectedSpotID)!
-        let wind = self.spotLibrary.wind(selectedSpotID)!
-        let waterTemp = self.spotLibrary.waterTemp(selectedSpotID)!
-
-        // set labels
         self.spotNameLabel.text = self.spotLibrary.name(selectedSpotID)
-        self.spotCurrentHeightLabel.text = "\(swellHeight)-\(swellHeight + 1)ft"
-        self.spotDirectionLabel.text = "\(swell.direction)"
-        self.spotPeriodLabel.text = "\(swell.period) SEC"
-        self.spotConditionLabel.text = "\(swellConditions.uppercaseString)"
-        self.spotWaterTempLabel.text = "\(waterTemp)°"
-        self.spotWindLabel.text = "\(wind.direction) @ \(wind.speedInMPH) MPH"
-        
+        if let waterTemp = self.spotLibrary.waterTemp(selectedSpotID) {
+            self.spotWaterTempLabel.text = "\(waterTemp)°"
+        }
+        else {
+            self.spotWaterTempLabel.text = " "
+        }
+        if let swellHeight = self.spotLibrary.currentHeight(selectedSpotID) {
+            self.spotCurrentHeightLabel.text = "\(swellHeight)-\(swellHeight + 1)ft"
+        }
+        else {
+            self.spotCurrentHeightLabel.text = " "
+        }
+        if let swell = self.spotLibrary.significantSwell(selectedSpotID) {
+            self.spotDirectionLabel.text = "\(swell.direction)"
+            self.spotPeriodLabel.text = "\(swell.period) SEC"
+        }
+        else {
+            self.spotDirectionLabel.text = " "
+            self.spotPeriodLabel.text = " "
+        }
+        if let swellConditions = self.spotLibrary.currentConditions(selectedSpotID) {
+            self.spotConditionLabel.text = "\(swellConditions.uppercaseString)"
+        }
+        else {
+            self.spotConditionLabel.text = " "
+        }
+        if let wind = self.spotLibrary.wind(selectedSpotID) {
+            self.spotWindLabel.text = "\(wind.direction) @ \(wind.speedInMPH) MPH"
+        }
+        else {
+            self.spotWindLabel.text = " "
+        }
     }
     
     // set the status bar style to light so that the color of status bar elements is white
@@ -180,9 +198,15 @@ class SpotDetailViewController: UIViewController, UIScrollViewDelegate, LineChar
         
         // add data to tideChart
         var dataArray:Array<CGFloat> = []
-        var tides = self.spotLibrary.tidesForToday(selectedSpotID)!
-        for tide in tides {
-            dataArray.append(CGFloat(tide))
+        if let tides = self.spotLibrary.tidesForToday(selectedSpotID) {
+            for tide in tides {
+                dataArray.append(CGFloat(tide))
+            }
+        }
+        else {
+            for (var x = 0; x < 24; x++) {
+                dataArray.append(CGFloat(0))
+            }
         }
         tideChart.addLine(dataArray)
         
@@ -191,17 +215,23 @@ class SpotDetailViewController: UIViewController, UIScrollViewDelegate, LineChar
         
         // add data to swellChart
         dataArray.removeAll(keepCapacity: true)
-        var heights = self.spotLibrary.heightsForToday(selectedSpotID)!
+        if let heights = self.spotLibrary.heightsForToday(selectedSpotID) {
+            for height in heights {
+                var heightToAdd = CGFloat(Int(height))
+                
+                if heightToAdd % 2 != 0 {
+                    heightToAdd = heightToAdd - 1
+                }
+                dataArray.append(heightToAdd)
+            }
+        }
+        else {
+            for (var x = 0; x < 24; x++) {
+                dataArray.append(CGFloat(0))
+            }
+        }
         
         // map data in swellChart to be even numbers only. Odd numbers get reduced to the closest smaller even number.
-        for height in heights {
-            var heightToAdd = CGFloat(Int(height))
-            
-            if heightToAdd % 2 != 0 {
-                heightToAdd = heightToAdd - 1
-            }
-            dataArray.append(heightToAdd)
-        }
         swellChart.addLine(dataArray)
         
         

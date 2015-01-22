@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Alamofire
 
 // YourSpotsTableViewController controls the intial view for this app.
 // :: the contained table view displays cells as instances of the class YourSpotsCell.
@@ -171,8 +172,8 @@ class YourSpotsTableViewController: UITableViewController, LPRTableViewDelegate 
         cell.clipsToBounds = true
         
         // if values have been stored this cell's spot pass this data to the cell
-        if let spotValues = self.spotLibrary.getValuesForYourSpotsCell(rowID) {
-            cell.setCellLabels(self.spotLibrary.name(rowID), valuesForSpotAtThisCell: spotValues)
+        if let spotValues = self.spotLibrary.allRequestsMade(rowID) {
+            cell.setCellLabels(self.spotLibrary.name(rowID), values: spotValues)
         }
         else {
             
@@ -181,7 +182,7 @@ class YourSpotsTableViewController: UITableViewController, LPRTableViewDelegate 
             // to display to the user that their cell was successfully added to their list and nil for valuesForSpotAtThisCell.
             // setCellLabels will gracefully display a blank cell when receiving nil for valuesForSpotAtTheCell while we wait
             // for data to be stored for this spot
-            cell.setCellLabels(self.spotLibrary.name(rowID), valuesForSpotAtThisCell: nil)
+            cell.setCellLabels(self.spotLibrary.name(rowID), values: nil)
             
             // a reloadData() call is attached to the end of the main_queue, or the UI thread, to allow us to return to
             // cellForRowAtIndexPath. When we return, if valuesForSpotAtThisCell does not return nil, then it's value are passed to setCellLabels,
@@ -213,7 +214,7 @@ class YourSpotsTableViewController: UITableViewController, LPRTableViewDelegate 
         let rowID = self.spotLibrary.selectedSpotIDs[indexPath.row]
         
         // if values have been stored this cell's spot, perform the segue to the spot details controller
-        if let spotValues = self.spotLibrary.getValuesForYourSpotsCell(rowID) {
+        if let spotValues = self.spotLibrary.allRequestsMade(rowID) {
             self.performSegueWithIdentifier("openSpotDetail", sender: nil)
         }
         
@@ -337,8 +338,7 @@ class YourSpotsTableViewController: UITableViewController, LPRTableViewDelegate 
                 // if there is an internet connection
                 if isConnectedToNetwork() {
                     
-                    // request spot data on a separate thread from the UI if all data for a spot has not been stored
-                    if spotLibrary.getValuesForYourSpotsCell(spot) == nil {
+                    if self.spotLibrary.allRequestsMade(spot) == nil {
                         dispatch_to_background_queue {
                             self.spotLibrary.getSpotSwellsForToday(spot)
                             self.spotLibrary.getCountyWaterTemp(self.spotLibrary.county(spot))
@@ -347,11 +347,26 @@ class YourSpotsTableViewController: UITableViewController, LPRTableViewDelegate 
                             self.spotLibrary.getCountyWind(self.spotLibrary.county(spot))
                         }
                         
-                        // call reloadData() on tableView to refresh with any new data
                         dispatch_to_main_queue {
                             self.yourSpotsTableView.reloadData()
                         }
                     }
+                    
+//                    // request spot data on a separate thread from the UI if all data for a spot has not been stored
+//                    if spotLibrary.getValuesForYourSpotsCell(spot) == nil {
+//                        dispatch_to_background_queue {
+//                            self.spotLibrary.getSpotSwellsForToday(spot)
+//                            self.spotLibrary.getCountyWaterTemp(self.spotLibrary.county(spot))
+//                            self.spotLibrary.getCountyTideForToday(self.spotLibrary.county(spot))
+//                            self.spotLibrary.getCountySwell(self.spotLibrary.county(spot))
+//                            self.spotLibrary.getCountyWind(self.spotLibrary.county(spot))
+//                        }
+//                        
+//                        // call reloadData() on tableView to refresh with any new data
+//                        dispatch_to_main_queue {
+//                            self.yourSpotsTableView.reloadData()
+//                        }
+//                    }
                 }
             }
         }
