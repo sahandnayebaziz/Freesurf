@@ -173,7 +173,6 @@ class YourSpotsTableViewController: UITableViewController, LPRTableViewDelegate 
         
         // if values have been stored this cell's spot pass this data to the cell
         if let spotValues = self.spotLibrary.allRequestsMade(rowID) {
-            println(spotValues)
             cell.setCellLabels(self.spotLibrary.name(rowID), values: spotValues)
         }
         else {
@@ -215,7 +214,7 @@ class YourSpotsTableViewController: UITableViewController, LPRTableViewDelegate 
         let rowID = self.spotLibrary.selectedSpotIDs[indexPath.row]
         
         // if values have been stored this cell's spot, perform the segue to the spot details controller
-        if let spotValues = self.spotLibrary.getValuesForYourSpotsCell(rowID) {
+        if let spotValues = self.spotLibrary.allRequestsMade(rowID) {
             self.performSegueWithIdentifier("openSpotDetail", sender: nil)
         }
         

@@ -113,19 +113,19 @@ class SpotLibrary: NSObject, NSURLSessionDelegate {
                             if let newSpotName:String = data[index]["spot_name"].string {
                                 name = newSpotName
                             } else { NSLog("The name could not be pulled for a spot in \(county)") }
-                        }
-                        
-                        if id != nil {
-                            if (!contains((self.allSpotIDs), id!)) {
-                                self.allSpotIDs.append(id!)
-                                self.spotDataDictionary[id!] = (name, spotCounty, nil, nil)
-                                self.spotRequestDictionary[id!] = (name:true, county:true, heights:false, conditions:false)
+                            
+                            if id != nil {
+                                if (!contains((self.allSpotIDs), id!)) {
+                                    self.allSpotIDs.append(id!)
+                                    self.spotDataDictionary[id!] = (name, spotCounty, nil, nil)
+                                    self.spotRequestDictionary[id!] = (name:true, county:true, heights:false, conditions:false)
+                                }
                             }
                         }
-                        var newCounties = counties
-                        newCounties.removeAtIndex(0)
-                        self.getSpotsInCounties(newCounties)
                     }
+                    var newCounties = counties
+                    newCounties.removeAtIndex(0)
+                    self.getSpotsInCounties(newCounties)
             }
         }
         else {
