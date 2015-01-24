@@ -37,7 +37,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         defaults.setObject(viewController.spotLibrary.serializeSpotLibraryToString(), forKey: "userSelectedSpots")
         
         // A date and time string is saved to NSUserDefaults
-        defaults.setObject(NSDate().hoursAfterDate(NSDate(fromString: "13 July 1993", format: .Custom("dd MMM yyyy"))), forKey: "hoursMarker")
         defaults.setObject(NSDate().toString(format: .Custom("dd MMM yyyy")), forKey: "dateOfLastOpen")
         defaults.setObject(NSDate().toString(format: .Custom("HH")), forKey: "hourOfLastOpen")
         
