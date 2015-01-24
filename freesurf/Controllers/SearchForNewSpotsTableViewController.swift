@@ -47,8 +47,8 @@ class SearchForNewSpotsTableViewController: UITableViewController, UIScrollViewD
         
         // create and return a cell that displays the name and county name of a spot for this match in the results array
         var cell:UITableViewCell = self.searchForNewSpotsTableView.dequeueReusableCellWithIdentifier("searchForNewSpotsCell") as UITableViewCell
-        cell.textLabel!.text = spotLibrary.name(rowID)
-        cell.detailTextLabel!.text = spotLibrary.county(rowID)
+        cell.textLabel!.text = spotLibrary.nameForSpotID(rowID)
+        cell.detailTextLabel!.text = spotLibrary.countyForSpotID(rowID)
         cell.backgroundColor = UIColor.clearColor()
         return cell
     }
@@ -78,8 +78,8 @@ class SearchForNewSpotsTableViewController: UITableViewController, UIScrollViewD
         // if the user has entered at least one character, search for all spots with
         // a name or a county containing the input string. Add all of those to the results array
         if (countElements(sender.text) != 0) {
-            for key in self.spotLibrary.spotDataDictionary.keys {
-                if (self.spotLibrary.spotDataDictionary[key]!.spotName.contains(input) || self.spotLibrary.spotDataDictionary[key]!.spotCounty.contains(input)) {
+            for key in self.spotLibrary.spotDataByID.keys {
+                if (self.spotLibrary.spotDataByID[key]!.spotName.contains(input) || self.spotLibrary.spotDataByID[key]!.spotCounty.contains(input)) {
                     self.results.append(key)
                 }
             }

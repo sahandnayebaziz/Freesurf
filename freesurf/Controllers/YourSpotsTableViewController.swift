@@ -49,7 +49,7 @@ class YourSpotsTableViewController: UITableViewController, LPRTableViewDelegate 
         
         if let exportString = defaults.objectForKey("userSelectedSpots") as? String {
             usingUserDefaults = true
-            self.spotLibrary.initLibraryFromString(exportString)
+            self.spotLibrary.deserializeSpotLibraryFromString(exportString)
             self.yourSpotsTableView.reloadData()
         }
         
@@ -172,8 +172,8 @@ class YourSpotsTableViewController: UITableViewController, LPRTableViewDelegate 
         cell.clipsToBounds = true
         
         // if values have been stored this cell's spot pass this data to the cell
-        if let spotValues = self.spotLibrary.allRequestsMade(rowID) {
-            cell.setCellLabels(self.spotLibrary.name(rowID), values: spotValues)
+        if let spotValues = self.spotLibrary.allSpotDataIfRequestsComplete(rowID) {
+            cell.setCellLabels(self.spotLibrary.nameForSpotID(rowID), values: spotValues)
         }
         else {
             
@@ -182,7 +182,7 @@ class YourSpotsTableViewController: UITableViewController, LPRTableViewDelegate 
             // to display to the user that their cell was successfully added to their list and nil for valuesForSpotAtThisCell.
             // setCellLabels will gracefully display a blank cell when receiving nil for valuesForSpotAtTheCell while we wait
             // for data to be stored for this spot
-            cell.setCellLabels(self.spotLibrary.name(rowID), values: nil)
+            cell.setCellLabels(self.spotLibrary.nameForSpotID(rowID), values: nil)
             
             // a reloadData() call is attached to the end of the main_queue, or the UI thread, to allow us to return to
             // cellForRowAtIndexPath. When we return, if valuesForSpotAtThisCell does not return nil, then it's value are passed to setCellLabels,
@@ -214,7 +214,7 @@ class YourSpotsTableViewController: UITableViewController, LPRTableViewDelegate 
         let rowID = self.spotLibrary.selectedSpotIDs[indexPath.row]
         
         // if values have been stored this cell's spot, perform the segue to the spot details controller
-        if let spotValues = self.spotLibrary.allRequestsMade(rowID) {
+        if let spotValues = self.spotLibrary.allSpotDataIfRequestsComplete(rowID) {
             self.performSegueWithIdentifier("openSpotDetail", sender: nil)
         }
         
@@ -318,10 +318,10 @@ class YourSpotsTableViewController: UITableViewController, LPRTableViewDelegate 
         
         // request the list of counties and spots after initializing a SpotLibrary object. This runs if a SpotLibrary
         // object has an empty spotDataDictionary, or if the SpotLibrary object was initialized from data stored in NSUserDefaults
-        if spotLibrary.spotDataDictionary.isEmpty || usingUserDefaults {
+        if spotLibrary.spotDataByID.isEmpty || usingUserDefaults {
             if isConnectedToNetwork() {
                 dispatch_to_background_queue {
-                    self.spotLibrary.getCounties()
+                    self.spotLibrary.getCountyNames()
                 }
                 
                 // set usingUserDefaults to false now that spots and counties have been requested from Spitcast
@@ -338,13 +338,14 @@ class YourSpotsTableViewController: UITableViewController, LPRTableViewDelegate 
                 // if there is an internet connection
                 if isConnectedToNetwork() {
                     
-                    if self.spotLibrary.allRequestsMade(spot) == nil {
+                    if self.spotLibrary.allSpotDataIfRequestsComplete(spot) == nil {
                         dispatch_to_background_queue {
-                            self.spotLibrary.getSpotSwellsForToday(spot)
-                            self.spotLibrary.getCountyWaterTemp(self.spotLibrary.county(spot))
-                            self.spotLibrary.getCountyTideForToday(self.spotLibrary.county(spot))
-                            self.spotLibrary.getCountySwell(self.spotLibrary.county(spot))
-                            self.spotLibrary.getCountyWind(self.spotLibrary.county(spot))
+                            self.spotLibrary.getSpotHeightsForToday(spot)
+                            let county = self.spotLibrary.countyForSpotID(spot)
+                            self.spotLibrary.getCountyWaterTemp(county)
+                            self.spotLibrary.getCountyTideForToday(county)
+                            self.spotLibrary.getCountySwell(county)
+                            self.spotLibrary.getCountyWind(county)
                         }
                         
                         dispatch_to_main_queue {

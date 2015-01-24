@@ -149,20 +149,20 @@ class SpotDetailViewController: UIViewController, UIScrollViewDelegate, LineChar
     // of the SpotLibrary class to retrieve stored data for this spot
     func setViewLabels() {
         // get values
-        self.spotNameLabel.text = self.spotLibrary.name(selectedSpotID)
-        if let waterTemp = self.spotLibrary.waterTemp(selectedSpotID) {
+        self.spotNameLabel.text = self.spotLibrary.nameForSpotID(selectedSpotID)
+        if let waterTemp = self.spotLibrary.waterTempForSpotID(selectedSpotID) {
             self.spotWaterTempLabel.text = "\(waterTemp)°"
         }
         else {
             self.spotWaterTempLabel.text = " "
         }
-        if let swellHeight = self.spotLibrary.currentHeight(selectedSpotID) {
+        if let swellHeight = self.spotLibrary.heightForSpotIDAtCurrentHour(selectedSpotID) {
             self.spotCurrentHeightLabel.text = "\(swellHeight)-\(swellHeight + 1)ft"
         }
         else {
             self.spotCurrentHeightLabel.text = " "
         }
-        if let swell = self.spotLibrary.significantSwell(selectedSpotID) {
+        if let swell = self.spotLibrary.significantSwellForSpotID(selectedSpotID) {
             self.spotDirectionLabel.text = "\(swell.direction)"
             self.spotPeriodLabel.text = "\(swell.period) SEC"
         }
@@ -170,13 +170,13 @@ class SpotDetailViewController: UIViewController, UIScrollViewDelegate, LineChar
             self.spotDirectionLabel.text = " "
             self.spotPeriodLabel.text = " "
         }
-        if let swellConditions = self.spotLibrary.currentConditions(selectedSpotID) {
+        if let swellConditions = self.spotLibrary.conditionForSpotID(selectedSpotID) {
             self.spotConditionLabel.text = "\(swellConditions.uppercaseString)"
         }
         else {
             self.spotConditionLabel.text = " "
         }
-        if let wind = self.spotLibrary.wind(selectedSpotID) {
+        if let wind = self.spotLibrary.windForSpotID(selectedSpotID) {
             self.spotWindLabel.text = "\(wind.direction) @ \(wind.speedInMPH) MPH"
         }
         else {
@@ -198,7 +198,7 @@ class SpotDetailViewController: UIViewController, UIScrollViewDelegate, LineChar
         
         // add data to tideChart
         var dataArray:Array<CGFloat> = []
-        if let tides = self.spotLibrary.tidesForToday(selectedSpotID) {
+        if let tides = self.spotLibrary.tidesForSpotID(selectedSpotID) {
             for tide in tides {
                 dataArray.append(CGFloat(tide))
             }
@@ -215,7 +215,7 @@ class SpotDetailViewController: UIViewController, UIScrollViewDelegate, LineChar
         
         // add data to swellChart
         dataArray.removeAll(keepCapacity: true)
-        if let heights = self.spotLibrary.heightsForToday(selectedSpotID) {
+        if let heights = self.spotLibrary.heightsForSpotID(selectedSpotID) {
             for height in heights {
                 var heightToAdd = CGFloat(Int(height))
                 
