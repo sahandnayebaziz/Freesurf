@@ -168,7 +168,7 @@
 			children = (
 				D8011779198D64C200509A27 /* Info.plist */,
 			);
-			name = "Supporting Files";
+			path = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		D801178A198D64C200509A27 /* freesurfTests */ = {
@@ -177,8 +177,7 @@
 				D801178D198D64C200509A27 /* thewavesTests.swift */,
 				D801178B198D64C200509A27 /* Supporting Files */,
 			);
-			name = freesurfTests;
-			path = thewavesTests;
+			path = freesurfTests;
 			sourceTree = "<group>";
 		};
 		D801178B198D64C200509A27 /* Supporting Files */ = {
@@ -186,7 +185,7 @@
 			children = (
 				D801178C198D64C200509A27 /* Info.plist */,
 			);
-			name = "Supporting Files";
+			path = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		D81925611A48FDDB00925B51 /* AF Date Helper */ = {
@@ -195,7 +194,7 @@
 				D81925621A48FE2700925B51 /* LICENSE */,
 				D84F16FB19C76E6E0050E4FC /* af-date-extension.swift */,
 			);
-			name = "AF Date Helper";
+			path = "AF Date Helper";
 			sourceTree = "<group>";
 		};
 		D81925641A48FE5500925B51 /* LineChart */ = {
@@ -205,7 +204,7 @@
 				D801B1621A3D172200C1751F /* DotCALayer.swift */,
 				D801B1631A3D172200C1751F /* LineChart.swift */,
 			);
-			name = LineChart;
+			path = LineChart;
 			sourceTree = "<group>";
 		};
 		D81925851A49020400925B51 /* LPRTableView */ = {
@@ -214,8 +213,7 @@
 				D81925871A49020400925B51 /* LICENSE3 */,
 				D81925881A49020400925B51 /* LPRTableView.swift */,
 			);
-			name = LPRTableView;
-			path = "LPRTableView-master";
+			path = LPRTableView;
 			sourceTree = "<group>";
 		};
 		D83FA6141A701AA900EF8434 /* SwiftyJSON */ = {
@@ -225,7 +223,7 @@
 				D83FA6151A701AB500EF8434 /* SwiftyJSON.h */,
 				D83FA6161A701AB500EF8434 /* SwiftyJSON.swift */,
 			);
-			name = SwiftyJSON;
+			path = SwiftyJSON;
 			sourceTree = "<group>";
 		};
 		D84F16FA19C76E4E0050E4FC /* Libraries */ = {
@@ -239,7 +237,7 @@
 				D8B5681519C8914E000817AA /* threading.swift */,
 				D8F6636419D5EF87000B062C /* search.swift */,
 			);
-			name = Libraries;
+			path = Libraries;
 			sourceTree = "<group>";
 		};
 		D86F6219198EFA910070B713 /* Controllers */ = {
@@ -250,7 +248,7 @@
 				D86F621C198F02DF0070B713 /* YourSpotsTableViewController.swift */,
 				D82C59701A33E69600896BBA /* SpotDetailViewController.swift */,
 			);
-			name = Controllers;
+			path = Controllers;
 			sourceTree = "<group>";
 		};
 		D86F621A198EFA9A0070B713 /* Models */ = {
@@ -259,7 +257,7 @@
 				D818F3D2198EEE390098FE82 /* SpotLibrary.swift */,
 				D811E91F1A06DD1200EF9035 /* YourSpotsCell.swift */,
 			);
-			name = Models;
+			path = Models;
 			sourceTree = "<group>";
 		};
 		D86F621B198EFAAA0070B713 /* Views */ = {
@@ -267,7 +265,7 @@
 			children = (
 				D801177E198D64C200509A27 /* Main.storyboard */,
 			);
-			name = Views;
+			path = Views;
 			sourceTree = "<group>";
 		};
 		D8C3CB531A72B062005F542B /* Products */ = {
@@ -463,6 +461,7 @@
 				D801177F198D64C200509A27 /* Base */,
 			);
 			name = Main.storyboard;
+			path = .;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -551,7 +550,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				INFOPLIST_FILE = "$(SRCROOT)/freesurf/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/freesurf/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = Freesurf;
@@ -565,7 +564,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				INFOPLIST_FILE = "$(SRCROOT)/freesurf/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/freesurf/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = Freesurf;
