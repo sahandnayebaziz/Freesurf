@@ -19,14 +19,6 @@ class SpotCell: UITableViewCell {
     var gradient:CAGradientLayer = CAGradientLayer()
 
     // MARK: - Initializers -
-    override init() {
-        super.init()
-    }
-    
-    required init(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
     convenience init(model:SpotCellViewModel) {
         self.init()
         setValues(model)

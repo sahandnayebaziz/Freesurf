@@ -218,17 +218,17 @@
             </objects>
             <point key="canvasLocation" x="883" y="346"/>
         </scene>
-        <!--Search For New Spots-->
+        <!--SearchTableViewController-->
         <scene sceneID="PIG-0K-W1d">
             <objects>
-                <tableViewController title="Search For New Spots" id="jiR-Kb-Inu" customClass="SearchForNewSpotsTableViewController" customModule="Freesurf" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController title="SearchTableViewController" id="jiR-Kb-Inu" customClass="SearchTableViewController" customModule="Freesurf" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="FeD-IE-fZz">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="searchForNewSpotsCell" textLabel="IV4-rE-4PC" detailTextLabel="xZF-qQ-ix3" style="IBUITableViewCellStyleValue1" id="OXm-E6-BGd">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="searchCell" textLabel="IV4-rE-4PC" detailTextLabel="xZF-qQ-ix3" style="IBUITableViewCellStyleValue1" id="OXm-E6-BGd">
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="OXm-E6-BGd" id="Dhl-I5-I0U">
                                     <autoresizingMask key="autoresizingMask"/>
@@ -279,8 +279,8 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="searchField" destination="wn6-uC-9Qx" id="ccM-qO-iqP"/>
-                        <outlet property="searchForNewSpotsTableView" destination="FeD-IE-fZz" id="vPX-9l-wWN"/>
+                        <outlet property="searchField" destination="wn6-uC-9Qx" id="N4r-k2-V2d"/>
+                        <outlet property="searchTableView" destination="FeD-IE-fZz" id="wr0-4v-Ftv"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Vo5-6O-zJx" userLabel="First Responder" sceneMemberID="firstResponder"/>

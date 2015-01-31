@@ -59,8 +59,8 @@ class SpotsTableViewController: UITableViewController, LPRTableViewDelegate {
     @IBAction func unwindToList(segue:UIStoryboardSegue) {
         if segue.identifier! == "unwindFromSearchCell" || segue.identifier! == "unwindFromSearchCancelButton" {
             
-            var source:SearchForNewSpotsTableViewController = segue.sourceViewController as SearchForNewSpotsTableViewController
-            self.spotLibrary = source.spotLibrary
+            var source:SearchTableViewController = segue.sourceViewController as SearchTableViewController
+            source.spotLibrary = self.spotLibrary
             
             source.searchField.resignFirstResponder()
             source.dismissViewControllerAnimated(true, completion: nil)
@@ -82,7 +82,7 @@ class SpotsTableViewController: UITableViewController, LPRTableViewDelegate {
     {
         if segue.identifier! == "openSearchForSpots" || segue.identifier! == "openSearchForSpotsOnBoarding" {
             let nav:UINavigationController = segue.destinationViewController as UINavigationController
-            let destinationView:SearchForNewSpotsTableViewController = nav.topViewController as SearchForNewSpotsTableViewController
+            let destinationView:SearchTableViewController = nav.topViewController as SearchTableViewController
 
             destinationView.spotLibrary = self.spotLibrary
         }

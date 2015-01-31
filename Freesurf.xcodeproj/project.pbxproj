@@ -29,7 +29,7 @@
 		D8B89E131A47BFE100BBEAD5 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D8B89E121A47BFE100BBEAD5 /* Images.xcassets */; };
 		D8C3CB5E1A72B092005F542B /* Alamofire.framework in Copy Framework */ = {isa = PBXBuildFile; fileRef = D8C3CB591A72B062005F542B /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D8F6636519D5EF87000B062C /* search.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8F6636419D5EF87000B062C /* search.swift */; };
-		D8F6636919D5F14F000B062C /* SearchForNewSpotsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8F6636819D5F14F000B062C /* SearchForNewSpotsTableViewController.swift */; };
+		D8F6636919D5F14F000B062C /* SearchTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8F6636819D5F14F000B062C /* SearchTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -112,7 +112,7 @@
 		D8B89E121A47BFE100BBEAD5 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = freesurf/Images.xcassets; sourceTree = "<group>"; };
 		D8C3CB521A72B062005F542B /* Alamofire.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Alamofire.xcodeproj; path = alamofire/Alamofire.xcodeproj; sourceTree = "<group>"; };
 		D8F6636419D5EF87000B062C /* search.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = search.swift; sourceTree = "<group>"; };
-		D8F6636819D5F14F000B062C /* SearchForNewSpotsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchForNewSpotsTableViewController.swift; sourceTree = "<group>"; };
+		D8F6636819D5F14F000B062C /* SearchTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -245,7 +245,7 @@
 		D86F6219198EFA910070B713 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				D8F6636819D5F14F000B062C /* SearchForNewSpotsTableViewController.swift */,
+				D8F6636819D5F14F000B062C /* SearchTableViewController.swift */,
 				D801177A198D64C200509A27 /* AppDelegate.swift */,
 				D86F621C198F02DF0070B713 /* SpotsTableViewController.swift */,
 				D82C59701A33E69600896BBA /* SpotDetailViewController.swift */,
@@ -423,7 +423,7 @@
 				D8B5681619C8914E000817AA /* threading.swift in Sources */,
 				D8B63A3619C90027004A1398 /* networking.swift in Sources */,
 				D83FA6171A701AB500EF8434 /* SwiftyJSON.swift in Sources */,
-				D8F6636919D5F14F000B062C /* SearchForNewSpotsTableViewController.swift in Sources */,
+				D8F6636919D5F14F000B062C /* SearchTableViewController.swift in Sources */,
 				D8F6636519D5EF87000B062C /* search.swift in Sources */,
 				D801B1641A3D172200C1751F /* DotCALayer.swift in Sources */,
 				D84F16FC19C76E6E0050E4FC /* af-date-extension.swift in Sources */,
