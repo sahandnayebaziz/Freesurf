@@ -24,7 +24,7 @@ class SpotLibrary {
     
     var currentHour:Int
     
-    // MARK: - initializers -
+    // MARK: - Initializers -
     init() {
         allCountyNames = []
         allSpotIDs = []

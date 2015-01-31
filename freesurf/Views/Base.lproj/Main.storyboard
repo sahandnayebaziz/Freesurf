@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="X1z-ag-Bq9">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="X1z-ag-Bq9">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6246"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -83,7 +83,7 @@
                             </constraints>
                         </view>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" restorationIdentifier="yourSpotsCell" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="yourSpotsCell" rowHeight="76" id="z2K-Sb-MQ6" customClass="YourSpotsCell" customModule="Freesurf" customModuleProvider="target">
+                            <tableViewCell contentMode="scaleToFill" restorationIdentifier="spotCell" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="spotCell" rowHeight="76" id="z2K-Sb-MQ6" customClass="SpotCell" customModule="Freesurf" customModuleProvider="target">
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="z2K-Sb-MQ6" id="3dQ-bI-6Hp">
                                     <autoresizingMask key="autoresizingMask"/>
@@ -194,7 +194,7 @@
                                 <connections>
                                     <outlet property="heightLabel" destination="Txr-CT-e0O" id="F6h-Bn-Tb6"/>
                                     <outlet property="nameLabel" destination="Kgw-Sp-dX5" id="f0i-5W-IuU"/>
-                                    <outlet property="tempLabel" destination="Q6v-AC-WoA" id="aUq-Ea-9EU"/>
+                                    <outlet property="tempAndSwellLabel" destination="Q6v-AC-WoA" id="OEi-jr-SBv"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>

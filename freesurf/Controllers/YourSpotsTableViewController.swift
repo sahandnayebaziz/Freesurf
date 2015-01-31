@@ -38,9 +38,7 @@ class YourSpotsTableViewController: UITableViewController, LPRTableViewDelegate 
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // register the cell identifier set in the storyboard for this view
-        self.yourSpotsTableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "yourSpotsTableViewCell")
+
         
         // if data exists in NSUserDefaults under the key "userSelectedSpots", the data is restored using a SpotLibrary method
         // and the boolean variable usingUserDefaults is set to true to make YourSpotsTableViewController request a list of all spots from Spitcast.
@@ -159,41 +157,25 @@ class YourSpotsTableViewController: UITableViewController, LPRTableViewDelegate 
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        // this is the ID of the cell at this indexPath
         let rowID = self.spotLibrary.selectedSpotIDs[indexPath.row]
         
-        // create cell object as an instance of YourSpotsCell
-        let cell:YourSpotsCell = yourSpotsTableView.dequeueReusableCellWithIdentifier("yourSpotsCell", forIndexPath: indexPath) as YourSpotsCell
-        
-        // clear the cell's background before the cell is assigned a background gradient
-        cell.backgroundColor = UIColor.clearColor()
-        
-        // clip bounds
-        cell.clipsToBounds = true
-        
-        // if values have been stored this cell's spot pass this data to the cell
-        if let spotValues = self.spotLibrary.allSpotDataIfRequestsComplete(rowID) {
-            cell.setCellLabels(self.spotLibrary.nameForSpotID(rowID), values: spotValues)
+        var model:SpotCellViewModel
+        if let values = self.spotLibrary.allSpotDataIfRequestsComplete(rowID) {
+            model = SpotCellViewModel(name: spotLibrary.nameForSpotID(rowID), height: values.height, waterTemp: values.waterTemp, swell: values.swell, requestsComplete: true)
         }
         else {
-            
-            // if getValuesForYourSpotsCell is returning nil, this means that all of the data for the spot that is being
-            // display at this cell hasn't been stored yet. In this case, we pass setCellLabels the name of the spot,
-            // to display to the user that their cell was successfully added to their list and nil for valuesForSpotAtThisCell.
-            // setCellLabels will gracefully display a blank cell when receiving nil for valuesForSpotAtTheCell while we wait
-            // for data to be stored for this spot
-            cell.setCellLabels(self.spotLibrary.nameForSpotID(rowID), values: nil)
-            
-            // a reloadData() call is attached to the end of the main_queue, or the UI thread, to allow us to return to
-            // cellForRowAtIndexPath. When we return, if valuesForSpotAtThisCell does not return nil, then it's value are passed to setCellLabels,
-            // the cell is displayed, and we can move on from this cell. If valuesForSpotAtTheCell is nil, another reloadData is attached to the end of the
-            // UI thread and we repeat.
+            model = SpotCellViewModel(name: spotLibrary.nameForSpotID(rowID), height: nil, waterTemp: nil, swell: nil, requestsComplete: false)
             dispatch_to_main_queue {
                 self.yourSpotsTableView.reloadData()
             }
         }
         
-        // return the cell object. At this point, setCellLabels has completed and returned control
+        let cell:SpotCell = yourSpotsTableView.dequeueReusableCellWithIdentifier("spotCell", forIndexPath: indexPath) as SpotCell
+        
+        cell.backgroundColor = UIColor.clearColor()
+        cell.setValues(model)
+        cell.clipsToBounds = true
+        
         return cell
     }
     
@@ -267,7 +249,7 @@ class YourSpotsTableViewController: UITableViewController, LPRTableViewDelegate 
             
             // set the background for each visible table cell in the table to the be the size of the cell. This method maintains consistency
             // on the table view after deleting a cell causes the heights of the first and second cell to change.
-            for cell in self.yourSpotsTableView.visibleCells() as [YourSpotsCell] {
+            for cell in self.yourSpotsTableView.visibleCells() as [SpotCell] {
                 cell.gradient.frame = cell.bounds
             }
         }
@@ -352,22 +334,6 @@ class YourSpotsTableViewController: UITableViewController, LPRTableViewDelegate 
                             self.yourSpotsTableView.reloadData()
                         }
                     }
-                    
-//                    // request spot data on a separate thread from the UI if all data for a spot has not been stored
-//                    if spotLibrary.getValuesForYourSpotsCell(spot) == nil {
-//                        dispatch_to_background_queue {
-//                            self.spotLibrary.getSpotSwellsForToday(spot)
-//                            self.spotLibrary.getCountyWaterTemp(self.spotLibrary.county(spot))
-//                            self.spotLibrary.getCountyTideForToday(self.spotLibrary.county(spot))
-//                            self.spotLibrary.getCountySwell(self.spotLibrary.county(spot))
-//                            self.spotLibrary.getCountyWind(self.spotLibrary.county(spot))
-//                        }
-//                        
-//                        // call reloadData() on tableView to refresh with any new data
-//                        dispatch_to_main_queue {
-//                            self.yourSpotsTableView.reloadData()
-//                        }
-//                    }
                 }
             }
         }
