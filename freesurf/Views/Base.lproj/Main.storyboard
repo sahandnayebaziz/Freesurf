@@ -5,10 +5,10 @@
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
-        <!--yourSurfSpotsTableViewController-->
+        <!--SpotsTableViewController-->
         <scene sceneID="amA-PY-fmU">
             <objects>
-                <tableViewController title="yourSurfSpotsTableViewController" automaticallyAdjustsScrollViewInsets="NO" id="DdE-yk-Q9I" customClass="YourSpotsTableViewController" customModule="Freesurf" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController title="SpotsTableViewController" automaticallyAdjustsScrollViewInsets="NO" id="DdE-yk-Q9I" customClass="SpotsTableViewController" customModule="Freesurf" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" keyboardDismissMode="onDrag" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="76" sectionHeaderHeight="22" sectionFooterHeight="22" id="6lc-s5-bZy" customClass="LPRTableView" customModule="Freesurf" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -210,7 +210,7 @@
                     <connections>
                         <outlet property="footer" destination="9ui-3d-OlZ" id="WFv-nO-UeI"/>
                         <outlet property="header" destination="IYl-w4-4YW" id="bih-vq-CBa"/>
-                        <outlet property="yourSpotsTableView" destination="6lc-s5-bZy" id="3jo-QM-8OS"/>
+                        <outlet property="spotsTableView" destination="6lc-s5-bZy" id="sny-xK-PBc"/>
                         <segue destination="dFv-Bc-1T1" kind="show" identifier="openSpotDetail" id="HVo-TB-VZA"/>
                     </connections>
                 </tableViewController>

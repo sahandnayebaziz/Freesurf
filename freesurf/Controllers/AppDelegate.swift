@@ -30,7 +30,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // When Freesurf enters the background, the date and time are recorded to the NSUserDefaults for comparison the next time the user accesses Freesurf.
         // If the user is accessing Freesurf from the background in the same hour on the same day as they last did, nothing is done. If it is a new hour, the tableview is reloaded. If it is a new day, the Spitcast data is refreshed.
-        let viewController = self.window!.rootViewController!.childViewControllers[0] as YourSpotsTableViewController
+        let viewController = self.window!.rootViewController!.childViewControllers[0] as SpotsTableViewController
         let defaults:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         
         // A serialized SpotLibrary object is saved to NSUserDefaults
@@ -48,7 +48,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
         
         // Compare the hour and date of the last time Freesurf was accessed and refresh any old data
-        let viewController = self.window!.rootViewController!.childViewControllers[0] as YourSpotsTableViewController
+        let viewController = self.window!.rootViewController!.childViewControllers[0] as SpotsTableViewController
         let defaults:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         
         if let dateOfLastOpen:String = defaults.objectForKey("dateOfLastOpen") as? String {
@@ -65,7 +65,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let hourOfLastOpen = defaults.objectForKey("hourOfLastOpen") as? String {
             let currentHour = NSDate().toString(format: .Custom("HH"))
             if currentHour != hourOfLastOpen {
-                viewController.yourSpotsTableView.reloadData()
+                viewController.spotsTableView.reloadData()
             }
         }
         
