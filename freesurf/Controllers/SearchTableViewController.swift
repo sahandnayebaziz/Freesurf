@@ -8,6 +8,7 @@
 
 import UIKit
 
+// SearchTableViewController lets you search for and add a new spot.
 class SearchTableViewController: UITableViewController, UIScrollViewDelegate {
 
     // MARK: - Properties -
@@ -46,7 +47,6 @@ class SearchTableViewController: UITableViewController, UIScrollViewDelegate {
     }
     
     @IBAction func editingchanged(sender: UITextField) {
-        
         self.results = []
         
         let input:String = sender.text

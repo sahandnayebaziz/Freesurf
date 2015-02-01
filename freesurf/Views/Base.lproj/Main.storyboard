@@ -326,10 +326,10 @@
             </objects>
             <point key="canvasLocation" x="1802" y="-347"/>
         </scene>
-        <!--Spot Detail View Controller-->
+        <!--Detail View Controller-->
         <scene sceneID="ka8-v6-jrW">
             <objects>
-                <viewController automaticallyAdjustsScrollViewInsets="NO" id="lfQ-l3-qFW" customClass="SpotDetailViewController" customModule="Freesurf" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="lfQ-l3-qFW" customClass="DetailViewController" customModule="Freesurf" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="EKG-Sd-YIn"/>
                         <viewControllerLayoutGuide type="bottom" id="cfh-1g-clj"/>
@@ -622,12 +622,12 @@
                     </view>
                     <navigationItem key="navigationItem" id="P7y-tW-wF7"/>
                     <connections>
+                        <outlet property="nameLabel" destination="AXz-Vu-1UV" id="91M-0U-04S"/>
                         <outlet property="spotConditionLabel" destination="9If-Bc-iaV" id="jFj-Qj-AfL"/>
                         <outlet property="spotCurrentHeightLabel" destination="N78-Fy-pwy" id="NJR-K3-52X"/>
                         <outlet property="spotDirectionLabel" destination="lMG-DP-qPD" id="e00-8M-vIp"/>
                         <outlet property="spotHeightChartHeightLabel" destination="EjT-TW-cXz" id="CZZ-BN-fi7"/>
                         <outlet property="spotHeightChartTimeLabel" destination="ZkN-eu-WNb" id="IBB-w3-wTV"/>
-                        <outlet property="spotNameLabel" destination="AXz-Vu-1UV" id="SpD-0A-gFn"/>
                         <outlet property="spotPeriodLabel" destination="JX3-mx-fbl" id="hgW-3g-Wug"/>
                         <outlet property="spotTideHeightLabel" destination="yeB-ga-zev" id="acP-GH-NG1"/>
                         <outlet property="spotTideTimeLabel" destination="deG-mB-uCz" id="1Sg-pk-SJO"/>

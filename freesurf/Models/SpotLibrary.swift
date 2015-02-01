@@ -283,16 +283,24 @@ class SpotLibrary {
         }
     }
     
-    func allSpotDataIfRequestsComplete(id: Int) -> (height:Int?, waterTemp:Int?, swell:(height:Int, period:Int, direction:String)?)? {
+    // MARK: - Get data for view models -
+    
+    func allSpotCellDataIfRequestsComplete(id: Int) -> (height:Int?, waterTemp:Int?, swell:(height:Int, period:Int, direction:String)?)? {
         if let spotRequests = self.spotDataRequestLog[id] {
             if let countyRequests = self.countyDataRequestLog[self.countyForSpotID(id)] {
-                if spotRequests.heights && spotRequests.conditions && countyRequests.waterTemp && countyRequests.swells {
-                    return (height: self.heightForSpotIDAtCurrentHour(id)?, waterTemp: self.waterTempForSpotID(id)?, swell:self.significantSwellForSpotID(id)?)
+                if spotRequests.heights && spotRequests.conditions && countyRequests.waterTemp && countyRequests.swells && countyRequests.tides && countyRequests.wind {
+                    return (height: self.heightForSpotIDAtCurrentHour(id), waterTemp: self.waterTempForSpotID(id), swell:self.significantSwellForSpotID(id))
                 }
             }
         }
         return nil
     }
+    
+    func allDetailViewData(id: Int) -> (name:String, height:Int?, waterTemp:Int?, swell:(height:Int, period:Int, direction:String)?, condition:String?, wind:(speedInMPH:Int, direction:String)?, tides:[Float]?, heights:[Float]?) {
+        return (name:self.nameForSpotID(id), height: self.heightForSpotIDAtCurrentHour(id), waterTemp: self.waterTempForSpotID(id)?, swell:self.significantSwellForSpotID(id)?, condition:self.conditionForSpotID(id), wind:self.windForSpotID(id), tides:self.tidesForSpotID(id), heights:heightsForSpotID(id))
+    }
+    
+    // MARK: - SpotLibrary management -
     
     func serializeSpotLibraryToString() -> String {
         var exportString:String = ""

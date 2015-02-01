@@ -19,7 +19,8 @@
 		D819258A1A49020400925B51 /* LICENSE3 in Resources */ = {isa = PBXBuildFile; fileRef = D81925871A49020400925B51 /* LICENSE3 */; };
 		D819258B1A49020400925B51 /* LPRTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81925881A49020400925B51 /* LPRTableView.swift */; };
 		D82503AF1A7C8F0E009B8598 /* SpotCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D82503AE1A7C8F0E009B8598 /* SpotCellViewModel.swift */; };
-		D82C59711A33E69600896BBA /* SpotDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D82C59701A33E69600896BBA /* SpotDetailViewController.swift */; };
+		D82AACBE1A7EAB3D00D2ED5B /* DetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D82AACBD1A7EAB3D00D2ED5B /* DetailViewModel.swift */; };
+		D82C59711A33E69600896BBA /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D82C59701A33E69600896BBA /* DetailViewController.swift */; };
 		D83FA6171A701AB500EF8434 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83FA6161A701AB500EF8434 /* SwiftyJSON.swift */; };
 		D83FA6191A701AC400EF8434 /* LICENSE4 in Resources */ = {isa = PBXBuildFile; fileRef = D83FA6181A701AC400EF8434 /* LICENSE4 */; };
 		D84F16FC19C76E6E0050E4FC /* af-date-extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D84F16FB19C76E6E0050E4FC /* af-date-extension.swift */; };
@@ -101,7 +102,8 @@
 		D81925871A49020400925B51 /* LICENSE3 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE3; sourceTree = "<group>"; };
 		D81925881A49020400925B51 /* LPRTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LPRTableView.swift; sourceTree = "<group>"; };
 		D82503AE1A7C8F0E009B8598 /* SpotCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpotCellViewModel.swift; sourceTree = "<group>"; };
-		D82C59701A33E69600896BBA /* SpotDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpotDetailViewController.swift; sourceTree = "<group>"; };
+		D82AACBD1A7EAB3D00D2ED5B /* DetailViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewModel.swift; sourceTree = "<group>"; };
+		D82C59701A33E69600896BBA /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		D83FA6151A701AB500EF8434 /* SwiftyJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwiftyJSON.h; sourceTree = "<group>"; };
 		D83FA6161A701AB500EF8434 /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
 		D83FA6181A701AC400EF8434 /* LICENSE4 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE4; sourceTree = "<group>"; };
@@ -245,10 +247,10 @@
 		D86F6219198EFA910070B713 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				D8F6636819D5F14F000B062C /* SearchTableViewController.swift */,
 				D801177A198D64C200509A27 /* AppDelegate.swift */,
+				D82C59701A33E69600896BBA /* DetailViewController.swift */,
+				D8F6636819D5F14F000B062C /* SearchTableViewController.swift */,
 				D86F621C198F02DF0070B713 /* SpotsTableViewController.swift */,
-				D82C59701A33E69600896BBA /* SpotDetailViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -256,9 +258,10 @@
 		D86F621A198EFA9A0070B713 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				D818F3D2198EEE390098FE82 /* SpotLibrary.swift */,
+				D82AACBD1A7EAB3D00D2ED5B /* DetailViewModel.swift */,
 				D811E91F1A06DD1200EF9035 /* SpotCell.swift */,
 				D82503AE1A7C8F0E009B8598 /* SpotCellViewModel.swift */,
+				D818F3D2198EEE390098FE82 /* SpotLibrary.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -430,8 +433,9 @@
 				D82503AF1A7C8F0E009B8598 /* SpotCellViewModel.swift in Sources */,
 				D801B1651A3D172200C1751F /* LineChart.swift in Sources */,
 				D801177B198D64C200509A27 /* AppDelegate.swift in Sources */,
-				D82C59711A33E69600896BBA /* SpotDetailViewController.swift in Sources */,
+				D82C59711A33E69600896BBA /* DetailViewController.swift in Sources */,
 				D811E9201A06DD1200EF9035 /* SpotCell.swift in Sources */,
+				D82AACBE1A7EAB3D00D2ED5B /* DetailViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

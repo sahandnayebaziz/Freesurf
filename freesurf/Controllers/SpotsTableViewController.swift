@@ -25,6 +25,8 @@ class SpotsTableViewController: UITableViewController, LPRTableViewDelegate {
 
         self.spotsTableView.backgroundColor = UIColor(red: 13/255.0, green: 13/255.0, blue: 13/255.0, alpha: 1.0)
         
+        self.readSavedSpots()
+        
         if self.spotLibrary.selectedSpotIDs.count == 0 {
             spotsTableView.tableHeaderView = header
         }
@@ -89,13 +91,17 @@ class SpotsTableViewController: UITableViewController, LPRTableViewDelegate {
         
         if segue.identifier! == "openSpotDetail" {
             let nav:UINavigationController = segue.destinationViewController as UINavigationController
-            let destinationView:SpotDetailViewController = nav.topViewController as SpotDetailViewController
+            var destinationView:DetailViewController = nav.topViewController as DetailViewController
             
             let indexPath:NSIndexPath = spotsTableView.indexPathForSelectedRow()!
             let rowID = self.spotLibrary.selectedSpotIDs[indexPath.row]
             
-            destinationView.spotLibrary = self.spotLibrary
+            let model = DetailViewModel(values: self.spotLibrary.allDetailViewData(rowID))
+            
+            destinationView.model = model
             destinationView.selectedSpotID = rowID
+            destinationView.currentHour = NSDate().hour()
+            
         }
     }
     
@@ -112,7 +118,7 @@ class SpotsTableViewController: UITableViewController, LPRTableViewDelegate {
         let rowID = self.spotLibrary.selectedSpotIDs[indexPath.row]
         
         var model:SpotCellViewModel
-        if let values = self.spotLibrary.allSpotDataIfRequestsComplete(rowID) {
+        if let values = self.spotLibrary.allSpotCellDataIfRequestsComplete(rowID) {
             model = SpotCellViewModel(name: spotLibrary.nameForSpotID(rowID), height: values.height, waterTemp: values.waterTemp, swell: values.swell, requestsComplete: true)
         }
         else {
@@ -139,7 +145,7 @@ class SpotsTableViewController: UITableViewController, LPRTableViewDelegate {
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath:NSIndexPath) {
         let rowID = self.spotLibrary.selectedSpotIDs[indexPath.row]
         
-        if self.spotLibrary.allSpotDataIfRequestsComplete(rowID) != nil {
+        if self.spotLibrary.allSpotCellDataIfRequestsComplete(rowID) != nil {
             self.performSegueWithIdentifier("openSpotDetail", sender: nil)
         }
         
@@ -205,7 +211,7 @@ class SpotsTableViewController: UITableViewController, LPRTableViewDelegate {
         if spotLibrary.selectedSpotIDs.count > 0 {
             for spot in spotLibrary.selectedSpotIDs {
                 if isConnectedToNetwork() {
-                    if self.spotLibrary.allSpotDataIfRequestsComplete(spot) == nil {
+                    if self.spotLibrary.allSpotCellDataIfRequestsComplete(spot) == nil {
                         dispatch_to_background_queue {
                             self.spotLibrary.getSpotHeightsForToday(spot)
                             let county = self.spotLibrary.countyForSpotID(spot)
