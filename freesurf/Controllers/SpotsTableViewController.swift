@@ -15,14 +15,16 @@ class SpotsTableViewController: UITableViewController, LPRTableViewDelegate {
     @IBOutlet var spotsTableView: LPRTableView!
     @IBOutlet weak var header: UIView!
     @IBOutlet weak var footer: UIView!
-
+    
     var spotLibrary:SpotLibrary = SpotLibrary()
     var usingUserDefaults:Bool = false
+    
+    var reachability = Reachability.reachabilityForInternetConnection()
     
     // MARK: - View Methods -
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         self.spotsTableView.backgroundColor = UIColor(red: 13/255.0, green: 13/255.0, blue: 13/255.0, alpha: 1.0)
         
         self.readSavedSpots()
@@ -37,20 +39,31 @@ class SpotsTableViewController: UITableViewController, LPRTableViewDelegate {
         
         footer.frame = CGRect(x: footer.frame.minX, y: footer.frame.minY, width: footer.frame.maxX, height: 130)
         spotsTableView.tableFooterView = footer
+        
+        
     }
     
     override func viewWillAppear(animated: Bool) {
-        if !(isConnectedToNetwork()) {
-            dispatch_to_background_queue {
-                self.waitForConnection()
-            }
-        }
-
-        downloadMissingSpotInfo()
+        configureNetwork()
     }
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
         return UIStatusBarStyle.LightContent
+    }
+    
+    func configureNetwork() {
+        if reachability.isReachable() {
+            self.downloadMissingSpotInfo()
+        }
+        
+        reachability.whenReachable = { reachability in
+            self.downloadMissingSpotInfo()
+        }
+        reachability.whenUnreachable = { reachability in
+            NSLog("Became unreachable")
+        }
+        
+        reachability.startNotifier()
     }
     
     // MARK: - Interface Actions -
@@ -79,13 +92,13 @@ class SpotsTableViewController: UITableViewController, LPRTableViewDelegate {
             
         }
     }
-
+    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!)
     {
         if segue.identifier! == "openSearchForSpots" || segue.identifier! == "openSearchForSpotsOnBoarding" {
             let nav:UINavigationController = segue.destinationViewController as UINavigationController
             let destinationView:SearchTableViewController = nav.topViewController as SearchTableViewController
-
+            
             destinationView.spotLibrary = self.spotLibrary
         }
         
@@ -123,8 +136,10 @@ class SpotsTableViewController: UITableViewController, LPRTableViewDelegate {
         }
         else {
             model = SpotCellViewModel(name: spotLibrary.nameForSpotID(rowID), height: nil, waterTemp: nil, swell: nil, requestsComplete: false)
-            dispatch_to_main_queue {
-                self.spotsTableView.reloadData()
+            if reachability.isReachable() {
+                dispatch_to_main_queue {
+                   self.tableView.reloadData()
+                }
             }
         }
         
@@ -181,7 +196,7 @@ class SpotsTableViewController: UITableViewController, LPRTableViewDelegate {
             spotsTableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Top)
             
             self.spotsTableView.endUpdates()
-
+            
             for cell in self.spotsTableView.visibleCells() as [SpotCell] { cell.gradient.frame = cell.bounds }
         }
     }
@@ -198,19 +213,17 @@ class SpotsTableViewController: UITableViewController, LPRTableViewDelegate {
     }
     
     func downloadMissingSpotInfo() {
-        if spotLibrary.spotDataByID.isEmpty || usingUserDefaults {
-            if isConnectedToNetwork() {
+        if reachability.isReachable() {
+            if spotLibrary.spotDataByID.isEmpty || usingUserDefaults {
                 usingUserDefaults = false;
                 
                 dispatch_to_background_queue {
                     self.spotLibrary.getCountyNames()
                 }
             }
-        }
-
-        if spotLibrary.selectedSpotIDs.count > 0 {
-            for spot in spotLibrary.selectedSpotIDs {
-                if isConnectedToNetwork() {
+            
+            if spotLibrary.selectedSpotIDs.count > 0 {
+                for spot in spotLibrary.selectedSpotIDs {
                     if self.spotLibrary.allSpotCellDataIfRequestsComplete(spot) == nil {
                         dispatch_to_background_queue {
                             self.spotLibrary.getSpotHeightsForToday(spot)
@@ -227,20 +240,8 @@ class SpotsTableViewController: UITableViewController, LPRTableViewDelegate {
                     }
                 }
             }
+
         }
     }
-    
-    func waitForConnection() {
-        var connectedToNetwork:Bool = false
-        
-        while !(connectedToNetwork) {
-            if isConnectedToNetwork() {
-                connectedToNetwork = true
-            }
-        }
-        
-        self.viewWillAppear(false)
-    }
-    
 }
 

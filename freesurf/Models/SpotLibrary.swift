@@ -16,6 +16,7 @@ class SpotLibrary {
     var allCountyNames:[String]
     var allSpotIDs:[Int]
     var selectedSpotIDs:[Int]
+    var allSpotsHaveBeenDownloaded:Bool = false
     
     var spotDataByID:[Int:(spotName:String, spotCounty:String, spotHeights:[Float]?, spotConditions:String?)]
     var spotDataRequestLog:[Int:(name:Bool, county:Bool, heights:Bool, conditions:Bool)]
@@ -23,6 +24,7 @@ class SpotLibrary {
     var countyDataRequestLog:[String:(waterTemp:Bool, tides:Bool, swells:Bool, wind:Bool)]
     
     var currentHour:Int
+    
     
     // MARK: - Initializers -
     init() {
@@ -96,6 +98,10 @@ class SpotLibrary {
                     
             }
         }
+        else {
+            self.allSpotsHaveBeenDownloaded = true
+        }
+        
     }
     
     func getSpotHeightsForToday(spotID:Int) {
