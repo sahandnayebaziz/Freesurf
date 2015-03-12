@@ -45,14 +45,13 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, LineChartDel
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.view.backgroundColor = UIColor(red: 13/255.0, green: 13/255.0, blue: 13/255.0, alpha: 1.0)
         self.createEdgePanGestureRecognizer()
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(false)
-        
-        self.view.backgroundColor = UIColor(red: 13/255.0, green: 13/255.0, blue: 13/255.0, alpha: 1.0)
-        
+
         self.setLabels(model)
         self.setCharts(model)
         
