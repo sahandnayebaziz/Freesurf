@@ -9,7 +9,7 @@
 import UIKit
 import Alamofire
 
-class SpotsTableViewController: UITableViewController, LPRTableViewDelegate {
+class SpotsTableViewController: UITableViewController, LPRTableViewDelegate, SpotLibraryDelegate {
     
     // MARK: - Properties -
     @IBOutlet var spotsTableView: LPRTableView!
@@ -25,30 +25,28 @@ class SpotsTableViewController: UITableViewController, LPRTableViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.spotsTableView.backgroundColor = UIColor(red: 13/255.0, green: 13/255.0, blue: 13/255.0, alpha: 1.0)
+        self.spotLibrary.delegate = self
         
-        self.readSavedSpots()
-        
-        if self.spotLibrary.selectedSpotIDs.count == 0 {
-            spotsTableView.tableHeaderView = header
-        }
-        else {
-            self.header.hidden = true
-            self.spotsTableView.tableHeaderView = nil
-        }
-        
-        footer.frame = CGRect(x: footer.frame.minX, y: footer.frame.minY, width: footer.frame.maxX, height: 130)
-        spotsTableView.tableFooterView = footer
-        
-        
-    }
-    
-    override func viewWillAppear(animated: Bool) {
-        configureNetwork()
+        self.configureViewStyle()
+        self.configureNetwork()
     }
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
         return UIStatusBarStyle.LightContent
+    }
+    
+    func configureViewStyle() {
+        self.spotsTableView.backgroundColor = UIColor(red: 13/255.0, green: 13/255.0, blue: 13/255.0, alpha: 1.0)
+        
+        // add onboarding header if no spots have been added
+        self.readSavedSpots()
+        if self.spotLibrary.selectedSpotIDs.count == 0 { spotsTableView.tableHeaderView = header }
+        else {
+            self.header.hidden = true
+            self.spotsTableView.tableHeaderView = nil
+        }
+        footer.frame = CGRect(x: footer.frame.minX, y: footer.frame.minY, width: footer.frame.maxX, height: 130)
+        spotsTableView.tableFooterView = footer
     }
     
     func configureNetwork() {
@@ -64,6 +62,11 @@ class SpotsTableViewController: UITableViewController, LPRTableViewDelegate {
         }
         
         reachability.startNotifier()
+    }
+    
+    // MARK: - Delegate methods -
+    func didDownloadDataForSpot() {
+        self.tableView.reloadData()
     }
     
     // MARK: - Interface Actions -
@@ -110,11 +113,9 @@ class SpotsTableViewController: UITableViewController, LPRTableViewDelegate {
             let rowID = self.spotLibrary.selectedSpotIDs[indexPath.row]
             
             let model = DetailViewModel(values: self.spotLibrary.allDetailViewData(rowID))
-            
             destinationView.model = model
             destinationView.selectedSpotID = rowID
             destinationView.currentHour = NSDate().hour()
-            
         }
     }
     
@@ -136,11 +137,6 @@ class SpotsTableViewController: UITableViewController, LPRTableViewDelegate {
         }
         else {
             model = SpotCellViewModel(name: spotLibrary.nameForSpotID(rowID), height: nil, waterTemp: nil, swell: nil, requestsComplete: false)
-            if reachability.isReachable() {
-                dispatch_to_main_queue {
-                   self.tableView.reloadData()
-                }
-            }
         }
         
         let cell:SpotCell = spotsTableView.dequeueReusableCellWithIdentifier("spotCell", forIndexPath: indexPath) as SpotCell
@@ -215,32 +211,28 @@ class SpotsTableViewController: UITableViewController, LPRTableViewDelegate {
     func downloadMissingSpotInfo() {
         if reachability.isReachable() {
             if spotLibrary.spotDataByID.isEmpty || usingUserDefaults {
-                usingUserDefaults = false;
-                
                 dispatch_to_background_queue {
                     self.spotLibrary.getCountyNames()
                 }
+                
+                usingUserDefaults = false;
             }
             
             if spotLibrary.selectedSpotIDs.count > 0 {
                 for spot in spotLibrary.selectedSpotIDs {
                     if self.spotLibrary.allSpotCellDataIfRequestsComplete(spot) == nil {
+
                         dispatch_to_background_queue {
                             self.spotLibrary.getSpotHeightsForToday(spot)
                             let county = self.spotLibrary.countyForSpotID(spot)
-                            self.spotLibrary.getCountyWaterTemp(county)
-                            self.spotLibrary.getCountyTideForToday(county)
-                            self.spotLibrary.getCountySwell(county)
-                            self.spotLibrary.getCountyWind(county)
-                        }
-                        
-                        dispatch_to_main_queue {
-                            self.spotsTableView.reloadData()
+                            self.spotLibrary.getCountyWaterTemp(county, spotSender: spot)
+                            self.spotLibrary.getCountyTideForToday(county, spotSender: spot)
+                            self.spotLibrary.getCountySwell(county, spotSender: spot)
+                            self.spotLibrary.getCountyWind(county, spotSender: spot)
                         }
                     }
                 }
             }
-
         }
     }
 }

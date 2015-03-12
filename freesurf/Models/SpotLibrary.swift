@@ -24,6 +24,7 @@ class SpotLibrary {
     var countyDataRequestLog:[String:(waterTemp:Bool, tides:Bool, swells:Bool, wind:Bool)]
     
     var currentHour:Int
+    var delegate:SpotLibraryDelegate?
     
     
     // MARK: - Initializers -
@@ -135,10 +136,12 @@ class SpotLibrary {
                 
                 self.spotDataRequestLog[spotID]!.conditions = true
                 self.spotDataRequestLog[spotID]!.heights = true
+                
+                self.notifyViewOfComplete(spotID)
         }
     }
     
-    func getCountyWaterTemp(county:String) {
+    func getCountyWaterTemp(county:String, spotSender: Int?) {
         let formattedCountyNameForRequest = county.stringByReplacingOccurrencesOfString(" ", withString: "-", options: NSStringCompareOptions.LiteralSearch, range: nil).lowercaseString
         let dataURL = NSURL(string: "http://api.spitcast.com/api/county/water-temperature/\(formattedCountyNameForRequest)/")!
         Alamofire.request(.GET, dataURL, parameters: nil, encoding: .JSON)
@@ -154,11 +157,15 @@ class SpotLibrary {
                 }
                 
                 self.countyDataRequestLog[county]!.waterTemp = true
+                
+                if let spotID = spotSender {
+                    self.notifyViewOfComplete(spotID)
+                }
         }
     }
     
     
-    func getCountyTideForToday(county:String) {
+    func getCountyTideForToday(county:String, spotSender: Int?) {
         var tideLevelsForToday:[Float] = []
         let formattedCountyNameForRequest = county.stringByReplacingOccurrencesOfString(" ", withString: "-", options: NSStringCompareOptions.LiteralSearch, range: nil).lowercaseString
         let dataURL:NSURL = NSURL(string: "http://api.spitcast.com/api/county/tide/\(formattedCountyNameForRequest)/")!
@@ -179,10 +186,14 @@ class SpotLibrary {
                 }
                 
                 self.countyDataRequestLog[county]!.tides = true
+                
+                if let spotID = spotSender {
+                    self.notifyViewOfComplete(spotID)
+                }
         }
     }
     
-    func getCountySwell(county:String) {
+    func getCountySwell(county:String, spotSender: Int?) {
         let formattedCountyNameForRequest = county.stringByReplacingOccurrencesOfString(" ", withString: "-", options: NSStringCompareOptions.LiteralSearch, range: nil).lowercaseString
         let dataURL:NSURL = NSURL(string: "http://api.spitcast.com/api/county/swell/\(formattedCountyNameForRequest)/")!
         Alamofire.request(.GET, dataURL, parameters: nil, encoding: .JSON)
@@ -215,11 +226,15 @@ class SpotLibrary {
                 }
                 
                 self.countyDataRequestLog[county]!.swells = true
+                
+                if let spotID = spotSender {
+                    self.notifyViewOfComplete(spotID)
+                }
         }
         
     }
     
-    func getCountyWind(county:String) {
+    func getCountyWind(county:String, spotSender: Int?) {
         let formattedCountyNameForRequest = county.stringByReplacingOccurrencesOfString(" ", withString: "-", options: NSStringCompareOptions.LiteralSearch, range: nil).lowercaseString
         let dataURL:NSURL = NSURL(string: "http://api.spitcast.com/api/county/wind/\(formattedCountyNameForRequest)/")!
         Alamofire.request(.GET, dataURL, parameters: nil, encoding: .JSON)
@@ -239,6 +254,10 @@ class SpotLibrary {
                 }
                 
                 self.countyDataRequestLog[county]!.wind = true
+                
+                if let spotID = spotSender {
+                    self.notifyViewOfComplete(spotID)
+                }
         }
     }
     
@@ -290,7 +309,6 @@ class SpotLibrary {
     }
     
     // MARK: - Get data for view models -
-    
     func allSpotCellDataIfRequestsComplete(id: Int) -> (height:Int?, waterTemp:Int?, swell:(height:Int, period:Int, direction:String)?)? {
         if let spotRequests = self.spotDataRequestLog[id] {
             if let countyRequests = self.countyDataRequestLog[self.countyForSpotID(id)] {
@@ -304,6 +322,12 @@ class SpotLibrary {
     
     func allDetailViewData(id: Int) -> (name:String, height:Int?, waterTemp:Int?, swell:(height:Int, period:Int, direction:String)?, condition:String?, wind:(speedInMPH:Int, direction:String)?, tides:[Float]?, heights:[Float]?) {
         return (name:self.nameForSpotID(id), height: self.heightForSpotIDAtCurrentHour(id), waterTemp: self.waterTempForSpotID(id)?, swell:self.significantSwellForSpotID(id)?, condition:self.conditionForSpotID(id), wind:self.windForSpotID(id), tides:self.tidesForSpotID(id), heights:heightsForSpotID(id))
+    }
+    
+    func notifyViewOfComplete(id: Int) {
+        if allSpotCellDataIfRequestsComplete(id) != nil {
+            delegate?.didDownloadDataForSpot()
+        }
     }
     
     // MARK: - SpotLibrary management -
@@ -351,12 +375,11 @@ class SpotLibrary {
     }
 }
 
-
-
-
-
-
-
+// MARK: - Delegate methods -
+@objc protocol SpotLibraryDelegate {
+    
+    func didDownloadDataForSpot()
+}
 
 
 
