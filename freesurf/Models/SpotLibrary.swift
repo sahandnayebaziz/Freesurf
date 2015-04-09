@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Alamofire
 
 // a SpotLibrary object holds all surf weather data used at runtime.
 class SpotLibrary {
@@ -49,7 +48,7 @@ class SpotLibrary {
     // MARK: - Spitcast GET methods -
     func getCountyNames() {
         let dataURL:NSURL = NSURL(string: "http://api.spitcast.com/api/spot/all")!
-        Alamofire.request(.GET, dataURL, parameters: nil, encoding: .JSON)
+        request(.GET, dataURL, parameters: nil, encoding: .JSON)
             .responseJSON { (request, response, jsonFromSpitcast, error) in
                 if jsonFromSpitcast != nil {
                     let json = JSON(jsonFromSpitcast!)
@@ -73,7 +72,7 @@ class SpotLibrary {
             let formattedCountyNameForRequest = listOfCounties[0].stringByReplacingOccurrencesOfString(" ", withString: "-", options: NSStringCompareOptions.LiteralSearch, range: nil).lowercaseString
             let dataURL = NSURL(string: "http://api.spitcast.com/api/county/spots/\(formattedCountyNameForRequest)/")!
             
-            Alamofire.request(.GET, dataURL, parameters: nil, encoding: .JSON)
+            request(.GET, dataURL, parameters: nil, encoding: .JSON)
                 .responseJSON { (request, response, jsonFromSpitcast, error) in
                     if jsonFromSpitcast != nil {
                         let json = JSON(jsonFromSpitcast!)
@@ -107,7 +106,7 @@ class SpotLibrary {
     
     func getSpotHeightsForToday(spotID:Int) {
         let dataURL:NSURL = NSURL(string: "http://api.spitcast.com/api/spot/forecast/\(spotID)")!
-        Alamofire.request(.GET, dataURL, parameters: nil, encoding: .JSON)
+        request(.GET, dataURL, parameters: nil, encoding: .JSON)
             .responseJSON { (request, response, jsonFromSpitcast, error) in
                 if jsonFromSpitcast != nil {
                     let json = JSON(jsonFromSpitcast!)
@@ -144,7 +143,7 @@ class SpotLibrary {
     func getCountyWaterTemp(county:String, spotSender: Int?) {
         let formattedCountyNameForRequest = county.stringByReplacingOccurrencesOfString(" ", withString: "-", options: NSStringCompareOptions.LiteralSearch, range: nil).lowercaseString
         let dataURL = NSURL(string: "http://api.spitcast.com/api/county/water-temperature/\(formattedCountyNameForRequest)/")!
-        Alamofire.request(.GET, dataURL, parameters: nil, encoding: .JSON)
+        request(.GET, dataURL, parameters: nil, encoding: .JSON)
             .responseJSON { (request, response, jsonFromSpitcast, error) in
                 if jsonFromSpitcast != nil {
                     let json = JSON(jsonFromSpitcast!)
@@ -169,7 +168,7 @@ class SpotLibrary {
         var tideLevelsForToday:[Float] = []
         let formattedCountyNameForRequest = county.stringByReplacingOccurrencesOfString(" ", withString: "-", options: NSStringCompareOptions.LiteralSearch, range: nil).lowercaseString
         let dataURL:NSURL = NSURL(string: "http://api.spitcast.com/api/county/tide/\(formattedCountyNameForRequest)/")!
-        Alamofire.request(.GET, dataURL, parameters: nil, encoding: .JSON)
+        request(.GET, dataURL, parameters: nil, encoding: .JSON)
             .responseJSON { (request, response, jsonFromSpitcast, error) in
                 if jsonFromSpitcast != nil {
                     let json = JSON(jsonFromSpitcast!)
@@ -196,7 +195,7 @@ class SpotLibrary {
     func getCountySwell(county:String, spotSender: Int?) {
         let formattedCountyNameForRequest = county.stringByReplacingOccurrencesOfString(" ", withString: "-", options: NSStringCompareOptions.LiteralSearch, range: nil).lowercaseString
         let dataURL:NSURL = NSURL(string: "http://api.spitcast.com/api/county/swell/\(formattedCountyNameForRequest)/")!
-        Alamofire.request(.GET, dataURL, parameters: nil, encoding: .JSON)
+        request(.GET, dataURL, parameters: nil, encoding: .JSON)
             .responseJSON { (request, response, jsonFromSpitcast, error) in
                 if jsonFromSpitcast != nil {
                     let json = JSON(jsonFromSpitcast!)
@@ -237,7 +236,7 @@ class SpotLibrary {
     func getCountyWind(county:String, spotSender: Int?) {
         let formattedCountyNameForRequest = county.stringByReplacingOccurrencesOfString(" ", withString: "-", options: NSStringCompareOptions.LiteralSearch, range: nil).lowercaseString
         let dataURL:NSURL = NSURL(string: "http://api.spitcast.com/api/county/wind/\(formattedCountyNameForRequest)/")!
-        Alamofire.request(.GET, dataURL, parameters: nil, encoding: .JSON)
+        request(.GET, dataURL, parameters: nil, encoding: .JSON)
             .responseJSON { (request, response, jsonFromSpitcast, error) in
                 if jsonFromSpitcast != nil {
                     let json = JSON(jsonFromSpitcast!)
@@ -321,7 +320,7 @@ class SpotLibrary {
     }
     
     func allDetailViewData(id: Int) -> (name:String, height:Int?, waterTemp:Int?, swell:(height:Int, period:Int, direction:String)?, condition:String?, wind:(speedInMPH:Int, direction:String)?, tides:[Float]?, heights:[Float]?) {
-        return (name:self.nameForSpotID(id), height: self.heightForSpotIDAtCurrentHour(id), waterTemp: self.waterTempForSpotID(id)?, swell:self.significantSwellForSpotID(id)?, condition:self.conditionForSpotID(id), wind:self.windForSpotID(id), tides:self.tidesForSpotID(id), heights:heightsForSpotID(id))
+        return (name:self.nameForSpotID(id), height: self.heightForSpotIDAtCurrentHour(id), waterTemp: self.waterTempForSpotID(id), swell:self.significantSwellForSpotID(id), condition:self.conditionForSpotID(id), wind:self.windForSpotID(id), tides:self.tidesForSpotID(id), heights:heightsForSpotID(id))
     }
     
     func notifyViewOfComplete(id: Int) {

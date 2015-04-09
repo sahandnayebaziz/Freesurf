@@ -51,7 +51,7 @@ class SearchTableViewController: UITableViewController, UIScrollViewDelegate {
         
         let input:String = sender.text
 
-        if (countElements(sender.text) != 0) {
+        if (count(sender.text) != 0) {
             for key in self.spotLibrary.spotDataByID.keys {
                 if (self.spotLibrary.spotDataByID[key]!.spotName.contains(input) || self.spotLibrary.spotDataByID[key]!.spotCounty.contains(input)) {
                     self.results.append(key)
@@ -74,7 +74,7 @@ class SearchTableViewController: UITableViewController, UIScrollViewDelegate {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let rowID = self.results[indexPath.row]
         
-        var cell:UITableViewCell = self.searchTableView.dequeueReusableCellWithIdentifier("searchCell") as UITableViewCell
+        var cell:UITableViewCell = self.searchTableView.dequeueReusableCellWithIdentifier("searchCell") as! UITableViewCell
         
         cell.textLabel!.text = spotLibrary.nameForSpotID(rowID)
         cell.detailTextLabel!.text = spotLibrary.countyForSpotID(rowID)

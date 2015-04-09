@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Alamofire
 
 class SpotsTableViewController: UITableViewController, LPRTableViewDelegate, SpotLibraryDelegate {
     
@@ -77,7 +76,7 @@ class SpotsTableViewController: UITableViewController, LPRTableViewDelegate, Spo
     @IBAction func unwindToList(segue:UIStoryboardSegue) {
         if segue.identifier! == "unwindFromSearchCell" || segue.identifier! == "unwindFromSearchCancelButton" {
             
-            var source:SearchTableViewController = segue.sourceViewController as SearchTableViewController
+            var source:SearchTableViewController = segue.sourceViewController as! SearchTableViewController
             source.spotLibrary = self.spotLibrary
             
             source.searchField.resignFirstResponder()
@@ -99,15 +98,15 @@ class SpotsTableViewController: UITableViewController, LPRTableViewDelegate, Spo
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!)
     {
         if segue.identifier! == "openSearchForSpots" || segue.identifier! == "openSearchForSpotsOnBoarding" {
-            let nav:UINavigationController = segue.destinationViewController as UINavigationController
-            let destinationView:SearchTableViewController = nav.topViewController as SearchTableViewController
+            let nav:UINavigationController = segue.destinationViewController as! UINavigationController
+            let destinationView:SearchTableViewController = nav.topViewController as! SearchTableViewController
             
             destinationView.spotLibrary = self.spotLibrary
         }
         
         if segue.identifier! == "openSpotDetail" {
-            let nav:UINavigationController = segue.destinationViewController as UINavigationController
-            var destinationView:DetailViewController = nav.topViewController as DetailViewController
+            let nav:UINavigationController = segue.destinationViewController as! UINavigationController
+            var destinationView:DetailViewController = nav.topViewController as! DetailViewController
             
             let indexPath:NSIndexPath = spotsTableView.indexPathForSelectedRow()!
             let rowID = self.spotLibrary.selectedSpotIDs[indexPath.row]
@@ -139,7 +138,7 @@ class SpotsTableViewController: UITableViewController, LPRTableViewDelegate, Spo
             model = SpotCellViewModel(name: spotLibrary.nameForSpotID(rowID), height: nil, waterTemp: nil, swell: nil, requestsComplete: false)
         }
         
-        let cell:SpotCell = spotsTableView.dequeueReusableCellWithIdentifier("spotCell", forIndexPath: indexPath) as SpotCell
+        let cell:SpotCell = spotsTableView.dequeueReusableCellWithIdentifier("spotCell", forIndexPath: indexPath) as! SpotCell
         
         cell.backgroundColor = UIColor.clearColor()
         cell.setValues(model)
@@ -193,7 +192,7 @@ class SpotsTableViewController: UITableViewController, LPRTableViewDelegate, Spo
             
             self.spotsTableView.endUpdates()
             
-            for cell in self.spotsTableView.visibleCells() as [SpotCell] { cell.gradient.frame = cell.bounds }
+            for cell in self.spotsTableView.visibleCells() as! [SpotCell] { cell.gradient.frame = cell.bounds }
         }
     }
     
