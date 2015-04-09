@@ -101,7 +101,7 @@ class LineChart: UIControl {
     }
     
     // necessary init
-    convenience override init() {
+    convenience init() {
         self.init(frame: CGRectZero)
     }
     
@@ -255,20 +255,20 @@ class LineChart: UIControl {
     
     // touchesBegan and touchesMoved are called if the user begins to or continues to touch
     // a LineChart object
-    override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
+    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
         removeWordLine()
         handleTouchEvents(touches, event: event)
     }
-    override func touchesMoved(touches: NSSet, withEvent event: UIEvent) {
+    override func touchesMoved(touches: Set<NSObject>, withEvent event: UIEvent) {
         removeWordLine()
         handleTouchEvents(touches, event: event)
     }
     
-    override func touchesEnded(touches: NSSet, withEvent event: UIEvent) {
+    override func touchesEnded(touches: Set<NSObject>, withEvent event: UIEvent) {
         removeWordLine()
     }
     
-    override func touchesCancelled(touches: NSSet!, withEvent event: UIEvent!) {
+    override func touchesCancelled(touches: Set<NSObject>, withEvent event: UIEvent!) {
         removeWordLine()
     }
     
@@ -381,7 +381,7 @@ class LineChart: UIControl {
     func getMaximumValue() -> CGFloat {
         var maximum = 1
         for data in dataStore {
-            var newMaximum = data.reduce(Int.min, { max(Int($0), Int($1)) })
+            var newMaximum = data.reduce(Int.min, combine: { max(Int($0), Int($1)) })
             if newMaximum > maximum {
                 maximum = newMaximum + 2
             }
