@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="X1z-ag-Bq9">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7531" systemVersion="14D131" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="X1z-ag-Bq9">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6246"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -89,7 +90,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="99ft" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Txr-CT-e0O">
-                                            <rect key="frame" x="484" y="12" width="102" height="50"/>
+                                            <rect key="frame" x="496" y="12" width="102" height="50"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="50" id="VGJ-m0-kQ3"/>
                                                 <constraint firstAttribute="width" constant="102" id="ecc-Uh-13Y"/>
@@ -108,7 +109,7 @@
                                             </variation>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="68°" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Q6v-AC-WoA">
-                                            <rect key="frame" x="14" y="13" width="22" height="17"/>
+                                            <rect key="frame" x="2" y="13" width="22" height="17"/>
                                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
@@ -123,7 +124,7 @@
                                             </variation>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Doheny" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.49999999999999961" translatesAutoresizingMaskIntoConstraints="NO" id="Kgw-Sp-dX5">
-                                            <rect key="frame" x="14" y="32" width="475" height="33"/>
+                                            <rect key="frame" x="2" y="32" width="499" height="33"/>
                                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="28"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
@@ -148,11 +149,11 @@
                                         </label>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="Kgw-Sp-dX5" firstAttribute="leading" secondItem="3dQ-bI-6Hp" secondAttribute="leadingMargin" constant="6" id="503-IA-x6m"/>
-                                        <constraint firstItem="Q6v-AC-WoA" firstAttribute="leading" secondItem="3dQ-bI-6Hp" secondAttribute="leadingMargin" constant="6" id="CYm-ig-dQ7"/>
+                                        <constraint firstItem="Kgw-Sp-dX5" firstAttribute="leading" secondItem="3dQ-bI-6Hp" secondAttribute="leadingMargin" constant="-6" id="503-IA-x6m"/>
+                                        <constraint firstItem="Q6v-AC-WoA" firstAttribute="leading" secondItem="3dQ-bI-6Hp" secondAttribute="leadingMargin" constant="-6" id="CYm-ig-dQ7"/>
                                         <constraint firstItem="Kgw-Sp-dX5" firstAttribute="top" secondItem="Q6v-AC-WoA" secondAttribute="bottom" constant="2" id="D0H-MX-3Ub"/>
                                         <constraint firstAttribute="centerY" secondItem="Txr-CT-e0O" secondAttribute="centerY" id="IQx-fZ-2OP"/>
-                                        <constraint firstItem="Txr-CT-e0O" firstAttribute="trailing" secondItem="3dQ-bI-6Hp" secondAttribute="trailingMargin" constant="-6" id="JCL-wG-RW4"/>
+                                        <constraint firstItem="Txr-CT-e0O" firstAttribute="trailing" secondItem="3dQ-bI-6Hp" secondAttribute="trailingMargin" constant="6" id="JCL-wG-RW4"/>
                                         <constraint firstAttribute="bottomMargin" secondItem="Kgw-Sp-dX5" secondAttribute="bottom" constant="3" id="K5g-y5-98S"/>
                                         <constraint firstItem="Kgw-Sp-dX5" firstAttribute="leading" secondItem="3dQ-bI-6Hp" secondAttribute="leadingMargin" constant="11" id="KDj-5W-REx"/>
                                         <constraint firstItem="Kgw-Sp-dX5" firstAttribute="leading" secondItem="3dQ-bI-6Hp" secondAttribute="leadingMargin" constant="8" id="OMF-OQ-mRQ">
@@ -242,7 +243,7 @@
                                         <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="xZF-qQ-ix3">
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                            <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
+                                            <color key="textColor" red="1" green="1" blue="1" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
