@@ -35,11 +35,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // When Freesurf enters the background, the date and time are recorded to the NSUserDefaults for comparison the next time the user accesses Freesurf.
         // If the user is accessing Freesurf from the background in the same hour on the same day as they last did, nothing is done. If it is a new hour, the tableview is reloaded. If it is a new day, the Spitcast data is refreshed.
-        let viewController = self.window!.rootViewController!.childViewControllers[0] as! SpotsTableViewController
+        let splitVC = self.window!.rootViewController as! UISplitViewController
+        let tableVC = (splitVC.viewControllers[0] as! UINavigationController).topViewController as! SpotsTableViewController
         let defaults:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         
         // A serialized SpotLibrary object is saved to NSUserDefaults
-        defaults.setObject(viewController.spotLibrary.serializeSpotLibraryToString(), forKey: "userSelectedSpots")
+        defaults.setObject(tableVC.spotLibrary.serializeSpotLibraryToString(), forKey: "userSelectedSpots")
         
         // A date and time string is saved to NSUserDefaults
         defaults.setObject(NSDate().toString(format: .Custom("dd MMM yyyy")), forKey: "dateOfLastOpen")
@@ -53,16 +54,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
         
         // Compare the hour and date of the last time Freesurf was accessed and refresh any old data
-        let viewController = self.window!.rootViewController!.childViewControllers[0] as! SpotsTableViewController
+        let splitVC = self.window!.rootViewController as! UISplitViewController
+        let tableVC = (splitVC.viewControllers[0] as! UINavigationController).topViewController as! SpotsTableViewController
         let defaults:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         
         if let dateOfLastOpen:String = defaults.objectForKey("dateOfLastOpen") as? String {
             let currentDate = NSDate().toString(format: .Custom("dd MMM yyyy"))
             if currentDate != dateOfLastOpen {
                 if let exportString = defaults.objectForKey("userSelectedSpots") as? String {
-                    viewController.usingUserDefaults = true
-                    viewController.spotLibrary = SpotLibrary(serializedSpotLibrary: exportString)
-                    viewController.viewWillAppear(false)
+                    tableVC.usingUserDefaults = true
+                    tableVC.spotLibrary = SpotLibrary(serializedSpotLibrary: exportString)
+                    tableVC.viewWillAppear(false)
                 }
             }
         }
@@ -70,16 +72,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let hourOfLastOpen = defaults.objectForKey("hourOfLastOpen") as? String {
             let currentHour = NSDate().toString(format: .Custom("HH"))
             if currentHour != hourOfLastOpen {
-                viewController.spotsTableView.reloadData()
+                tableVC.spotsTableView.reloadData()
             }
         }
         
         // for legacy users updating to Freesurf v1.0.3 with an older NSUserDefaults
         if let legacyHoursString = defaults.objectForKey("hoursMarker") as? String {
             if let exportString = defaults.objectForKey("userSelectedSpots") as? String {
-                viewController.usingUserDefaults = true
-                viewController.spotLibrary = SpotLibrary(serializedSpotLibrary: exportString)
-                viewController.viewWillAppear(false)
+                tableVC.usingUserDefaults = true
+                tableVC.spotLibrary = SpotLibrary(serializedSpotLibrary: exportString)
+                tableVC.viewWillAppear(false)
             }
             defaults.removeObjectForKey("hoursMarker")
             defaults.synchronize()
