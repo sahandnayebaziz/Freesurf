@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CDC72E715630C59D8EE354A3 /* Pods_Freesurf.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C20502A1D64331763AF8B8C7 /* Pods_Freesurf.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		D801177B198D64C200509A27 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D801177A198D64C200509A27 /* AppDelegate.swift */; };
 		D8011780198D64C200509A27 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D801177E198D64C200509A27 /* Main.storyboard */; };
 		D801178E198D64C200509A27 /* thewavesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D801178D198D64C200509A27 /* thewavesTests.swift */; };
@@ -57,6 +58,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		4F42357909E7EA812AB154E3 /* Pods-Freesurf.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Freesurf.release.xcconfig"; path = "Pods/Target Support Files/Pods-Freesurf/Pods-Freesurf.release.xcconfig"; sourceTree = "<group>"; };
+		C20502A1D64331763AF8B8C7 /* Pods_Freesurf.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Freesurf.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C5645533FF61AB9CCF95D447 /* Pods-Freesurf.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Freesurf.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Freesurf/Pods-Freesurf.debug.xcconfig"; sourceTree = "<group>"; };
 		D8011775198D64C200509A27 /* Freesurf.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Freesurf.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D8011779198D64C200509A27 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D801177A198D64C200509A27 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -93,6 +97,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CDC72E715630C59D8EE354A3 /* Pods_Freesurf.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -106,6 +111,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3290522024CDFE37A8AE2273 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				C5645533FF61AB9CCF95D447 /* Pods-Freesurf.debug.xcconfig */,
+				4F42357909E7EA812AB154E3 /* Pods-Freesurf.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		C39C92BDBC638E5CC39823D2 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C20502A1D64331763AF8B8C7 /* Pods_Freesurf.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		D801176C198D64C200509A27 = {
 			isa = PBXGroup;
 			children = (
@@ -113,6 +135,8 @@
 				D801178A198D64C200509A27 /* freesurfTests */,
 				D8011776198D64C200509A27 /* Products */,
 				D8B89E121A47BFE100BBEAD5 /* Images.xcassets */,
+				3290522024CDFE37A8AE2273 /* Pods */,
+				C39C92BDBC638E5CC39823D2 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -260,10 +284,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D8011791198D64C200509A27 /* Build configuration list for PBXNativeTarget "Freesurf" */;
 			buildPhases = (
+				BC9AAE6134438C1281777978 /* Check Pods Manifest.lock */,
 				D8011771198D64C200509A27 /* Sources */,
 				D8011772198D64C200509A27 /* Frameworks */,
 				D8011773198D64C200509A27 /* Resources */,
 				D846B0D61A70438C0092BC85 /* Copy Framework */,
+				780C55BA86C7EE588DC92B75 /* Embed Pods Frameworks */,
+				42DB404B4362507CC29E00A6 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -352,6 +379,54 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		42DB404B4362507CC29E00A6 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Freesurf/Pods-Freesurf-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		780C55BA86C7EE588DC92B75 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Freesurf/Pods-Freesurf-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		BC9AAE6134438C1281777978 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		D8011771198D64C200509A27 /* Sources */ = {
@@ -488,6 +563,7 @@
 		};
 		D8011792198D64C200509A27 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C5645533FF61AB9CCF95D447 /* Pods-Freesurf.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -502,6 +578,7 @@
 		};
 		D8011793198D64C200509A27 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4F42357909E7EA812AB154E3 /* Pods-Freesurf.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
