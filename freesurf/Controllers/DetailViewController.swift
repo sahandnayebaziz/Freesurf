@@ -12,7 +12,7 @@ import UIKit
 class DetailViewController: UIViewController, UIScrollViewDelegate, LineChartDelegate {
 
     // MARK: - Properties -
-    var model:DetailViewModel!
+    var model:DetailViewModel?
     var selectedSpotID:Int!
     var currentHour:Int!
     
@@ -27,8 +27,6 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, LineChartDel
     @IBOutlet weak var swellChartView: UIView!
     @IBOutlet weak var targetView: UIView!
 
-
-    @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var spotWaterTempLabel: UILabel!
     @IBOutlet weak var spotCurrentHeightLabel: UILabel!
     @IBOutlet weak var spotDirectionLabel: UILabel!
@@ -46,22 +44,27 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, LineChartDel
         super.viewDidLoad()
         
         self.view.backgroundColor = UIColor(red: 13/255.0, green: 13/255.0, blue: 13/255.0, alpha: 1.0)
-        self.createEdgePanGestureRecognizer()
+//        self.createEdgePanGestureRecognizer()
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(false)
-
-        self.setLabels(model)
-        self.setCharts(model)
         
-        self.tideChart.simulateTouchAtIndex(self.currentHour)
-        self.swellChart.simulateTouchAtIndex(self.currentHour)
+        if let model = model {
+            self.setLabels(model)
+            self.setCharts(model)
+            
+            self.tideChart.simulateTouchAtIndex(self.currentHour)
+            self.swellChart.simulateTouchAtIndex(self.currentHour)
+        }
     }
     
     override func viewDidAppear(animated: Bool) {
-        self.tideChart.highlightDataPoints(self.currentHour)
-        self.swellChart.highlightDataPoints(self.currentHour)
+        if let model = model {
+            self.tideChart.highlightDataPoints(self.currentHour)
+            self.swellChart.highlightDataPoints(self.currentHour)
+        }
+        
     }
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
@@ -91,7 +94,7 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, LineChartDel
     
     // MARK: - Methods -
     func setLabels(model:DetailViewModel) {
-        self.nameLabel.text = model.name
+        self.title = model.name
         self.spotWaterTempLabel.text = model.temp
         self.spotCurrentHeightLabel.text = model.height
         self.spotDirectionLabel.text = model.swellDirection
