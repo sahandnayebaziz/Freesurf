@@ -154,8 +154,7 @@ class SpotsTableViewController: UITableViewController, LPRTableViewDelegate, Spo
     }
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        if indexPath.row == 0 { return 97.0 }
-        else { return 76.0 }
+        return 76.0
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath:NSIndexPath) {
