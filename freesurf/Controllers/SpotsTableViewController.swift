@@ -8,26 +8,32 @@
 
 import UIKit
 
-class SpotsTableViewController: UITableViewController, LPRTableViewDelegate, SpotLibraryDelegate {
+class SpotsTableViewController: UITableViewController, LPRTableViewDelegate, SpotLibraryDelegate, UISplitViewControllerDelegate {
     
     // MARK: - Properties -
+    var spotLibrary:SpotLibrary = SpotLibrary()
+    var reachability = Reachability.reachabilityForInternetConnection()
+    var usingUserDefaults:Bool = false
+    var collapseDetailViewController = true
+    
+    // MARK: - Interface Outlets -
     @IBOutlet var spotsTableView: LPRTableView!
     @IBOutlet weak var header: UIView!
     @IBOutlet weak var footer: UIView!
-    
-    var spotLibrary:SpotLibrary = SpotLibrary()
-    var usingUserDefaults:Bool = false
-    
-    var reachability = Reachability.reachabilityForInternetConnection()
     
     // MARK: - View Methods -
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.spotLibrary.delegate = self
+        splitViewController?.delegate = self
         
         self.configureViewStyle()
         self.configureNetwork()
+    }
+    
+    func splitViewController(splitViewController: UISplitViewController, collapseSecondaryViewController secondaryViewController: UIViewController!, ontoPrimaryViewController primaryViewController: UIViewController!) -> Bool {
+        return collapseDetailViewController
     }
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
@@ -153,6 +159,7 @@ class SpotsTableViewController: UITableViewController, LPRTableViewDelegate, Spo
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath:NSIndexPath) {
+        collapseDetailViewController = false
         let rowID = self.spotLibrary.selectedSpotIDs[indexPath.row]
         
         if self.spotLibrary.allSpotCellDataIfRequestsComplete(rowID) != nil {

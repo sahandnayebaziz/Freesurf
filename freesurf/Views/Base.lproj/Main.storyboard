@@ -204,7 +204,7 @@
                             <outlet property="delegate" destination="DdE-yk-Q9I" id="49E-43-zU8"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="All Spots" id="ieq-dx-M15"/>
+                    <navigationItem key="navigationItem" title="Your Spots" id="ieq-dx-M15"/>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
                     <nil key="simulatedBottomBarMetrics"/>
@@ -303,10 +303,10 @@
             </objects>
             <point key="canvasLocation" x="-692" y="1085"/>
         </scene>
-        <!--mainNav-->
+        <!--Your Spots-->
         <scene sceneID="20t-p0-PdO">
             <objects>
-                <navigationController title="mainNav" automaticallyAdjustsScrollViewInsets="NO" id="X1z-ag-Bq9" sceneMemberID="viewController">
+                <navigationController title="Your Spots" automaticallyAdjustsScrollViewInsets="NO" id="X1z-ag-Bq9" sceneMemberID="viewController">
                     <toolbarItems/>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
@@ -634,7 +634,7 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="nIj-UQ-8pQ"/>
-        <segue reference="e7m-lD-OHz"/>
+        <segue reference="HVo-TB-VZA"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.36078431372549019" green="0.6470588235294118" blue="0.97254901960784312" alpha="1" colorSpace="calibratedRGB"/>
 </document>

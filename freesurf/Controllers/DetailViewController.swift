@@ -50,6 +50,9 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, LineChartDel
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(false)
         
+        navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem()
+        navigationItem.leftItemsSupplementBackButton = true
+        
         if let model = model {
             self.setLabels(model)
             self.setCharts(model)
