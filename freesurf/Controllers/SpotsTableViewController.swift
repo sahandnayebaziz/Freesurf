@@ -32,6 +32,11 @@ class SpotsTableViewController: UITableViewController, LPRTableViewDelegate, Spo
         self.configureNetwork()
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .None)
+    }
+    
     override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
         self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .None)
     }

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SnapKit
 
 // DetailViewController displays detailed forecast information for a surf spot.
 class DetailViewController: UIViewController, UIScrollViewDelegate, LineChartDelegate {
@@ -107,10 +108,7 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, LineChartDel
     }
 
     func setCharts(model:DetailViewModel) {
-        
-        tideChart = LineChart(frame: CGRect(x: self.view.frame.minX, y: self.tideChartView.frame.minY, width: self.view.frame.width, height: self.tideChartView.frame.height), identifier: "tideChart")
-        swellChart = LineChart(frame: CGRect(x: self.view.frame.minX, y: self.swellChartView.frame.minY, width: self.view.frame.width, height: self.swellChartView.frame.height), identifier: "swellChart")
-        
+
         tideChart.addLine(model.tides)
         swellChart.addLine(model.heights)
         
@@ -126,11 +124,29 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, LineChartDel
         }
         
         targetView.addSubview(tideChart)
+        tideChart.snp_makeConstraints { make in
+            make.height.equalTo(tideChartView.snp_height)
+            make.width.equalTo(tideChartView.snp_width)
+            make.centerX.equalTo(tideChartView.snp_centerX)
+            make.centerY.equalTo(tideChartView.snp_centerY)
+        }
+        
         targetView.addSubview(swellChart)
+        swellChart.snp_makeConstraints { make in
+            make.height.equalTo(swellChartView.snp_height)
+            make.width.equalTo(swellChartView.snp_width)
+            make.centerX.equalTo(swellChartView.snp_centerX)
+            make.centerY.equalTo(swellChartView.snp_centerY)
+        }
         
         tideChart.delegate = self
         swellChart.delegate = self
         
+    }
+    
+    override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
+        tideChart.setNeedsDisplay()
+        swellChart.setNeedsDisplay()
     }
     
     func didSelectDataPoint(x: CGFloat, yValues: Array<CGFloat>, chartIdentifier: String) {
