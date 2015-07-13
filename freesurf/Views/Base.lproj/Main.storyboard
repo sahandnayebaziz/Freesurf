@@ -204,7 +204,7 @@
                             <outlet property="delegate" destination="DdE-yk-Q9I" id="49E-43-zU8"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Your Spots" id="ieq-dx-M15"/>
+                    <navigationItem key="navigationItem" title="Spots" id="ieq-dx-M15"/>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
                     <nil key="simulatedBottomBarMetrics"/>
@@ -352,7 +352,7 @@
                         <viewControllerLayoutGuide type="bottom" id="cfh-1g-clj"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="kx4-Ff-yw6">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="64" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DDa-Wm-sYZ">

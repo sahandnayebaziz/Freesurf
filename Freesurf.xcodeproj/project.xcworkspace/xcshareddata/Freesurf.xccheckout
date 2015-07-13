@@ -7,21 +7,21 @@
 	<key>IDESourceControlProjectIdentifier</key>
 	<string>9FE65CD3-45A7-429F-96DF-F48F4C217B14</string>
 	<key>IDESourceControlProjectName</key>
-	<string>project</string>
+	<string>Freesurf</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
 		<key>868C7A70FFA51B984CFB4E2CE93503078527F288</key>
-		<string>https://github.com/sahandnayebaziz/thewaves.git</string>
+		<string>https://github.com/sahandnayebaziz/Freesurf.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>Freesurf.xcodeproj/project.xcworkspace</string>
+	<string>Freesurf.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>868C7A70FFA51B984CFB4E2CE93503078527F288</key>
 		<string>../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>https://github.com/sahandnayebaziz/thewaves.git</string>
+	<string>https://github.com/sahandnayebaziz/Freesurf.git</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>

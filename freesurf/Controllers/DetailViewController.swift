@@ -115,7 +115,7 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, LineChartDel
         swellChart.addLine(model.heights)
         
         for chart in [tideChart, swellChart] {
-            chart.animationEnabled = true
+            chart.animationEnabled = false
             chart.areaUnderLinesVisible = false
             chart.axesColor = UIColor.clearColor()
             chart.gridColor = UIColor.clearColor()
