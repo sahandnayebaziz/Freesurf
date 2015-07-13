@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Alamofire
 
 // a SpotLibrary object holds all surf weather data used at runtime.
 class SpotLibrary {

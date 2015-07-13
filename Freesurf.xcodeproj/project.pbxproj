@@ -13,7 +13,6 @@
 		D801178E198D64C200509A27 /* thewavesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D801178D198D64C200509A27 /* thewavesTests.swift */; };
 		D801B1641A3D172200C1751F /* DotCALayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D801B1621A3D172200C1751F /* DotCALayer.swift */; };
 		D801B1651A3D172200C1751F /* LineChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = D801B1631A3D172200C1751F /* LineChart.swift */; };
-		D8039A901AD6DDD500057ED3 /* Alamofire.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8039A8F1AD6DDD500057ED3 /* Alamofire.swift */; };
 		D811E9201A06DD1200EF9035 /* SpotCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D811E91F1A06DD1200EF9035 /* SpotCell.swift */; };
 		D818F3D3198EEE390098FE82 /* SpotLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = D818F3D2198EEE390098FE82 /* SpotLibrary.swift */; };
 		D81925631A48FE2700925B51 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = D81925621A48FE2700925B51 /* LICENSE */; };
@@ -70,7 +69,6 @@
 		D801178D198D64C200509A27 /* thewavesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = thewavesTests.swift; sourceTree = "<group>"; };
 		D801B1621A3D172200C1751F /* DotCALayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DotCALayer.swift; sourceTree = "<group>"; };
 		D801B1631A3D172200C1751F /* LineChart.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LineChart.swift; sourceTree = "<group>"; };
-		D8039A8F1AD6DDD500057ED3 /* Alamofire.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Alamofire.swift; sourceTree = "<group>"; };
 		D811E91F1A06DD1200EF9035 /* SpotCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpotCell.swift; sourceTree = "<group>"; };
 		D818F3D2198EEE390098FE82 /* SpotLibrary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpotLibrary.swift; sourceTree = "<group>"; };
 		D81925621A48FE2700925B51 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
@@ -186,14 +184,6 @@
 			path = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		D8039A8E1AD6DDC500057ED3 /* Alamofire */ = {
-			isa = PBXGroup;
-			children = (
-				D8039A8F1AD6DDD500057ED3 /* Alamofire.swift */,
-			);
-			name = Alamofire;
-			sourceTree = "<group>";
-		};
 		D81925611A48FDDB00925B51 /* AF Date Helper */ = {
 			isa = PBXGroup;
 			children = (
@@ -235,7 +225,6 @@
 		D84F16FA19C76E4E0050E4FC /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				D8039A8E1AD6DDC500057ED3 /* Alamofire */,
 				D83FA6141A701AA900EF8434 /* SwiftyJSON */,
 				D81925851A49020400925B51 /* LPRTableView */,
 				D81925641A48FE5500925B51 /* LineChart */,
@@ -447,7 +436,6 @@
 				D801B1651A3D172200C1751F /* LineChart.swift in Sources */,
 				D801177B198D64C200509A27 /* AppDelegate.swift in Sources */,
 				D82C59711A33E69600896BBA /* DetailViewController.swift in Sources */,
-				D8039A901AD6DDD500057ED3 /* Alamofire.swift in Sources */,
 				D811E9201A06DD1200EF9035 /* SpotCell.swift in Sources */,
 				D82AACBE1A7EAB3D00D2ED5B /* DetailViewModel.swift in Sources */,
 			);
