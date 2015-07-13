@@ -32,6 +32,10 @@ class SpotsTableViewController: UITableViewController, LPRTableViewDelegate, Spo
         self.configureNetwork()
     }
     
+    override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
+        self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .None)
+    }
+    
     func splitViewController(splitViewController: UISplitViewController, collapseSecondaryViewController secondaryViewController: UIViewController!, ontoPrimaryViewController primaryViewController: UIViewController!) -> Bool {
         return collapseDetailViewController
     }

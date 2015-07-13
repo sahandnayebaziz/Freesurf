@@ -13,7 +13,6 @@
 		D801B1641A3D172200C1751F /* DotCALayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D801B1621A3D172200C1751F /* DotCALayer.swift */; };
 		D801B1651A3D172200C1751F /* LineChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = D801B1631A3D172200C1751F /* LineChart.swift */; };
 		D8039A901AD6DDD500057ED3 /* Alamofire.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8039A8F1AD6DDD500057ED3 /* Alamofire.swift */; };
-		D80BE6041B5417C50096E1EC /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D8011779198D64C200509A27 /* Info.plist */; };
 		D811E9201A06DD1200EF9035 /* SpotCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D811E91F1A06DD1200EF9035 /* SpotCell.swift */; };
 		D818F3D3198EEE390098FE82 /* SpotLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = D818F3D2198EEE390098FE82 /* SpotLibrary.swift */; };
 		D81925631A48FE2700925B51 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = D81925621A48FE2700925B51 /* LICENSE */; };
@@ -342,7 +341,6 @@
 				D8011780198D64C200509A27 /* Main.storyboard in Resources */,
 				D8B89E131A47BFE100BBEAD5 /* Images.xcassets in Resources */,
 				D83FA6191A701AC400EF8434 /* LICENSE4 in Resources */,
-				D80BE6041B5417C50096E1EC /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
