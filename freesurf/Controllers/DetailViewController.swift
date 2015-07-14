@@ -45,7 +45,6 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, LineChartDel
         super.viewDidLoad()
         
         self.view.backgroundColor = UIColor(red: 13/255.0, green: 13/255.0, blue: 13/255.0, alpha: 1.0)
-//        self.createEdgePanGestureRecognizer()
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -73,27 +72,6 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, LineChartDel
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
         return UIStatusBarStyle.LightContent
-    }
-    
-    
-    // MARK: - Interface Actions -
-    func createEdgePanGestureRecognizer() {
-        self.enterPanGesture = UIScreenEdgePanGestureRecognizer()
-        
-        self.enterPanGesture.addTarget(self, action:"handleOnstagePan:")
-        self.enterPanGesture.edges = UIRectEdge.Left
-        self.view.addGestureRecognizer(self.enterPanGesture)
-    }
-
-    func handleOnstagePan(pan: UIPanGestureRecognizer){
-        switch (pan.state) {
-        case UIGestureRecognizerState.Ended:
-            self.performSegueWithIdentifier("unwindFromSpotDetail", sender: self)
-            break
-        default:
-            break
-        }
-        
     }
     
     // MARK: - Methods -
