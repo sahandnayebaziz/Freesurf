@@ -8,10 +8,12 @@
 
 import UIKit
 import Alamofire
+import CoreLocation
 
 struct SpotData {
     var name:String
     var county:String
+    var location:CLLocation?
     var heights:[Float]?
     var conditions:String?
 }
@@ -94,7 +96,7 @@ class SpotLibrary {
                                 
                                 if (!contains((self.allSpotIDs), existingSpotID)) {
                                     self.allSpotIDs.append(existingSpotID)
-                                    self.spotDataByID[existingSpotID] = SpotData(name: name, county: county, heights: nil, conditions: nil)
+                                    self.spotDataByID[existingSpotID] = SpotData(name: name, county: county, location: nil, heights: nil, conditions: nil)
                                     self.spotDataRequestLog[existingSpotID] = (name:true, county:true, heights:false, conditions:false)
                                 }
                             }
@@ -139,6 +141,13 @@ class SpotLibrary {
                     else {
                         self.spotDataByID[spotID]!.conditions = nil
                     }
+                    
+                    let long = json[0]["longitude"].double!
+                    let lat = json[0]["latitude"].double!
+                    let location = CLLocation(latitude: lat, longitude: long)
+                    println("location is \(location)")
+                    
+                    self.spotDataByID[spotID]!.location = location
                 }
                 
                 self.spotDataRequestLog[spotID]!.conditions = true
@@ -272,6 +281,7 @@ class SpotLibrary {
     
     func nameForSpotID(id:Int) -> String { return self.spotDataByID[id]!.name }
     func countyForSpotID(id:Int) -> String { return self.spotDataByID[id]!.county }
+    func locationForSpotID(id:Int) -> CLLocation? { return self.spotDataByID[id]!.location }
     
     func heightForSpotIDAtCurrentHour(id:Int) -> Int? {
         if let height:Float = self.spotDataByID[id]!.heights?[self.currentHour] {
@@ -342,6 +352,7 @@ class SpotLibrary {
     func serializeSpotLibraryToString() -> String {
         var exportString:String = ""
         for spotID in self.selectedSpotIDs {
+            let coordinate = self.locationForSpotID(spotID)!.coordinate
             exportString += "\(spotID).\(self.nameForSpotID(spotID)).\(self.countyForSpotID(spotID)),"
         }
         return exportString
@@ -358,7 +369,7 @@ class SpotLibrary {
 
                 self.allSpotIDs.append(spotID)
                 self.selectedSpotIDs.append(spotID)
-                self.spotDataByID[spotID] = SpotData(name: spotName, county: spotCounty, heights: nil, conditions: nil)
+                self.spotDataByID[spotID] = SpotData(name: spotName, county: spotCounty, location: nil, heights: nil, conditions: nil)
                 self.spotDataRequestLog[spotID] = (name: true, county: true, heights: false, conditions: false)
                 initializeCountyData(spotCounty)
             }
