@@ -7,15 +7,24 @@
 //
 
 import UIKit
+import SnapKit
+import Proposer
+import WhereAmI
+import CoreLocation
 
 // SearchTableViewController lets you search for and add a new spot.
 class SearchTableViewController: UITableViewController, UIScrollViewDelegate {
 
     // MARK: - Properties -
-    @IBOutlet var searchTableView: UITableView!
-    @IBOutlet weak var searchField: UITextField!
     var spotLibrary:SpotLibrary!
     var results:[Int] = []
+    var currentLocation = CLLocation()
+    
+    // MARK: - Interface Outlets -
+    @IBOutlet var searchTableView: UITableView!
+    @IBOutlet weak var searchField: UITextField!
+    var headerView = UIView()
+    var nearbyButton = UIButton()
     
     // MARK: - View methods -
     override func viewDidLoad() {
@@ -32,6 +41,28 @@ class SearchTableViewController: UITableViewController, UIScrollViewDelegate {
     
     override func viewWillAppear(animated: Bool) {
         self.searchField.becomeFirstResponder()
+        
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Nearby", style: .Plain, target: self, action: "tapped")
+    }
+    
+    func tapped() {
+        let location: PrivateResource = .Location(.WhenInUse)
+        
+        proposeToAccess(location, agreed: {
+            NSLog("Location access granted")
+            WhereAmI.sharedInstance.continuousUpdate = false;
+            WhereAmI.whereAmI({ (location) -> Void in
+                self.currentLocation = location
+                self.listNearbySpots()
+                
+                }, locationRefusedHandler: {() -> Void in
+                    NSLog("Location access denied")
+            });
+            
+            }, rejected: {
+//                self.alertNoPermissionToAccess(location)
+            NSLog("Location access denied")
+        })
     }
     
     // MARK: - Interface Actions -
@@ -53,7 +84,7 @@ class SearchTableViewController: UITableViewController, UIScrollViewDelegate {
 
         if (count(sender.text) != 0) {
             for key in self.spotLibrary.spotDataByID.keys {
-                if (self.spotLibrary.spotDataByID[key]!.spotName.contains(input) || self.spotLibrary.spotDataByID[key]!.spotCounty.contains(input)) {
+                if (self.spotLibrary.spotDataByID[key]!.name.contains(input) || self.spotLibrary.spotDataByID[key]!.county.contains(input)) {
                     self.results.append(key)
                 }
             }
@@ -89,5 +120,9 @@ class SearchTableViewController: UITableViewController, UIScrollViewDelegate {
         if results.count > 0 {
             self.searchField.resignFirstResponder()
         }
+    }
+    
+    func listNearbySpots() {
+        
     }
 }
