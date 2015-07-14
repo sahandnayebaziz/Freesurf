@@ -302,10 +302,10 @@
             </objects>
             <point key="canvasLocation" x="-692" y="1085"/>
         </scene>
-        <!--Your Spots-->
+        <!--Spots-->
         <scene sceneID="20t-p0-PdO">
             <objects>
-                <navigationController title="Your Spots" automaticallyAdjustsScrollViewInsets="NO" id="X1z-ag-Bq9" sceneMemberID="viewController">
+                <navigationController title="Spots" automaticallyAdjustsScrollViewInsets="NO" id="X1z-ag-Bq9" sceneMemberID="viewController">
                     <toolbarItems/>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>

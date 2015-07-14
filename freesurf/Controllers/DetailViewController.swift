@@ -58,6 +58,30 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, LineChartDel
             self.tideChart.simulateTouchAtIndex(self.currentHour)
             self.swellChart.simulateTouchAtIndex(self.currentHour)
         }
+        else {
+            let welcomeView = UIView(frame: CGRectZero)
+            welcomeView.backgroundColor = self.view.backgroundColor
+            self.view.addSubview(welcomeView)
+            welcomeView.snp_makeConstraints { make in
+                make.centerY.equalTo(view.snp_centerY)
+                make.centerX.equalTo(view.snp_centerX)
+                make.height.equalTo(view.snp_height)
+                make.width.equalTo(view.snp_width)
+            }
+            
+            let label = UILabel(frame: CGRectZero)
+            label.font = UIFont.systemFontOfSize(24.0, weight: 0.1)
+            label.textColor = UIColor.lightGrayColor()
+            label.textAlignment = .Center
+            label.text = "Tap a spot to view a forecast"
+            welcomeView.addSubview(label)
+            label.snp_makeConstraints { make in
+                make.centerX.equalTo(welcomeView.snp_centerX)
+                make.centerY.equalTo(welcomeView.snp_centerY).offset(-100)
+                make.height.equalTo(200)
+                make.width.equalTo(welcomeView.snp_width)
+            }
+        }
     }
     
     override func viewDidAppear(animated: Bool) {
