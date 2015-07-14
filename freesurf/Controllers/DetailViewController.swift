@@ -16,13 +16,11 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, LineChartDel
     var model:DetailViewModel?
     var selectedSpotID:Int!
     var currentHour:Int!
-    
-    var enterPanGesture: UIScreenEdgePanGestureRecognizer!
 
     let gradient:CAGradientLayer = CAGradientLayer()
 
-    var tideChart:LineChart = LineChart()
-    var swellChart:LineChart = LineChart()
+    var tideChart:LineChart = LineChart(frame: CGRectZero, identifier: "tideChart")
+    var swellChart:LineChart = LineChart(frame: CGRectZero, identifier: "swellChart")
     
     @IBOutlet weak var tideChartView: UIView!
     @IBOutlet weak var swellChartView: UIView!
@@ -128,6 +126,7 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, LineChartDel
     }
     
     func didSelectDataPoint(x: CGFloat, yValues: Array<CGFloat>, chartIdentifier: String) {
+        
         // get index of touch and set the index to 0 if the touch was made at an index less than 0
         // and 23 if the touch was made at an index larger that 23
         var chartIndexTouched:Int = Int(x)
