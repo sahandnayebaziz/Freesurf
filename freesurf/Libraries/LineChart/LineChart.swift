@@ -75,29 +75,14 @@ class LineChart: UIControl {
     var dotsDataStore: Array<Array<DotCALayer>> = []
     var lineLayerStore: Array<CAShapeLayer> = []
     var lineHighlightLayerStore: Array<CAShapeLayer> = []
-    var colors: Array<UIColor> = []
+    var color: UIColor = UIColorFromHex(0x1f77b4)
     
     var removeAll: Bool = false
     
     // necessary init
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
         self.backgroundColor = UIColor.clearColor()
-        
-        // category10 colors from d3 - https://github.com/mbostock/d3/wiki/Ordinal-Scales
-        self.colors = [
-            UIColorFromHex(0x1f77b4),
-            UIColorFromHex(0xff7f0e),
-            UIColorFromHex(0x2ca02c),
-            UIColorFromHex(0xd62728),
-            UIColorFromHex(0x9467bd),
-            UIColorFromHex(0x8c564b),
-            UIColorFromHex(0xe377c2),
-            UIColorFromHex(0x7f7f7f),
-            UIColorFromHex(0xbcbd22),
-            UIColorFromHex(0x17becf)
-        ]
     }
     
     // necessary init
@@ -114,18 +99,6 @@ class LineChart: UIControl {
     init(frame: CGRect, identifier: String) {
         super.init(frame: frame)
         self.backgroundColor = UIColor.clearColor()
-        self.colors = [
-            UIColorFromHex(0x1f77b4),
-            UIColorFromHex(0xff7f0e),
-            UIColorFromHex(0x2ca02c),
-            UIColorFromHex(0xd62728),
-            UIColorFromHex(0x9467bd),
-            UIColorFromHex(0x8c564b),
-            UIColorFromHex(0xe377c2),
-            UIColorFromHex(0x7f7f7f),
-            UIColorFromHex(0xbcbd22),
-            UIColorFromHex(0x17becf)
-        ]
         self.chartIdentifier = identifier
     }
     
@@ -190,20 +163,6 @@ class LineChart: UIControl {
         }
         
     }
-    
-    
-    
-    /**
-    * Convert hex color to UIColor
-    */
-    func UIColorFromHex(hex: Int) -> UIColor {
-        var red = CGFloat((hex & 0xFF0000) >> 16) / 255.0
-        var green = CGFloat((hex & 0xFF00) >> 8) / 255.0
-        var blue = CGFloat((hex & 0xFF)) / 255.0
-        return UIColor(red: red, green: green, blue: blue, alpha: 1)
-    }
-    
-    
     
     /**
     * Lighten color.
@@ -302,7 +261,7 @@ class LineChart: UIControl {
                     dot.backgroundColor = dotsBackgroundColor.CGColor
                 }
                 else {
-                    dot.backgroundColor = colors[lineIndex].CGColor
+                    dot.backgroundColor = color.CGColor
                 }
             }
             // highlight current data point
@@ -332,7 +291,7 @@ class LineChart: UIControl {
             
             // draw custom layer with another layer in the center
             var dotLayer = DotCALayer()
-            dotLayer.dotInnerColor = colors[lineIndex]
+            dotLayer.dotInnerColor = color
             dotLayer.innerRadius = innerRadius
             dotLayer.backgroundColor = dotsBackgroundColor.CGColor
             dotLayer.cornerRadius = outerRadius / 2
@@ -436,7 +395,7 @@ class LineChart: UIControl {
         var layer = CAShapeLayer()
         layer.frame = self.bounds
         layer.path = path
-        layer.strokeColor = colors[lineIndex].CGColor
+        layer.strokeColor = color.CGColor
         layer.fillColor = nil
         layer.lineWidth = lineWidth
         self.layer.addSublayer(layer)
@@ -497,7 +456,7 @@ class LineChart: UIControl {
     */
     func drawAreaBeneathLineChart(xAxis: Array<CGFloat>, yAxis: Array<CGFloat>, lineIndex: Int) {
         var context = UIGraphicsGetCurrentContext()
-        CGContextSetFillColorWithColor(context, colors[lineIndex].colorWithAlphaComponent(0.2).CGColor)
+        CGContextSetFillColorWithColor(context, color.colorWithAlphaComponent(0.2).CGColor)
         // move to origin
         CGContextMoveToPoint(context, axisInset, self.bounds.height - axisInset)
         // add line to first data point
@@ -685,6 +644,16 @@ class LineChart: UIControl {
         self.setNeedsDisplay()
     }
 
+}
+
+/**
+* Convert hex color to UIColor
+*/
+func UIColorFromHex(hex: Int) -> UIColor {
+    var red = CGFloat((hex & 0xFF0000) >> 16) / 255.0
+    var green = CGFloat((hex & 0xFF00) >> 8) / 255.0
+    var blue = CGFloat((hex & 0xFF)) / 255.0
+    return UIColor(red: red, green: green, blue: blue, alpha: 1)
 }
 
 // graphIndexToTimeString takes a graphIndex and a boolean that relays whether or not we would like longform times (10:00 AM is long-form, 10AM isn't)
