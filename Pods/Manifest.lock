@@ -1,13 +1,19 @@
 PODS:
   - Alamofire (1.2.3)
+  - Proposer (0.6)
   - SnapKit (0.12.0)
+  - WhereAmI (1.2.1)
 
 DEPENDENCIES:
   - Alamofire
+  - Proposer (~> 0.6)
   - SnapKit (~> 0.12.0)
+  - WhereAmI (~> 1.2)
 
 SPEC CHECKSUMS:
   Alamofire: 5550bf0b575ed1a4bf9be572f9463e1015cc169e
+  Proposer: 5ec9a3a015b9a2065c7d3aa838216db4a86527cc
   SnapKit: 00c388aa3bf1944c1b55472f31e841f75bd83882
+  WhereAmI: 550fc141f0507b575a68c34a4cf01bb067566399
 
 COCOAPODS: 0.38.0.beta.2

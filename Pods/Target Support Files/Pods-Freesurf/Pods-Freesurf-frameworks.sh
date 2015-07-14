@@ -53,9 +53,13 @@ code_sign_if_enabled() {
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework 'Pods-Freesurf/Alamofire.framework'
+  install_framework 'Pods-Freesurf/Proposer.framework'
   install_framework 'Pods-Freesurf/SnapKit.framework'
+  install_framework 'Pods-Freesurf/WhereAmI.framework'
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework 'Pods-Freesurf/Alamofire.framework'
+  install_framework 'Pods-Freesurf/Proposer.framework'
   install_framework 'Pods-Freesurf/SnapKit.framework'
+  install_framework 'Pods-Freesurf/WhereAmI.framework'
 fi
