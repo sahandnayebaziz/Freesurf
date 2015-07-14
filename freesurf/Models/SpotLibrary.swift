@@ -94,9 +94,13 @@ class SpotLibrary {
                                 let name:String = json[index]["spot_name"].string!
                                 let county:String = listOfCounties[0]
                                 
+                                let long = json[index]["longitude"].double!
+                                let lat = json[index]["latitude"].double!
+                                let location = CLLocation(latitude: lat, longitude: long)
+                                
                                 if (!contains((self.allSpotIDs), existingSpotID)) {
                                     self.allSpotIDs.append(existingSpotID)
-                                    self.spotDataByID[existingSpotID] = SpotData(name: name, county: county, location: nil, heights: nil, conditions: nil)
+                                    self.spotDataByID[existingSpotID] = SpotData(name: name, county: county, location: location, heights: nil, conditions: nil)
                                     self.spotDataRequestLog[existingSpotID] = (name:true, county:true, heights:false, conditions:false)
                                 }
                             }
@@ -141,13 +145,6 @@ class SpotLibrary {
                     else {
                         self.spotDataByID[spotID]!.conditions = nil
                     }
-                    
-                    let long = json[0]["longitude"].double!
-                    let lat = json[0]["latitude"].double!
-                    let location = CLLocation(latitude: lat, longitude: long)
-                    println("location is \(location)")
-                    
-                    self.spotDataByID[spotID]!.location = location
                 }
                 
                 self.spotDataRequestLog[spotID]!.conditions = true
@@ -391,6 +388,15 @@ class SpotLibrary {
         let listOfDirections:[String] = ["N", "NNW", "NW", "WNW", "W", "WSW", "SW", "SSW", "S", "SSE", "SE", "ESE", "E", "ENE", "NE", "NNE", "N"]
         return listOfDirections[((degrees) + (360/16)/2) % 360 / (360/16)]
     }
+    
+//    func acs(s1:Student, s2:Student) -> Bool {
+//        return s1.name < s2.name
+//    }
+//    func des(s1:Student, s2:Student) -> Bool {
+//        return s1.name > s2.name
+//    }
+//    var n1 = sorted(studentrecord, acs) // Alex, John, Tom
+//    var n2 = sorted(studentrecord, des) // Tom, John, Alex
 }
 
 // MARK: - Delegate methods -

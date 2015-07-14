@@ -122,7 +122,16 @@ class SearchTableViewController: UITableViewController, UIScrollViewDelegate {
         }
     }
     
+    func nearer(id1:Int, id2:Int) -> Bool {
+        let l1 = self.spotLibrary.locationForSpotID(id1)
+        let l2 = self.spotLibrary.locationForSpotID(id2)
+        return currentLocation.distanceFromLocation(l1) < currentLocation.distanceFromLocation(l2)
+    }
+    
     func listNearbySpots() {
-        
+        results = sorted(self.spotLibrary.spotDataByID.keys, nearer)
+        self.searchTableView.reloadData()
+        searchField.text = ""
+        searchField.resignFirstResponder()
     }
 }
