@@ -8,6 +8,15 @@
 
 import UIKit
 import Alamofire
+import CoreLocation
+
+struct SpotData {
+    var name:String
+    var county:String
+    var location:CLLocation?
+    var heights:[Float]?
+    var conditions:String?
+}
 
 // a SpotLibrary object holds all surf weather data used at runtime.
 class SpotLibrary {
@@ -18,7 +27,7 @@ class SpotLibrary {
     var selectedSpotIDs:[Int]
     var allSpotsHaveBeenDownloaded:Bool = false
     
-    var spotDataByID:[Int:(spotName:String, spotCounty:String, spotHeights:[Float]?, spotConditions:String?)]
+    var spotDataByID:[Int:SpotData]
     var spotDataRequestLog:[Int:(name:Bool, county:Bool, heights:Bool, conditions:Bool)]
     var countyDataByName:[String:(waterTemp:Int?, tides:[Float]?, swells:[(height:Int, period:Int, direction:String)]?, wind:(speedInMPH:Int, direction:String)?)]
     var countyDataRequestLog:[String:(waterTemp:Bool, tides:Bool, swells:Bool, wind:Bool)]
@@ -85,9 +94,13 @@ class SpotLibrary {
                                 let name:String = json[index]["spot_name"].string!
                                 let county:String = listOfCounties[0]
                                 
+                                let long = json[index]["longitude"].double!
+                                let lat = json[index]["latitude"].double!
+                                let location = CLLocation(latitude: lat, longitude: long)
+                                
                                 if (!contains((self.allSpotIDs), existingSpotID)) {
                                     self.allSpotIDs.append(existingSpotID)
-                                    self.spotDataByID[existingSpotID] = (name, county, nil, nil)
+                                    self.spotDataByID[existingSpotID] = SpotData(name: name, county: county, location: location, heights: nil, conditions: nil)
                                     self.spotDataRequestLog[existingSpotID] = (name:true, county:true, heights:false, conditions:false)
                                 }
                             }
@@ -119,18 +132,18 @@ class SpotLibrary {
                         }
                     }
                     if swellHeightsByHour.count > 0 {
-                        self.spotDataByID[spotID]!.spotHeights = swellHeightsByHour
+                        self.spotDataByID[spotID]!.heights = swellHeightsByHour
                     }
                     else {
-                        self.spotDataByID[spotID]!.spotHeights = nil
+                        self.spotDataByID[spotID]!.heights = nil
                     }
                     
                     var currentConditionsString:String? = nil
                     if let conditions:String = json[0]["shape_full"].string {
-                        self.spotDataByID[spotID]!.spotConditions = conditions
+                        self.spotDataByID[spotID]!.conditions = conditions
                     }
                     else {
-                        self.spotDataByID[spotID]!.spotConditions = nil
+                        self.spotDataByID[spotID]!.conditions = nil
                     }
                 }
                 
@@ -263,11 +276,12 @@ class SpotLibrary {
     
     // MARK: - Get spot values -
     
-    func nameForSpotID(id:Int) -> String { return self.spotDataByID[id]!.spotName }
-    func countyForSpotID(id:Int) -> String { return self.spotDataByID[id]!.spotCounty }
+    func nameForSpotID(id:Int) -> String { return self.spotDataByID[id]!.name }
+    func countyForSpotID(id:Int) -> String { return self.spotDataByID[id]!.county }
+    func locationForSpotID(id:Int) -> CLLocation? { return self.spotDataByID[id]!.location }
     
     func heightForSpotIDAtCurrentHour(id:Int) -> Int? {
-        if let height:Float = self.spotDataByID[id]!.spotHeights?[self.currentHour] {
+        if let height:Float = self.spotDataByID[id]!.heights?[self.currentHour] {
             return Int(height)
         }
         else {
@@ -276,7 +290,7 @@ class SpotLibrary {
     }
     
     func conditionForSpotID(id:Int) -> String? {
-        if let conditions:String = self.spotDataByID[id]!.spotConditions {
+        if let conditions:String = self.spotDataByID[id]!.conditions {
             return conditions
         }
         else {
@@ -289,7 +303,7 @@ class SpotLibrary {
     }
     
     func tidesForSpotID(id:Int) -> [Float]? { return self.countyDataByName[self.countyForSpotID(id)]!.tides }
-    func heightsForSpotID(id:Int) -> [Float]? { return self.spotDataByID[id]!.spotHeights }
+    func heightsForSpotID(id:Int) -> [Float]? { return self.spotDataByID[id]!.heights }
     func swellsForSpotID(id:Int) -> [(height:Int, period:Int, direction:String)]? { return self.countyDataByName[self.countyForSpotID(id)]!.swells }
     func windForSpotID(id:Int) -> (speedInMPH:Int, direction:String)? { return self.countyDataByName[self.countyForSpotID(id)]!.wind }
     
@@ -335,6 +349,7 @@ class SpotLibrary {
     func serializeSpotLibraryToString() -> String {
         var exportString:String = ""
         for spotID in self.selectedSpotIDs {
+            let coordinate = self.locationForSpotID(spotID)!.coordinate
             exportString += "\(spotID).\(self.nameForSpotID(spotID)).\(self.countyForSpotID(spotID)),"
         }
         return exportString
@@ -351,7 +366,7 @@ class SpotLibrary {
 
                 self.allSpotIDs.append(spotID)
                 self.selectedSpotIDs.append(spotID)
-                self.spotDataByID[spotID] = (spotName, spotCounty, nil, nil)
+                self.spotDataByID[spotID] = SpotData(name: spotName, county: spotCounty, location: nil, heights: nil, conditions: nil)
                 self.spotDataRequestLog[spotID] = (name: true, county: true, heights: false, conditions: false)
                 initializeCountyData(spotCounty)
             }
@@ -373,6 +388,15 @@ class SpotLibrary {
         let listOfDirections:[String] = ["N", "NNW", "NW", "WNW", "W", "WSW", "SW", "SSW", "S", "SSE", "SE", "ESE", "E", "ENE", "NE", "NNE", "N"]
         return listOfDirections[((degrees) + (360/16)/2) % 360 / (360/16)]
     }
+    
+//    func acs(s1:Student, s2:Student) -> Bool {
+//        return s1.name < s2.name
+//    }
+//    func des(s1:Student, s2:Student) -> Bool {
+//        return s1.name > s2.name
+//    }
+//    var n1 = sorted(studentrecord, acs) // Alex, John, Tom
+//    var n2 = sorted(studentrecord, des) // Tom, John, Alex
 }
 
 // MARK: - Delegate methods -
