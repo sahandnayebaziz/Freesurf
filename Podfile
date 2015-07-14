@@ -6,7 +6,7 @@ target 'Freesurf' do
 
 pod 'Alamofire'
 pod 'SnapKit', '~> 0.12.0'
-pod 'Proposer', '~> 0.6'
+pod 'PermissionScope', '~> 0.7'
 pod 'WhereAmI', '~> 1.2'
 
 end
