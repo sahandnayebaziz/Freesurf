@@ -87,6 +87,7 @@ class SearchTableViewController: UITableViewController, UIScrollViewDelegate {
         permissionView.show(authChange: { (finished, results) -> Void in
             if results[0].status == .Authorized {
                 WhereAmI.sharedInstance.continuousUpdate = false;
+                WhereAmI.sharedInstance.locationPrecision = WAILocationProfil.High
                 dispatch_to_main_queue {
                     self.searchField.text = ""
                     self.searchField.resignFirstResponder()
