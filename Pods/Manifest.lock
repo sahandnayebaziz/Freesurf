@@ -1,5 +1,5 @@
 PODS:
-  - Alamofire (1.2.3)
+  - Alamofire (1.3.0)
   - PermissionScope (0.7)
   - SnapKit (0.12.0)
   - WhereAmI (1.2.1)
@@ -11,9 +11,9 @@ DEPENDENCIES:
   - WhereAmI (~> 1.2)
 
 SPEC CHECKSUMS:
-  Alamofire: 5550bf0b575ed1a4bf9be572f9463e1015cc169e
+  Alamofire: 220403a8d5840e0b4c946a6fbaf209dbca124282
   PermissionScope: 1d27791185cca10c26f84d1aab905117dde50f39
   SnapKit: 00c388aa3bf1944c1b55472f31e841f75bd83882
   WhereAmI: 550fc141f0507b575a68c34a4cf01bb067566399
 
-COCOAPODS: 0.38.0.beta.2
+COCOAPODS: 0.38.1

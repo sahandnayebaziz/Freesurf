@@ -100,9 +100,9 @@ class SpotLibrary {
                                 
                                 if !contains(self.allSpotIDs, existingSpotID) {
                                     self.allSpotIDs.append(existingSpotID)
+                                    self.spotDataRequestLog[existingSpotID] = (name:true, county:true, heights:false, conditions:false)
                                 }
-                                self.spotDataByID[existingSpotID] = SpotData(name: name, county: county, location: location, heights: nil, conditions: nil)
-                                self.spotDataRequestLog[existingSpotID] = (name:true, county:true, heights:false, conditions:false)
+                                self.spotDataByID[existingSpotID]?.location = location
                             }
                         }
                     }
