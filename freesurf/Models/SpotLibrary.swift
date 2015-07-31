@@ -94,12 +94,15 @@ class SpotLibrary {
                                 let name:String = json[index]["spot_name"].string!
                                 let county:String = listOfCounties[0]
                                 
+                                NSLog("seeing \(name)")
+                                
                                 let long = json[index]["longitude"].double!
                                 let lat = json[index]["latitude"].double!
                                 let location = CLLocation(latitude: lat, longitude: long)
                                 
                                 if !contains(self.allSpotIDs, existingSpotID) {
                                     self.allSpotIDs.append(existingSpotID)
+                                    self.spotDataByID[existingSpotID] = SpotData(name: name, county: county, location: nil, heights: nil, conditions: nil)
                                     self.spotDataRequestLog[existingSpotID] = (name:true, county:true, heights:false, conditions:false)
                                 }
                                 self.spotDataByID[existingSpotID]?.location = location
