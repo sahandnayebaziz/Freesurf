@@ -12,8 +12,8 @@ import QuartzCore
 extension String {
     func contains(other: String) -> Bool{
         var start = startIndex
-        do{
-            var subString = self[Range(start: start++, end: endIndex)].lowercaseString
+        repeat{
+            let subString = self[Range(start: start++, end: endIndex)].lowercaseString
             if subString.hasPrefix(other.lowercaseString){
                 return true
             }

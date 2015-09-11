@@ -58,20 +58,26 @@ class SpotLibrary {
     // MARK: - Spitcast GET methods -
     func getCountyNames() {
         let dataURL:NSURL = NSURL(string: "http://api.spitcast.com/api/spot/all")!
-        request(.GET, dataURL, parameters: nil, encoding: .JSON)
-            .responseJSON { (request, response, jsonFromSpitcast, error) in
-                if jsonFromSpitcast != nil {
-                    let json = JSON(jsonFromSpitcast!)
-                    let numberOfSpotsInJSONResponse = json.count
-                    for var index = 0; index < numberOfSpotsInJSONResponse; index++ {
-                        if let countyName:String = json[index]["county_name"].string {
-                            self.initializeCountyData(countyName)
+        Alamofire.request(.GET, dataURL, parameters: nil, encoding: .JSON)
+            .validate()
+            .responseJSON { _, _, result in
+                switch result {
+                case .Success:
+                    if result.value != nil {
+                        let json = JSON(result.value!)
+                        let numberOfSpotsInJSONResponse = json.count
+                        for var index = 0; index < numberOfSpotsInJSONResponse; index++ {
+                            if let countyName:String = json[index]["county_name"].string {
+                                self.initializeCountyData(countyName)
+                            }
+                            else {
+                                NSLog("A county name could not be read.")
+                            }
                         }
-                        else {
-                            NSLog("A county name could not be read.")
-                        }
+                        self.getSpotsInCounties(self.allCountyNames)
                     }
-                    self.getSpotsInCounties(self.allCountyNames)
+                case .Failure(_, let error):
+                    NSLog("\(error)")
                 }
         }
     }
@@ -82,37 +88,40 @@ class SpotLibrary {
             let formattedCountyNameForRequest = listOfCounties[0].stringByReplacingOccurrencesOfString(" ", withString: "-", options: NSStringCompareOptions.LiteralSearch, range: nil).lowercaseString
             let dataURL = NSURL(string: "http://api.spitcast.com/api/county/spots/\(formattedCountyNameForRequest)/")!
             
-            request(.GET, dataURL, parameters: nil, encoding: .JSON)
-                .responseJSON { (request, response, jsonFromSpitcast, error) in
-                    if jsonFromSpitcast != nil {
-                        let json = JSON(jsonFromSpitcast!)
-                        let numberOfSpotsInCounty = json.count
-                        
-                        for var index = 0; index < numberOfSpotsInCounty; index++ {
+            Alamofire.request(.GET, dataURL, parameters: nil, encoding: .JSON)
+                .validate()
+                .responseJSON { _, _, result in
+                    switch result {
+                    case .Success:
+                        if result.value != nil {
+                            let json = JSON(result.value!)
+                            let numberOfSpotsInCounty = json.count
                             
-                            if let existingSpotID:Int = json[index]["spot_id"].int {
-                                let name:String = json[index]["spot_name"].string!
-                                let county:String = listOfCounties[0]
+                            for var index = 0; index < numberOfSpotsInCounty; index++ {
                                 
-                                NSLog("seeing \(name)")
-                                
-                                let long = json[index]["longitude"].double!
-                                let lat = json[index]["latitude"].double!
-                                let location = CLLocation(latitude: lat, longitude: long)
-                                
-                                if !contains(self.allSpotIDs, existingSpotID) {
-                                    self.allSpotIDs.append(existingSpotID)
-                                    self.spotDataByID[existingSpotID] = SpotData(name: name, county: county, location: nil, heights: nil, conditions: nil)
-                                    self.spotDataRequestLog[existingSpotID] = (name:true, county:true, heights:false, conditions:false)
+                                if let existingSpotID:Int = json[index]["spot_id"].int {
+                                    let name:String = json[index]["spot_name"].string!
+                                    let county:String = listOfCounties[0]
+                                    
+                                    let long = json[index]["longitude"].double!
+                                    let lat = json[index]["latitude"].double!
+                                    let location = CLLocation(latitude: lat, longitude: long)
+                                    
+                                    if !self.allSpotIDs.contains(existingSpotID) {
+                                        self.allSpotIDs.append(existingSpotID)
+                                        self.spotDataByID[existingSpotID] = SpotData(name: name, county: county, location: nil, heights: nil, conditions: nil)
+                                        self.spotDataRequestLog[existingSpotID] = (name:true, county:true, heights:false, conditions:false)
+                                    }
+                                    self.spotDataByID[existingSpotID]?.location = location
                                 }
-                                self.spotDataByID[existingSpotID]?.location = location
                             }
                         }
+                        
+                        listOfCounties.removeAtIndex(0)
+                        self.getSpotsInCounties(listOfCounties)
+                    case .Failure(_, let error):
+                        NSLog("\(error)")
                     }
-                    
-                    listOfCounties.removeAtIndex(0)
-                    self.getSpotsInCounties(listOfCounties)
-                    
             }
         }
         else {
@@ -123,59 +132,71 @@ class SpotLibrary {
     
     func getSpotHeightsForToday(spotID:Int) {
         let dataURL:NSURL = NSURL(string: "http://api.spitcast.com/api/spot/forecast/\(spotID)")!
-        request(.GET, dataURL, parameters: nil, encoding: .JSON)
-            .responseJSON { (request, response, jsonFromSpitcast, error) in
-                if jsonFromSpitcast != nil {
-                    let json = JSON(jsonFromSpitcast!)
-                    
-                    var swellHeightsByHour:[Float] = []
-                    for var index = 0; index < 24; index++ {
-                        if let swellHeight = json[index]["size_ft"].float {
-                            swellHeightsByHour.append(swellHeight)
+        Alamofire.request(.GET, dataURL, parameters: nil, encoding: .JSON)
+            .validate()
+            .responseJSON { _, _, result in
+                switch result {
+                case .Success:
+                    if result.value != nil {
+                        let json = JSON(result.value!)
+                        
+                        var swellHeightsByHour:[Float] = []
+                        for var index = 0; index < 24; index++ {
+                            if let swellHeight = json[index]["size_ft"].float {
+                                swellHeightsByHour.append(swellHeight)
+                            }
+                        }
+                        if swellHeightsByHour.count > 0 {
+                            self.spotDataByID[spotID]!.heights = swellHeightsByHour
+                        }
+                        else {
+                            self.spotDataByID[spotID]!.heights = nil
+                        }
+                        
+                        if let conditions:String = json[0]["shape_full"].string {
+                            self.spotDataByID[spotID]!.conditions = conditions
+                        }
+                        else {
+                            self.spotDataByID[spotID]!.conditions = nil
                         }
                     }
-                    if swellHeightsByHour.count > 0 {
-                        self.spotDataByID[spotID]!.heights = swellHeightsByHour
-                    }
-                    else {
-                        self.spotDataByID[spotID]!.heights = nil
-                    }
                     
-                    var currentConditionsString:String? = nil
-                    if let conditions:String = json[0]["shape_full"].string {
-                        self.spotDataByID[spotID]!.conditions = conditions
-                    }
-                    else {
-                        self.spotDataByID[spotID]!.conditions = nil
-                    }
+                    self.spotDataRequestLog[spotID]!.conditions = true
+                    self.spotDataRequestLog[spotID]!.heights = true
+                    
+                    self.notifyViewOfComplete(spotID)
+                case .Failure(_, let error):
+                    NSLog("\(error)")
                 }
-                
-                self.spotDataRequestLog[spotID]!.conditions = true
-                self.spotDataRequestLog[spotID]!.heights = true
-                
-                self.notifyViewOfComplete(spotID)
         }
     }
     
     func getCountyWaterTemp(county:String, spotSender: Int?) {
         let formattedCountyNameForRequest = county.stringByReplacingOccurrencesOfString(" ", withString: "-", options: NSStringCompareOptions.LiteralSearch, range: nil).lowercaseString
         let dataURL = NSURL(string: "http://api.spitcast.com/api/county/water-temperature/\(formattedCountyNameForRequest)/")!
-        request(.GET, dataURL, parameters: nil, encoding: .JSON)
-            .responseJSON { (request, response, jsonFromSpitcast, error) in
-                if jsonFromSpitcast != nil {
-                    let json = JSON(jsonFromSpitcast!)
-                    if let temp = json["fahrenheit"].int {
-                        self.countyDataByName[county]!.waterTemp = temp
+        
+        Alamofire.request(.GET, dataURL, parameters: nil, encoding: .JSON)
+            .validate()
+            .responseJSON { _, _, result in
+                switch result {
+                case .Success:
+                    if result.value != nil {
+                        let json = JSON(result.value!)
+                        if let temp = json["fahrenheit"].int {
+                            self.countyDataByName[county]!.waterTemp = temp
+                        }
+                        else {
+                            self.countyDataByName[county]!.waterTemp = nil
+                        }
                     }
-                    else {
-                        self.countyDataByName[county]!.waterTemp = nil
+                    
+                    self.countyDataRequestLog[county]!.waterTemp = true
+                    
+                    if let spotID = spotSender {
+                        self.notifyViewOfComplete(spotID)
                     }
-                }
-                
-                self.countyDataRequestLog[county]!.waterTemp = true
-                
-                if let spotID = spotSender {
-                    self.notifyViewOfComplete(spotID)
+                case .Failure(_, let error):
+                    NSLog("\(error)")
                 }
         }
     }
@@ -185,26 +206,33 @@ class SpotLibrary {
         var tideLevelsForToday:[Float] = []
         let formattedCountyNameForRequest = county.stringByReplacingOccurrencesOfString(" ", withString: "-", options: NSStringCompareOptions.LiteralSearch, range: nil).lowercaseString
         let dataURL:NSURL = NSURL(string: "http://api.spitcast.com/api/county/tide/\(formattedCountyNameForRequest)/")!
-        request(.GET, dataURL, parameters: nil, encoding: .JSON)
-            .responseJSON { (request, response, jsonFromSpitcast, error) in
-                if jsonFromSpitcast != nil {
-                    let json = JSON(jsonFromSpitcast!)
-                    
-                    for var index = 0; index < 24; index++ {
-                        if let tide = json[index]["tide"].float {
-                            tideLevelsForToday.append(tide)
+        
+        Alamofire.request(.GET, dataURL, parameters: nil, encoding: .JSON)
+            .validate()
+            .responseJSON { _, _, result in
+                switch result {
+                case .Success:
+                    if result.value != nil {
+                        let json = JSON(result.value!)
+                        
+                        for var index = 0; index < 24; index++ {
+                            if let tide = json[index]["tide"].float {
+                                tideLevelsForToday.append(tide)
+                            }
+                        }
+                        
+                        if tideLevelsForToday.count > 0 {
+                            self.countyDataByName[county]!.tides = tideLevelsForToday
                         }
                     }
                     
-                    if tideLevelsForToday.count > 0 {
-                        self.countyDataByName[county]!.tides = tideLevelsForToday
+                    self.countyDataRequestLog[county]!.tides = true
+                    
+                    if let spotID = spotSender {
+                        self.notifyViewOfComplete(spotID)
                     }
-                }
-                
-                self.countyDataRequestLog[county]!.tides = true
-                
-                if let spotID = spotSender {
-                    self.notifyViewOfComplete(spotID)
+                case .Failure(_, let error):
+                    NSLog("\(error)")
                 }
         }
     }
@@ -212,67 +240,77 @@ class SpotLibrary {
     func getCountySwell(county:String, spotSender: Int?) {
         let formattedCountyNameForRequest = county.stringByReplacingOccurrencesOfString(" ", withString: "-", options: NSStringCompareOptions.LiteralSearch, range: nil).lowercaseString
         let dataURL:NSURL = NSURL(string: "http://api.spitcast.com/api/county/swell/\(formattedCountyNameForRequest)/")!
-        request(.GET, dataURL, parameters: nil, encoding: .JSON)
-            .responseJSON { (request, response, jsonFromSpitcast, error) in
-                if jsonFromSpitcast != nil {
-                    let json = JSON(jsonFromSpitcast!)
-                    
-                    var allSwellsInThisCounty:[(height:Int, period:Int, direction:String)] = []
-                    let possibleSwellNumberInSpitcastResponse = ["0", "1", "2", "3", "4", "5"]
-                    
-                    for (var index = 0; index < possibleSwellNumberInSpitcastResponse.count; index++) {
+        
+        Alamofire.request(.GET, dataURL, parameters: nil, encoding: .JSON)
+            .validate()
+            .responseJSON { _, _, result in
+                switch result {
+                case .Success:
+                    if result.value != nil {
+                        let json = JSON(result.value!)
                         
-                        if let directionInDegrees:Int = json[self.currentHour][possibleSwellNumberInSpitcastResponse[index]]["dir"].int {
-                            if let heightInMeters:Float = json[self.currentHour][possibleSwellNumberInSpitcastResponse[index]]["hs"].float {
-                                if let periodInSeconds:Float = json[self.currentHour][possibleSwellNumberInSpitcastResponse[index]]["tp"].float {
-                                    
-                                    var heightInFeet = self.swellMetersToFeet(heightInMeters)
-                                    var directionInHeading = self.degreesToDirection(directionInDegrees)
-                                    var periodAsInt:Int = Int(periodInSeconds)
-                                    
-                                    allSwellsInThisCounty += [(height:heightInFeet, period:periodAsInt, direction:directionInHeading)]
+                        var allSwellsInThisCounty:[(height:Int, period:Int, direction:String)] = []
+                        let possibleSwellNumberInSpitcastResponse = ["0", "1", "2", "3", "4", "5"]
+                        
+                        for (var index = 0; index < possibleSwellNumberInSpitcastResponse.count; index++) {
+                            
+                            if let directionInDegrees:Int = json[self.currentHour][possibleSwellNumberInSpitcastResponse[index]]["dir"].int {
+                                if let heightInMeters:Float = json[self.currentHour][possibleSwellNumberInSpitcastResponse[index]]["hs"].float {
+                                    if let periodInSeconds:Float = json[self.currentHour][possibleSwellNumberInSpitcastResponse[index]]["tp"].float {
+                                        
+                                        let heightInFeet = self.swellMetersToFeet(heightInMeters)
+                                        let directionInHeading = self.degreesToDirection(directionInDegrees)
+                                        let periodAsInt:Int = Int(periodInSeconds)
+                                        
+                                        allSwellsInThisCounty += [(height:heightInFeet, period:periodAsInt, direction:directionInHeading)]
+                                    }
                                 }
                             }
                         }
+                        
+                        if allSwellsInThisCounty.count > 0 {
+                            self.countyDataByName[county]!.swells = allSwellsInThisCounty
+                        }
                     }
                     
-                    if allSwellsInThisCounty.count > 0 {
-                        self.countyDataByName[county]!.swells = allSwellsInThisCounty
+                    self.countyDataRequestLog[county]!.swells = true
+                    
+                    if let spotID = spotSender {
+                        self.notifyViewOfComplete(spotID)
                     }
-                }
-                
-                self.countyDataRequestLog[county]!.swells = true
-                
-                if let spotID = spotSender {
-                    self.notifyViewOfComplete(spotID)
+                case .Failure(_, let error):
+                    NSLog("\(error)")
                 }
         }
-        
     }
     
     func getCountyWind(county:String, spotSender: Int?) {
         let formattedCountyNameForRequest = county.stringByReplacingOccurrencesOfString(" ", withString: "-", options: NSStringCompareOptions.LiteralSearch, range: nil).lowercaseString
         let dataURL:NSURL = NSURL(string: "http://api.spitcast.com/api/county/wind/\(formattedCountyNameForRequest)/")!
-        request(.GET, dataURL, parameters: nil, encoding: .JSON)
-            .responseJSON { (request, response, jsonFromSpitcast, error) in
-                if jsonFromSpitcast != nil {
-                    let json = JSON(jsonFromSpitcast!)
-                    
-                    var speed:Float? = nil
-                    var direction:String? = nil
-                    
-                    if let speed = json[self.currentHour]["speed_mph"].float {
-                        if let direction:String = json[self.currentHour]["direction_text"].string {
-                            let windData = (speedInMPH:Int(speed), direction: direction)
-                            self.countyDataByName[county]!.wind = windData
+        
+        Alamofire.request(.GET, dataURL, parameters: nil, encoding: .JSON)
+            .validate()
+            .responseJSON { _, _, result in
+                switch result {
+                case .Success:
+                    if result.value != nil {
+                        let json = JSON(result.value!)
+                        
+                        if let speed = json[self.currentHour]["speed_mph"].float {
+                            if let direction:String = json[self.currentHour]["direction_text"].string {
+                                let windData = (speedInMPH:Int(speed), direction: direction)
+                                self.countyDataByName[county]!.wind = windData
+                            }
                         }
                     }
-                }
-                
-                self.countyDataRequestLog[county]!.wind = true
-                
-                if let spotID = spotSender {
-                    self.notifyViewOfComplete(spotID)
+                    
+                    self.countyDataRequestLog[county]!.wind = true
+                    
+                    if let spotID = spotSender {
+                        self.notifyViewOfComplete(spotID)
+                    }
+                case .Failure(_, let error):
+                    NSLog("\(error)")
                 }
         }
     }
@@ -352,18 +390,17 @@ class SpotLibrary {
     func serializeSpotLibraryToString() -> String {
         var exportString:String = ""
         for spotID in self.selectedSpotIDs {
-            let coordinate = self.locationForSpotID(spotID)!.coordinate
             exportString += "\(spotID).\(self.nameForSpotID(spotID)).\(self.countyForSpotID(spotID)),"
         }
         return exportString
     }
     
     func deserializeSpotLibraryFromString(exportString: String) {
-        var listOfSpotExports:[String] = exportString.componentsSeparatedByString(",")
+        let listOfSpotExports:[String] = exportString.componentsSeparatedByString(",")
         for spotExport in listOfSpotExports {
             var spotAttributes:[String] = spotExport.componentsSeparatedByString(".")
             if spotAttributes.count == 3 {
-                let spotID:Int = spotAttributes[0].toInt()!
+                let spotID:Int = Int(spotAttributes[0])!
                 let spotName:String = spotAttributes[1]
                 let spotCounty:String = spotAttributes[2]
 
@@ -377,7 +414,7 @@ class SpotLibrary {
     }
 
     func initializeCountyData(countyName:String) {
-        if (!contains(self.allCountyNames, countyName)) {
+        if (!self.allCountyNames.contains(countyName)) {
             self.allCountyNames.append(countyName)
             self.countyDataByName[countyName] = (waterTemp:nil, tides:nil, swells:nil, wind:nil)
             self.countyDataRequestLog[countyName] = (waterTemp:false, tides:false, swells:false, wind:false)

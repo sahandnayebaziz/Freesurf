@@ -41,7 +41,7 @@ class SpotsTableViewController: UITableViewController, LPRTableViewDelegate, Spo
         self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .None)
     }
     
-    func splitViewController(splitViewController: UISplitViewController, collapseSecondaryViewController secondaryViewController: UIViewController!, ontoPrimaryViewController primaryViewController: UIViewController!) -> Bool {
+    func splitViewController(splitViewController: UISplitViewController, collapseSecondaryViewController secondaryViewController: UIViewController, ontoPrimaryViewController primaryViewController: UIViewController) -> Bool {
         return collapseDetailViewController
     }
     
@@ -64,18 +64,20 @@ class SpotsTableViewController: UITableViewController, LPRTableViewDelegate, Spo
     }
     
     func configureNetwork() {
-        if reachability.isReachable() {
-            self.downloadMissingSpotInfo()
+        if let reachability = reachability {
+            if reachability.isReachable() {
+                self.downloadMissingSpotInfo()
+            }
+            
+            reachability.whenReachable = { reachability in
+                self.downloadMissingSpotInfo()
+            }
+            reachability.whenUnreachable = { reachability in
+                NSLog("Became unreachable")
+            }
+            
+            reachability.startNotifier()
         }
-        
-        reachability.whenReachable = { reachability in
-            self.downloadMissingSpotInfo()
-        }
-        reachability.whenUnreachable = { reachability in
-            NSLog("Became unreachable")
-        }
-        
-        reachability.startNotifier()
     }
     
     // MARK: - Delegate methods -
@@ -91,7 +93,7 @@ class SpotsTableViewController: UITableViewController, LPRTableViewDelegate, Spo
     @IBAction func unwindToList(segue:UIStoryboardSegue) {
         if segue.identifier! == "unwindFromSearchCell" || segue.identifier! == "unwindFromSearchCancelButton" {
             
-            var source:SearchTableViewController = segue.sourceViewController as! SearchTableViewController
+            let source:SearchTableViewController = segue.sourceViewController as! SearchTableViewController
             source.spotLibrary = self.spotLibrary
             
             source.searchField.resignFirstResponder()
@@ -121,9 +123,9 @@ class SpotsTableViewController: UITableViewController, LPRTableViewDelegate, Spo
         
         if segue.identifier! == "openSpotDetail" {
             let nav:UINavigationController = segue.destinationViewController as! UINavigationController
-            var destinationView:DetailViewController = nav.topViewController as! DetailViewController
+            let destinationView:DetailViewController = nav.topViewController as! DetailViewController
             
-            let indexPath:NSIndexPath = spotsTableView.indexPathForSelectedRow()!
+            let indexPath:NSIndexPath = spotsTableView.indexPathForSelectedRow!
             let rowID = self.spotLibrary.selectedSpotIDs[indexPath.row]
             
             let model = DetailViewModel(values: self.spotLibrary.allDetailViewData(rowID))
@@ -207,7 +209,7 @@ class SpotsTableViewController: UITableViewController, LPRTableViewDelegate, Spo
             
             self.spotsTableView.endUpdates()
             
-            for cell in self.spotsTableView.visibleCells() as! [SpotCell] { cell.gradient.frame = cell.bounds }
+            for cell in self.spotsTableView.visibleCells as! [SpotCell] { cell.gradient.frame = cell.bounds }
         }
     }
     
@@ -223,26 +225,28 @@ class SpotsTableViewController: UITableViewController, LPRTableViewDelegate, Spo
     }
     
     func downloadMissingSpotInfo() {
-        if reachability.isReachable() {
-            if spotLibrary.spotDataByID.isEmpty || usingUserDefaults {
-                dispatch_to_background_queue {
-                    self.spotLibrary.getCountyNames()
+        if let reachability = reachability {
+            if reachability.isReachable() {
+                if spotLibrary.spotDataByID.isEmpty || usingUserDefaults {
+                    dispatch_to_background_queue {
+                        self.spotLibrary.getCountyNames()
+                    }
+                    
+                    usingUserDefaults = false;
                 }
                 
-                usingUserDefaults = false;
-            }
-            
-            if spotLibrary.selectedSpotIDs.count > 0 {
-                for spot in spotLibrary.selectedSpotIDs {
-                    if self.spotLibrary.allSpotCellDataIfRequestsComplete(spot) == nil {
-
-                        dispatch_to_background_queue {
-                            self.spotLibrary.getSpotHeightsForToday(spot)
-                            let county = self.spotLibrary.countyForSpotID(spot)
-                            self.spotLibrary.getCountyWaterTemp(county, spotSender: spot)
-                            self.spotLibrary.getCountyTideForToday(county, spotSender: spot)
-                            self.spotLibrary.getCountySwell(county, spotSender: spot)
-                            self.spotLibrary.getCountyWind(county, spotSender: spot)
+                if spotLibrary.selectedSpotIDs.count > 0 {
+                    for spot in spotLibrary.selectedSpotIDs {
+                        if self.spotLibrary.allSpotCellDataIfRequestsComplete(spot) == nil {
+                            
+                            dispatch_to_background_queue {
+                                self.spotLibrary.getSpotHeightsForToday(spot)
+                                let county = self.spotLibrary.countyForSpotID(spot)
+                                self.spotLibrary.getCountyWaterTemp(county, spotSender: spot)
+                                self.spotLibrary.getCountyTideForToday(county, spotSender: spot)
+                                self.spotLibrary.getCountySwell(county, spotSender: spot)
+                                self.spotLibrary.getCountyWind(county, spotSender: spot)
+                            }
                         }
                     }
                 }

@@ -56,7 +56,7 @@ class LPRTableView: UITableView {
 		self.init(frame: CGRectZero)
 	}
 	
-	convenience override init(frame: CGRect) {
+	convenience init(frame: CGRect) {
 		self.init(frame: frame, style: .Plain)
 	}
 	
@@ -65,7 +65,7 @@ class LPRTableView: UITableView {
 		initialize()
 	}
 	
-	required init(coder aDecoder: NSCoder) {
+	required init?(coder aDecoder: NSCoder) {
 		super.init(coder: aDecoder)
 		initialize()
 	}
@@ -90,7 +90,7 @@ extension LPRTableView {
 		let indexPath = indexPathForRowAtPoint(location)
         var originIndexPath:NSIndexPath
 		
-		let sections = numberOfSections()
+		let sections = numberOfSections
 		var rows = 0
 		for i in 0..<sections {
 			rows += numberOfRowsInSection(i)
@@ -125,13 +125,13 @@ extension LPRTableView {
 						
 						// Make an image from the pressed table view cell.
 						UIGraphicsBeginImageContextWithOptions(cell.bounds.size, false, 0.0)
-						cell.layer.renderInContext(UIGraphicsGetCurrentContext())
-						var cellImage = UIGraphicsGetImageFromCurrentImageContext()
+						cell.layer.renderInContext(UIGraphicsGetCurrentContext()!)
+						let cellImage = UIGraphicsGetImageFromCurrentImageContext()
 						UIGraphicsEndImageContext()
 						
 						draggingView = UIImageView(image: cellImage)
 						
-						if var draggingView = draggingView {
+						if let draggingView = draggingView {
 							addSubview(draggingView)
 							let rect = rectForRowAtIndexPath(indexPath)
 							draggingView.frame = CGRectOffset(draggingView.bounds, rect.origin.x, rect.origin.y)
@@ -169,7 +169,7 @@ extension LPRTableView {
 		// Dragging.
 		else if gesture.state == .Changed {
 			
-			if var draggingView = draggingView {
+			if let draggingView = draggingView {
 				// Update position of the drag view,
 				// but don't let it go past the top or the bottom too far.
 				if (location.y >= 0.0) && (location.y <= contentSize.height + 50.0) {
@@ -211,7 +211,7 @@ extension LPRTableView {
 			// Animate the drag view to the newly hovered cell.
 			UIView.animateWithDuration(0.3,
 				animations: {
-					if var draggingView = self.draggingView {
+					if let draggingView = self.draggingView {
 						if let currentLocationIndexPath = self.currentLocationIndexPath {
 							UIView.beginAnimations("LongPressReorder-HideDraggingView", context: nil)
 							self.longPressReorderDelegate?.tableView?(self, hideDraggingView: draggingView, atIndexPath: currentLocationIndexPath)
@@ -223,7 +223,7 @@ extension LPRTableView {
 					}
 				},
 				completion: { (finished: Bool) in
-					if var draggingView = self.draggingView {
+					if let draggingView = self.draggingView {
 						draggingView.removeFromSuperview()
 					}
 					
@@ -310,7 +310,7 @@ class LPRTableViewController: UITableViewController, LPRTableViewDelegate {
 	/** Returns the long press to reorder table view managed by the controller object. */
 	var lprTableView: LPRTableView! { return tableView as! LPRTableView }
 	
-	override init(nibName nibNameOrNil: String!, bundle nibBundleOrNil: NSBundle!) {
+	override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
 		super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
 		initialize()
 	}
@@ -320,7 +320,7 @@ class LPRTableViewController: UITableViewController, LPRTableViewDelegate {
 		initialize()
 	}
 	
-	required init(coder aDecoder: NSCoder) {
+	required init?(coder aDecoder: NSCoder) {
 		super.init(coder: aDecoder)
 		initialize()
 	}
