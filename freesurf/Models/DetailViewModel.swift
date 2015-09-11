@@ -27,8 +27,6 @@ class DetailViewModel {
     // MARK: - Initializers -
     init(values:(name:String, height:Int?, waterTemp:Int?, swell:(height:Int, period:Int, direction:String)?, condition:String?, wind:(speedInMPH:Int, direction:String)?, tides:[Float]?, heights:[Float]?)) {
         
-        let currentHour = NSDate().hour()
-        
         self.name = values.name
         
         if let height = values.height { self.height = "\(height)-\(height + 1)ft" }
@@ -66,7 +64,7 @@ class DetailViewModel {
             self.tides = tidesAsCGFloats
         }
         else {
-            for x in 0...24 { tidesAsCGFloats.append(CGFloat(0)) }
+            for _ in 0...24 { tidesAsCGFloats.append(CGFloat(0)) }
             self.tides = tidesAsCGFloats
         }
         
@@ -76,7 +74,7 @@ class DetailViewModel {
             self.heights = heightsAsCGFloats
         }
         else {
-            for x in 0...24 { heightsAsCGFloats.append(CGFloat(0)) }
+            for _ in 0...24 { heightsAsCGFloats.append(CGFloat(0)) }
             self.heights = heightsAsCGFloats
         }
         

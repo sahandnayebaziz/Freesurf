@@ -77,7 +77,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         // for legacy users updating to Freesurf v1.0.3 with an older NSUserDefaults
-        if let legacyHoursString = defaults.objectForKey("hoursMarker") as? String {
+        if let _ = defaults.objectForKey("hoursMarker") as? String {
             if let exportString = defaults.objectForKey("userSelectedSpots") as? String {
                 tableVC.usingUserDefaults = true
                 tableVC.spotLibrary = SpotLibrary(serializedSpotLibrary: exportString)

@@ -70,7 +70,12 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, LineChartDel
             }
             
             let label = UILabel(frame: CGRectZero)
-            label.font = UIFont.systemFontOfSize(24.0, weight: 0.1)
+            if #available(iOS 8.2, *) {
+                label.font = UIFont.systemFontOfSize(24.0, weight: 0.1)
+            } else {
+                label.font = UIFont.systemFontOfSize(24.0)
+                // Fallback on earlier versions
+            }
             label.textColor = UIColor.lightGrayColor()
             label.textAlignment = .Center
             label.text = "Tap a spot to view a forecast"
@@ -85,7 +90,7 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, LineChartDel
     }
     
     override func viewDidAppear(animated: Bool) {
-        if let model = model {
+        if let _ = model {
             self.tideChart.highlightDataPoints(self.currentHour)
             self.swellChart.highlightDataPoints(self.currentHour)
         }
@@ -162,7 +167,7 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, LineChartDel
         }
         
         var heightString:String = ""
-        var timeString = "\(graphIndexToTimeString(chartIndexTouched, true))"
+        let timeString = "\(graphIndexToTimeString(chartIndexTouched, longForm: true))"
         
         heightString = "\(Int(yValues.first!))ft"
         

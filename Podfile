@@ -4,10 +4,10 @@ use_frameworks!
 
 target 'Freesurf' do
 
-pod 'Alamofire'
-pod 'SnapKit', '~> 0.12.0'
-pod 'PermissionScope', '~> 0.7'
-pod 'WhereAmI', '~> 1.2'
+pod 'Alamofire', :git => 'https://github.com/Alamofire/Alamofire.git'
+pod 'SnapKit', :git => 'https://github.com/SnapKit/SnapKit', :branch => 'swift-2.0'
+pod 'PermissionScope', :git => 'https://github.com/nickoneill/PermissionScope.git', :branch => 'swift2'
+pod 'SwiftLocation', :git => 'https://github.com/malcommac/SwiftLocation.git', :branch => 'swift-2.0'
 
 end
 
