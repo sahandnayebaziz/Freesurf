@@ -8,7 +8,7 @@
 
 import UIKit
 import SnapKit
-import WhereAmI
+import SwiftLocation
 import PermissionScope
 import CoreLocation
 
@@ -19,7 +19,16 @@ class SearchTableViewController: UITableViewController {
     var spotLibrary:SpotLibrary!
     var results:[Int] = []
     var currentLocation = CLLocation()
-    var displayingNearby = false
+    var displayingNearby = false {
+        didSet {
+            if displayingNearby {
+                self.navigationItem.prompt = "Now displaying nearby spots"
+            }
+            else {
+                self.navigationItem.prompt = "Enter name of county or surf spot"
+            }
+        }
+    }
     
     // MARK: - Interface Outlets -
     @IBOutlet var searchTableView: UITableView!
@@ -35,6 +44,7 @@ class SearchTableViewController: UITableViewController {
         
         self.searchTableView.separatorStyle = UITableViewCellSeparatorStyle.None
         self.searchTableView.backgroundColor = UIColor.clearColor()
+        self.displayingNearby = false
         
         let blurEffect:UIBlurEffect = UIBlurEffect(style: UIBlurEffectStyle.Dark)
         let blurEffectView:UIVisualEffectView = UIVisualEffectView(effect: blurEffect)
@@ -66,7 +76,6 @@ class SearchTableViewController: UITableViewController {
     @IBAction func editingchanged(sender: UITextField) {
         self.results = []
         self.displayingNearby = false
-        self.navigationItem.prompt = "Enter name of county or surf spot"
         
         let input:String = sender.text!
         
@@ -86,30 +95,36 @@ class SearchTableViewController: UITableViewController {
         
         permissionView.show({ (finished, results) -> Void in
             if results[0].status == .Authorized {
-                if WhereAmI.locationIsAuthorized() {
-                    WhereAmI.sharedInstance.continuousUpdate = true;
-                    WhereAmI.sharedInstance.locationPrecision = WAILocationProfil.High
-                    
-                    dispatch_to_main_queue {
-                        self.searchField.text = ""
-                        self.searchField.resignFirstResponder()
-                        self.tableView.backgroundView?.addSubview(self.nearbyIndicator)
-                        self.nearbyIndicator.hidesWhenStopped = true
-                        self.nearbyIndicator.snp_makeConstraints { make in
-                            make.centerX.equalTo(self.tableView.snp_centerX)
-                            make.centerY.equalTo(self.tableView.snp_centerY).offset(-100)
-                        }
-                        self.nearbyIndicator.startAnimating()
+                NSLog("resolved that we are authorized")
+                
+                dispatch_to_main_queue {
+                    self.searchField.text = ""
+                    self.searchField.resignFirstResponder()
+                    self.tableView.backgroundView?.addSubview(self.nearbyIndicator)
+                    self.nearbyIndicator.hidesWhenStopped = true
+                    self.nearbyIndicator.snp_makeConstraints { make in
+                        make.centerX.equalTo(self.tableView.snp_centerX)
+                        make.centerY.equalTo(self.tableView.snp_centerY).offset(-100)
                     }
+                    self.nearbyIndicator.startAnimating()
                     
-                    WhereAmI.sharedInstance.startUpdatingLocation({ [unowned self]  (location) -> Void in
+                    NSLog("about to request location")
+                    SwiftLocation.shared.currentLocation(Accuracy.Neighborhood, timeout: 5, onSuccess: { (location) -> Void in
+                        NSLog("a location returned")
+                        if let location = location {
+                            NSLog("location is not nil")
+                            self.displayingNearby = true
+                            self.currentLocation = location
+                            self.listNearbySpots()
+                        }
                         
-                        self.displayingNearby = true
-                        self.currentLocation = location
-                        self.listNearbySpots()
-                    });
+                        }) { (error) -> Void in
+                            NSLog("\(error)")
+                    }
                 }
-
+                
+                
+                
             }
         })
     }
@@ -159,6 +174,6 @@ class SearchTableViewController: UITableViewController {
             self.nearbyIndicator.removeFromSuperview()
         }
         self.searchTableView.reloadData()
-        self.navigationItem.prompt = "Now displaying nearby spots"
+        
     }
 }

@@ -2,14 +2,14 @@ PODS:
   - Alamofire (2.0.0)
   - PermissionScope (0.7)
   - SnapKit (0.13.0)
-  - WhereAmI (1.2.1)
+  - SwiftLocation (0.1.4)
 
 DEPENDENCIES:
   - Alamofire (from `https://github.com/Alamofire/Alamofire.git`)
   - PermissionScope (from `https://github.com/nickoneill/PermissionScope.git`, branch
     `swift2`)
   - SnapKit (from `https://github.com/SnapKit/SnapKit`, branch `swift-2.0`)
-  - WhereAmI (from `https://github.com/lypiut/WhereAmI.git`, branch `swift-2.0`)
+  - SwiftLocation (from `https://github.com/malcommac/SwiftLocation.git`, branch `swift-2.0`)
 
 EXTERNAL SOURCES:
   Alamofire:
@@ -20,9 +20,9 @@ EXTERNAL SOURCES:
   SnapKit:
     :branch: swift-2.0
     :git: https://github.com/SnapKit/SnapKit
-  WhereAmI:
+  SwiftLocation:
     :branch: swift-2.0
-    :git: https://github.com/lypiut/WhereAmI.git
+    :git: https://github.com/malcommac/SwiftLocation.git
 
 CHECKOUT OPTIONS:
   Alamofire:
@@ -34,14 +34,14 @@ CHECKOUT OPTIONS:
   SnapKit:
     :commit: 4f19419528baa3dfaca20e26fea2be410ddc79e2
     :git: https://github.com/SnapKit/SnapKit
-  WhereAmI:
-    :commit: cd4489cac1835f2d542977c8fd41636326fc64b2
-    :git: https://github.com/lypiut/WhereAmI.git
+  SwiftLocation:
+    :commit: 2c4521faf6544525005084287d3e1ce9cad5218b
+    :git: https://github.com/malcommac/SwiftLocation.git
 
 SPEC CHECKSUMS:
   Alamofire: 2f13548b29d25a58ecd91c9225fb51493e2b782b
   PermissionScope: 1d27791185cca10c26f84d1aab905117dde50f39
   SnapKit: 69fe274c71511df89a5591c11437a8b826bfa9eb
-  WhereAmI: 550fc141f0507b575a68c34a4cf01bb067566399
+  SwiftLocation: af451eff3babb518ffa0e8d34637ab6e6035afc5
 
 COCOAPODS: 0.39.0.beta.4
