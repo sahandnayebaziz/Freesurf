@@ -13,6 +13,6 @@ Freesurf is an iOS app that displays surf forecasts for surfers in California us
 [Sahand Nayebaziz]:http://sahand.me/
 [Download Freesurf on the App Store]:https://itunes.apple.com/us/app/freesurf/id921063438?mt=8
 
-![Empty view](screenshot1.jpg?raw=true "Empty View")
-![Spots view](screenshot2.jpg?raw=true "Spots View")
-![Detail view](screenshot3.jpg?raw=true "Detail View")
+![Empty view](screenshot1.png?raw=true "Empty View")
+![Spots view](screenshot2.png?raw=true "Spots View")
+![Detail view](screenshot3.png?raw=true "Detail View")
