@@ -95,7 +95,6 @@ class SearchTableViewController: UITableViewController {
         
         permissionView.show({ (finished, results) -> Void in
             if results[0].status == .Authorized {
-                NSLog("resolved that we are authorized")
                 
                 dispatch_to_main_queue {
                     self.searchField.text = ""
@@ -108,11 +107,8 @@ class SearchTableViewController: UITableViewController {
                     }
                     self.nearbyIndicator.startAnimating()
                     
-                    NSLog("about to request location")
                     SwiftLocation.shared.currentLocation(Accuracy.Neighborhood, timeout: 5, onSuccess: { (location) -> Void in
-                        NSLog("a location returned")
                         if let location = location {
-                            NSLog("location is not nil")
                             self.displayingNearby = true
                             self.currentLocation = location
                             self.listNearbySpots()
@@ -168,12 +164,13 @@ class SearchTableViewController: UITableViewController {
     }
     
     func listNearbySpots() {
-        results = self.spotLibrary.spotDataByID.keys.sort(nearer)
-        dispatch_to_main_queue {
-            self.nearbyIndicator.stopAnimating()
-            self.nearbyIndicator.removeFromSuperview()
+        if !self.spotLibrary.spotDataByID.keys.isEmpty {
+            results = self.spotLibrary.spotDataByID.keys.sort(nearer)
+            dispatch_to_main_queue {
+                self.nearbyIndicator.stopAnimating()
+                self.nearbyIndicator.removeFromSuperview()
+            }
+            self.searchTableView.reloadData()
         }
-        self.searchTableView.reloadData()
-        
     }
 }

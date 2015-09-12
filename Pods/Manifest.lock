@@ -29,7 +29,7 @@ CHECKOUT OPTIONS:
     :commit: 689c9e871bbc200922fb89b0d2c06e4286ae5059
     :git: https://github.com/Alamofire/Alamofire.git
   PermissionScope:
-    :commit: 9e53d9eac3e301a8a664c1b83513b9545bf5b3ec
+    :commit: 86e1e1483a846b70cf8401215b5341384f16c941
     :git: https://github.com/nickoneill/PermissionScope.git
   SnapKit:
     :commit: 4f19419528baa3dfaca20e26fea2be410ddc79e2

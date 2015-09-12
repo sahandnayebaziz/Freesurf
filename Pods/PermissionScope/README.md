@@ -1,55 +1,52 @@
-# PermissionScope 🔐🔭
+<p align="center">
+    <img src="http://raquo.net/images/banner.png" alt="PermissionScope" />
+</p>
 
-![iOS 8+](https://img.shields.io/badge/platform-iOS%208%2B-blue.svg?style=flat
-) [![Language](https://img.shields.io/badge/language-swift2-f48041.svg?style=flat
-)](https://developer.apple.com/swift)
-[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
-[![Cocoapods compatible](https://cocoapod-badges.herokuapp.com/v/PermissionScope/badge.png)](https://cocoapods.org/pods/PermissionScope)
-[![License](http://img.shields.io/badge/license-MIT-lightgrey.svg?style=flat
-)](http://mit-license.org)
+<p align="center">
+    <img src="https://img.shields.io/badge/platform-iOS%208%2B-blue.svg?style=flat" alt="Platform: iOS 8+" />
+    <a href="https://developer.apple.com/swift"><img src="https://img.shields.io/badge/language-swift2-f48041.svg?style=flat" alt="Language: Swift 2" /></a>
+    <a href="https://github.com/Carthage/Carthage"><img src="https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat" alt="Carthage compatible" /></a>
+    <a href="https://cocoapods.org/pods/PermissionScope"><img src="https://cocoapod-badges.herokuapp.com/v/PermissionScope/badge.png" alt="Cocoapods compatible" /></a>
+    <img src="http://img.shields.io/badge/license-MIT-lightgrey.svg?style=flat" alt="License: MIT" />
+</p>
+
+<p align="center">
+    <a href="#installation">Installation</a>
+  • <a href="#dialog-usage">Usage</a>
+  • <a href="#customization">Customization</a>
+  • <a href="https://github.com/nickoneill/PermissionScope/issues">Issues</a>
+  • <a href="#license">License</a>
+</p>
 
 Inspired by (but unrelated to) [Periscope](https://www.periscope.tv)'s permission control, PermissionScope is a Swift framework for intelligently requesting permissions from users. **It contains not only a simple UI to request permissions but also a unified permissions API** that can tell you the status of any given system permission or easily request them.
 
 Some examples of multiple permissions requests, a single permission and the denied alert.
 
-<img src="http://raquo.net/images/permissionscope.gif" alt="permissionscope gif" />
+<p align="center">
+    <img src="http://raquo.net/images/permissionscope.gif" alt="permissionscope gif" />
+</p>
 
-We should all be more careful about when we request permissions from users, opting to request them only when they're needed and definitely not all in one barrage when the user opens the app for the first time.
-
-PermissionScope gives you space to explain your reasons for requesting their precious permissions and allows users to tackle the system dialogs at their own pace. It conforms to (what I hope will be) a standard permissions design but is flexible enough to fit in to most UIKit-based apps.
+PermissionScope **gives you space to explain your reasons for requesting permissions** and **allows users to tackle the system dialogs at their own pace**. It presents a straightforward permissions design and is flexible enough to fit in to most UIKit-based apps.
 
 Best of all, PermissionScope detects when your app's permissions have been denied by a user and gives them an easy prompt to go into the system settings page to modify these permissions.
 
-## Table of Contents
-* [Installation](https://github.com/nickoneill/PermissionScope/#installation)
-* [Dialog Usage](https://github.com/nickoneill/PermissionScope/#dialog-usage)
-* [UI Customization](https://github.com/nickoneill/PermissionScope/#ui-customization)
-* [Unified Permissions API](https://github.com/nickoneill/PermissionScope/#unified-permissions-api)
-* [Issues](https://github.com/nickoneill/PermissionScope/#issues)
-* [Extra Requirements for Permissions](https://github.com/nickoneill/PermissionScope/#extra-requirements-for-permissions)
-* [Projects using PermissionScope](https://github.com/nickoneill/PermissionScope/#projects-using-permissionscope)
-* [License](https://github.com/nickoneill/PermissionScope/#license)
-
-
 ## installation
 
-requires iOS 8+
+requires iOS 8+, compatible with both **Swift** and **Objective-C** based projects
 
 Installation for [Carthage](https://github.com/Carthage/Carthage) is simple enough:
 
-`github "nickoneill/PermissionScope" ~> 0.7`
+`github "nickoneill/PermissionScope" ~> 0.9`
 
 As for [Cocoapods](https://cocoapods.org), use this to get the latest code:
 
 ```ruby
 use_frameworks!
 
-pod 'PermissionScope', '~> 0.7'
+pod 'PermissionScope', '~> 0.9'
 ```
 
 And `import PermissionScope` in the files you'd like to use it.
-
-No promises that it works with Obj-C at the moment, I'm using it with a mostly-Swift codebase. Feedback on this would be great though.
 
 ## dialog usage
 
@@ -84,7 +81,7 @@ The permissions view will automatically show if there are permissions to approve
 
 If you're attempting to block access to a screen in your app without permissions (like, say, the broadcast screen in Periscope), you should watch for the cancel closure and take an appropriate action for your app.
 
-### ui customization
+### customization
 
 You can easily change the colors, label and buttons fonts with PermissionScope by modifying any of these properties:
 
@@ -177,15 +174,6 @@ If you're also using PermissionScope in the traditional manner, don't forget to 
 ```swift
 pscope.viewControllerForAlerts = pscope as UIViewController
 ```
-
-## issues
-
-* You get `Library not loaded: @rpath/libswiftCoreAudio.dylib`, `image not found` errors when your app runs:
-
-PermissionScope imports CoreAudio to request microphone access but it's not automatically linked in if your app doesn't `import CoreAudio` somewhere. I'm not sure if this is a bug or a a quirk of how CoreAudio is imported. For now, if you `import CoreAudio` in your top level project it should fix the issue.
-
-### beta
-We're using PermissionScope in [treat](https://gettre.at) and fixing issues as they arise. Still, there's definitely some beta-ness around and the API can change without warning. Check out what we have planned in [issues](http://github.com/nickoneill/PermissionScope/issues) and contribute a suggestion or some code 😃
 
 ### PermissionScope registers user notification settings, not remote notifications
 Users will get the prompt to enable notifications when using PermissionScope but it's up to you to watch for results in your app delegate's `didRegisterUserNotificationSettings` and then register for remote notifications independently. This won't alert the user again. You're still responsible for handling the shipment of user notification settings off to your push server.
