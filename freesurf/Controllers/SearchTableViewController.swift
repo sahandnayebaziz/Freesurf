@@ -73,7 +73,7 @@ class SearchTableViewController: UITableViewController {
     func addSpotWithIdToSelectedSpots(id: Int) {
         if !(self.spotLibrary.selectedSpotIDs.contains(id)) {
             spotLibrary.selectedSpotIDs.append(id)
-            FSDefaultsManager.saveSpotLibrarySelectionsToDefaults(spotLibrary)
+            FSDefaultsManager.sharedManager.saveSpotLibrarySelectionsToDefaults(spotLibrary)
         }
     }
     

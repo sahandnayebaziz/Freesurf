@@ -5,15 +5,13 @@ PODS:
   - SwiftLocation (0.1.4)
 
 DEPENDENCIES:
-  - Alamofire (from `https://github.com/Alamofire/Alamofire.git`)
+  - Alamofire
   - PermissionScope (from `https://github.com/nickoneill/PermissionScope.git`, branch
     `swift2`)
   - SnapKit (from `https://github.com/SnapKit/SnapKit`, branch `swift-2.0`)
   - SwiftLocation (from `https://github.com/malcommac/SwiftLocation.git`, branch `swift-2.0`)
 
 EXTERNAL SOURCES:
-  Alamofire:
-    :git: https://github.com/Alamofire/Alamofire.git
   PermissionScope:
     :branch: swift2
     :git: https://github.com/nickoneill/PermissionScope.git
@@ -25,9 +23,6 @@ EXTERNAL SOURCES:
     :git: https://github.com/malcommac/SwiftLocation.git
 
 CHECKOUT OPTIONS:
-  Alamofire:
-    :commit: 689c9e871bbc200922fb89b0d2c06e4286ae5059
-    :git: https://github.com/Alamofire/Alamofire.git
   PermissionScope:
     :commit: 86e1e1483a846b70cf8401215b5341384f16c941
     :git: https://github.com/nickoneill/PermissionScope.git

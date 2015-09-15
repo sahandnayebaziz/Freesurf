@@ -210,13 +210,13 @@ class SpotsTableViewController: UITableViewController, LPRTableViewDelegate, Spo
             self.spotsTableView.endUpdates()
             
             for cell in self.spotsTableView.visibleCells as! [SpotCell] { cell.gradient.frame = cell.bounds }
-            FSDefaultsManager.saveSpotLibrarySelectionsToDefaults(spotLibrary)
+            FSDefaultsManager.sharedManager.saveSpotLibrarySelectionsToDefaults(spotLibrary)
         }
     }
     
     // MARK: - Methods -
     func readSavedSpots() {
-        if let savedSpots = FSDefaultsManager.readSpotLibrarySelectionsFromDefaults() {
+        if let savedSpots = FSDefaultsManager.sharedManager.readSpotLibrarySelectionsFromDefaults() {
             usingUserDefaults = true
             self.spotLibrary.deserializeSpotLibraryFromString(savedSpots)
             self.spotsTableView.reloadData()

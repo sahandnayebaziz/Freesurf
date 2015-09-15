@@ -7,20 +7,45 @@
 //
 
 import Foundation
+import WatchConnectivity
 
-struct FSDefaultsManager {
+class FSDefaultsManager: NSObject, WCSessionDelegate {
     
-    private static var sharedDefaults = NSUserDefaults(suiteName: "group.freesurf")
-    private static var keyForSavedSpots = "userSelectedSpots"
+    static let sharedManager = FSDefaultsManager()
     
-    static func saveSpotLibrarySelectionsToDefaults(spotLibrary: SpotLibrary) {
+    private var sharedDefaults = NSUserDefaults(suiteName: "group.freesurf")
+    private var keyForSavedSpots = "userSelectedSpots"
+    
+    func saveSpotLibrarySelectionsToDefaults(spotLibrary: SpotLibrary) {
+        
+        // save to defaults
         if let defaults = sharedDefaults {
             defaults.setObject(spotLibrary.serializeSpotLibraryToString(), forKey: keyForSavedSpots)
             defaults.synchronize()
         }
+        
+        // save for watch
+        if #available(iOS 9.0, *) {
+            if WCSession.isSupported() {
+                let session = WCSession.defaultSession()
+                session.delegate = self
+                session.activateSession()
+                
+                if session.paired && session.watchAppInstalled {
+                    let context = [keyForSavedSpots: spotLibrary.serializeSpotLibraryToString()]
+                    do {
+                        try session.updateApplicationContext(context)
+                    }
+                    catch {
+                        print(error)
+                    }
+                }
+            }
+        }
+        
     }
     
-    static func readSpotLibrarySelectionsFromDefaults() -> String? {
+    func readSpotLibrarySelectionsFromDefaults() -> String? {
         if let defaults = sharedDefaults {
             if let savedSpots = defaults.objectForKey(keyForSavedSpots) as? String {
                 return savedSpots
@@ -29,5 +54,4 @@ struct FSDefaultsManager {
         }
         return nil
     }
-    
 }

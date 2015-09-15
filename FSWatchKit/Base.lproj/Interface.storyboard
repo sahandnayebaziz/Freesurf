@@ -5,12 +5,60 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="8092"/>
     </dependencies>
     <scenes>
-        <!--Interface Controller-->
+        <!--Freesurf-->
         <scene sceneID="aou-V4-d1y">
             <objects>
-                <controller id="AgC-eL-Hgc" customClass="InterfaceController" customModule="FSWatchKit" customModuleProvider="target"/>
+                <controller title="Freesurf" id="AgC-eL-Hgc" customClass="FSWKSurfReportInterfaceController" customModule="FSWatchKit_Extension">
+                    <items>
+                        <label height="19" alignment="center" text="NOW" id="iKp-H5-KeT">
+                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                            <fontDescription key="font" style="UICTFontTextStyleCaption2"/>
+                        </label>
+                        <table alignment="left" id="CgT-zm-FeZ">
+                            <items>
+                                <tableRow identifier="FSWKTopSpotRow" id="IlP-hV-jah" customClass="FSWKTopSpotRow" customModule="FSWatchKit_Extension">
+                                    <group key="rootItem" width="1" height="0.0" alignment="left" contentMode="scaleAspectFit" layout="vertical" id="hVn-Zj-Ih8">
+                                        <items>
+                                            <group width="1" height="43" alignment="left" id="Uy7-N6-TJI">
+                                                <items>
+                                                    <label height="46" alignment="center" verticalAlignment="center" text="11ft" id="sGr-5D-tjz">
+                                                        <fontDescription key="font" type="system" weight="thin" pointSize="50"/>
+                                                    </label>
+                                                </items>
+                                            </group>
+                                            <label alignment="center" verticalAlignment="center" text="Little Windansea" textAlignment="center" numberOfLines="2" id="Ke8-EI-mOj">
+                                                <color key="textColor" red="0.36078431370000003" green="0.64705882349999999" blue="0.97254901959999995" alpha="1" colorSpace="calibratedRGB"/>
+                                            </label>
+                                        </items>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <edgeInsets key="margins" left="6" right="6" top="2" bottom="4"/>
+                                    </group>
+                                    <connections>
+                                        <outlet property="heightLabel" destination="sGr-5D-tjz" id="Jfj-Q4-Geu"/>
+                                        <outlet property="nameLabel" destination="Ke8-EI-mOj" id="JDv-rU-ecj"/>
+                                    </connections>
+                                </tableRow>
+                                <tableRow identifier="normalRow" selectable="NO" id="kcU-u9-ngY" customClass="FSWKSurfReportRow" customModule="FSWatchKit_Extension">
+                                    <group key="rootItem" width="1" alignment="left" id="Zso-ap-PEM">
+                                        <items>
+                                            <label alignment="left" verticalAlignment="center" text="Little Windansea" id="NOQ-pD-Enu">
+                                                <fontDescription key="font" style="UICTFontTextStyleBody"/>
+                                            </label>
+                                        </items>
+                                    </group>
+                                    <connections>
+                                        <outlet property="nameLabel" destination="NOQ-pD-Enu" id="um3-Qp-sdH"/>
+                                    </connections>
+                                </tableRow>
+                            </items>
+                        </table>
+                    </items>
+                    <connections>
+                        <outlet property="table" destination="CgT-zm-FeZ" id="sDf-zF-NPx"/>
+                    </connections>
+                </controller>
             </objects>
-            <point key="canvasLocation" x="235" y="347"/>
+            <point key="canvasLocation" x="235" y="351"/>
         </scene>
         <!--Glance Interface Controller-->
         <scene sceneID="BOz-TT-tkC">

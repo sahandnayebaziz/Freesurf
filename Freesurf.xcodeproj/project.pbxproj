@@ -33,7 +33,6 @@
 		D8CA15611BA7E7A30017AF82 /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D8CA155F1BA7E7A30017AF82 /* Interface.storyboard */; };
 		D8CA15631BA7E7A30017AF82 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D8CA15621BA7E7A30017AF82 /* Assets.xcassets */; };
 		D8CA156A1BA7E7A30017AF82 /* FSWatchKit Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = D8CA15691BA7E7A30017AF82 /* FSWatchKit Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		D8CA15711BA7E7A30017AF82 /* InterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CA15701BA7E7A30017AF82 /* InterfaceController.swift */; };
 		D8CA15731BA7E7A40017AF82 /* ExtensionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CA15721BA7E7A30017AF82 /* ExtensionDelegate.swift */; };
 		D8CA15751BA7E7A40017AF82 /* NotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CA15741BA7E7A40017AF82 /* NotificationController.swift */; };
 		D8CA15771BA7E7A40017AF82 /* GlanceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CA15761BA7E7A40017AF82 /* GlanceController.swift */; };
@@ -41,8 +40,14 @@
 		D8CA157B1BA7E7A40017AF82 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D8CA157A1BA7E7A40017AF82 /* Assets.xcassets */; };
 		D8CA157F1BA7E7A40017AF82 /* FSWatchKit.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = D8CA155D1BA7E7A30017AF82 /* FSWatchKit.app */; };
 		D8CA158C1BA7F04E0017AF82 /* FSDefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CA158B1BA7F04E0017AF82 /* FSDefaultsManager.swift */; settings = {ASSET_TAGS = (); }; };
+		D8CA158E1BA7F51C0017AF82 /* FSWKDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CA158D1BA7F51C0017AF82 /* FSWKDataManager.swift */; settings = {ASSET_TAGS = (); }; };
+		D8CA15901BA802270017AF82 /* FSWKSpot.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CA158F1BA802270017AF82 /* FSWKSpot.swift */; settings = {ASSET_TAGS = (); }; };
+		D8CA15941BA807650017AF82 /* FSWKSurfReportInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CA15931BA807650017AF82 /* FSWKSurfReportInterfaceController.swift */; settings = {ASSET_TAGS = (); }; };
+		D8CA15961BA808140017AF82 /* FSWKSurfReportRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CA15951BA808140017AF82 /* FSWKSurfReportRow.swift */; settings = {ASSET_TAGS = (); }; };
+		D8CA15991BA80E470017AF82 /* FSWKTopSpotRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CA15981BA80E470017AF82 /* FSWKTopSpotRow.swift */; settings = {ASSET_TAGS = (); }; };
 		D8F6636519D5EF87000B062C /* search.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8F6636419D5EF87000B062C /* search.swift */; };
 		D8F6636919D5F14F000B062C /* SearchTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8F6636819D5F14F000B062C /* SearchTableViewController.swift */; };
+		F4387DE7F81240DC13DF299F /* Pods_FSWatchKit_Extension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54AA1BFEF91E0092F29756EB /* Pods_FSWatchKit_Extension.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -105,7 +110,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3344B5140C73A89983C244B1 /* Pods-FSWatchKit Extension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FSWatchKit Extension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-FSWatchKit Extension/Pods-FSWatchKit Extension.debug.xcconfig"; sourceTree = "<group>"; };
 		4F42357909E7EA812AB154E3 /* Pods-Freesurf.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Freesurf.release.xcconfig"; path = "Pods/Target Support Files/Pods-Freesurf/Pods-Freesurf.release.xcconfig"; sourceTree = "<group>"; };
+		54AA1BFEF91E0092F29756EB /* Pods_FSWatchKit_Extension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FSWatchKit_Extension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5D7835E548297477963A4875 /* Pods-FSWatchKit Extension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FSWatchKit Extension.release.xcconfig"; path = "Pods/Target Support Files/Pods-FSWatchKit Extension/Pods-FSWatchKit Extension.release.xcconfig"; sourceTree = "<group>"; };
 		C20502A1D64331763AF8B8C7 /* Pods_Freesurf.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Freesurf.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C5645533FF61AB9CCF95D447 /* Pods-Freesurf.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Freesurf.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Freesurf/Pods-Freesurf.debug.xcconfig"; sourceTree = "<group>"; };
 		D8011775198D64C200509A27 /* Freesurf.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Freesurf.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -141,7 +149,6 @@
 		D8CA15641BA7E7A30017AF82 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D8CA15691BA7E7A30017AF82 /* FSWatchKit Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "FSWatchKit Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D8CA156F1BA7E7A30017AF82 /* PushNotificationPayload.apns */ = {isa = PBXFileReference; lastKnownFileType = text; path = PushNotificationPayload.apns; sourceTree = "<group>"; };
-		D8CA15701BA7E7A30017AF82 /* InterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterfaceController.swift; sourceTree = "<group>"; };
 		D8CA15721BA7E7A30017AF82 /* ExtensionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionDelegate.swift; sourceTree = "<group>"; };
 		D8CA15741BA7E7A40017AF82 /* NotificationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationController.swift; sourceTree = "<group>"; };
 		D8CA15761BA7E7A40017AF82 /* GlanceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlanceController.swift; sourceTree = "<group>"; };
@@ -152,6 +159,11 @@
 		D8CA15891BA7E9620017AF82 /* FSWatchKit Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "FSWatchKit Extension.entitlements"; sourceTree = "<group>"; };
 		D8CA158A1BA7E96D0017AF82 /* FSWatchKit.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = FSWatchKit.entitlements; sourceTree = "<group>"; };
 		D8CA158B1BA7F04E0017AF82 /* FSDefaultsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSDefaultsManager.swift; sourceTree = "<group>"; };
+		D8CA158D1BA7F51C0017AF82 /* FSWKDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSWKDataManager.swift; sourceTree = "<group>"; };
+		D8CA158F1BA802270017AF82 /* FSWKSpot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSWKSpot.swift; sourceTree = "<group>"; };
+		D8CA15931BA807650017AF82 /* FSWKSurfReportInterfaceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSWKSurfReportInterfaceController.swift; sourceTree = "<group>"; };
+		D8CA15951BA808140017AF82 /* FSWKSurfReportRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSWKSurfReportRow.swift; sourceTree = "<group>"; };
+		D8CA15981BA80E470017AF82 /* FSWKTopSpotRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSWKTopSpotRow.swift; sourceTree = "<group>"; };
 		D8F6636419D5EF87000B062C /* search.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = search.swift; sourceTree = "<group>"; };
 		D8F6636819D5F14F000B062C /* SearchTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -176,6 +188,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F4387DE7F81240DC13DF299F /* Pods_FSWatchKit_Extension.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -187,6 +200,8 @@
 			children = (
 				C5645533FF61AB9CCF95D447 /* Pods-Freesurf.debug.xcconfig */,
 				4F42357909E7EA812AB154E3 /* Pods-Freesurf.release.xcconfig */,
+				3344B5140C73A89983C244B1 /* Pods-FSWatchKit Extension.debug.xcconfig */,
+				5D7835E548297477963A4875 /* Pods-FSWatchKit Extension.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -195,6 +210,7 @@
 			isa = PBXGroup;
 			children = (
 				C20502A1D64331763AF8B8C7 /* Pods_Freesurf.framework */,
+				54AA1BFEF91E0092F29756EB /* Pods_FSWatchKit_Extension.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -361,7 +377,9 @@
 			isa = PBXGroup;
 			children = (
 				D8CA15891BA7E9620017AF82 /* FSWatchKit Extension.entitlements */,
-				D8CA15701BA7E7A30017AF82 /* InterfaceController.swift */,
+				D8CA15911BA802430017AF82 /* Models */,
+				D8CA15971BA808C20017AF82 /* Views */,
+				D8CA15921BA802550017AF82 /* Controllers */,
 				D8CA15721BA7E7A30017AF82 /* ExtensionDelegate.swift */,
 				D8CA15741BA7E7A40017AF82 /* NotificationController.swift */,
 				D8CA15761BA7E7A40017AF82 /* GlanceController.swift */,
@@ -379,6 +397,32 @@
 				D8CA156F1BA7E7A30017AF82 /* PushNotificationPayload.apns */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		D8CA15911BA802430017AF82 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				D8CA158F1BA802270017AF82 /* FSWKSpot.swift */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		D8CA15921BA802550017AF82 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				D8CA158D1BA7F51C0017AF82 /* FSWKDataManager.swift */,
+				D8CA15931BA807650017AF82 /* FSWKSurfReportInterfaceController.swift */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		D8CA15971BA808C20017AF82 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				D8CA15981BA80E470017AF82 /* FSWKTopSpotRow.swift */,
+				D8CA15951BA808140017AF82 /* FSWKSurfReportRow.swift */,
+			);
+			name = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -446,9 +490,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D8CA15841BA7E7A40017AF82 /* Build configuration list for PBXNativeTarget "FSWatchKit Extension" */;
 			buildPhases = (
+				6D1263F2FB69C3E27CC97B31 /* Check Pods Manifest.lock */,
 				D8CA15651BA7E7A30017AF82 /* Sources */,
 				D8CA15661BA7E7A30017AF82 /* Frameworks */,
 				D8CA15671BA7E7A30017AF82 /* Resources */,
+				7ADFF89540BB356D0AFDF515 /* Embed Pods Frameworks */,
+				EB188E11ACD8FE6781BD6754 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -581,6 +628,21 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Freesurf/Pods-Freesurf-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		6D1263F2FB69C3E27CC97B31 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
 		780C55BA86C7EE588DC92B75 /* Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -596,6 +658,21 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Freesurf/Pods-Freesurf-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		7ADFF89540BB356D0AFDF515 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-FSWatchKit Extension/Pods-FSWatchKit Extension-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		BC9AAE6134438C1281777978 /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -609,6 +686,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		EB188E11ACD8FE6781BD6754 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-FSWatchKit Extension/Pods-FSWatchKit Extension-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -650,11 +742,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D8CA15941BA807650017AF82 /* FSWKSurfReportInterfaceController.swift in Sources */,
+				D8CA15961BA808140017AF82 /* FSWKSurfReportRow.swift in Sources */,
+				D8CA158E1BA7F51C0017AF82 /* FSWKDataManager.swift in Sources */,
+				D8CA15901BA802270017AF82 /* FSWKSpot.swift in Sources */,
 				D8CA15751BA7E7A40017AF82 /* NotificationController.swift in Sources */,
 				D8CA15731BA7E7A40017AF82 /* ExtensionDelegate.swift in Sources */,
 				D8CA15791BA7E7A40017AF82 /* ComplicationController.swift in Sources */,
-				D8CA15711BA7E7A30017AF82 /* InterfaceController.swift in Sources */,
 				D8CA15771BA7E7A40017AF82 /* GlanceController.swift in Sources */,
+				D8CA15991BA80E470017AF82 /* FSWKTopSpotRow.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -894,6 +990,7 @@
 		};
 		D8CA15821BA7E7A40017AF82 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3344B5140C73A89983C244B1 /* Pods-FSWatchKit Extension.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
 				CODE_SIGN_ENTITLEMENTS = "FSWatchKit Extension/FSWatchKit Extension.entitlements";
@@ -915,6 +1012,7 @@
 		};
 		D8CA15831BA7E7A40017AF82 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5D7835E548297477963A4875 /* Pods-FSWatchKit Extension.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
 				CODE_SIGN_ENTITLEMENTS = "FSWatchKit Extension/FSWatchKit Extension.entitlements";
@@ -972,6 +1070,7 @@
 				D8CA15831BA7E7A40017AF82 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		D8CA15861BA7E7A40017AF82 /* Build configuration list for PBXNativeTarget "FSWatchKit" */ = {
 			isa = XCConfigurationList;
@@ -980,6 +1079,7 @@
 				D8CA15811BA7E7A40017AF82 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

@@ -428,15 +428,6 @@ class SpotLibrary {
         let listOfDirections:[String] = ["N", "NNW", "NW", "WNW", "W", "WSW", "SW", "SSW", "S", "SSE", "SE", "ESE", "E", "ENE", "NE", "NNE", "N"]
         return listOfDirections[((degrees) + (360/16)/2) % 360 / (360/16)]
     }
-    
-//    func acs(s1:Student, s2:Student) -> Bool {
-//        return s1.name < s2.name
-//    }
-//    func des(s1:Student, s2:Student) -> Bool {
-//        return s1.name > s2.name
-//    }
-//    var n1 = sorted(studentrecord, acs) // Alex, John, Tom
-//    var n2 = sorted(studentrecord, des) // Tom, John, Alex
 }
 
 // MARK: - Delegate methods -
