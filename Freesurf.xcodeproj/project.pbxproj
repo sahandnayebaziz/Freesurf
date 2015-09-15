@@ -30,6 +30,16 @@
 		D8B5681619C8914E000817AA /* threading.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B5681519C8914E000817AA /* threading.swift */; };
 		D8B63A3619C90027004A1398 /* reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B63A3519C90027004A1398 /* reachability.swift */; };
 		D8B89E131A47BFE100BBEAD5 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D8B89E121A47BFE100BBEAD5 /* Images.xcassets */; };
+		D8CA15611BA7E7A30017AF82 /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D8CA155F1BA7E7A30017AF82 /* Interface.storyboard */; };
+		D8CA15631BA7E7A30017AF82 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D8CA15621BA7E7A30017AF82 /* Assets.xcassets */; };
+		D8CA156A1BA7E7A30017AF82 /* FSWatchKit Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = D8CA15691BA7E7A30017AF82 /* FSWatchKit Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		D8CA15711BA7E7A30017AF82 /* InterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CA15701BA7E7A30017AF82 /* InterfaceController.swift */; };
+		D8CA15731BA7E7A40017AF82 /* ExtensionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CA15721BA7E7A30017AF82 /* ExtensionDelegate.swift */; };
+		D8CA15751BA7E7A40017AF82 /* NotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CA15741BA7E7A40017AF82 /* NotificationController.swift */; };
+		D8CA15771BA7E7A40017AF82 /* GlanceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CA15761BA7E7A40017AF82 /* GlanceController.swift */; };
+		D8CA15791BA7E7A40017AF82 /* ComplicationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CA15781BA7E7A40017AF82 /* ComplicationController.swift */; };
+		D8CA157B1BA7E7A40017AF82 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D8CA157A1BA7E7A40017AF82 /* Assets.xcassets */; };
+		D8CA157F1BA7E7A40017AF82 /* FSWatchKit.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = D8CA155D1BA7E7A30017AF82 /* FSWatchKit.app */; };
 		D8F6636519D5EF87000B062C /* search.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8F6636419D5EF87000B062C /* search.swift */; };
 		D8F6636919D5F14F000B062C /* SearchTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8F6636819D5F14F000B062C /* SearchTableViewController.swift */; };
 /* End PBXBuildFile section */
@@ -42,6 +52,20 @@
 			remoteGlobalIDString = D8011774198D64C200509A27;
 			remoteInfo = thewaves;
 		};
+		D8CA156B1BA7E7A30017AF82 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D801176D198D64C200509A27 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D8CA15681BA7E7A30017AF82;
+			remoteInfo = "FSWatchKit Extension";
+		};
+		D8CA157D1BA7E7A40017AF82 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D801176D198D64C200509A27 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D8CA155C1BA7E7A30017AF82;
+			remoteInfo = FSWatchKit;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -53,6 +77,28 @@
 			files = (
 			);
 			name = "Copy Framework";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D8CA15851BA7E7A40017AF82 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				D8CA156A1BA7E7A30017AF82 /* FSWatchKit Extension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D8CA15871BA7E7A40017AF82 /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+				D8CA157F1BA7E7A40017AF82 /* FSWatchKit.app in Embed Watch Content */,
+			);
+			name = "Embed Watch Content";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -88,6 +134,19 @@
 		D8B5681519C8914E000817AA /* threading.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = threading.swift; sourceTree = "<group>"; };
 		D8B63A3519C90027004A1398 /* reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = reachability.swift; sourceTree = "<group>"; };
 		D8B89E121A47BFE100BBEAD5 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = freesurf/Images.xcassets; sourceTree = "<group>"; };
+		D8CA155D1BA7E7A30017AF82 /* FSWatchKit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FSWatchKit.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D8CA15601BA7E7A30017AF82 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
+		D8CA15621BA7E7A30017AF82 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		D8CA15641BA7E7A30017AF82 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D8CA15691BA7E7A30017AF82 /* FSWatchKit Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "FSWatchKit Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D8CA156F1BA7E7A30017AF82 /* PushNotificationPayload.apns */ = {isa = PBXFileReference; lastKnownFileType = text; path = PushNotificationPayload.apns; sourceTree = "<group>"; };
+		D8CA15701BA7E7A30017AF82 /* InterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterfaceController.swift; sourceTree = "<group>"; };
+		D8CA15721BA7E7A30017AF82 /* ExtensionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionDelegate.swift; sourceTree = "<group>"; };
+		D8CA15741BA7E7A40017AF82 /* NotificationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationController.swift; sourceTree = "<group>"; };
+		D8CA15761BA7E7A40017AF82 /* GlanceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlanceController.swift; sourceTree = "<group>"; };
+		D8CA15781BA7E7A40017AF82 /* ComplicationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplicationController.swift; sourceTree = "<group>"; };
+		D8CA157A1BA7E7A40017AF82 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		D8CA157C1BA7E7A40017AF82 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D8F6636419D5EF87000B062C /* search.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = search.swift; sourceTree = "<group>"; };
 		D8F6636819D5F14F000B062C /* SearchTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -102,6 +161,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		D8011784198D64C200509A27 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D8CA15661BA7E7A30017AF82 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -133,6 +199,8 @@
 			children = (
 				D8011777198D64C200509A27 /* freesurf */,
 				D801178A198D64C200509A27 /* freesurfTests */,
+				D8CA155E1BA7E7A30017AF82 /* FSWatchKit */,
+				D8CA156D1BA7E7A30017AF82 /* FSWatchKit Extension */,
 				D8011776198D64C200509A27 /* Products */,
 				D8B89E121A47BFE100BBEAD5 /* Images.xcassets */,
 				3290522024CDFE37A8AE2273 /* Pods */,
@@ -145,6 +213,8 @@
 			children = (
 				D8011775198D64C200509A27 /* Freesurf.app */,
 				D8011787198D64C200509A27 /* FreesurfTests.xctest */,
+				D8CA155D1BA7E7A30017AF82 /* FSWatchKit.app */,
+				D8CA15691BA7E7A30017AF82 /* FSWatchKit Extension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -269,6 +339,39 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		D8CA155E1BA7E7A30017AF82 /* FSWatchKit */ = {
+			isa = PBXGroup;
+			children = (
+				D8CA155F1BA7E7A30017AF82 /* Interface.storyboard */,
+				D8CA15621BA7E7A30017AF82 /* Assets.xcassets */,
+				D8CA15641BA7E7A30017AF82 /* Info.plist */,
+			);
+			path = FSWatchKit;
+			sourceTree = "<group>";
+		};
+		D8CA156D1BA7E7A30017AF82 /* FSWatchKit Extension */ = {
+			isa = PBXGroup;
+			children = (
+				D8CA15701BA7E7A30017AF82 /* InterfaceController.swift */,
+				D8CA15721BA7E7A30017AF82 /* ExtensionDelegate.swift */,
+				D8CA15741BA7E7A40017AF82 /* NotificationController.swift */,
+				D8CA15761BA7E7A40017AF82 /* GlanceController.swift */,
+				D8CA15781BA7E7A40017AF82 /* ComplicationController.swift */,
+				D8CA157A1BA7E7A40017AF82 /* Assets.xcassets */,
+				D8CA157C1BA7E7A40017AF82 /* Info.plist */,
+				D8CA156E1BA7E7A30017AF82 /* Supporting Files */,
+			);
+			path = "FSWatchKit Extension";
+			sourceTree = "<group>";
+		};
+		D8CA156E1BA7E7A30017AF82 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				D8CA156F1BA7E7A30017AF82 /* PushNotificationPayload.apns */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -283,10 +386,12 @@
 				D846B0D61A70438C0092BC85 /* Copy Framework */,
 				780C55BA86C7EE588DC92B75 /* Embed Pods Frameworks */,
 				42DB404B4362507CC29E00A6 /* Copy Pods Resources */,
+				D8CA15871BA7E7A40017AF82 /* Embed Watch Content */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				D8CA157E1BA7E7A40017AF82 /* PBXTargetDependency */,
 			);
 			name = Freesurf;
 			productName = thewaves;
@@ -311,6 +416,40 @@
 			productReference = D8011787198D64C200509A27 /* FreesurfTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		D8CA155C1BA7E7A30017AF82 /* FSWatchKit */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D8CA15861BA7E7A40017AF82 /* Build configuration list for PBXNativeTarget "FSWatchKit" */;
+			buildPhases = (
+				D8CA155B1BA7E7A30017AF82 /* Resources */,
+				D8CA15851BA7E7A40017AF82 /* Embed App Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D8CA156C1BA7E7A30017AF82 /* PBXTargetDependency */,
+			);
+			name = FSWatchKit;
+			productName = FSWatchKit;
+			productReference = D8CA155D1BA7E7A30017AF82 /* FSWatchKit.app */;
+			productType = "com.apple.product-type.application.watchapp2";
+		};
+		D8CA15681BA7E7A30017AF82 /* FSWatchKit Extension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D8CA15841BA7E7A40017AF82 /* Build configuration list for PBXNativeTarget "FSWatchKit Extension" */;
+			buildPhases = (
+				D8CA15651BA7E7A30017AF82 /* Sources */,
+				D8CA15661BA7E7A30017AF82 /* Frameworks */,
+				D8CA15671BA7E7A30017AF82 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "FSWatchKit Extension";
+			productName = "FSWatchKit Extension";
+			productReference = D8CA15691BA7E7A30017AF82 /* FSWatchKit Extension.appex */;
+			productType = "com.apple.product-type.watchkit2-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -330,6 +469,13 @@
 						CreatedOnToolsVersion = 6.0;
 						TestTargetID = D8011774198D64C200509A27;
 					};
+					D8CA155C1BA7E7A30017AF82 = {
+						CreatedOnToolsVersion = 7.0;
+						DevelopmentTeam = 3WQTW95Z2J;
+					};
+					D8CA15681BA7E7A30017AF82 = {
+						CreatedOnToolsVersion = 7.0;
+					};
 				};
 			};
 			buildConfigurationList = D8011770198D64C200509A27 /* Build configuration list for PBXProject "Freesurf" */;
@@ -347,6 +493,8 @@
 			targets = (
 				D8011774198D64C200509A27 /* Freesurf */,
 				D8011786198D64C200509A27 /* FreesurfTests */,
+				D8CA155C1BA7E7A30017AF82 /* FSWatchKit */,
+				D8CA15681BA7E7A30017AF82 /* FSWatchKit Extension */,
 			);
 		};
 /* End PBXProject section */
@@ -370,6 +518,23 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D8CA155B1BA7E7A30017AF82 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D8CA15631BA7E7A30017AF82 /* Assets.xcassets in Resources */,
+				D8CA15611BA7E7A30017AF82 /* Interface.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D8CA15671BA7E7A30017AF82 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D8CA157B1BA7E7A40017AF82 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -455,6 +620,18 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D8CA15651BA7E7A30017AF82 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D8CA15751BA7E7A40017AF82 /* NotificationController.swift in Sources */,
+				D8CA15731BA7E7A40017AF82 /* ExtensionDelegate.swift in Sources */,
+				D8CA15791BA7E7A40017AF82 /* ComplicationController.swift in Sources */,
+				D8CA15711BA7E7A30017AF82 /* InterfaceController.swift in Sources */,
+				D8CA15771BA7E7A40017AF82 /* GlanceController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -462,6 +639,16 @@
 			isa = PBXTargetDependency;
 			target = D8011774198D64C200509A27 /* Freesurf */;
 			targetProxy = D8011788198D64C200509A27 /* PBXContainerItemProxy */;
+		};
+		D8CA156C1BA7E7A30017AF82 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D8CA15681BA7E7A30017AF82 /* FSWatchKit Extension */;
+			targetProxy = D8CA156B1BA7E7A30017AF82 /* PBXContainerItemProxy */;
+		};
+		D8CA157E1BA7E7A40017AF82 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D8CA155C1BA7E7A30017AF82 /* FSWatchKit */;
+			targetProxy = D8CA157D1BA7E7A40017AF82 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -473,6 +660,14 @@
 			);
 			name = Main.storyboard;
 			path = .;
+			sourceTree = "<group>";
+		};
+		D8CA155F1BA7E7A30017AF82 /* Interface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D8CA15601BA7E7A30017AF82 /* Base */,
+			);
+			name = Interface.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -620,6 +815,80 @@
 			};
 			name = Release;
 		};
+		D8CA15801BA7E7A40017AF82 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IBSC_MODULE = FSWatchKit_Extension;
+				INFOPLIST_FILE = FSWatchKit/Info.plist;
+				PRODUCT_BUNDLE_IDENTIFIER = me.sahand.Freesurf.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+			};
+			name = Debug;
+		};
+		D8CA15811BA7E7A40017AF82 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IBSC_MODULE = FSWatchKit_Extension;
+				INFOPLIST_FILE = FSWatchKit/Info.plist;
+				PRODUCT_BUNDLE_IDENTIFIER = me.sahand.Freesurf.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+			};
+			name = Release;
+		};
+		D8CA15821BA7E7A40017AF82 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = "FSWatchKit Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = me.sahand.Freesurf.watchkitapp.watchkitextension;
+				PRODUCT_NAME = "${TARGET_NAME}";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+			};
+			name = Debug;
+		};
+		D8CA15831BA7E7A40017AF82 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = "FSWatchKit Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = me.sahand.Freesurf.watchkitapp.watchkitextension;
+				PRODUCT_NAME = "${TARGET_NAME}";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -649,6 +918,22 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		D8CA15841BA7E7A40017AF82 /* Build configuration list for PBXNativeTarget "FSWatchKit Extension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D8CA15821BA7E7A40017AF82 /* Debug */,
+				D8CA15831BA7E7A40017AF82 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		D8CA15861BA7E7A40017AF82 /* Build configuration list for PBXNativeTarget "FSWatchKit" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D8CA15801BA7E7A40017AF82 /* Debug */,
+				D8CA15811BA7E7A40017AF82 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 	};
