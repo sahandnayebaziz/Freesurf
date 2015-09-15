@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		CDC72E715630C59D8EE354A3 /* Pods_Freesurf.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C20502A1D64331763AF8B8C7 /* Pods_Freesurf.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		D800FE751BA87F020068AE5E /* FSWKRightNameRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = D800FE741BA87F020068AE5E /* FSWKRightNameRow.swift */; settings = {ASSET_TAGS = (); }; };
+		D800FE771BA87F380068AE5E /* FSWKLeftNameRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = D800FE761BA87F380068AE5E /* FSWKLeftNameRow.swift */; settings = {ASSET_TAGS = (); }; };
 		D801177B198D64C200509A27 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D801177A198D64C200509A27 /* AppDelegate.swift */; };
 		D8011780198D64C200509A27 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D801177E198D64C200509A27 /* Main.storyboard */; };
 		D801178E198D64C200509A27 /* thewavesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D801178D198D64C200509A27 /* thewavesTests.swift */; };
@@ -43,7 +45,6 @@
 		D8CA158E1BA7F51C0017AF82 /* FSWKDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CA158D1BA7F51C0017AF82 /* FSWKDataManager.swift */; settings = {ASSET_TAGS = (); }; };
 		D8CA15901BA802270017AF82 /* FSWKSpot.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CA158F1BA802270017AF82 /* FSWKSpot.swift */; settings = {ASSET_TAGS = (); }; };
 		D8CA15941BA807650017AF82 /* FSWKSurfReportInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CA15931BA807650017AF82 /* FSWKSurfReportInterfaceController.swift */; settings = {ASSET_TAGS = (); }; };
-		D8CA15961BA808140017AF82 /* FSWKSurfReportRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CA15951BA808140017AF82 /* FSWKSurfReportRow.swift */; settings = {ASSET_TAGS = (); }; };
 		D8CA15991BA80E470017AF82 /* FSWKTopSpotRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CA15981BA80E470017AF82 /* FSWKTopSpotRow.swift */; settings = {ASSET_TAGS = (); }; };
 		D8F6636519D5EF87000B062C /* search.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8F6636419D5EF87000B062C /* search.swift */; };
 		D8F6636919D5F14F000B062C /* SearchTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8F6636819D5F14F000B062C /* SearchTableViewController.swift */; };
@@ -116,6 +117,8 @@
 		5D7835E548297477963A4875 /* Pods-FSWatchKit Extension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FSWatchKit Extension.release.xcconfig"; path = "Pods/Target Support Files/Pods-FSWatchKit Extension/Pods-FSWatchKit Extension.release.xcconfig"; sourceTree = "<group>"; };
 		C20502A1D64331763AF8B8C7 /* Pods_Freesurf.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Freesurf.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C5645533FF61AB9CCF95D447 /* Pods-Freesurf.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Freesurf.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Freesurf/Pods-Freesurf.debug.xcconfig"; sourceTree = "<group>"; };
+		D800FE741BA87F020068AE5E /* FSWKRightNameRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSWKRightNameRow.swift; sourceTree = "<group>"; };
+		D800FE761BA87F380068AE5E /* FSWKLeftNameRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSWKLeftNameRow.swift; sourceTree = "<group>"; };
 		D8011775198D64C200509A27 /* Freesurf.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Freesurf.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D8011779198D64C200509A27 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D801177A198D64C200509A27 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -162,7 +165,6 @@
 		D8CA158D1BA7F51C0017AF82 /* FSWKDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSWKDataManager.swift; sourceTree = "<group>"; };
 		D8CA158F1BA802270017AF82 /* FSWKSpot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSWKSpot.swift; sourceTree = "<group>"; };
 		D8CA15931BA807650017AF82 /* FSWKSurfReportInterfaceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSWKSurfReportInterfaceController.swift; sourceTree = "<group>"; };
-		D8CA15951BA808140017AF82 /* FSWKSurfReportRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSWKSurfReportRow.swift; sourceTree = "<group>"; };
 		D8CA15981BA80E470017AF82 /* FSWKTopSpotRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSWKTopSpotRow.swift; sourceTree = "<group>"; };
 		D8F6636419D5EF87000B062C /* search.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = search.swift; sourceTree = "<group>"; };
 		D8F6636819D5F14F000B062C /* SearchTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchTableViewController.swift; sourceTree = "<group>"; };
@@ -420,7 +422,8 @@
 			isa = PBXGroup;
 			children = (
 				D8CA15981BA80E470017AF82 /* FSWKTopSpotRow.swift */,
-				D8CA15951BA808140017AF82 /* FSWKSurfReportRow.swift */,
+				D800FE741BA87F020068AE5E /* FSWKRightNameRow.swift */,
+				D800FE761BA87F380068AE5E /* FSWKLeftNameRow.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -743,10 +746,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				D8CA15941BA807650017AF82 /* FSWKSurfReportInterfaceController.swift in Sources */,
-				D8CA15961BA808140017AF82 /* FSWKSurfReportRow.swift in Sources */,
+				D800FE771BA87F380068AE5E /* FSWKLeftNameRow.swift in Sources */,
 				D8CA158E1BA7F51C0017AF82 /* FSWKDataManager.swift in Sources */,
 				D8CA15901BA802270017AF82 /* FSWKSpot.swift in Sources */,
 				D8CA15751BA7E7A40017AF82 /* NotificationController.swift in Sources */,
+				D800FE751BA87F020068AE5E /* FSWKRightNameRow.swift in Sources */,
 				D8CA15731BA7E7A40017AF82 /* ExtensionDelegate.swift in Sources */,
 				D8CA15791BA7E7A40017AF82 /* ComplicationController.swift in Sources */,
 				D8CA15771BA7E7A40017AF82 /* GlanceController.swift in Sources */,

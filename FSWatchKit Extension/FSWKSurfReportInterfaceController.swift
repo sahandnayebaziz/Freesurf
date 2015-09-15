@@ -12,7 +12,7 @@ import Foundation
 class FSWKSurfReportInterfaceController: WKInterfaceController {
     
     @IBOutlet var table: WKInterfaceTable!
-
+    
     override func awakeWithContext(context: AnyObject?) {
         super.awakeWithContext(context)
         
@@ -20,8 +20,8 @@ class FSWKSurfReportInterfaceController: WKInterfaceController {
         if let spots = FSWKDataManager.sharedManager.readSpotLibrarySelectionsFromDefaults() {
             
             var rowTypes = ["FSWKTopSpotRow"]
-            for _ in 1...spots.count - 1 {
-                rowTypes.append("normalRow")
+            for i in 1...spots.count - 1 {
+                rowTypes.append("rowNameLeft")
             }
             table.setRowTypes(rowTypes)
             
@@ -35,7 +35,7 @@ class FSWKSurfReportInterfaceController: WKInterfaceController {
                     row?.heightLabel.setText("9ft")
                 }
                 else {
-                    let row = table.rowControllerAtIndex(i) as? FSWKSurfReportRow
+                    let row = table.rowControllerAtIndex(i) as? FSWKLeftNameRow
                     row?.nameLabel.setText(spots[i].name)
                 }
             }
@@ -45,15 +45,15 @@ class FSWKSurfReportInterfaceController: WKInterfaceController {
         
         
     }
-
+    
     override func willActivate() {
         // This method is called when watch view controller is about to be visible to user
         super.willActivate()
     }
-
+    
     override func didDeactivate() {
         // This method is called when watch view controller is no longer visible
         super.didDeactivate()
     }
-
+    
 }
