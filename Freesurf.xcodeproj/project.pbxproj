@@ -10,9 +10,15 @@
 		CDC72E715630C59D8EE354A3 /* Pods_Freesurf.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C20502A1D64331763AF8B8C7 /* Pods_Freesurf.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		D800FE751BA87F020068AE5E /* FSWKRightNameRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = D800FE741BA87F020068AE5E /* FSWKRightNameRow.swift */; settings = {ASSET_TAGS = (); }; };
 		D800FE771BA87F380068AE5E /* FSWKLeftNameRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = D800FE761BA87F380068AE5E /* FSWKLeftNameRow.swift */; settings = {ASSET_TAGS = (); }; };
+		D800FE791BA8866C0068AE5E /* FSWKSpotData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D800FE781BA8866C0068AE5E /* FSWKSpotData.swift */; settings = {ASSET_TAGS = (); }; };
+		D800FE7C1BA88B4E0068AE5E /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = D800FE7B1BA88B4E0068AE5E /* SwiftyJSON.swift */; settings = {ASSET_TAGS = (); }; };
+		D800FE7D1BA88CD20068AE5E /* af-date-extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D84F16FB19C76E6E0050E4FC /* af-date-extension.swift */; settings = {ASSET_TAGS = (); }; };
+		D800FE7F1BA8A5850068AE5E /* SpotData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D800FE7E1BA8A5850068AE5E /* SpotData.swift */; settings = {ASSET_TAGS = (); }; };
+		D800FE801BA8A5850068AE5E /* SpotData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D800FE7E1BA8A5850068AE5E /* SpotData.swift */; settings = {ASSET_TAGS = (); }; };
+		D800FE941BA907850068AE5E /* SpotDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D800FE931BA907850068AE5E /* SpotDataTests.swift */; settings = {ASSET_TAGS = (); }; };
+		D800FE951BA9079A0068AE5E /* SpotData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D800FE7E1BA8A5850068AE5E /* SpotData.swift */; settings = {ASSET_TAGS = (); }; };
 		D801177B198D64C200509A27 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D801177A198D64C200509A27 /* AppDelegate.swift */; };
 		D8011780198D64C200509A27 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D801177E198D64C200509A27 /* Main.storyboard */; };
-		D801178E198D64C200509A27 /* thewavesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D801178D198D64C200509A27 /* thewavesTests.swift */; };
 		D801B1641A3D172200C1751F /* DotCALayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D801B1621A3D172200C1751F /* DotCALayer.swift */; };
 		D801B1651A3D172200C1751F /* LineChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = D801B1631A3D172200C1751F /* LineChart.swift */; };
 		D811E9201A06DD1200EF9035 /* SpotCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D811E91F1A06DD1200EF9035 /* SpotCell.swift */; };
@@ -29,6 +35,7 @@
 		D84F16FC19C76E6E0050E4FC /* af-date-extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D84F16FB19C76E6E0050E4FC /* af-date-extension.swift */; };
 		D86544EA1BA364B2000965DD /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D86544E91BA364B2000965DD /* Launch Screen.storyboard */; settings = {ASSET_TAGS = (); }; };
 		D86F621D198F02DF0070B713 /* SpotsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86F621C198F02DF0070B713 /* SpotsTableViewController.swift */; };
+		D8792D231BA93D300035FB6D /* FSWKSpotRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8792D221BA93D300035FB6D /* FSWKSpotRow.swift */; settings = {ASSET_TAGS = (); }; };
 		D8B5681619C8914E000817AA /* threading.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B5681519C8914E000817AA /* threading.swift */; };
 		D8B63A3619C90027004A1398 /* reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B63A3519C90027004A1398 /* reachability.swift */; };
 		D8B89E131A47BFE100BBEAD5 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D8B89E121A47BFE100BBEAD5 /* Images.xcassets */; };
@@ -43,7 +50,7 @@
 		D8CA157F1BA7E7A40017AF82 /* FSWatchKit.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = D8CA155D1BA7E7A30017AF82 /* FSWatchKit.app */; };
 		D8CA158C1BA7F04E0017AF82 /* FSDefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CA158B1BA7F04E0017AF82 /* FSDefaultsManager.swift */; settings = {ASSET_TAGS = (); }; };
 		D8CA158E1BA7F51C0017AF82 /* FSWKDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CA158D1BA7F51C0017AF82 /* FSWKDataManager.swift */; settings = {ASSET_TAGS = (); }; };
-		D8CA15901BA802270017AF82 /* FSWKSpot.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CA158F1BA802270017AF82 /* FSWKSpot.swift */; settings = {ASSET_TAGS = (); }; };
+		D8CA15901BA802270017AF82 /* FSWKSpotPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CA158F1BA802270017AF82 /* FSWKSpotPreview.swift */; settings = {ASSET_TAGS = (); }; };
 		D8CA15941BA807650017AF82 /* FSWKSurfReportInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CA15931BA807650017AF82 /* FSWKSurfReportInterfaceController.swift */; settings = {ASSET_TAGS = (); }; };
 		D8CA15991BA80E470017AF82 /* FSWKTopSpotRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CA15981BA80E470017AF82 /* FSWKTopSpotRow.swift */; settings = {ASSET_TAGS = (); }; };
 		D8F6636519D5EF87000B062C /* search.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8F6636419D5EF87000B062C /* search.swift */; };
@@ -52,12 +59,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		D8011788198D64C200509A27 /* PBXContainerItemProxy */ = {
+		D800FE8D1BA9076A0068AE5E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D801176D198D64C200509A27 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = D8011774198D64C200509A27;
-			remoteInfo = thewaves;
+			remoteInfo = Freesurf;
 		};
 		D8CA156B1BA7E7A30017AF82 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -119,13 +126,17 @@
 		C5645533FF61AB9CCF95D447 /* Pods-Freesurf.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Freesurf.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Freesurf/Pods-Freesurf.debug.xcconfig"; sourceTree = "<group>"; };
 		D800FE741BA87F020068AE5E /* FSWKRightNameRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSWKRightNameRow.swift; sourceTree = "<group>"; };
 		D800FE761BA87F380068AE5E /* FSWKLeftNameRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSWKLeftNameRow.swift; sourceTree = "<group>"; };
+		D800FE781BA8866C0068AE5E /* FSWKSpotData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSWKSpotData.swift; sourceTree = "<group>"; };
+		D800FE7B1BA88B4E0068AE5E /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
+		D800FE7E1BA8A5850068AE5E /* SpotData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpotData.swift; sourceTree = "<group>"; };
+		D800FE881BA9076A0068AE5E /* FreesurfTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FreesurfTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		D800FE8C1BA9076A0068AE5E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D800FE921BA907850068AE5E /* FreesurfTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FreesurfTests-Bridging-Header.h"; sourceTree = "<group>"; };
+		D800FE931BA907850068AE5E /* SpotDataTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SpotDataTests.swift; path = freesurfTests/SpotDataTests.swift; sourceTree = SOURCE_ROOT; };
 		D8011775198D64C200509A27 /* Freesurf.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Freesurf.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D8011779198D64C200509A27 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D801177A198D64C200509A27 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D801177F198D64C200509A27 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		D8011787198D64C200509A27 /* FreesurfTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FreesurfTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		D801178C198D64C200509A27 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		D801178D198D64C200509A27 /* thewavesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = thewavesTests.swift; sourceTree = "<group>"; };
 		D801B1621A3D172200C1751F /* DotCALayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DotCALayer.swift; sourceTree = "<group>"; };
 		D801B1631A3D172200C1751F /* LineChart.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LineChart.swift; sourceTree = "<group>"; };
 		D811E91F1A06DD1200EF9035 /* SpotCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpotCell.swift; sourceTree = "<group>"; };
@@ -143,6 +154,7 @@
 		D84F16FB19C76E6E0050E4FC /* af-date-extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "af-date-extension.swift"; sourceTree = "<group>"; };
 		D86544E91BA364B2000965DD /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		D86F621C198F02DF0070B713 /* SpotsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpotsTableViewController.swift; sourceTree = "<group>"; };
+		D8792D221BA93D300035FB6D /* FSWKSpotRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSWKSpotRow.swift; sourceTree = "<group>"; };
 		D8B5681519C8914E000817AA /* threading.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = threading.swift; sourceTree = "<group>"; };
 		D8B63A3519C90027004A1398 /* reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = reachability.swift; sourceTree = "<group>"; };
 		D8B89E121A47BFE100BBEAD5 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = freesurf/Images.xcassets; sourceTree = "<group>"; };
@@ -163,7 +175,7 @@
 		D8CA158A1BA7E96D0017AF82 /* FSWatchKit.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = FSWatchKit.entitlements; sourceTree = "<group>"; };
 		D8CA158B1BA7F04E0017AF82 /* FSDefaultsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSDefaultsManager.swift; sourceTree = "<group>"; };
 		D8CA158D1BA7F51C0017AF82 /* FSWKDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSWKDataManager.swift; sourceTree = "<group>"; };
-		D8CA158F1BA802270017AF82 /* FSWKSpot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSWKSpot.swift; sourceTree = "<group>"; };
+		D8CA158F1BA802270017AF82 /* FSWKSpotPreview.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSWKSpotPreview.swift; sourceTree = "<group>"; };
 		D8CA15931BA807650017AF82 /* FSWKSurfReportInterfaceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSWKSurfReportInterfaceController.swift; sourceTree = "<group>"; };
 		D8CA15981BA80E470017AF82 /* FSWKTopSpotRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSWKTopSpotRow.swift; sourceTree = "<group>"; };
 		D8F6636419D5EF87000B062C /* search.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = search.swift; sourceTree = "<group>"; };
@@ -171,18 +183,18 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		D800FE851BA9076A0068AE5E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D8011772198D64C200509A27 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				CDC72E715630C59D8EE354A3 /* Pods_Freesurf.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		D8011784198D64C200509A27 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -217,12 +229,30 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		D800FE7A1BA88B3D0068AE5E /* Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				D800FE7B1BA88B4E0068AE5E /* SwiftyJSON.swift */,
+			);
+			name = Libraries;
+			sourceTree = "<group>";
+		};
+		D800FE891BA9076A0068AE5E /* FreesurfTests */ = {
+			isa = PBXGroup;
+			children = (
+				D800FE8C1BA9076A0068AE5E /* Info.plist */,
+				D800FE931BA907850068AE5E /* SpotDataTests.swift */,
+				D800FE921BA907850068AE5E /* FreesurfTests-Bridging-Header.h */,
+			);
+			path = FreesurfTests;
+			sourceTree = "<group>";
+		};
 		D801176C198D64C200509A27 = {
 			isa = PBXGroup;
 			children = (
 				D8CA15881BA7E93F0017AF82 /* Freesurf.entitlements */,
 				D8011777198D64C200509A27 /* freesurf */,
-				D801178A198D64C200509A27 /* freesurfTests */,
+				D800FE891BA9076A0068AE5E /* FreesurfTests */,
 				D8CA155E1BA7E7A30017AF82 /* FSWatchKit */,
 				D8CA156D1BA7E7A30017AF82 /* FSWatchKit Extension */,
 				D8011776198D64C200509A27 /* Products */,
@@ -236,9 +266,9 @@
 			isa = PBXGroup;
 			children = (
 				D8011775198D64C200509A27 /* Freesurf.app */,
-				D8011787198D64C200509A27 /* FreesurfTests.xctest */,
 				D8CA155D1BA7E7A30017AF82 /* FSWatchKit.app */,
 				D8CA15691BA7E7A30017AF82 /* FSWatchKit Extension.appex */,
+				D800FE881BA9076A0068AE5E /* FreesurfTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -259,23 +289,6 @@
 			isa = PBXGroup;
 			children = (
 				D8011779198D64C200509A27 /* Info.plist */,
-			);
-			path = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		D801178A198D64C200509A27 /* freesurfTests */ = {
-			isa = PBXGroup;
-			children = (
-				D801178D198D64C200509A27 /* thewavesTests.swift */,
-				D801178B198D64C200509A27 /* Supporting Files */,
-			);
-			path = freesurfTests;
-			sourceTree = "<group>";
-		};
-		D801178B198D64C200509A27 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				D801178C198D64C200509A27 /* Info.plist */,
 			);
 			path = "Supporting Files";
 			sourceTree = "<group>";
@@ -351,6 +364,7 @@
 				D811E91F1A06DD1200EF9035 /* SpotCell.swift */,
 				D82503AE1A7C8F0E009B8598 /* SpotCellViewModel.swift */,
 				D818F3D2198EEE390098FE82 /* SpotLibrary.swift */,
+				D800FE7E1BA8A5850068AE5E /* SpotData.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -382,6 +396,7 @@
 				D8CA15911BA802430017AF82 /* Models */,
 				D8CA15971BA808C20017AF82 /* Views */,
 				D8CA15921BA802550017AF82 /* Controllers */,
+				D800FE7A1BA88B3D0068AE5E /* Libraries */,
 				D8CA15721BA7E7A30017AF82 /* ExtensionDelegate.swift */,
 				D8CA15741BA7E7A40017AF82 /* NotificationController.swift */,
 				D8CA15761BA7E7A40017AF82 /* GlanceController.swift */,
@@ -404,7 +419,8 @@
 		D8CA15911BA802430017AF82 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				D8CA158F1BA802270017AF82 /* FSWKSpot.swift */,
+				D8CA158F1BA802270017AF82 /* FSWKSpotPreview.swift */,
+				D800FE781BA8866C0068AE5E /* FSWKSpotData.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -424,6 +440,7 @@
 				D8CA15981BA80E470017AF82 /* FSWKTopSpotRow.swift */,
 				D800FE741BA87F020068AE5E /* FSWKRightNameRow.swift */,
 				D800FE761BA87F380068AE5E /* FSWKLeftNameRow.swift */,
+				D8792D221BA93D300035FB6D /* FSWKSpotRow.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -431,6 +448,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		D800FE871BA9076A0068AE5E /* FreesurfTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D800FE8F1BA9076A0068AE5E /* Build configuration list for PBXNativeTarget "FreesurfTests" */;
+			buildPhases = (
+				D800FE841BA9076A0068AE5E /* Sources */,
+				D800FE851BA9076A0068AE5E /* Frameworks */,
+				D800FE861BA9076A0068AE5E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D800FE8E1BA9076A0068AE5E /* PBXTargetDependency */,
+			);
+			name = FreesurfTests;
+			productName = FreesurfTests;
+			productReference = D800FE881BA9076A0068AE5E /* FreesurfTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		D8011774198D64C200509A27 /* Freesurf */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = D8011791198D64C200509A27 /* Build configuration list for PBXNativeTarget "Freesurf" */;
@@ -453,24 +488,6 @@
 			productName = thewaves;
 			productReference = D8011775198D64C200509A27 /* Freesurf.app */;
 			productType = "com.apple.product-type.application";
-		};
-		D8011786198D64C200509A27 /* FreesurfTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = D8011794198D64C200509A27 /* Build configuration list for PBXNativeTarget "FreesurfTests" */;
-			buildPhases = (
-				D8011783198D64C200509A27 /* Sources */,
-				D8011784198D64C200509A27 /* Frameworks */,
-				D8011785198D64C200509A27 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				D8011789198D64C200509A27 /* PBXTargetDependency */,
-			);
-			name = FreesurfTests;
-			productName = thewavesTests;
-			productReference = D8011787198D64C200509A27 /* FreesurfTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		D8CA155C1BA7E7A30017AF82 /* FSWatchKit */ = {
 			isa = PBXNativeTarget;
@@ -520,6 +537,10 @@
 				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "Sahand Nayebaziz";
 				TargetAttributes = {
+					D800FE871BA9076A0068AE5E = {
+						CreatedOnToolsVersion = 7.0;
+						TestTargetID = D8011774198D64C200509A27;
+					};
 					D8011774198D64C200509A27 = {
 						CreatedOnToolsVersion = 6.0;
 						DevelopmentTeam = 3WQTW95Z2J;
@@ -528,10 +549,6 @@
 								enabled = 1;
 							};
 						};
-					};
-					D8011786198D64C200509A27 = {
-						CreatedOnToolsVersion = 6.0;
-						TestTargetID = D8011774198D64C200509A27;
 					};
 					D8CA155C1BA7E7A30017AF82 = {
 						CreatedOnToolsVersion = 7.0;
@@ -567,14 +584,21 @@
 			projectRoot = "";
 			targets = (
 				D8011774198D64C200509A27 /* Freesurf */,
-				D8011786198D64C200509A27 /* FreesurfTests */,
 				D8CA155C1BA7E7A30017AF82 /* FSWatchKit */,
 				D8CA15681BA7E7A30017AF82 /* FSWatchKit Extension */,
+				D800FE871BA9076A0068AE5E /* FreesurfTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		D800FE861BA9076A0068AE5E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D8011773198D64C200509A27 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -586,13 +610,6 @@
 				D8B89E131A47BFE100BBEAD5 /* Images.xcassets in Resources */,
 				D83FA6191A701AC400EF8434 /* LICENSE4 in Resources */,
 				D86544EA1BA364B2000965DD /* Launch Screen.storyboard in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		D8011785198D64C200509A27 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -709,6 +726,15 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		D800FE841BA9076A0068AE5E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D800FE941BA907850068AE5E /* SpotDataTests.swift in Sources */,
+				D800FE951BA9079A0068AE5E /* SpotData.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D8011771198D64C200509A27 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -726,18 +752,11 @@
 				D84F16FC19C76E6E0050E4FC /* af-date-extension.swift in Sources */,
 				D82503AF1A7C8F0E009B8598 /* SpotCellViewModel.swift in Sources */,
 				D801B1651A3D172200C1751F /* LineChart.swift in Sources */,
+				D800FE7F1BA8A5850068AE5E /* SpotData.swift in Sources */,
 				D801177B198D64C200509A27 /* AppDelegate.swift in Sources */,
 				D82C59711A33E69600896BBA /* DetailViewController.swift in Sources */,
 				D811E9201A06DD1200EF9035 /* SpotCell.swift in Sources */,
 				D82AACBE1A7EAB3D00D2ED5B /* DetailViewModel.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		D8011783198D64C200509A27 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				D801178E198D64C200509A27 /* thewavesTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -746,14 +765,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				D8CA15941BA807650017AF82 /* FSWKSurfReportInterfaceController.swift in Sources */,
+				D800FE791BA8866C0068AE5E /* FSWKSpotData.swift in Sources */,
 				D800FE771BA87F380068AE5E /* FSWKLeftNameRow.swift in Sources */,
+				D800FE7C1BA88B4E0068AE5E /* SwiftyJSON.swift in Sources */,
 				D8CA158E1BA7F51C0017AF82 /* FSWKDataManager.swift in Sources */,
-				D8CA15901BA802270017AF82 /* FSWKSpot.swift in Sources */,
+				D8CA15901BA802270017AF82 /* FSWKSpotPreview.swift in Sources */,
 				D8CA15751BA7E7A40017AF82 /* NotificationController.swift in Sources */,
+				D800FE801BA8A5850068AE5E /* SpotData.swift in Sources */,
 				D800FE751BA87F020068AE5E /* FSWKRightNameRow.swift in Sources */,
 				D8CA15731BA7E7A40017AF82 /* ExtensionDelegate.swift in Sources */,
+				D800FE7D1BA88CD20068AE5E /* af-date-extension.swift in Sources */,
 				D8CA15791BA7E7A40017AF82 /* ComplicationController.swift in Sources */,
 				D8CA15771BA7E7A40017AF82 /* GlanceController.swift in Sources */,
+				D8792D231BA93D300035FB6D /* FSWKSpotRow.swift in Sources */,
 				D8CA15991BA80E470017AF82 /* FSWKTopSpotRow.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -761,10 +785,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		D8011789198D64C200509A27 /* PBXTargetDependency */ = {
+		D800FE8E1BA9076A0068AE5E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = D8011774198D64C200509A27 /* Freesurf */;
-			targetProxy = D8011788198D64C200509A27 /* PBXContainerItemProxy */;
+			targetProxy = D800FE8D1BA9076A0068AE5E /* PBXContainerItemProxy */;
 		};
 		D8CA156C1BA7E7A30017AF82 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -799,6 +823,42 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		D800FE901BA9076A0068AE5E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = FreesurfTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = me.sahand.FreesurfTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "FreesurfTests/FreesurfTests-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Freesurf.app/Freesurf";
+			};
+			name = Debug;
+		};
+		D800FE911BA9076A0068AE5E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = FreesurfTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = me.sahand.FreesurfTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "FreesurfTests/FreesurfTests-Bridging-Header.h";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Freesurf.app/Freesurf";
+			};
+			name = Release;
+		};
 		D801178F198D64C200509A27 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -913,40 +973,6 @@
 			};
 			name = Release;
 		};
-		D8011795198D64C200509A27 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/thewaves.app/thewaves";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = thewavesTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = FreesurfTests;
-				TEST_HOST = "$(BUNDLE_LOADER)";
-			};
-			name = Debug;
-		};
-		D8011796198D64C200509A27 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/thewaves.app/thewaves";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = thewavesTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = FreesurfTests;
-				TEST_HOST = "$(BUNDLE_LOADER)";
-			};
-			name = Release;
-		};
 		D8CA15801BA7E7A40017AF82 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1040,6 +1066,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		D800FE8F1BA9076A0068AE5E /* Build configuration list for PBXNativeTarget "FreesurfTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D800FE901BA9076A0068AE5E /* Debug */,
+				D800FE911BA9076A0068AE5E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		D8011770198D64C200509A27 /* Build configuration list for PBXProject "Freesurf" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -1054,15 +1089,6 @@
 			buildConfigurations = (
 				D8011792198D64C200509A27 /* Debug */,
 				D8011793198D64C200509A27 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		D8011794198D64C200509A27 /* Build configuration list for PBXNativeTarget "FreesurfTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				D8011795198D64C200509A27 /* Debug */,
-				D8011796198D64C200509A27 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

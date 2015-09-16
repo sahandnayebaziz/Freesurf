@@ -10,14 +10,6 @@ import UIKit
 import Alamofire
 import CoreLocation
 
-struct SpotData {
-    var name:String
-    var county:String
-    var location:CLLocation?
-    var heights:[Float]?
-    var conditions:String?
-}
-
 // a SpotLibrary object holds all surf weather data used at runtime.
 class SpotLibrary {
     
@@ -375,6 +367,15 @@ class SpotLibrary {
         return nil
     }
     
+    func allSpotCellDataDownloadedForSelectedSpots() -> Bool {
+        for id in selectedSpotIDs {
+            if allSpotCellDataIfRequestsComplete(id) == nil {
+                return false
+            }
+        }
+        return true
+    }
+    
     func allDetailViewData(id: Int) -> (name:String, height:Int?, waterTemp:Int?, swell:(height:Int, period:Int, direction:String)?, condition:String?, wind:(speedInMPH:Int, direction:String)?, tides:[Float]?, heights:[Float]?) {
         return (name:self.nameForSpotID(id), height: self.heightForSpotIDAtCurrentHour(id), waterTemp: self.waterTempForSpotID(id), swell:self.significantSwellForSpotID(id), condition:self.conditionForSpotID(id), wind:self.windForSpotID(id), tides:self.tidesForSpotID(id), heights:heightsForSpotID(id))
     }
@@ -419,6 +420,16 @@ class SpotLibrary {
             self.countyDataByName[countyName] = (waterTemp:nil, tides:nil, swells:nil, wind:nil)
             self.countyDataRequestLog[countyName] = (waterTemp:false, tides:false, swells:false, wind:false)
         }
+    }
+    
+    func serializeSpotLibrarySelectionsToData() -> [NSData] {
+        var data: [NSData] = []
+        for id in selectedSpotIDs {
+            if let spotData = spotDataByID[id] {
+                data.append(spotData.serialized)
+            }
+        }
+        return data
     }
     
     // MARK: - SpotLibrary math -

@@ -1,5 +1,5 @@
 //
-//  FSWKLeftNameRow.swift
+//  FSWKSpotRow.swift
 //  Freesurf
 //
 //  Created by Sahand Nayebaziz on 9/15/15.
@@ -8,8 +8,8 @@
 
 import WatchKit
 
-class FSWKLeftNameRow: NSObject {
+class FSWKSpotRow: NSObject {
 
+    @IBOutlet var heightRow: WKInterfaceLabel!
     @IBOutlet var nameLabel: WKInterfaceLabel!
-    @IBOutlet var heightLabel: WKInterfaceLabel!
 }

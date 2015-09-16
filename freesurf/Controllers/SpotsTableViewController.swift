@@ -83,6 +83,11 @@ class SpotsTableViewController: UITableViewController, LPRTableViewDelegate, Spo
     // MARK: - Delegate methods -
     func didDownloadDataForSpot() {
         self.tableView.reloadData()
+        
+        if spotLibrary.allSpotCellDataDownloadedForSelectedSpots() {
+            FSDefaultsManager.sharedManager.saveSpotDataForWatchConnectivity(spotLibrary)
+            NSURLCache.sharedURLCache().removeAllCachedResponses()
+        }
     }
     
     // MARK: - Interface Actions -

@@ -1,5 +1,5 @@
 //
-//  FSWKSpot.swift
+//  FSWKSpotPreview.swift
 //  Freesurf
 //
 //  Created by Sahand Nayebaziz on 9/15/15.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct FSWKSpot {
+struct FSWKSpotPreview: Hashable, Equatable {
     var id: Int
     var name: String
     var county: String
@@ -18,4 +18,12 @@ struct FSWKSpot {
         self.name = name
         self.county = county
     }
+    
+    var hashValue: Int {
+        return id.hashValue
+    }
+}
+
+func ==(lhs: FSWKSpotPreview, rhs: FSWKSpotPreview) -> Bool {
+    return lhs.id == rhs.id
 }

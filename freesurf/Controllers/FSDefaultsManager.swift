@@ -15,34 +15,16 @@ class FSDefaultsManager: NSObject, WCSessionDelegate {
     
     private var sharedDefaults = NSUserDefaults(suiteName: "group.freesurf")
     private var keyForSavedSpots = "userSelectedSpots"
+    private var keyForSpotData = "spotData"
+    private var keyForSpotDataTimestamp = "spotDataTimestamp"
+    private var lastHourSaved: Int = -1
     
     func saveSpotLibrarySelectionsToDefaults(spotLibrary: SpotLibrary) {
-        
         // save to defaults
         if let defaults = sharedDefaults {
             defaults.setObject(spotLibrary.serializeSpotLibraryToString(), forKey: keyForSavedSpots)
             defaults.synchronize()
         }
-        
-        // save for watch
-        if #available(iOS 9.0, *) {
-            if WCSession.isSupported() {
-                let session = WCSession.defaultSession()
-                session.delegate = self
-                session.activateSession()
-                
-                if session.paired && session.watchAppInstalled {
-                    let context = [keyForSavedSpots: spotLibrary.serializeSpotLibraryToString()]
-                    do {
-                        try session.updateApplicationContext(context)
-                    }
-                    catch {
-                        print(error)
-                    }
-                }
-            }
-        }
-        
     }
     
     func readSpotLibrarySelectionsFromDefaults() -> String? {
@@ -54,4 +36,44 @@ class FSDefaultsManager: NSObject, WCSessionDelegate {
         }
         return nil
     }
+    
+    private func getContextForWatchConnectivity(spotLibrary: SpotLibrary) -> [String:AnyObject] {
+        var context: [String: AnyObject] = [:]
+        
+        context[keyForSavedSpots] = spotLibrary.serializeSpotLibraryToString()
+        context[keyForSpotData] = spotLibrary.serializeSpotLibrarySelectionsToData()
+        context[keyForSpotDataTimestamp] = NSDate().toString(format: .Custom("dd MMM yyyy HH:mm:ss"))
+        
+        return context
+    }
+    
+    func saveSpotDataForWatchConnectivity(spotLibrary: SpotLibrary) {
+        
+        let currentHour = NSDate().hour()
+        if currentHour > lastHourSaved {
+            // save for watch
+            if #available(iOS 9.0, *) {
+                if WCSession.isSupported() {
+                    let session = WCSession.defaultSession()
+                    session.delegate = self
+                    session.activateSession()
+                    
+                    if session.paired && session.watchAppInstalled {
+                        let context = getContextForWatchConnectivity(spotLibrary)
+                        do {
+                            try session.updateApplicationContext(context)
+                        }
+                        catch {
+                            print(error)
+                        }
+                    }
+                }
+            }
+            
+            lastHourSaved = currentHour
+            print("updated wtc")
+        }
+    }
+    
+    
 }
