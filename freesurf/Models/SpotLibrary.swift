@@ -10,14 +10,6 @@ import UIKit
 import Alamofire
 import CoreLocation
 
-struct SpotData {
-    var name:String
-    var county:String
-    var location:CLLocation?
-    var heights:[Float]?
-    var conditions:String?
-}
-
 // a SpotLibrary object holds all surf weather data used at runtime.
 class SpotLibrary {
     
@@ -109,7 +101,7 @@ class SpotLibrary {
                                     
                                     if !self.allSpotIDs.contains(existingSpotID) {
                                         self.allSpotIDs.append(existingSpotID)
-                                        self.spotDataByID[existingSpotID] = SpotData(name: name, county: county, location: nil, heights: nil, conditions: nil)
+                                        self.spotDataByID[existingSpotID] = SpotData(id: existingSpotID, name: name, county: county, location: nil, heights: nil, conditions: nil)
                                         self.spotDataRequestLog[existingSpotID] = (name:true, county:true, heights:false, conditions:false)
                                     }
                                     self.spotDataByID[existingSpotID]?.location = location
@@ -254,17 +246,16 @@ class SpotLibrary {
                         
                         for (var index = 0; index < possibleSwellNumberInSpitcastResponse.count; index++) {
                             
-                            if let directionInDegrees:Int = json[self.currentHour][possibleSwellNumberInSpitcastResponse[index]]["dir"].int {
-                                if let heightInMeters:Float = json[self.currentHour][possibleSwellNumberInSpitcastResponse[index]]["hs"].float {
-                                    if let periodInSeconds:Float = json[self.currentHour][possibleSwellNumberInSpitcastResponse[index]]["tp"].float {
-                                        
-                                        let heightInFeet = self.swellMetersToFeet(heightInMeters)
-                                        let directionInHeading = self.degreesToDirection(directionInDegrees)
-                                        let periodAsInt:Int = Int(periodInSeconds)
-                                        
-                                        allSwellsInThisCounty += [(height:heightInFeet, period:periodAsInt, direction:directionInHeading)]
-                                    }
-                                }
+                            let path = json[self.currentHour][possibleSwellNumberInSpitcastResponse[index]]
+                            
+                            
+                            if let directionInDegrees:Int = path["dir"].int, let heightInMeters:Float = path["hs"].float, let periodInSeconds:Float = path["tp"].float {
+                                
+                                let heightInFeet = self.swellMetersToFeet(heightInMeters)
+                                let directionInHeading = self.degreesToDirection(directionInDegrees)
+                                let periodAsInt:Int = Int(periodInSeconds)
+                                
+                                allSwellsInThisCounty += [(height:heightInFeet, period:periodAsInt, direction:directionInHeading)]
                             }
                         }
                         
@@ -375,6 +366,15 @@ class SpotLibrary {
         return nil
     }
     
+    func allSpotCellDataDownloadedForSelectedSpots() -> Bool {
+        for id in selectedSpotIDs {
+            if allSpotCellDataIfRequestsComplete(id) == nil {
+                return false
+            }
+        }
+        return true
+    }
+    
     func allDetailViewData(id: Int) -> (name:String, height:Int?, waterTemp:Int?, swell:(height:Int, period:Int, direction:String)?, condition:String?, wind:(speedInMPH:Int, direction:String)?, tides:[Float]?, heights:[Float]?) {
         return (name:self.nameForSpotID(id), height: self.heightForSpotIDAtCurrentHour(id), waterTemp: self.waterTempForSpotID(id), swell:self.significantSwellForSpotID(id), condition:self.conditionForSpotID(id), wind:self.windForSpotID(id), tides:self.tidesForSpotID(id), heights:heightsForSpotID(id))
     }
@@ -406,7 +406,7 @@ class SpotLibrary {
 
                 self.allSpotIDs.append(spotID)
                 self.selectedSpotIDs.append(spotID)
-                self.spotDataByID[spotID] = SpotData(name: spotName, county: spotCounty, location: nil, heights: nil, conditions: nil)
+                self.spotDataByID[spotID] = SpotData(id: spotID, name: spotName, county: spotCounty, location: nil, heights: nil, conditions: nil)
                 self.spotDataRequestLog[spotID] = (name: true, county: true, heights: false, conditions: false)
                 initializeCountyData(spotCounty)
             }
@@ -421,6 +421,16 @@ class SpotLibrary {
         }
     }
     
+    func serializeSpotLibrarySelectionsToData() -> [NSData] {
+        var data: [NSData] = []
+        for id in selectedSpotIDs {
+            if let spotData = spotDataByID[id] {
+                data.append(spotData.serialized)
+            }
+        }
+        return data
+    }
+    
     // MARK: - SpotLibrary math -
     func swellMetersToFeet(height:Float) -> Int { return Int(height * 3.2) }
 
@@ -428,15 +438,6 @@ class SpotLibrary {
         let listOfDirections:[String] = ["N", "NNW", "NW", "WNW", "W", "WSW", "SW", "SSW", "S", "SSE", "SE", "ESE", "E", "ENE", "NE", "NNE", "N"]
         return listOfDirections[((degrees) + (360/16)/2) % 360 / (360/16)]
     }
-    
-//    func acs(s1:Student, s2:Student) -> Bool {
-//        return s1.name < s2.name
-//    }
-//    func des(s1:Student, s2:Student) -> Bool {
-//        return s1.name > s2.name
-//    }
-//    var n1 = sorted(studentrecord, acs) // Alex, John, Tom
-//    var n2 = sorted(studentrecord, des) // Tom, John, Alex
 }
 
 // MARK: - Delegate methods -

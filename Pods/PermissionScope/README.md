@@ -30,20 +30,24 @@ PermissionScope **gives you space to explain your reasons for requesting permiss
 
 Best of all, PermissionScope detects when your app's permissions have been denied by a user and gives them an easy prompt to go into the system settings page to modify these permissions.
 
-## installation
+## compatibility
 
-requires iOS 8+, compatible with both **Swift** and **Objective-C** based projects
+PermissionScope requires iOS 8+, compatible with both **Swift 2** and **Objective-C** based projects
+
+For Swift 1.2 support, please use the swift12 branch. This branch has the basics but is not being maintained.
+
+## installation
 
 Installation for [Carthage](https://github.com/Carthage/Carthage) is simple enough:
 
-`github "nickoneill/PermissionScope" ~> 0.9`
+`github "nickoneill/PermissionScope" ~> 1.0`
 
 As for [Cocoapods](https://cocoapods.org), use this to get the latest code:
 
 ```ruby
 use_frameworks!
 
-pod 'PermissionScope', '~> 0.9'
+pod 'PermissionScope', '~> 1.0'
 ```
 
 And `import PermissionScope` in the files you'd like to use it.
@@ -136,20 +140,20 @@ let pscope = PermissionScope()
 pscope.viewControllerForAlerts = self
 ```
 
-You will probably also want to set the `authChangeClosure`, `cancelClosure`, and `disabledOrDeniedClosure` closures, which are called at the appropriate times when the `request*` methods are finished, otherwise you won't know when the work has been completed.
+You will probably also want to set the `onAuthChange`, `onCancel`, and `onDisabledOrDenied` closures, which are called at the appropriate times when the `request*` methods are finished, otherwise you won't know when the work has been completed.
 
 ```swift
-pscope.authChangeClosure = { (finished, results) -> Void in
+pscope.onAuthChange = { (finished, results) in
 	println("Request was finished with results \(results)")
 	if results[0].status == .Authorized {
 		println("They've authorized the use of notifications")
 		UIApplication.sharedApplication().registerForRemoteNotifications()
 	}
 }
-pscope.cancelClosure = { (results) -> Void in
+pscope.onCancel = { results in
 	println("Request was cancelled with results \(results)")
 }
-pscope.disabledOrDeniedClosure = { (results) -> Void in
+pscope.onDisabledOrDenied = { results in
 	println("Request was denied or disabled with results \(results)")
 }
 ```

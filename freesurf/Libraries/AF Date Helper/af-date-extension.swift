@@ -9,12 +9,12 @@
 
 import Foundation
 
-enum DateFormat {
+public enum DateFormat {
     case ISO8601, DotNet, RSS, AltRSS
     case Custom(String)
 }
 
-extension NSDate {
+public extension NSDate {
     
     // MARK: Intervals In Seconds
     private class func minuteInSeconds() -> Double { return 60 }
@@ -375,7 +375,7 @@ extension NSDate {
         return self.toString(dateStyle: .ShortStyle, timeStyle: .ShortStyle, doesRelativeDateFormatting: false)
     }
     
-    func toString(format format: DateFormat) -> String
+    public func toString(format format: DateFormat) -> String
     {
         var dateFormat: String
         switch format {

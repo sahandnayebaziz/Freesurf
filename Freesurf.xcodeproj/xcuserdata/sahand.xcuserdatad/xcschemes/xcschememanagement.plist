@@ -4,6 +4,32 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>Complication - FSWatchKit.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+			<key>orderHint</key>
+			<integer>4</integer>
+		</dict>
+		<key>FSWatchKit.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
+		<key>Glance - FSWatchKit.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+			<key>orderHint</key>
+			<integer>3</integer>
+		</dict>
+		<key>Notification - FSWatchKit.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+			<key>orderHint</key>
+			<integer>2</integer>
+		</dict>
 		<key>freesurf.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -12,12 +38,22 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>D800FE871BA9076A0068AE5E</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>D8011774198D64C200509A27</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
 		<key>D8011786198D64C200509A27</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>D8CA155C1BA7E7A30017AF82</key>
 		<dict>
 			<key>primary</key>
 			<true/>

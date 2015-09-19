@@ -12,14 +12,34 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?
+    var sharedDefaults = NSUserDefaults(suiteName: "group.freesurf")
     
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject : AnyObject]?) -> Bool
     {
-//        let splitViewController = self.window!.rootViewController as! UISplitViewController
-//        let navigationController = splitViewController.viewControllers[splitViewController.viewControllers.count-1] as! UINavigationController
-//        navigationController.topViewController.navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem()
-//        splitViewController.delegate = self
         application.setStatusBarStyle(UIStatusBarStyle.LightContent, animated: true)
+        
+        if NSUserDefaults.standardUserDefaults().dictionaryRepresentation().keys.contains("userSelectedSpots") {
+            
+            let oldDefaults = NSUserDefaults.standardUserDefaults()
+            let savedSpots = oldDefaults.objectForKey("userSelectedSpots") as? String
+            let dateOpened = oldDefaults.objectForKey("dateOfLastOpen") as? String
+            let hourOpened = oldDefaults.objectForKey("hourOfLastOpen") as? String
+            
+            let newDefaults = sharedDefaults
+            if newDefaults != nil {
+                newDefaults!.setObject(savedSpots, forKey: "userSelectedSpots")
+                newDefaults!.setObject(dateOpened, forKey: "dateOfLastOpen")
+                newDefaults!.setObject(hourOpened, forKey: "hourOfLastOpen")
+                
+                oldDefaults.removeObjectForKey("userSelectedSpots")
+                oldDefaults.removeObjectForKey("dateOfLastOpen")
+                oldDefaults.removeObjectForKey("hourOfLastOpen")
+                print("copied old defaults to new defaults")
+            }
+            
+            
+        }
+        
         return true
     }
     
@@ -32,22 +52,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidEnterBackground(application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-        
-        // When Freesurf enters the background, the date and time are recorded to the NSUserDefaults for comparison the next time the user accesses Freesurf.
-        // If the user is accessing Freesurf from the background in the same hour on the same day as they last did, nothing is done. If it is a new hour, the tableview is reloaded. If it is a new day, the Spitcast data is refreshed.
-        let splitVC = self.window!.rootViewController as! UISplitViewController
-        let tableVC = (splitVC.viewControllers[0] as! UINavigationController).topViewController as! SpotsTableViewController
-        let defaults:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        
-        // A serialized SpotLibrary object is saved to NSUserDefaults
-        defaults.setObject(tableVC.spotLibrary.serializeSpotLibraryToString(), forKey: "userSelectedSpots")
-        
-        // A date and time string is saved to NSUserDefaults
-        defaults.setObject(NSDate().toString(format: .Custom("dd MMM yyyy")), forKey: "dateOfLastOpen")
-        defaults.setObject(NSDate().toString(format: .Custom("HH")), forKey: "hourOfLastOpen")
-        
-        // NSUserDefaults is updated manually with the new values
-        defaults.synchronize()
+
+        if let defaults = sharedDefaults {
+            defaults.setObject(NSDate().toString(format: .Custom("dd MMM yyyy")), forKey: "dateOfLastOpen")
+            defaults.setObject(NSDate().toString(format: .Custom("HH")), forKey: "hourOfLastOpen")
+            defaults.synchronize()
+        }
     }
     
     func applicationWillEnterForeground(application: UIApplication) {
@@ -56,35 +66,36 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Compare the hour and date of the last time Freesurf was accessed and refresh any old data
         let splitVC = self.window!.rootViewController as! UISplitViewController
         let tableVC = (splitVC.viewControllers[0] as! UINavigationController).topViewController as! SpotsTableViewController
-        let defaults:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         
-        if let dateOfLastOpen:String = defaults.objectForKey("dateOfLastOpen") as? String {
-            let currentDate = NSDate().toString(format: .Custom("dd MMM yyyy"))
-            if currentDate != dateOfLastOpen {
+        if let defaults = sharedDefaults {
+            if let dateOfLastOpen:String = defaults.objectForKey("dateOfLastOpen") as? String {
+                let currentDate = NSDate().toString(format: .Custom("dd MMM yyyy"))
+                if currentDate != dateOfLastOpen {
+                    if let exportString = defaults.objectForKey("userSelectedSpots") as? String {
+                        tableVC.usingUserDefaults = true
+                        tableVC.spotLibrary = SpotLibrary(serializedSpotLibrary: exportString)
+                        tableVC.viewWillAppear(false)
+                    }
+                }
+            }
+            
+            if let hourOfLastOpen = defaults.objectForKey("hourOfLastOpen") as? String {
+                let currentHour = NSDate().toString(format: .Custom("HH"))
+                if currentHour != hourOfLastOpen {
+                    tableVC.spotsTableView.reloadData()
+                }
+            }
+            
+            // for legacy users updating to Freesurf v1.0.3 with an older NSUserDefaults
+            if let _ = defaults.objectForKey("hoursMarker") as? String {
                 if let exportString = defaults.objectForKey("userSelectedSpots") as? String {
                     tableVC.usingUserDefaults = true
                     tableVC.spotLibrary = SpotLibrary(serializedSpotLibrary: exportString)
                     tableVC.viewWillAppear(false)
                 }
+                defaults.removeObjectForKey("hoursMarker")
+                defaults.synchronize()
             }
-        }
-        
-        if let hourOfLastOpen = defaults.objectForKey("hourOfLastOpen") as? String {
-            let currentHour = NSDate().toString(format: .Custom("HH"))
-            if currentHour != hourOfLastOpen {
-                tableVC.spotsTableView.reloadData()
-            }
-        }
-        
-        // for legacy users updating to Freesurf v1.0.3 with an older NSUserDefaults
-        if let _ = defaults.objectForKey("hoursMarker") as? String {
-            if let exportString = defaults.objectForKey("userSelectedSpots") as? String {
-                tableVC.usingUserDefaults = true
-                tableVC.spotLibrary = SpotLibrary(serializedSpotLibrary: exportString)
-                tableVC.viewWillAppear(false)
-            }
-            defaults.removeObjectForKey("hoursMarker")
-            defaults.synchronize()
         }
     }
     

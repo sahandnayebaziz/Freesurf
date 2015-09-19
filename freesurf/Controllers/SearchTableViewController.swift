@@ -29,6 +29,7 @@ class SearchTableViewController: UITableViewController {
             }
         }
     }
+    var sharedDefaults = NSUserDefaults(suiteName: "group.freesurf")
     
     // MARK: - Interface Outlets -
     @IBOutlet var searchTableView: UITableView!
@@ -64,12 +65,15 @@ class SearchTableViewController: UITableViewController {
     // MARK: - Interface Actions -
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if sender!.isKindOfClass(UITableViewCell) {
-            
             let indexPath:NSIndexPath = searchTableView.indexPathForSelectedRow!
-            
-            if !(self.spotLibrary.selectedSpotIDs.contains(results[indexPath.row])) {
-                spotLibrary.selectedSpotIDs.append(results[indexPath.row])
-            }
+            addSpotWithIdToSelectedSpots(results[indexPath.row])
+        }
+    }
+    
+    func addSpotWithIdToSelectedSpots(id: Int) {
+        if !(self.spotLibrary.selectedSpotIDs.contains(id)) {
+            spotLibrary.selectedSpotIDs.append(id)
+            FSDefaultsManager.sharedManager.saveSpotLibrarySelectionsToDefaults(spotLibrary)
         }
     }
     
