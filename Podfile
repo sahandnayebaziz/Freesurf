@@ -14,6 +14,8 @@ end
 target 'FSWatchKit Extension' do
   platform :watchos, '2.0'
   pod 'Alamofire'
+  pod 'PromiseKit/CorePromise', :git => 'https://github.com/sahandnayebaziz/PromiseKit.git', :branch => 'swift-2.0-beta5'
+  pod 'OMGHTTPURLRQ', :git => 'https://github.com/sahandnayebaziz/OMGHTTPURLRQ.git'
 end
 
 target 'FreesurfTests' do

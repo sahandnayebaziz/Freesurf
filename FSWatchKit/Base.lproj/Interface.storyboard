@@ -5,84 +5,78 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="8092"/>
     </dependencies>
     <scenes>
-        <!--Spots-->
+        <!--Freesurf-->
         <scene sceneID="aou-V4-d1y">
             <objects>
-                <controller title="Spots" id="AgC-eL-Hgc" customClass="FSWKSurfReportInterfaceController" customModule="FSWatchKit_Extension">
+                <controller title="Freesurf" id="AgC-eL-Hgc" customClass="FSWKSurfReportInterfaceController" customModule="FSWatchKit_Extension">
                     <items>
                         <table alignment="left" id="CgT-zm-FeZ">
                             <items>
-                                <tableRow identifier="FSWKTopSpotRow" id="IlP-hV-jah" customClass="FSWKSpotRow" customModule="FSWatchKit_Extension">
+                                <tableRow identifier="FSWKTopSpotRow" id="IlP-hV-jah" customClass="FSWKTopSpotRow" customModule="FSWatchKit_Extension">
                                     <group key="rootItem" width="1" height="0.0" alignment="left" contentMode="scaleAspectFit" layout="vertical" radius="0.0" id="hVn-Zj-Ih8">
                                         <items>
-                                            <group width="1" height="50" alignment="left" id="Uy7-N6-TJI">
+                                            <label alignment="center" verticalAlignment="center" text="Salt Creek Beach" textAlignment="center" numberOfLines="3" id="Ke8-EI-mOj">
+                                                <color key="textColor" red="0.36078431370000003" green="0.64705882349999999" blue="0.97254901959999995" alpha="1" colorSpace="calibratedRGB"/>
+                                                <fontDescription key="font" type="system" pointSize="18"/>
+                                            </label>
+                                            <label alignment="center" text="TOP SPOT" textAlignment="center" id="sgS-SZ-5MW">
+                                                <color key="textColor" red="0.36078431370000003" green="0.64705882349999999" blue="0.97254901959999995" alpha="0.61451543328220859" colorSpace="calibratedRGB"/>
+                                                <fontDescription key="font" type="system" weight="semibold" pointSize="11"/>
+                                            </label>
+                                            <group width="1" height="58" alignment="left" id="Uy7-N6-TJI">
                                                 <items>
-                                                    <label height="69" alignment="center" verticalAlignment="center" text="2ft" id="sGr-5D-tjz">
-                                                        <fontDescription key="font" type="system" weight="thin" pointSize="56"/>
+                                                    <label height="100" alignment="center" verticalAlignment="center" text="3ft" id="sGr-5D-tjz">
+                                                        <fontDescription key="font" type="system" weight="thin" pointSize="72"/>
                                                     </label>
                                                 </items>
                                             </group>
-                                            <label alignment="center" verticalAlignment="center" text="The Wedge" textAlignment="center" numberOfLines="3" id="Ke8-EI-mOj">
-                                                <color key="textColor" red="0.36078431370000003" green="0.64705882349999999" blue="0.97254901959999995" alpha="1" colorSpace="calibratedRGB"/>
-                                                <fontDescription key="font" type="system" pointSize="16"/>
-                                            </label>
                                         </items>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        <edgeInsets key="margins" left="0.0" right="0.0" top="15" bottom="1"/>
+                                        <edgeInsets key="margins" left="0.0" right="0.0" top="6" bottom="0.0"/>
                                     </group>
                                     <connections>
-                                        <outlet property="heightRow" destination="sGr-5D-tjz" id="2X6-g5-qDF"/>
+                                        <outlet property="heightLabel" destination="sGr-5D-tjz" id="qJ7-BO-hnr"/>
                                         <outlet property="nameLabel" destination="Ke8-EI-mOj" id="Phd-Ji-a7f"/>
                                     </connections>
                                 </tableRow>
-                                <tableRow identifier="rowNameLeft" selectable="NO" id="kcU-u9-ngY" customClass="FSWKSpotRow" customModule="FSWatchKit_Extension">
+                                <tableRow identifier="FSWKDefaultSpotRow" selectable="NO" id="kcU-u9-ngY" customClass="FSWKDefaultSpotRow" customModule="FSWatchKit_Extension">
                                     <group key="rootItem" width="1" height="0.0" alignment="left" id="Zso-ap-PEM">
                                         <items>
-                                            <group width="0.69999999999999996" alignment="left" layout="vertical" spacing="0.0" id="jGb-Hj-7cr">
+                                            <group width="0.5" alignment="left" layout="vertical" spacing="0.0" id="jGb-Hj-7cr">
                                                 <items>
                                                     <label alignment="center" text="3ft" textAlignment="right" id="Mam-5b-bzY">
                                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                        <fontDescription key="font" type="system" pointSize="20"/>
+                                                        <fontDescription key="font" type="system" pointSize="18"/>
                                                     </label>
-                                                    <label width="1" alignment="center" verticalAlignment="bottom" text="North Ocean Beach" textAlignment="center" numberOfLines="2" id="NOQ-pD-Enu">
+                                                    <label width="1" alignment="center" verticalAlignment="bottom" text="North Ocean Beach Beach" textAlignment="center" numberOfLines="3" id="NOQ-pD-Enu">
                                                         <color key="textColor" red="0.36078431370000003" green="0.64705882349999999" blue="0.97254901959999995" alpha="1" colorSpace="calibratedRGB"/>
-                                                        <fontDescription key="font" type="system" pointSize="14"/>
+                                                        <fontDescription key="font" type="system" pointSize="10"/>
                                                     </label>
                                                 </items>
-                                                <edgeInsets key="margins" left="0.0" right="0.0" top="7" bottom="0.0"/>
+                                                <edgeInsets key="margins" left="2" right="2" top="0.0" bottom="0.0"/>
                                             </group>
-                                        </items>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        <edgeInsets key="margins" left="0.0" right="0.0" top="3" bottom="3"/>
-                                    </group>
-                                    <connections>
-                                        <outlet property="heightRow" destination="Mam-5b-bzY" id="SUQ-Yf-kEL"/>
-                                        <outlet property="nameLabel" destination="NOQ-pD-Enu" id="kP3-98-Wrk"/>
-                                    </connections>
-                                </tableRow>
-                                <tableRow identifier="rowNameRight" selectable="NO" id="hJ7-IB-FhO" customClass="FSWKSpotRow" customModule="FSWatchKit_Extension">
-                                    <group key="rootItem" width="1" height="0.0" alignment="left" id="bnS-gI-Tck">
-                                        <items>
-                                            <group width="0.69999999999999996" alignment="right" layout="vertical" spacing="0.0" id="tBs-Ry-rgw">
+                                            <group width="0.5" alignment="left" layout="vertical" spacing="0.0" id="Nmu-zL-SEa">
                                                 <items>
-                                                    <label alignment="center" text="2ft" textAlignment="right" id="2cM-gi-64O">
+                                                    <label alignment="center" text="3ft" textAlignment="right" id="cI7-yl-lEw">
                                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                        <fontDescription key="font" type="system" pointSize="20"/>
+                                                        <fontDescription key="font" type="system" pointSize="18"/>
                                                     </label>
-                                                    <label width="1" alignment="center" verticalAlignment="bottom" text="Salt Creek" textAlignment="center" numberOfLines="2" id="Cj9-oS-NjH">
+                                                    <label width="1" alignment="center" verticalAlignment="bottom" text="North Ocean Beach Beach" textAlignment="center" numberOfLines="3" id="nWm-qU-0OQ">
                                                         <color key="textColor" red="0.36078431370000003" green="0.64705882349999999" blue="0.97254901959999995" alpha="1" colorSpace="calibratedRGB"/>
-                                                        <fontDescription key="font" type="system" pointSize="14"/>
+                                                        <fontDescription key="font" type="system" pointSize="10"/>
                                                     </label>
                                                 </items>
-                                                <edgeInsets key="margins" left="0.0" right="0.0" top="7" bottom="0.0"/>
+                                                <edgeInsets key="margins" left="2" right="2" top="0.0" bottom="0.0"/>
                                             </group>
                                         </items>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        <edgeInsets key="margins" left="0.0" right="0.0" top="3" bottom="3"/>
+                                        <edgeInsets key="margins" left="0.0" right="0.0" top="7" bottom="7"/>
                                     </group>
                                     <connections>
-                                        <outlet property="heightRow" destination="2cM-gi-64O" id="x2k-sD-2gp"/>
-                                        <outlet property="nameLabel" destination="Cj9-oS-NjH" id="mAx-H8-agZ"/>
+                                        <outlet property="firstSpotHeight" destination="Mam-5b-bzY" id="dLW-Wp-tf2"/>
+                                        <outlet property="firstSpotName" destination="NOQ-pD-Enu" id="7Fn-GT-yRF"/>
+                                        <outlet property="secondSpotHeight" destination="cI7-yl-lEw" id="Ijd-4h-unM"/>
+                                        <outlet property="secondSpotName" destination="nWm-qU-0OQ" id="E8a-Fz-gu8"/>
                                     </connections>
                                 </tableRow>
                             </items>
@@ -93,7 +87,7 @@
                     </connections>
                 </controller>
             </objects>
-            <point key="canvasLocation" x="235" y="349.5"/>
+            <point key="canvasLocation" x="235" y="353"/>
         </scene>
         <!--Glance Interface Controller-->
         <scene sceneID="BOz-TT-tkC">

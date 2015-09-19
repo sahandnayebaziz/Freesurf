@@ -9,6 +9,19 @@
 import WatchKit
 
 class FSWKTopSpotRow: NSObject {
+
     @IBOutlet var nameLabel: WKInterfaceLabel!
     @IBOutlet var heightLabel: WKInterfaceLabel!
+    
+    func composeRow(data: SpotData) {
+        let currentHour = NSDate().hour()
+        
+        nameLabel.setText(data.name)
+        if let heights = data.heights {
+            heightLabel.setText("\(Int(heights[currentHour]))ft")
+        } else {
+            heightLabel.setText("--ft")
+        }
+    }
+
 }

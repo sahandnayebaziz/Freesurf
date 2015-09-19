@@ -1,20 +1,36 @@
 PODS:
   - Alamofire (2.0.0)
+  - OMGHTTPURLRQ (3.0.0):
+    - OMGHTTPURLRQ/RQ (= 3.0.0)
+  - OMGHTTPURLRQ/FormURLEncode (3.0.0)
+  - OMGHTTPURLRQ/RQ (3.0.0):
+    - OMGHTTPURLRQ/FormURLEncode
+    - OMGHTTPURLRQ/UserAgent
+  - OMGHTTPURLRQ/UserAgent (3.0.0)
   - PermissionScope (0.7)
+  - PromiseKit/CorePromise (3.0.0)
   - SnapKit (0.13.0)
   - SwiftLocation (0.1.4)
 
 DEPENDENCIES:
   - Alamofire
+  - OMGHTTPURLRQ (from `https://github.com/sahandnayebaziz/OMGHTTPURLRQ.git`)
   - PermissionScope (from `https://github.com/nickoneill/PermissionScope.git`, branch
     `swift2`)
+  - PromiseKit/CorePromise (from `https://github.com/sahandnayebaziz/PromiseKit.git`,
+    branch `swift-2.0-beta5`)
   - SnapKit (from `https://github.com/SnapKit/SnapKit`, branch `swift-2.0`)
   - SwiftLocation (from `https://github.com/malcommac/SwiftLocation.git`, branch `swift-2.0`)
 
 EXTERNAL SOURCES:
+  OMGHTTPURLRQ:
+    :git: https://github.com/sahandnayebaziz/OMGHTTPURLRQ.git
   PermissionScope:
     :branch: swift2
     :git: https://github.com/nickoneill/PermissionScope.git
+  PromiseKit:
+    :branch: swift-2.0-beta5
+    :git: https://github.com/sahandnayebaziz/PromiseKit.git
   SnapKit:
     :branch: swift-2.0
     :git: https://github.com/SnapKit/SnapKit
@@ -23,9 +39,15 @@ EXTERNAL SOURCES:
     :git: https://github.com/malcommac/SwiftLocation.git
 
 CHECKOUT OPTIONS:
+  OMGHTTPURLRQ:
+    :commit: df1da4062a25b968427de8053e08fc566c4f927d
+    :git: https://github.com/sahandnayebaziz/OMGHTTPURLRQ.git
   PermissionScope:
     :commit: 86e1e1483a846b70cf8401215b5341384f16c941
     :git: https://github.com/nickoneill/PermissionScope.git
+  PromiseKit:
+    :commit: 7da72952c3c52303e4811d9294ce0207f88f2f90
+    :git: https://github.com/sahandnayebaziz/PromiseKit.git
   SnapKit:
     :commit: 4f19419528baa3dfaca20e26fea2be410ddc79e2
     :git: https://github.com/SnapKit/SnapKit
@@ -35,7 +57,9 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   Alamofire: 2f13548b29d25a58ecd91c9225fb51493e2b782b
+  OMGHTTPURLRQ: d7917c9126fe26a101c72d7a463653f17c8338cc
   PermissionScope: 1d27791185cca10c26f84d1aab905117dde50f39
+  PromiseKit: ca8e463ed27e3ab5d05ebeb237e4d50447822e4d
   SnapKit: 69fe274c71511df89a5591c11437a8b826bfa9eb
   SwiftLocation: af451eff3babb518ffa0e8d34637ab6e6035afc5
 

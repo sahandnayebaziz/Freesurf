@@ -31,22 +31,23 @@ class FSWKDataManager: NSObject, WCSessionDelegate {
         
         let context = session.receivedApplicationContext
         
-        if let data = context[keyForSpotDataTimestamp] as? String {
+        if let data = context[keyForSpotDataTimestamp] as? String, let serializedSpotDataObjects = context[keyForSpotData] as? [NSData] {
+            var savedSpots: [SpotData] = []
+            
             let date = NSDate(fromString: data, format: .Custom("dd MMM yyyy HH:mm:ss"))
             if NSDate().hoursAfterDate(date) > 0 {
-                // context is more than 0 hours old, load new
+                for serializedSpot in serializedSpotDataObjects {
+                    let old = SpotData(serialized: serializedSpot)
+                    let new = SpotData(name: old.name, county: old.county, location: old.location, heights: nil, conditions: nil)
+                    savedSpots.append(new)
+                }
             } else {
-                // context is not more than 0 hours old, load old
-                
-                if let serializedSpotDataObjects = context[keyForSpotData] as? [NSData] {
-                    var savedSpots: [SpotData] = []
-                    for serializedSpot in serializedSpotDataObjects {
-                        savedSpots.append(SpotData(serialized: serializedSpot))
-                        print(SpotData(serialized: serializedSpot))
-                    }
-                    return savedSpots
+                for serializedSpot in serializedSpotDataObjects {
+                    savedSpots.append(SpotData(serialized: serializedSpot))
                 }
             }
+            
+            return savedSpots
         }
         
         return nil
