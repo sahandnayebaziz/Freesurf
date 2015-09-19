@@ -36,15 +36,16 @@ class FSWKDataManager: NSObject, WCSessionDelegate {
             var savedSpots: [SpotData] = []
             
             let date = NSDate(fromString: data, format: .Custom("dd MMM yyyy HH:mm:ss"))
-            if NSDate().hoursAfterDate(date) > 0 {
+            if date.isToday() {
+                for serializedSpot in serializedSpotDataObjects {
+                    savedSpots.append(SpotData(serialized: serializedSpot))
+                }
+            }
+            else {
                 for serializedSpot in serializedSpotDataObjects {
                     let old = SpotData(serialized: serializedSpot)
                     let new = SpotData(id: old.id, name: old.name, county: old.county, location: old.location, heights: nil, conditions: nil)
                     savedSpots.append(new)
-                }
-            } else {
-                for serializedSpot in serializedSpotDataObjects {
-                    savedSpots.append(SpotData(serialized: serializedSpot))
                 }
             }
             

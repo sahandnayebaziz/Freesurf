@@ -246,17 +246,16 @@ class SpotLibrary {
                         
                         for (var index = 0; index < possibleSwellNumberInSpitcastResponse.count; index++) {
                             
-                            if let directionInDegrees:Int = json[self.currentHour][possibleSwellNumberInSpitcastResponse[index]]["dir"].int {
-                                if let heightInMeters:Float = json[self.currentHour][possibleSwellNumberInSpitcastResponse[index]]["hs"].float {
-                                    if let periodInSeconds:Float = json[self.currentHour][possibleSwellNumberInSpitcastResponse[index]]["tp"].float {
-                                        
-                                        let heightInFeet = self.swellMetersToFeet(heightInMeters)
-                                        let directionInHeading = self.degreesToDirection(directionInDegrees)
-                                        let periodAsInt:Int = Int(periodInSeconds)
-                                        
-                                        allSwellsInThisCounty += [(height:heightInFeet, period:periodAsInt, direction:directionInHeading)]
-                                    }
-                                }
+                            let path = json[self.currentHour][possibleSwellNumberInSpitcastResponse[index]]
+                            
+                            
+                            if let directionInDegrees:Int = path["dir"].int, let heightInMeters:Float = path["hs"].float, let periodInSeconds:Float = path["tp"].float {
+                                
+                                let heightInFeet = self.swellMetersToFeet(heightInMeters)
+                                let directionInHeading = self.degreesToDirection(directionInDegrees)
+                                let periodAsInt:Int = Int(periodInSeconds)
+                                
+                                allSwellsInThisCounty += [(height:heightInFeet, period:periodAsInt, direction:directionInHeading)]
                             }
                         }
                         
