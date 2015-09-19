@@ -8,7 +8,6 @@
 
 import Foundation
 import WatchConnectivity
-import Alamofire
 import PromiseKit
 
 protocol FSWKDataDelegate {
@@ -59,7 +58,7 @@ class FSWKDataManager: NSObject, WCSessionDelegate {
         return Promise { fulfill, reject in
             
             let dataURL:NSURL = NSURL(string: "http://api.spitcast.com/api/spot/forecast/\(id)")!
-            Alamofire.request(.GET, dataURL, parameters: nil, encoding: .JSON)
+            request(.GET, dataURL, parameters: nil, encoding: .JSON)
                 .validate()
                 .responseJSON { _, _, result in
                     switch result {

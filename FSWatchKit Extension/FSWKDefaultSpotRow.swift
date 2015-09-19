@@ -8,7 +8,6 @@
 
 import WatchKit
 import PromiseKit
-import Alamofire
 
 class FSWKDefaultSpotRow: NSObject {
     

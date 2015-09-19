@@ -3,7 +3,7 @@
     {
       "size" : "24x24",
       "idiom" : "watch",
-      "filename" : "ShortLook-38@2x.png",
+      "filename" : "Notification-38@2x.png",
       "scale" : "2x",
       "role" : "notificationCenter",
       "subtype" : "38mm"
@@ -49,7 +49,7 @@
     {
       "size" : "86x86",
       "idiom" : "watch",
-      "filename" : "ShortLook-38@2x-1.png",
+      "filename" : "ShortLook-38@2x.png",
       "scale" : "2x",
       "role" : "quickLook",
       "subtype" : "38mm"

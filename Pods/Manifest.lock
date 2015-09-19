@@ -1,5 +1,5 @@
 PODS:
-  - Alamofire (2.0.0)
+  - Alamofire (2.0.1)
   - OMGHTTPURLRQ (3.0.0):
     - OMGHTTPURLRQ/RQ (= 3.0.0)
   - OMGHTTPURLRQ/FormURLEncode (3.0.0)
@@ -7,7 +7,7 @@ PODS:
     - OMGHTTPURLRQ/FormURLEncode
     - OMGHTTPURLRQ/UserAgent
   - OMGHTTPURLRQ/UserAgent (3.0.0)
-  - PermissionScope (0.7)
+  - PermissionScope (1.0)
   - PromiseKit/CorePromise (3.0.0)
   - SnapKit (0.13.0)
   - SwiftLocation (0.1.4)
@@ -15,8 +15,7 @@ PODS:
 DEPENDENCIES:
   - Alamofire
   - OMGHTTPURLRQ (from `https://github.com/sahandnayebaziz/OMGHTTPURLRQ.git`)
-  - PermissionScope (from `https://github.com/nickoneill/PermissionScope.git`, branch
-    `swift2`)
+  - PermissionScope
   - PromiseKit/CorePromise (from `https://github.com/sahandnayebaziz/PromiseKit.git`,
     branch `swift-2.0-beta5`)
   - SnapKit (from `https://github.com/SnapKit/SnapKit`, branch `swift-2.0`)
@@ -25,9 +24,6 @@ DEPENDENCIES:
 EXTERNAL SOURCES:
   OMGHTTPURLRQ:
     :git: https://github.com/sahandnayebaziz/OMGHTTPURLRQ.git
-  PermissionScope:
-    :branch: swift2
-    :git: https://github.com/nickoneill/PermissionScope.git
   PromiseKit:
     :branch: swift-2.0-beta5
     :git: https://github.com/sahandnayebaziz/PromiseKit.git
@@ -42,9 +38,6 @@ CHECKOUT OPTIONS:
   OMGHTTPURLRQ:
     :commit: df1da4062a25b968427de8053e08fc566c4f927d
     :git: https://github.com/sahandnayebaziz/OMGHTTPURLRQ.git
-  PermissionScope:
-    :commit: 86e1e1483a846b70cf8401215b5341384f16c941
-    :git: https://github.com/nickoneill/PermissionScope.git
   PromiseKit:
     :commit: 7da72952c3c52303e4811d9294ce0207f88f2f90
     :git: https://github.com/sahandnayebaziz/PromiseKit.git
@@ -56,9 +49,9 @@ CHECKOUT OPTIONS:
     :git: https://github.com/malcommac/SwiftLocation.git
 
 SPEC CHECKSUMS:
-  Alamofire: 2f13548b29d25a58ecd91c9225fb51493e2b782b
+  Alamofire: 1d8e208d616fbbfd2391b15eae766d07c96cdc49
   OMGHTTPURLRQ: d7917c9126fe26a101c72d7a463653f17c8338cc
-  PermissionScope: 1d27791185cca10c26f84d1aab905117dde50f39
+  PermissionScope: 5ab56752470de9f2ec0dfc89a444de4b0a17144c
   PromiseKit: ca8e463ed27e3ab5d05ebeb237e4d50447822e4d
   SnapKit: 69fe274c71511df89a5591c11437a8b826bfa9eb
   SwiftLocation: af451eff3babb518ffa0e8d34637ab6e6035afc5
