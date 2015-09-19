@@ -101,7 +101,7 @@ class SpotLibrary {
                                     
                                     if !self.allSpotIDs.contains(existingSpotID) {
                                         self.allSpotIDs.append(existingSpotID)
-                                        self.spotDataByID[existingSpotID] = SpotData(name: name, county: county, location: nil, heights: nil, conditions: nil)
+                                        self.spotDataByID[existingSpotID] = SpotData(id: existingSpotID, name: name, county: county, location: nil, heights: nil, conditions: nil)
                                         self.spotDataRequestLog[existingSpotID] = (name:true, county:true, heights:false, conditions:false)
                                     }
                                     self.spotDataByID[existingSpotID]?.location = location
@@ -407,7 +407,7 @@ class SpotLibrary {
 
                 self.allSpotIDs.append(spotID)
                 self.selectedSpotIDs.append(spotID)
-                self.spotDataByID[spotID] = SpotData(name: spotName, county: spotCounty, location: nil, heights: nil, conditions: nil)
+                self.spotDataByID[spotID] = SpotData(id: spotID, name: spotName, county: spotCounty, location: nil, heights: nil, conditions: nil)
                 self.spotDataRequestLog[spotID] = (name: true, county: true, heights: false, conditions: false)
                 initializeCountyData(spotCounty)
             }

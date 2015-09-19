@@ -9,18 +9,36 @@
 import WatchKit
 
 class FSWKTopSpotRow: NSObject {
-
+    
+    var parentTable: FSWKSurfReportInterfaceController!
+    
+    var representedData: SpotData! {
+        didSet {
+            self.composeRow(representedData)
+        }
+    }
+    
     @IBOutlet var nameLabel: WKInterfaceLabel!
     @IBOutlet var heightLabel: WKInterfaceLabel!
     
-    func composeRow(data: SpotData) {
+    private func composeRow(data: SpotData) {
         let currentHour = NSDate().hour()
         
         nameLabel.setText(data.name)
         if let heights = data.heights {
-            heightLabel.setText("\(Int(heights[currentHour]))ft")
+            if heights.count > 1 {
+                heightLabel.setText("\(Int(heights[currentHour]))ft")
+            } else {
+                heightLabel.setText("\(Int(heights[0]))ft")
+            }
         } else {
             heightLabel.setText("--ft")
+            FSWKDataManager.sharedManager.downloadData(data.id).then { heightReceived -> Void in
+                self.heightLabel.setText("\(heightReceived)ft")
+                let newData = SpotData(serialized: data.serialized)
+                newData.heights = [Float(heightReceived)]
+                self.parentTable.updateDataForSpotInBuffer(data, newData: newData)
+            }
         }
     }
 

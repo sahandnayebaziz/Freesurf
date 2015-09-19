@@ -7,8 +7,18 @@
 //
 
 import WatchKit
+import PromiseKit
+import Alamofire
 
 class FSWKDefaultSpotRow: NSObject {
+    
+    var parentTable: FSWKSurfReportInterfaceController!
+    
+    var representedData: [String:SpotData?] = [:] {
+        didSet {
+            self.composeRow(representedData["spot1"]!, secondSpotData: representedData["spot2"]!)
+        }
+    }
 
     @IBOutlet var firstSpotHeight: WKInterfaceLabel!
     @IBOutlet var firstSpotName: WKInterfaceLabel!
@@ -16,7 +26,7 @@ class FSWKDefaultSpotRow: NSObject {
     @IBOutlet var secondSpotHeight: WKInterfaceLabel!
     @IBOutlet var secondSpotName: WKInterfaceLabel!
     
-    func composeRow(firstSpotData: SpotData?, secondSpotData: SpotData?) {
+    private func composeRow(firstSpotData: SpotData?, secondSpotData: SpotData?) {
         
         let currentHour = NSDate().hour()
         
@@ -24,9 +34,20 @@ class FSWKDefaultSpotRow: NSObject {
             if let data = data {
                 name.setText(data.name)
                 if let heights = data.heights {
-                    height.setText("\(Int(heights[currentHour]))ft")
+                    if heights.count > 1 {
+                        height.setText("\(Int(heights[currentHour]))ft")
+                    } else {
+                        height.setText("\(Int(heights[0]))ft")
+                    }
+                    
                 } else {
                     height.setText("--ft")
+                    FSWKDataManager.sharedManager.downloadData(data.id).then { heightReceived -> Void in
+                        height.setText("\(heightReceived)ft")
+                        let newData = SpotData(serialized: data.serialized)
+                        newData.heights = [Float(heightReceived)]
+                        self.parentTable.updateDataForSpotInBuffer(data, newData: newData)
+                    }
                 }
             }
             else {
@@ -35,4 +56,5 @@ class FSWKDefaultSpotRow: NSObject {
             }
         }
     }
+    
 }

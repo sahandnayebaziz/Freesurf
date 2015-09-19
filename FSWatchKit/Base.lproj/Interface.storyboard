@@ -32,7 +32,7 @@
                                             </group>
                                         </items>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        <edgeInsets key="margins" left="0.0" right="0.0" top="6" bottom="0.0"/>
+                                        <edgeInsets key="margins" left="0.0" right="0.0" top="3" bottom="8"/>
                                     </group>
                                     <connections>
                                         <outlet property="heightLabel" destination="sGr-5D-tjz" id="qJ7-BO-hnr"/>

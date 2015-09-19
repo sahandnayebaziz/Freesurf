@@ -9,6 +9,7 @@
 import Foundation
 import WatchConnectivity
 import Alamofire
+import PromiseKit
 
 protocol FSWKDataDelegate {
     func didDownloadSpotData(data: FSWKSpotData) -> Void
@@ -38,7 +39,7 @@ class FSWKDataManager: NSObject, WCSessionDelegate {
             if NSDate().hoursAfterDate(date) > 0 {
                 for serializedSpot in serializedSpotDataObjects {
                     let old = SpotData(serialized: serializedSpot)
-                    let new = SpotData(name: old.name, county: old.county, location: old.location, heights: nil, conditions: nil)
+                    let new = SpotData(id: old.id, name: old.name, county: old.county, location: old.location, heights: nil, conditions: nil)
                     savedSpots.append(new)
                 }
             } else {
@@ -53,30 +54,33 @@ class FSWKDataManager: NSObject, WCSessionDelegate {
         return nil
     }
     
-    func downloadHeightForSpotWithId(id: Int, delegate: FSWKDataDelegate) {
-        
-        let dataURL:NSURL = NSURL(string: "http://api.spitcast.com/api/spot/forecast/\(id)")!
-        print("requesting \(id)")
-        Alamofire.request(.GET, dataURL, parameters: nil, encoding: .JSON)
-            .validate()
-            .responseJSON { _, _, result in
-                switch result {
-                case .Success:
-                    if result.value != nil {
-                        let json = JSON(result.value!)
-                        let currentHour = NSDate().hour()
-                        
-                        if let swellHeight = json[currentHour]["size_ft"].int {
-                            delegate.didDownloadSpotData(FSWKSpotData(id: id, height: swellHeight))
-                        }
+    func downloadData(id: Int) -> Promise<Int> {
+        return Promise { fulfill, reject in
+            
+            let dataURL:NSURL = NSURL(string: "http://api.spitcast.com/api/spot/forecast/\(id)")!
+            print("requesting \(id)")
+            Alamofire.request(.GET, dataURL, parameters: nil, encoding: .JSON)
+                .validate()
+                .responseJSON { _, _, result in
+                    switch result {
+                    case .Success:
+                        if result.value != nil {
+                            let json = JSON(result.value!)
+                            let currentHour = NSDate().hour()
                             
+                            if let swellHeight = json[currentHour]["size_ft"].int {
+                                fulfill(swellHeight)
+                            }
+                            
+                        }
+                    case .Failure(_, let error):
+                        reject(error)
                     }
-                case .Failure(_, let error):
-                    NSLog("\(error)")
-                }
+            }
+            
+            NSURLCache.sharedURLCache().removeAllCachedResponses()
+            
         }
-        
-        NSURLCache.sharedURLCache().removeAllCachedResponses()
-        
     }
+    
 }

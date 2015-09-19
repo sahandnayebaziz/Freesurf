@@ -9,14 +9,16 @@
 import Foundation
 import CoreLocation
 
-class SpotData: Equatable, CustomStringConvertible {
+class SpotData: Hashable, Equatable, CustomStringConvertible {
+    var id:Int
     var name:String
     var county:String
     var location:CLLocation?
     var heights:[Float]?
     var conditions:String?
     
-    init(name: String, county: String, location: CLLocation?, heights: [Float]?, conditions: String?) {
+    init(id: Int, name: String, county: String, location: CLLocation?, heights: [Float]?, conditions: String?) {
+        self.id = id
         self.name = name
         self.county = county
         self.location = location
@@ -28,9 +30,14 @@ class SpotData: Equatable, CustomStringConvertible {
         return "\(name) \(county) \(location) \(conditions)"
     }
     
+    var hashValue: Int {
+        return id.hashValue
+    }
+    
     var serialized: NSData {
         var dict: [String:AnyObject] = [:]
         
+        dict["id"] = id
         dict["name"] = name
         dict["county"] = county
         
@@ -49,6 +56,13 @@ class SpotData: Equatable, CustomStringConvertible {
     
     init(serialized: NSData) {
         let dict = NSKeyedUnarchiver.unarchiveObjectWithData(serialized) as! [String: AnyObject]
+        
+        if let id = dict["id"] as? Int {
+            self.id = id
+        }
+        else {
+            self.id = 000
+        }
         
         if let name = dict["name"] as? String {
             self.name = name
