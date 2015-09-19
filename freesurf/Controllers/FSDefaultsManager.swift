@@ -17,7 +17,6 @@ class FSDefaultsManager: NSObject, WCSessionDelegate {
     private var keyForSavedSpots = "userSelectedSpots"
     private var keyForSpotData = "spotData"
     private var keyForSpotDataTimestamp = "spotDataTimestamp"
-    private var lastHourSaved: Int = -1
     
     func saveSpotLibrarySelectionsToDefaults(spotLibrary: SpotLibrary) {
         // save to defaults
@@ -49,31 +48,23 @@ class FSDefaultsManager: NSObject, WCSessionDelegate {
     
     func saveSpotDataForWatchConnectivity(spotLibrary: SpotLibrary) {
         
-        let currentHour = NSDate().hour()
-        if currentHour > lastHourSaved {
-            // save for watch
-            if #available(iOS 9.0, *) {
-                if WCSession.isSupported() {
-                    let session = WCSession.defaultSession()
-                    session.delegate = self
-                    session.activateSession()
-                    
-                    if session.paired && session.watchAppInstalled {
-                        let context = getContextForWatchConnectivity(spotLibrary)
-                        do {
-                            try session.updateApplicationContext(context)
-                        }
-                        catch {
-                            print(error)
-                        }
+        // save for watch
+        if #available(iOS 9.0, *) {
+            if WCSession.isSupported() {
+                let session = WCSession.defaultSession()
+                session.delegate = self
+                session.activateSession()
+                
+                if session.paired && session.watchAppInstalled {
+                    let context = getContextForWatchConnectivity(spotLibrary)
+                    do {
+                        try session.updateApplicationContext(context)
+                    }
+                    catch {
+                        print(error)
                     }
                 }
             }
-            
-            lastHourSaved = currentHour
-            print("updated wtc")
         }
     }
-    
-    
 }
