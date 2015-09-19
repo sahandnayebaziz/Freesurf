@@ -42,9 +42,6 @@
 		D8CA15631BA7E7A30017AF82 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D8CA15621BA7E7A30017AF82 /* Assets.xcassets */; };
 		D8CA156A1BA7E7A30017AF82 /* FSWatchKit Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = D8CA15691BA7E7A30017AF82 /* FSWatchKit Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		D8CA15731BA7E7A40017AF82 /* ExtensionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CA15721BA7E7A30017AF82 /* ExtensionDelegate.swift */; };
-		D8CA15751BA7E7A40017AF82 /* NotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CA15741BA7E7A40017AF82 /* NotificationController.swift */; };
-		D8CA15771BA7E7A40017AF82 /* GlanceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CA15761BA7E7A40017AF82 /* GlanceController.swift */; };
-		D8CA15791BA7E7A40017AF82 /* ComplicationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CA15781BA7E7A40017AF82 /* ComplicationController.swift */; };
 		D8CA157B1BA7E7A40017AF82 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D8CA157A1BA7E7A40017AF82 /* Assets.xcassets */; };
 		D8CA157F1BA7E7A40017AF82 /* FSWatchKit.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = D8CA155D1BA7E7A30017AF82 /* FSWatchKit.app */; };
 		D8CA158C1BA7F04E0017AF82 /* FSDefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CA158B1BA7F04E0017AF82 /* FSDefaultsManager.swift */; settings = {ASSET_TAGS = (); }; };
@@ -162,9 +159,6 @@
 		D8CA15691BA7E7A30017AF82 /* FSWatchKit Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "FSWatchKit Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D8CA156F1BA7E7A30017AF82 /* PushNotificationPayload.apns */ = {isa = PBXFileReference; lastKnownFileType = text; path = PushNotificationPayload.apns; sourceTree = "<group>"; };
 		D8CA15721BA7E7A30017AF82 /* ExtensionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionDelegate.swift; sourceTree = "<group>"; };
-		D8CA15741BA7E7A40017AF82 /* NotificationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationController.swift; sourceTree = "<group>"; };
-		D8CA15761BA7E7A40017AF82 /* GlanceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlanceController.swift; sourceTree = "<group>"; };
-		D8CA15781BA7E7A40017AF82 /* ComplicationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplicationController.swift; sourceTree = "<group>"; };
 		D8CA157A1BA7E7A40017AF82 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D8CA157C1BA7E7A40017AF82 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D8CA15881BA7E93F0017AF82 /* Freesurf.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = Freesurf.entitlements; path = Freesurf/Freesurf.entitlements; sourceTree = "<group>"; };
@@ -421,9 +415,6 @@
 			isa = PBXGroup;
 			children = (
 				D8CA15721BA7E7A30017AF82 /* ExtensionDelegate.swift */,
-				D8CA15741BA7E7A40017AF82 /* NotificationController.swift */,
-				D8CA15761BA7E7A40017AF82 /* GlanceController.swift */,
-				D8CA15781BA7E7A40017AF82 /* ComplicationController.swift */,
 				D8CA158D1BA7F51C0017AF82 /* FSWKDataManager.swift */,
 				D8CA15931BA807650017AF82 /* FSWKSurfReportInterfaceController.swift */,
 			);
@@ -763,13 +754,10 @@
 				D800FE7C1BA88B4E0068AE5E /* SwiftyJSON.swift in Sources */,
 				D8CA158E1BA7F51C0017AF82 /* FSWKDataManager.swift in Sources */,
 				D8CA15901BA802270017AF82 /* FSWKSpotPreview.swift in Sources */,
-				D8CA15751BA7E7A40017AF82 /* NotificationController.swift in Sources */,
 				D800FE801BA8A5850068AE5E /* SpotData.swift in Sources */,
 				D8CA15731BA7E7A40017AF82 /* ExtensionDelegate.swift in Sources */,
 				D800FE7D1BA88CD20068AE5E /* af-date-extension.swift in Sources */,
 				D881DF861BACC48200957780 /* FSWKDefaultSpotRow.swift in Sources */,
-				D8CA15791BA7E7A40017AF82 /* ComplicationController.swift in Sources */,
-				D8CA15771BA7E7A40017AF82 /* GlanceController.swift in Sources */,
 				D8792D231BA93D300035FB6D /* FSWKTopSpotRow.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

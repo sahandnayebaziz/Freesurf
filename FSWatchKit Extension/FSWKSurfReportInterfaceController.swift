@@ -19,17 +19,20 @@ class FSWKSurfReportInterfaceController: WKInterfaceController {
         super.awakeWithContext(context)
         
         // Configure interface objects here.
-        
     }
     
     override func willActivate() {
         // This method is called when watch view controller is about to be visible to user
         if let spots = FSWKDataManager.sharedManager.readSpotLibrarySelectionsFromDefaults() {
+            spotBuffer = []
+            
             for spot in spots {
                 spotBuffer.insert(spot)
             }
             
             createRowsFromSpotData(spotBuffer)
+        } else {
+            displayEmptyMessage()
         }
         super.willActivate()
     }
@@ -121,10 +124,12 @@ class FSWKSurfReportInterfaceController: WKInterfaceController {
     }
     
     func updateDataForSpotInBuffer(oldData: SpotData, newData: SpotData) {
-        if let _ = spotBuffer.remove(oldData) {
-            print("returned!")
-        }
+        spotBuffer.remove(oldData)
         spotBuffer.insert(newData)
         createRowsFromSpotData(spotBuffer)
+    }
+    
+    func displayEmptyMessage() {
+        table.setRowTypes(["emptyMessage"])
     }
 }
