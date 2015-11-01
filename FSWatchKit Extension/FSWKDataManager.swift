@@ -9,6 +9,7 @@
 import Foundation
 import WatchConnectivity
 import PromiseKit
+import Alamofire
 
 protocol FSWKDataDelegate {
     func didDownloadSpotData(data: FSWKSpotData) -> Void
@@ -54,26 +55,30 @@ class FSWKDataManager: NSObject, WCSessionDelegate {
         return nil
     }
     
+    enum FreesurfError: ErrorType {
+        case DownloadFailed
+    }
+    
     func downloadData(id: Int) -> Promise<Int> {
         return Promise { fulfill, reject in
             
             let dataURL:NSURL = NSURL(string: "http://api.spitcast.com/api/spot/forecast/\(id)")!
-            request(.GET, dataURL, parameters: nil, encoding: .JSON)
+            Alamofire.request(.GET, dataURL, parameters: nil, encoding: .JSON)
                 .validate()
-                .responseJSON { _, _, result in
-                    switch result {
-                    case .Success:
-                        if result.value != nil {
-                            let json = JSON(result.value!)
-                            let currentHour = NSDate().hour()
-                            
-                            if let swellHeight = json[currentHour]["size_ft"].int {
-                                fulfill(swellHeight)
-                            }
-                            
+                .responseJSON { response in
+                    if let data = response.result.value {
+                        let json = JSON(data)
+                        let currentHour = NSDate().hour()
+                        
+                        if let swellHeight = json[currentHour]["size_ft"].int {
+                            fulfill(swellHeight)
                         }
-                    case .Failure(_, let error):
-                        reject(error)
+                    } else {
+                        if let error = response.result.error {
+                            reject(error)
+                        } else {
+                            reject(FreesurfError.DownloadFailed)
+                        }
                     }
             }
             

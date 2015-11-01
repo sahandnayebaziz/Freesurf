@@ -1,59 +1,42 @@
 PODS:
-  - Alamofire (2.0.1)
-  - OMGHTTPURLRQ (3.0.0):
-    - OMGHTTPURLRQ/RQ (= 3.0.0)
-  - OMGHTTPURLRQ/FormURLEncode (3.0.0)
-  - OMGHTTPURLRQ/RQ (3.0.0):
+  - Alamofire (3.1.1)
+  - OMGHTTPURLRQ (3.0.2):
+    - OMGHTTPURLRQ/RQ (= 3.0.2)
+  - OMGHTTPURLRQ/FormURLEncode (3.0.2)
+  - OMGHTTPURLRQ/RQ (3.0.2):
     - OMGHTTPURLRQ/FormURLEncode
     - OMGHTTPURLRQ/UserAgent
-  - OMGHTTPURLRQ/UserAgent (3.0.0)
-  - PermissionScope (1.0)
+  - OMGHTTPURLRQ/UserAgent (3.0.2)
+  - PermissionScope (1.0.1)
+  - PromiseKit (3.0.0):
+    - PromiseKit/Foundation (= 3.0.0)
+    - PromiseKit/QuartzCore (= 3.0.0)
+    - PromiseKit/UIKit (= 3.0.0)
   - PromiseKit/CorePromise (3.0.0)
-  - SnapKit (0.13.0)
-  - SwiftLocation (0.1.4)
+  - PromiseKit/Foundation (3.0.0):
+    - OMGHTTPURLRQ (~> 3.0.0)
+    - PromiseKit/CorePromise
+  - PromiseKit/QuartzCore (3.0.0):
+    - PromiseKit/CorePromise
+  - PromiseKit/UIKit (3.0.0):
+    - PromiseKit/CorePromise
+  - SnapKit (0.16.0)
+  - SwiftLocation (0.2.0)
 
 DEPENDENCIES:
   - Alamofire
-  - OMGHTTPURLRQ (from `https://github.com/sahandnayebaziz/OMGHTTPURLRQ.git`)
+  - OMGHTTPURLRQ
   - PermissionScope
-  - PromiseKit/CorePromise (from `https://github.com/sahandnayebaziz/PromiseKit.git`,
-    branch `swift-2.0-beta5`)
-  - SnapKit (from `https://github.com/SnapKit/SnapKit`, branch `swift-2.0`)
-  - SwiftLocation (from `https://github.com/malcommac/SwiftLocation.git`, branch `swift-2.0`)
-
-EXTERNAL SOURCES:
-  OMGHTTPURLRQ:
-    :git: https://github.com/sahandnayebaziz/OMGHTTPURLRQ.git
-  PromiseKit:
-    :branch: swift-2.0-beta5
-    :git: https://github.com/sahandnayebaziz/PromiseKit.git
-  SnapKit:
-    :branch: swift-2.0
-    :git: https://github.com/SnapKit/SnapKit
-  SwiftLocation:
-    :branch: swift-2.0
-    :git: https://github.com/malcommac/SwiftLocation.git
-
-CHECKOUT OPTIONS:
-  OMGHTTPURLRQ:
-    :commit: df1da4062a25b968427de8053e08fc566c4f927d
-    :git: https://github.com/sahandnayebaziz/OMGHTTPURLRQ.git
-  PromiseKit:
-    :commit: 7da72952c3c52303e4811d9294ce0207f88f2f90
-    :git: https://github.com/sahandnayebaziz/PromiseKit.git
-  SnapKit:
-    :commit: 4f19419528baa3dfaca20e26fea2be410ddc79e2
-    :git: https://github.com/SnapKit/SnapKit
-  SwiftLocation:
-    :commit: 2c4521faf6544525005084287d3e1ce9cad5218b
-    :git: https://github.com/malcommac/SwiftLocation.git
+  - PromiseKit
+  - SnapKit
+  - SwiftLocation
 
 SPEC CHECKSUMS:
-  Alamofire: 1d8e208d616fbbfd2391b15eae766d07c96cdc49
-  OMGHTTPURLRQ: d7917c9126fe26a101c72d7a463653f17c8338cc
-  PermissionScope: 5ab56752470de9f2ec0dfc89a444de4b0a17144c
-  PromiseKit: ca8e463ed27e3ab5d05ebeb237e4d50447822e4d
-  SnapKit: 69fe274c71511df89a5591c11437a8b826bfa9eb
-  SwiftLocation: af451eff3babb518ffa0e8d34637ab6e6035afc5
+  Alamofire: 9b0a7188b961a03914a99304488bd226b0e46c0e
+  OMGHTTPURLRQ: 8376dc887d76a5a7e2a67881dc788f917a2f437c
+  PermissionScope: 9767066cedefd211d90a8c4f92f6f1a987085ee8
+  PromiseKit: 665540a1eb43156446872dcf49ed7dee6ebbe13b
+  SnapKit: ddac6b339d571f9d80dbb733585b172ee9eed3cb
+  SwiftLocation: ea78ae4a822581bde7379d98c8513273723c8840
 
-COCOAPODS: 0.39.0.beta.4
+COCOAPODS: 0.39.0

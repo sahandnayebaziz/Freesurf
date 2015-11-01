@@ -3,21 +3,24 @@ platform :ios, '8.0'
 use_frameworks!
 
 target 'Freesurf' do
-
 	pod 'Alamofire'
-	pod 'SnapKit', :git => 'https://github.com/SnapKit/SnapKit', :branch => 'swift-2.0'
+	pod 'SnapKit'
 	pod 'PermissionScope'
-	pod 'SwiftLocation', :git => 'https://github.com/malcommac/SwiftLocation.git', :branch => 'swift-2.0'
+	pod 'SwiftLocation'
 
 end
 
 target 'FSWatchKit Extension' do
+	pod 'Alamofire'
+
 	platform :watchos, '2.0'
-	pod 'PromiseKit/CorePromise', :git => 'https://github.com/sahandnayebaziz/PromiseKit.git', :branch => 'swift-2.0-beta5'
-	pod 'OMGHTTPURLRQ', :git => 'https://github.com/sahandnayebaziz/OMGHTTPURLRQ.git'
+	pod 'PromiseKit'
+	pod 'OMGHTTPURLRQ'
 end
 
 target 'FreesurfTests' do
 
 end
+
+
 

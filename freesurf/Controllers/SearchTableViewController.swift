@@ -111,7 +111,7 @@ class SearchTableViewController: UITableViewController {
                     }
                     self.nearbyIndicator.startAnimating()
                     
-                    SwiftLocation.shared.currentLocation(Accuracy.Neighborhood, timeout: 5, onSuccess: { (location) -> Void in
+                    try? SwiftLocation.shared.currentLocation(Accuracy.Neighborhood, timeout: 5, onSuccess: { (location) -> Void in
                         if let location = location {
                             self.displayingNearby = true
                             self.currentLocation = location
