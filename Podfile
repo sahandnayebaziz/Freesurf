@@ -6,6 +6,7 @@ target 'Freesurf' do
 
 pod 'AFDateHelper'
 pod 'Alamofire'
+pod 'PromiseKit'
 pod 'ReachabilitySwift'
 pod 'SnapKit'
 
