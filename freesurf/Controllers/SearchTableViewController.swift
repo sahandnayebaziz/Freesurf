@@ -67,19 +67,9 @@ class SearchTableViewController: UITableViewController {
     }
     
     @IBAction func editingchanged(_ sender: UITextField) {
-        self.results = []
+        let input = sender.text!.lowercased()
         self.displayingNearby = false
-        
-        let input:String = sender.text!
-        
-        if (input.characters.count != 0) {
-            for key in self.spotLibrary.spotDataByID.keys {
-                if (self.spotLibrary.spotDataByID[key]!.name.contains(input) || self.spotLibrary.spotDataByID[key]!.county.contains(input)) {
-                    self.results.append(key)
-                }
-            }
-        }
-        
+        results = spotLibrary.spotDataByID.keys.map({ self.spotLibrary.spotDataByID[$0]! }).filter({ $0.name.lowercased().contains(input) || $0.county.lowercased().contains(input)}).map({ $0.id })
         self.searchTableView.reloadData()
     }
     

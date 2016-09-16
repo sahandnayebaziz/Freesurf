@@ -69,10 +69,10 @@ struct Spitcast {
                 var map: [Int: SpotData] = [:]
                 for response in responses {
                     for spot in response.data {
+                        print(spot.name)
                         map[spot.id] = spot
                     }
                 }
-                NSLog("resolving map with \(map.keys.count) keys")
                 return resolve(map)
             }.recover { _ -> Void in
                 return reject(SpitcastError.BadData)

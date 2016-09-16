@@ -11,6 +11,6 @@ import QuartzCore
 
 extension String {
     func contains(otherString: String) -> Bool {
-        return false
+        return self.range(of: otherString) != nil
     }
 }

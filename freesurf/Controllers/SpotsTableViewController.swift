@@ -51,12 +51,12 @@ class SpotsTableViewController: UITableViewController, SpotDataDelegate, UISplit
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return library.spotDataByID.keys.sorted().count
+        return library.selectedSpotIDs.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = spotsTableView.dequeueReusableCell(withIdentifier: "spotCell", for: indexPath) as! SpotCell
-        let spotId = library.spotDataByID.keys.sorted()[indexPath.row]
+        let spotId = library.selectedSpotIDs[indexPath.row]
         let spot = library.spotDataByID[spotId]!
         let county = library.countyDataByName[spot.county]!
         cell.set(forSpot: spot)
@@ -155,7 +155,7 @@ class SpotsTableViewController: UITableViewController, SpotDataDelegate, UISplit
     }
     
     func _devDidLoadAllSpots() {
-        spotsTableView.reloadData()
+        NSLog("All spots and counties downloaded")
     }
     
     func didLoadSavedSpots(spotsFound: Bool) {
