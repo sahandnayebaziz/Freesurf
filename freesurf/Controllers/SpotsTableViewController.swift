@@ -7,17 +7,18 @@
 //
 
 import UIKit
+import ReachabilitySwift
 
-class SpotsTableViewController: UITableViewController, LPRTableViewDelegate, SpotLibraryDelegate, UISplitViewControllerDelegate {
+class SpotsTableViewController: UITableViewController, SpotLibraryDelegate, UISplitViewControllerDelegate {
     
     // MARK: - Properties -
     var spotLibrary:SpotLibrary = SpotLibrary()
-    var reachability = Reachability.reachabilityForInternetConnection()
+    var reachability = Reachability()!
     var usingUserDefaults:Bool = false
     var collapseDetailViewController = true
     
     // MARK: - Interface Outlets -
-    @IBOutlet var spotsTableView: LPRTableView!
+    @IBOutlet var spotsTableView: UITableView!
     @IBOutlet weak var header: UIView!
     @IBOutlet weak var footer: UIView!
     
@@ -32,21 +33,21 @@ class SpotsTableViewController: UITableViewController, LPRTableViewDelegate, Spo
         self.configureNetwork()
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .None)
+        self.tableView.reloadSections(IndexSet(integer: 0), with: .none)
     }
     
-    override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
-        self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .None)
+    override func didRotate(from fromInterfaceOrientation: UIInterfaceOrientation) {
+        self.tableView.reloadSections(IndexSet(integer: 0), with: .none)
     }
     
-    func splitViewController(splitViewController: UISplitViewController, collapseSecondaryViewController secondaryViewController: UIViewController, ontoPrimaryViewController primaryViewController: UIViewController) -> Bool {
+    func splitViewController(_ splitViewController: UISplitViewController, collapseSecondary secondaryViewController: UIViewController, onto primaryViewController: UIViewController) -> Bool {
         return collapseDetailViewController
     }
     
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return UIStatusBarStyle.LightContent
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return UIStatusBarStyle.lightContent
     }
     
     func configureViewStyle() {
@@ -56,7 +57,7 @@ class SpotsTableViewController: UITableViewController, LPRTableViewDelegate, Spo
         self.readSavedSpots()
         if self.spotLibrary.selectedSpotIDs.count == 0 { spotsTableView.tableHeaderView = header }
         else {
-            self.header.hidden = true
+            self.header.isHidden = true
             self.spotsTableView.tableHeaderView = nil
         }
         footer.frame = CGRect(x: footer.frame.minX, y: footer.frame.minY, width: footer.frame.maxX, height: 130)
@@ -64,19 +65,21 @@ class SpotsTableViewController: UITableViewController, LPRTableViewDelegate, Spo
     }
     
     func configureNetwork() {
-        if let reachability = reachability {
-            if reachability.isReachable() {
-                self.downloadMissingSpotInfo()
-            }
+        if reachability.isReachable {
+            self.downloadMissingSpotInfo()
+        }
+        
+        reachability.whenReachable = { reachability in
+            self.downloadMissingSpotInfo()
+        }
+        reachability.whenUnreachable = { reachability in
+            NSLog("Became unreachable")
+        }
+        
+        do {
+         try reachability.startNotifier()
+        } catch {
             
-            reachability.whenReachable = { reachability in
-                self.downloadMissingSpotInfo()
-            }
-            reachability.whenUnreachable = { reachability in
-                NSLog("Became unreachable")
-            }
-            
-            reachability.startNotifier()
         }
     }
     
@@ -86,22 +89,22 @@ class SpotsTableViewController: UITableViewController, LPRTableViewDelegate, Spo
     }
     
     // MARK: - Interface Actions -
-    @IBAction func openSpitcast(sender: AnyObject) {
-        UIApplication.sharedApplication().openURL(NSURL(string: "http://www.spitcast.com")!)
+    @IBAction func openSpitcast(_ sender: AnyObject) {
+        UIApplication.shared.openURL(URL(string: "http://www.spitcast.com")!)
     }
     
-    @IBAction func unwindToList(segue:UIStoryboardSegue) {
+    @IBAction func unwindToList(_ segue:UIStoryboardSegue) {
         if segue.identifier! == "unwindFromSearchCell" || segue.identifier! == "unwindFromSearchCancelButton" {
             
-            let source:SearchTableViewController = segue.sourceViewController as! SearchTableViewController
+            let source:SearchTableViewController = segue.source as! SearchTableViewController
             source.spotLibrary = self.spotLibrary
             
             source.searchField.resignFirstResponder()
-            source.dismissViewControllerAnimated(true, completion: nil)
+            source.dismiss(animated: true, completion: nil)
             
             if self.tableView.tableHeaderView != nil {
                 if self.spotLibrary.selectedSpotIDs.count > 0 {
-                    self.header.hidden = true
+                    self.header.isHidden = true
                     self.tableView.tableHeaderView = nil
                 }
             }
@@ -112,40 +115,40 @@ class SpotsTableViewController: UITableViewController, LPRTableViewDelegate, Spo
         }
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!)
+    override func prepare(for segue: UIStoryboardSegue, sender: Any!)
     {
         if segue.identifier! == "openSearchForSpots" || segue.identifier! == "openSearchForSpotsOnBoarding" {
-            let nav:UINavigationController = segue.destinationViewController as! UINavigationController
+            let nav:UINavigationController = segue.destination as! UINavigationController
             let destinationView:SearchTableViewController = nav.topViewController as! SearchTableViewController
             
             destinationView.spotLibrary = self.spotLibrary
         }
         
         if segue.identifier! == "openSpotDetail" {
-            let nav:UINavigationController = segue.destinationViewController as! UINavigationController
+            let nav:UINavigationController = segue.destination as! UINavigationController
             let destinationView:DetailViewController = nav.topViewController as! DetailViewController
             
-            let indexPath:NSIndexPath = spotsTableView.indexPathForSelectedRow!
-            let rowID = self.spotLibrary.selectedSpotIDs[indexPath.row]
+            let indexPath:IndexPath = spotsTableView.indexPathForSelectedRow!
+            let rowID = self.spotLibrary.selectedSpotIDs[(indexPath as NSIndexPath).row]
             
             let model = DetailViewModel(values: self.spotLibrary.allDetailViewData(rowID))
             destinationView.model = model
             destinationView.selectedSpotID = rowID
-            destinationView.currentHour = NSDate().hour()
+            destinationView.currentHour = Date().hour()
         }
     }
     
     // MARK: - Table View Methods -
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return spotLibrary.selectedSpotIDs.count
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let rowID = self.spotLibrary.selectedSpotIDs[indexPath.row]
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let rowID = self.spotLibrary.selectedSpotIDs[(indexPath as NSIndexPath).row]
         
         var model:SpotCellViewModel
         if let values = self.spotLibrary.allSpotCellDataIfRequestsComplete(rowID) {
@@ -155,57 +158,57 @@ class SpotsTableViewController: UITableViewController, LPRTableViewDelegate, Spo
             model = SpotCellViewModel(name: spotLibrary.nameForSpotID(rowID), height: nil, waterTemp: nil, swell: nil, requestsComplete: false)
         }
         
-        let cell:SpotCell = spotsTableView.dequeueReusableCellWithIdentifier("spotCell", forIndexPath: indexPath) as! SpotCell
+        let cell = spotsTableView.dequeueReusableCell(withIdentifier: "spotCell", for: indexPath) as! SpotCell
         
-        cell.backgroundColor = UIColor.clearColor()
+        cell.backgroundColor = UIColor.clear
         cell.setValues(model)
         cell.clipsToBounds = true
         
         return cell
     }
     
-    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 76.0
     }
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath:NSIndexPath) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath:IndexPath) {
         collapseDetailViewController = false
-        let rowID = self.spotLibrary.selectedSpotIDs[indexPath.row]
+        let rowID = self.spotLibrary.selectedSpotIDs[(indexPath as NSIndexPath).row]
         
         if self.spotLibrary.allSpotCellDataIfRequestsComplete(rowID) != nil {
-            self.performSegueWithIdentifier("openSpotDetail", sender: nil)
+            self.performSegue(withIdentifier: "openSpotDetail", sender: nil)
         }
         
-        spotsTableView.deselectRowAtIndexPath(indexPath, animated: false)
+        spotsTableView.deselectRow(at: indexPath, animated: false)
         
     }
     
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool  {
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool  {
         return self.spotLibrary.selectedSpotIDs.count > 1
     }
     
-    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
         return self.spotLibrary.selectedSpotIDs.count == 1
     }
     
-    override func tableView(tableView: UITableView, moveRowAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
         tableView.beginUpdates()
         
-        let source = self.spotLibrary.selectedSpotIDs[sourceIndexPath.row]
-        let destination = self.spotLibrary.selectedSpotIDs[destinationIndexPath.row]
+        let source = self.spotLibrary.selectedSpotIDs[(sourceIndexPath as NSIndexPath).row]
+        let destination = self.spotLibrary.selectedSpotIDs[(destinationIndexPath as NSIndexPath).row]
         
-        self.spotLibrary.selectedSpotIDs[sourceIndexPath.row] = destination
-        self.spotLibrary.selectedSpotIDs[destinationIndexPath.row] = source
+        self.spotLibrary.selectedSpotIDs[(sourceIndexPath as NSIndexPath).row] = destination
+        self.spotLibrary.selectedSpotIDs[(destinationIndexPath as NSIndexPath).row] = source
         
         tableView.endUpdates()
     }
     
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == UITableViewCellEditingStyle.Delete {
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == UITableViewCellEditingStyle.delete {
             self.spotsTableView.beginUpdates()
             
-            spotLibrary.selectedSpotIDs.removeAtIndex(indexPath.row)
-            spotsTableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Top)
+            spotLibrary.selectedSpotIDs.remove(at: (indexPath as NSIndexPath).row)
+            spotsTableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.top)
             
             self.spotsTableView.endUpdates()
             
@@ -215,9 +218,9 @@ class SpotsTableViewController: UITableViewController, LPRTableViewDelegate, Spo
     
     // MARK: - Methods -
     func readSavedSpots() {
-        let defaults:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        let defaults:UserDefaults = UserDefaults.standard
         
-        if let exportString = defaults.objectForKey("userSelectedSpots") as? String {
+        if let exportString = defaults.object(forKey: "userSelectedSpots") as? String {
             usingUserDefaults = true
             self.spotLibrary.deserializeSpotLibraryFromString(exportString)
             self.spotsTableView.reloadData()
@@ -225,28 +228,26 @@ class SpotsTableViewController: UITableViewController, LPRTableViewDelegate, Spo
     }
     
     func downloadMissingSpotInfo() {
-        if let reachability = reachability {
-            if reachability.isReachable() {
-                if spotLibrary.spotDataByID.isEmpty || usingUserDefaults {
-                    dispatch_to_background_queue {
-                        self.spotLibrary.getCountyNames()
-                    }
-                    
-                    usingUserDefaults = false;
+        if reachability.isReachable {
+            if spotLibrary.spotDataByID.isEmpty || usingUserDefaults {
+                dispatch_to_background_queue {
+                    self.spotLibrary.getCountyNames()
                 }
                 
-                if spotLibrary.selectedSpotIDs.count > 0 {
-                    for spot in spotLibrary.selectedSpotIDs {
-                        if self.spotLibrary.allSpotCellDataIfRequestsComplete(spot) == nil {
-                            
-                            dispatch_to_background_queue {
-                                self.spotLibrary.getSpotHeightsForToday(spot)
-                                let county = self.spotLibrary.countyForSpotID(spot)
-                                self.spotLibrary.getCountyWaterTemp(county, spotSender: spot)
-                                self.spotLibrary.getCountyTideForToday(county, spotSender: spot)
-                                self.spotLibrary.getCountySwell(county, spotSender: spot)
-                                self.spotLibrary.getCountyWind(county, spotSender: spot)
-                            }
+                usingUserDefaults = false;
+            }
+            
+            if spotLibrary.selectedSpotIDs.count > 0 {
+                for spot in spotLibrary.selectedSpotIDs {
+                    if self.spotLibrary.allSpotCellDataIfRequestsComplete(spot) == nil {
+                        
+                        dispatch_to_background_queue {
+                            self.spotLibrary.getSpotHeightsForToday(spot)
+                            let county = self.spotLibrary.countyForSpotID(spot)
+                            self.spotLibrary.getCountyWaterTemp(county, spotSender: spot)
+                            self.spotLibrary.getCountyTideForToday(county, spotSender: spot)
+                            self.spotLibrary.getCountySwell(county, spotSender: spot)
+                            self.spotLibrary.getCountyWind(county, spotSender: spot)
                         }
                     }
                 }

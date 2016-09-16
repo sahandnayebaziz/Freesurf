@@ -8,8 +8,6 @@
 
 import UIKit
 import SnapKit
-import SwiftLocation
-import PermissionScope
 import CoreLocation
 
 // SearchTableViewController lets you search for and add a new spot.
@@ -35,45 +33,40 @@ class SearchTableViewController: UITableViewController {
     @IBOutlet weak var searchField: UITextField!
     var headerView = UIView()
     var nearbyButton = UIButton()
-    let permissionView = PermissionScope()
     var nearbyIndicator = UIActivityIndicatorView()
     
     // MARK: - View methods -
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.searchTableView.separatorStyle = UITableViewCellSeparatorStyle.None
-        self.searchTableView.backgroundColor = UIColor.clearColor()
+        self.searchTableView.separatorStyle = UITableViewCellSeparatorStyle.none
+        self.searchTableView.backgroundColor = UIColor.clear
         self.displayingNearby = false
         
-        let blurEffect:UIBlurEffect = UIBlurEffect(style: UIBlurEffectStyle.Dark)
+        let blurEffect:UIBlurEffect = UIBlurEffect(style: UIBlurEffectStyle.dark)
         let blurEffectView:UIVisualEffectView = UIVisualEffectView(effect: blurEffect)
         blurEffectView.frame = searchTableView.bounds
         self.searchTableView.backgroundView = blurEffectView
         
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Nearby", style: .Plain, target: self, action: "tappedNearby")
-        
-        permissionView.addPermission(LocationWhileInUsePermission(), message: "We use this to show you nearby surf spots.")
-        permissionView.bodyLabel.text = "We need your permission first."
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Nearby", style: .plain, target: self, action: #selector(SearchTableViewController.tappedNearby))
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         self.searchField.becomeFirstResponder()
     }
     
     // MARK: - Interface Actions -
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if sender!.isKindOfClass(UITableViewCell) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let _ = sender as? UITableViewCell {
+            let indexPath:IndexPath = searchTableView.indexPathForSelectedRow!
             
-            let indexPath:NSIndexPath = searchTableView.indexPathForSelectedRow!
-            
-            if !(self.spotLibrary.selectedSpotIDs.contains(results[indexPath.row])) {
-                spotLibrary.selectedSpotIDs.append(results[indexPath.row])
+            if !(self.spotLibrary.selectedSpotIDs.contains(results[(indexPath as NSIndexPath).row])) {
+                spotLibrary.selectedSpotIDs.append(results[(indexPath as NSIndexPath).row])
             }
         }
     }
     
-    @IBAction func editingchanged(sender: UITextField) {
+    @IBAction func editingchanged(_ sender: UITextField) {
         self.results = []
         self.displayingNearby = false
         
@@ -92,61 +85,52 @@ class SearchTableViewController: UITableViewController {
     
     func tappedNearby() {
         self.searchField.resignFirstResponder()
-        
-        permissionView.show({ (finished, results) -> Void in
-            if results[0].status == .Authorized {
-                
-                dispatch_to_main_queue {
-                    self.searchField.text = ""
-                    self.searchField.resignFirstResponder()
-                    self.tableView.backgroundView?.addSubview(self.nearbyIndicator)
-                    self.nearbyIndicator.hidesWhenStopped = true
-                    self.nearbyIndicator.snp_makeConstraints { make in
-                        make.centerX.equalTo(self.tableView.snp_centerX)
-                        make.centerY.equalTo(self.tableView.snp_centerY).offset(-100)
-                    }
-                    self.nearbyIndicator.startAnimating()
-                    
-                    SwiftLocation.shared.currentLocation(Accuracy.Neighborhood, timeout: 5, onSuccess: { (location) -> Void in
-                        if let location = location {
-                            self.displayingNearby = true
-                            self.currentLocation = location
-                            self.listNearbySpots()
-                        }
-                        
-                        }) { (error) -> Void in
-                            NSLog("\(error)")
-                    }
-                }
-                
-                
-                
-            }
-        })
+//        dispatch_to_main_queue {
+//            self.searchField.text = ""
+//            self.searchField.resignFirstResponder()
+//            self.tableView.backgroundView?.addSubview(self.nearbyIndicator)
+//            self.nearbyIndicator.hidesWhenStopped = true
+//            self.nearbyIndicator.snp.makeConstraints { make in
+//                make.centerX.equalTo(self.tableView.snp.centerX)
+//                make.centerY.equalTo(self.tableView.snp.centerY).offset(-100)
+//            }
+//            self.nearbyIndicator.startAnimating()
+//            
+//            SwiftLocation.shared.currentLocation(Accuracy.Neighborhood, timeout: 5, onSuccess: { (location) -> Void in
+//                if let location = location {
+//                    self.displayingNearby = true
+//                    self.currentLocation = location
+//                    self.listNearbySpots()
+//                }
+//                
+//            }) { (error) -> Void in
+//                NSLog("\(error)")
+//            }
+//        }
     }
     
     // MARK: - Table view methods -
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return displayingNearby ? 13 : results.count
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let rowID = self.results[indexPath.row]
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let rowID = self.results[(indexPath as NSIndexPath).row]
         
-        let cell:UITableViewCell = self.searchTableView.dequeueReusableCellWithIdentifier("searchCell") as UITableViewCell!
+        let cell:UITableViewCell = self.searchTableView.dequeueReusableCell(withIdentifier: "searchCell") as UITableViewCell!
         
         cell.textLabel!.text = spotLibrary.nameForSpotID(rowID)
         cell.detailTextLabel!.text = spotLibrary.countyForSpotID(rowID)
-        cell.backgroundColor = UIColor.clearColor()
+        cell.backgroundColor = UIColor.clear
         
         return cell
     }
     
-    override func scrollViewWillBeginDragging(scrollView: UIScrollView) {
+    override func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         // only hide the scroll view on drag if there is at least one result being displayed.
         // otherwise, the user may be confused why the keyboard hid and would have to tap the search field before typing
         if results.count > 0 {
@@ -154,9 +138,9 @@ class SearchTableViewController: UITableViewController {
         }
     }
     
-    func nearer(id1:Int, id2:Int) -> Bool {
+    func nearer(_ id1:Int, id2:Int) -> Bool {
         if let l1 = self.spotLibrary.locationForSpotID(id1), let l2 = self.spotLibrary.locationForSpotID(id2) {
-            return currentLocation.distanceFromLocation(l1) < currentLocation.distanceFromLocation(l2)
+            return currentLocation.distance(from: l1) < currentLocation.distance(from: l2)
         }
         else {
             return false
@@ -165,7 +149,7 @@ class SearchTableViewController: UITableViewController {
     
     func listNearbySpots() {
         if !self.spotLibrary.spotDataByID.keys.isEmpty {
-            results = self.spotLibrary.spotDataByID.keys.sort(nearer)
+            results = self.spotLibrary.spotDataByID.keys.sorted(by: nearer)
             dispatch_to_main_queue {
                 self.nearbyIndicator.stopAnimating()
                 self.nearbyIndicator.removeFromSuperview()

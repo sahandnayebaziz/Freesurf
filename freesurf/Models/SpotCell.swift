@@ -25,13 +25,13 @@ class SpotCell: UITableViewCell {
     }
     
     // MARK: - Methods -
-    func setValues(model: SpotCellViewModel) {
+    func setValues(_ model: SpotCellViewModel) {
         self.nameLabel.text = model.name
         self.heightLabel.text = model.height
         self.tempAndSwellLabel.text = model.tempAndSwell
         self.gradient.colors = model.colors
         
         self.gradient.frame = self.bounds
-        self.layer.insertSublayer(gradient, atIndex: 0)
+        self.layer.insertSublayer(gradient, at: 0)
     }
 }

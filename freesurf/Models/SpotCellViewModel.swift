@@ -66,7 +66,7 @@ class SpotCellViewModel {
 
         }
         
-        colors = [gradientTop.CGColor, gradientBottom.CGColor]
+        colors = [gradientTop.cgColor, gradientBottom.cgColor]
         
         
     }

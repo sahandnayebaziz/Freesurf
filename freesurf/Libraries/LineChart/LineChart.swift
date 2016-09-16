@@ -25,7 +25,7 @@ func - (left: Array<CGFloat>, right: Array<CGFloat>) -> Array<CGFloat> {
     // modified to require a chartIdentifier to be sent to the delegate when this is called. This was added
     // when I created two LineChart objects in with the same viewController as delegate and could no think
     // of no other way to identify which LineChart object the touches were coming from.
-    func didSelectDataPoint(x: CGFloat, yValues: Array<CGFloat>, chartIdentifier: String)
+    func didSelectDataPoint(_ x: CGFloat, yValues: Array<CGFloat>, chartIdentifier: String)
 }
 
 // LineChart class
@@ -47,7 +47,7 @@ class LineChart: UIControl {
     var numberOfGridLinesY: CGFloat = 10
     var animationEnabled = true
     var animationDuration: CFTimeInterval = 1
-    var dotsBackgroundColor = UIColor.whiteColor()
+    var dotsBackgroundColor = UIColor.white
     var gridColor = UIColor(red: 238/255.0, green: 238/255.0, blue: 238/255.0, alpha: 1)
     var axesColor = UIColor(red: 96/255.0, green: 125/255.0, blue: 139/255.0, alpha: 1)
     var positiveAreaColor = UIColor(red: 246/255.0, green: 153/255.0, blue: 136/255.0, alpha: 1)
@@ -82,12 +82,12 @@ class LineChart: UIControl {
     // necessary init
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.backgroundColor = UIColor.clearColor()
+        self.backgroundColor = UIColor.clear
     }
     
     // necessary init
     convenience init() {
-        self.init(frame: CGRectZero)
+        self.init(frame: CGRect.zero)
     }
     
     // necessary init
@@ -98,16 +98,16 @@ class LineChart: UIControl {
     // intitialization added to take indentifer to be used as chartIdentifier
     init(frame: CGRect, identifier: String) {
         super.init(frame: frame)
-        self.backgroundColor = UIColor.clearColor()
+        self.backgroundColor = UIColor.clear
         self.chartIdentifier = identifier
     }
     
     
-    override func drawRect(rect: CGRect) {
+    override func draw(_ rect: CGRect) {
         
         if removeAll {
             let context = UIGraphicsGetCurrentContext()
-            CGContextClearRect(context, rect)
+            context?.clear(rect)
             return
         }
         
@@ -149,7 +149,7 @@ class LineChart: UIControl {
         }
         
         // draw lines
-        for (lineIndex, lineData) in dataStore.enumerate() {
+        for (lineIndex, lineData) in dataStore.enumerated() {
             let scaledDataXAxis = scaleDataXAxis(lineData)
             let scaledDataYAxis = scaleDataYAxis(lineData)
             drawLine(scaledDataXAxis, yAxis: scaledDataYAxis, lineIndex: lineIndex)
@@ -167,7 +167,7 @@ class LineChart: UIControl {
     /**
     * Lighten color.
     */
-    func lightenUIColor(color: UIColor) -> UIColor {
+    func lightenUIColor(_ color: UIColor) -> UIColor {
         var h: CGFloat = 0
         var s: CGFloat = 0
         var b: CGFloat = 0
@@ -181,7 +181,7 @@ class LineChart: UIControl {
     /**
     * Get y value for given x value. Or return zero or maximum value.
     */
-    func getYValuesForXValue(x: Int) -> Array<CGFloat> {
+    func getYValuesForXValue(_ x: Int) -> Array<CGFloat> {
         var result: Array<CGFloat> = []
         for lineData in dataStore {
             if x < 0 {
@@ -200,10 +200,10 @@ class LineChart: UIControl {
     /**
     * Handle touch events.
     */
-    func handleTouchEvents(touches: NSSet!, event: UIEvent!) {
+    func handleTouchEvents(_ touches: NSSet!, event: UIEvent!) {
         if (self.dataStore.isEmpty) { return }
-        let point: AnyObject! = touches.anyObject()
-        let xValue = point.locationInView(self).x
+        let point: AnyObject! = touches.anyObject() as AnyObject!
+        let xValue = point.location(in: self).x
         let closestXValueIndex = findClosestXValueInData(xValue)
         let yValues: Array<CGFloat> = getYValuesForXValue(closestXValueIndex)
         highlightDataPoints(closestXValueIndex)
@@ -214,26 +214,26 @@ class LineChart: UIControl {
     
     // touchesBegan and touchesMoved are called if the user begins to or continues to touch
     // a LineChart object
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         removeWordLine()
-        handleTouchEvents(touches, event: event)
+        handleTouchEvents(touches as NSSet!, event: event)
     }
-    override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         removeWordLine()
-        handleTouchEvents(touches, event: event)
-    }
-    
-    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        removeWordLine()
+        handleTouchEvents(touches as NSSet!, event: event)
     }
     
-    override func touchesCancelled(touches: Set<UITouch>?, withEvent event: UIEvent?) {
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        removeWordLine()
+    }
+    
+    override func touchesCancelled(_ touches: Set<UITouch>?, with event: UIEvent?) {
         removeWordLine()
     }
     
     // simulateTouchAtIndex takes an index and calls the delegate's didSelectDataPoint function at the given index
     // to simulate a touch at a given index on a LineChart object.
-    func simulateTouchAtIndex(index: Int) {
+    func simulateTouchAtIndex(_ index: Int) {
         let yValues: Array<CGFloat> = getYValuesForXValue(index)
         highlightDataPoints(index)
         delegate?.didSelectDataPoint(CGFloat(index), yValues: yValues, chartIdentifier: self.chartIdentifier)
@@ -242,7 +242,7 @@ class LineChart: UIControl {
     /**
     * Find closest value on x axis.
     */
-    func findClosestXValueInData(xValue: CGFloat) -> Int {
+    func findClosestXValueInData(_ xValue: CGFloat) -> Int {
         var scaledDataXAxis = scaleDataXAxis(dataStore[0])
         let difference = scaledDataXAxis[1] - scaledDataXAxis[0]
         let dividend = (xValue - axisInset) / difference
@@ -253,15 +253,15 @@ class LineChart: UIControl {
     /**
     * Highlight data points at index.
     */
-    func highlightDataPoints(index: Int) {
-        for (_, dotsData) in dotsDataStore.enumerate() {
+    func highlightDataPoints(_ index: Int) {
+        for (_, dotsData) in dotsDataStore.enumerated() {
             // make all dots white again
             for dot in dotsData {
-                if dot != dotsData[NSDate().hour()] {
-                    dot.backgroundColor = dotsBackgroundColor.CGColor
+                if dot != dotsData[Date().hour()] {
+                    dot.backgroundColor = dotsBackgroundColor.cgColor
                 }
                 else {
-                    dot.backgroundColor = color.CGColor
+                    dot.backgroundColor = color.cgColor
                 }
             }
             // highlight current data point
@@ -274,7 +274,7 @@ class LineChart: UIControl {
                 dot = dotsData[index]
             }
 
-            dot.backgroundColor = UIColor.whiteColor().CGColor
+            dot.backgroundColor = UIColor.white.cgColor
         }
     }
     
@@ -283,7 +283,7 @@ class LineChart: UIControl {
     /**
     * Draw small dot at every data point.
     */
-    func drawDataDots(xAxis: Array<CGFloat>, yAxis: Array<CGFloat>, lineIndex: Int) {
+    func drawDataDots(_ xAxis: Array<CGFloat>, yAxis: Array<CGFloat>, lineIndex: Int) {
         var dots: Array<DotCALayer> = []
         for index in 0..<xAxis.count {
             let xValue = xAxis[index] + axisInset - outerRadius/2
@@ -293,7 +293,7 @@ class LineChart: UIControl {
             let dotLayer = DotCALayer()
             dotLayer.dotInnerColor = color
             dotLayer.innerRadius = innerRadius
-            dotLayer.backgroundColor = dotsBackgroundColor.CGColor
+            dotLayer.backgroundColor = dotsBackgroundColor.cgColor
             dotLayer.cornerRadius = outerRadius / 2
             dotLayer.frame = CGRect(x: xValue, y: yValue, width: outerRadius, height: outerRadius)
             self.layer.addSublayer(dotLayer)
@@ -305,7 +305,7 @@ class LineChart: UIControl {
                 animation.duration = 0.25
                 animation.fromValue = 0
                 animation.toValue = 1
-                dotLayer.addAnimation(animation, forKey: "opacity")
+                dotLayer.add(animation, forKey: "opacity")
             }
             
         }
@@ -321,15 +321,15 @@ class LineChart: UIControl {
         let height = self.bounds.height
         let width = self.bounds.width
         let context = UIGraphicsGetCurrentContext()
-        CGContextSetStrokeColorWithColor(context, axesColor.CGColor)
+        context?.setStrokeColor(axesColor.cgColor)
         // draw x-axis
-        CGContextMoveToPoint(context, axisInset, height-axisInset)
-        CGContextAddLineToPoint(context, width-axisInset, height-axisInset)
-        CGContextStrokePath(context)
+        context?.move(to: CGPoint(x: axisInset, y: height-axisInset))
+        context?.addLine(to: CGPoint(x: width-axisInset, y: height-axisInset))
+        context?.strokePath()
         // draw y-axis
-        CGContextMoveToPoint(context, axisInset, height-axisInset)
-        CGContextAddLineToPoint(context, axisInset, axisInset)
-        CGContextStrokePath(context)
+        context?.move(to: CGPoint(x: axisInset, y: height-axisInset))
+        context?.addLine(to: CGPoint(x: axisInset, y: axisInset))
+        context?.strokePath()
     }
     
     
@@ -340,7 +340,7 @@ class LineChart: UIControl {
     func getMaximumValue() -> CGFloat {
         var maximum = 1
         for data in dataStore {
-            let newMaximum = data.reduce(Int.min, combine: { max(Int($0), Int($1)) })
+            let newMaximum = data.reduce(Int.min, { max(Int($0), Int($1)) })
             if newMaximum > maximum {
                 maximum = newMaximum + 2
             }
@@ -353,7 +353,7 @@ class LineChart: UIControl {
     /**
     * Scale to fit drawing width.
     */
-    func scaleDataXAxis(data: Array<CGFloat>) -> Array<CGFloat> {
+    func scaleDataXAxis(_ data: Array<CGFloat>) -> Array<CGFloat> {
         let factor = drawingWidth / CGFloat(data.count - 1)
         var scaledDataXAxis: Array<CGFloat> = []
         for index in 0..<data.count {
@@ -368,7 +368,7 @@ class LineChart: UIControl {
     /**
     * Scale data to fit drawing height.
     */
-    func scaleDataYAxis(data: Array<CGFloat>) -> Array<CGFloat> {
+    func scaleDataYAxis(_ data: Array<CGFloat>) -> Array<CGFloat> {
         let maximumYValue = getMaximumValue()
         let factor = drawingHeight / maximumYValue
         let scaledDataYAxis = data.map({datum -> CGFloat in
@@ -383,19 +383,19 @@ class LineChart: UIControl {
     /**
     * Draw line.
     */
-    func drawLine(xAxis: Array<CGFloat>, yAxis: Array<CGFloat>, lineIndex: Int) {
-        let path = CGPathCreateMutable()
-        CGPathMoveToPoint(path, nil, axisInset, self.bounds.height - yAxis[0] - axisInset)
+    func drawLine(_ xAxis: Array<CGFloat>, yAxis: Array<CGFloat>, lineIndex: Int) {
+        let path = CGMutablePath()
+        path.move(to: CGPoint(x: axisInset, y: self.bounds.height - yAxis[0] - axisInset))
         for index in 1..<xAxis.count {
             let xValue = xAxis[index] + axisInset
             let yValue = self.bounds.height - yAxis[index] - axisInset
-            CGPathAddLineToPoint(path, nil, xValue, yValue)
+            path.addLine(to: CGPoint(x: xValue, y: yValue))
         }
         
         let layer = CAShapeLayer()
         layer.frame = self.bounds
         layer.path = path
-        layer.strokeColor = color.CGColor
+        layer.strokeColor = color.cgColor
         layer.fillColor = nil
         layer.lineWidth = lineWidth
         self.layer.addSublayer(layer)
@@ -406,14 +406,14 @@ class LineChart: UIControl {
             animation.duration = animationDuration
             animation.fromValue = 0
             animation.toValue = 1
-            layer.addAnimation(animation, forKey: "strokeEnd")
+            layer.add(animation, forKey: "strokeEnd")
         }
         
         // add line layer to store
         lineLayerStore.append(layer)
     }
     
-    func drawWordLine(lineIndex: Int) {
+    func drawWordLine(_ lineIndex: Int) {
         // keep index within bounds
 
         var indexToDisplayLine = lineIndex
@@ -428,15 +428,15 @@ class LineChart: UIControl {
         var xAxis:Array<CGFloat> = scaleDataXAxis(dataStore[0])
         
         // create path and draw line
-        let path = CGPathCreateMutable()
-        CGPathMoveToPoint(path, nil, xAxis[indexToDisplayLine] + axisInset, self.bounds.minY + axisInset)
-        CGPathAddLineToPoint(path, nil, xAxis[indexToDisplayLine] + axisInset, self.bounds.maxY + 10)
+        let path = CGMutablePath()
+        path.move(to: CGPoint(x: xAxis[indexToDisplayLine] + axisInset, y: self.bounds.minY + axisInset))
+        path.addLine(to: CGPoint(x: xAxis[indexToDisplayLine] + axisInset, y: self.bounds.maxY + 10))
         
         // add line to screen
         let layer = CAShapeLayer()
         layer.frame = self.bounds
         layer.path = path
-        layer.strokeColor = UIColor(red: 97/255.0, green: 177/255.0, blue: 237/255.0, alpha: 0.4).CGColor
+        layer.strokeColor = UIColor(red: 97/255.0, green: 177/255.0, blue: 237/255.0, alpha: 0.4).cgColor
         layer.lineWidth = lineWidth * 2
         self.layer.addSublayer(layer)
         
@@ -454,24 +454,24 @@ class LineChart: UIControl {
     /**
     * Fill area between line chart and x-axis.
     */
-    func drawAreaBeneathLineChart(xAxis: Array<CGFloat>, yAxis: Array<CGFloat>, lineIndex: Int) {
+    func drawAreaBeneathLineChart(_ xAxis: Array<CGFloat>, yAxis: Array<CGFloat>, lineIndex: Int) {
         let context = UIGraphicsGetCurrentContext()
-        CGContextSetFillColorWithColor(context, color.colorWithAlphaComponent(0.2).CGColor)
+        context?.setFillColor(color.withAlphaComponent(0.2).cgColor)
         // move to origin
-        CGContextMoveToPoint(context, axisInset, self.bounds.height - axisInset)
+        context?.move(to: CGPoint(x: axisInset, y: self.bounds.height - axisInset))
         // add line to first data point
-        CGContextAddLineToPoint(context, axisInset, self.bounds.height - yAxis[0] - axisInset)
+        context?.addLine(to: CGPoint(x: axisInset, y: self.bounds.height - yAxis[0] - axisInset))
         // draw whole line chart
         for index in 1..<xAxis.count {
             let xValue = xAxis[index] + axisInset
             let yValue = self.bounds.height - yAxis[index] - axisInset
-            CGContextAddLineToPoint(context, xValue, yValue)
+            context?.addLine(to: CGPoint(x: xValue, y: yValue))
         }
         // move down to x axis
-        CGContextAddLineToPoint(context, xAxis[xAxis.count-1] + axisInset, self.bounds.height - axisInset)
+        context?.addLine(to: CGPoint(x: xAxis[xAxis.count-1] + axisInset, y: self.bounds.height - axisInset))
         // move to origin
-        CGContextAddLineToPoint(context, axisInset, self.bounds.height - axisInset)
-        CGContextFillPath(context)
+        context?.addLine(to: CGPoint(x: axisInset, y: self.bounds.height - axisInset))
+        context?.fillPath()
     }
     
     
@@ -491,9 +491,9 @@ class LineChart: UIControl {
             let context = UIGraphicsGetCurrentContext()
             
             if difference[index] < 0 {
-                CGContextSetFillColorWithColor(context, negativeAreaColor.CGColor)
+                context?.setFillColor(negativeAreaColor.cgColor)
             } else {
-                CGContextSetFillColorWithColor(context, positiveAreaColor.CGColor)
+                context?.setFillColor(positiveAreaColor.cgColor)
             }
             
             let point1XValue = xAxis[index] + axisInset
@@ -505,12 +505,12 @@ class LineChart: UIControl {
             let point4XValue = xAxis[index+1] + axisInset
             let point4YValue = self.bounds.height - yAxisDataA[index+1] - axisInset
             
-            CGContextMoveToPoint(context, point1XValue, point1YValue)
-            CGContextAddLineToPoint(context, point2XValue, point2YValue)
-            CGContextAddLineToPoint(context, point3XValue, point3YValue)
-            CGContextAddLineToPoint(context, point4XValue, point4YValue)
-            CGContextAddLineToPoint(context, point1XValue, point1YValue)
-            CGContextFillPath(context)
+            context?.move(to: CGPoint(x: point1XValue, y: point1YValue))
+            context?.addLine(to: CGPoint(x: point2XValue, y: point2YValue))
+            context?.addLine(to: CGPoint(x: point3XValue, y: point3YValue))
+            context?.addLine(to: CGPoint(x: point4XValue, y: point4YValue))
+            context?.addLine(to: CGPoint(x: point1XValue, y: point1YValue))
+            context?.fillPath()
             
         }
         
@@ -524,12 +524,12 @@ class LineChart: UIControl {
     func drawXGrid() {
         let space = drawingWidth / numberOfGridLinesX
         let context = UIGraphicsGetCurrentContext()
-        CGContextSetStrokeColorWithColor(context, gridColor.CGColor)
+        context?.setStrokeColor(gridColor.cgColor)
         for index in 1...Int(numberOfGridLinesX) {
-            CGContextMoveToPoint(context, axisInset + (CGFloat(index) * space), self.bounds.height - axisInset)
-            CGContextAddLineToPoint(context, axisInset + (CGFloat(index) * space), axisInset)
+            context?.move(to: CGPoint(x: axisInset + (CGFloat(index) * space), y: self.bounds.height - axisInset))
+            context?.addLine(to: CGPoint(x: axisInset + (CGFloat(index) * space), y: axisInset))
         }
-        CGContextStrokePath(context)
+        context?.strokePath()
     }
     
     
@@ -543,11 +543,11 @@ class LineChart: UIControl {
         step = step == 0 ? 1 : step
         let height = drawingHeight / maximumYValue
         let context = UIGraphicsGetCurrentContext()
-        for var index = 0; index <= Int(maximumYValue); index += step {
-            CGContextMoveToPoint(context, axisInset, self.bounds.height - (CGFloat(index) * height) - axisInset)
-            CGContextAddLineToPoint(context, self.bounds.width - axisInset, self.bounds.height - (CGFloat(index) * height) - axisInset)
+        for index in stride(from: 0, to: Int(maximumYValue), by: step) {
+            context?.move(to: CGPoint(x: axisInset, y: self.bounds.height - (CGFloat(index) * height) - axisInset))
+            context?.addLine(to: CGPoint(x: self.bounds.width - axisInset, y: self.bounds.height - (CGFloat(index) * height) - axisInset))
         }
-        CGContextStrokePath(context)
+        context?.strokePath()
     }
     
     
@@ -568,7 +568,7 @@ class LineChart: UIControl {
     func drawXLabels() {
         let xAxisData = self.dataStore[0]
         let scaledDataXAxis = scaleDataXAxis(xAxisData)
-        for (index, scaledValue) in scaledDataXAxis.enumerate() {
+        for (index, scaledValue) in scaledDataXAxis.enumerated() {
             // MARK: mod - added modulo for division of label number display
             if index % 6 == 0 {
                 let label = UILabel(frame: CGRect(x: scaledValue + (axisInset/2) + 2, y: self.bounds.height + axisInset, width: 44, height: axisInset))
@@ -577,7 +577,7 @@ class LineChart: UIControl {
                 let lightGray:UIColor = UIColor(red: 255.0, green: 255.0, blue: 255.0, alpha: 0.4)
 
                 // MARK: mod - changed justification
-                label.textAlignment = NSTextAlignment.Center
+                label.textAlignment = NSTextAlignment.center
 
                 // MARK: mod - hour time
                 let timeStringIn12HourTime:String = graphIndexToTimeString(index, longForm: false)
@@ -602,11 +602,11 @@ class LineChart: UIControl {
         var step = Int(maximumYValue) / Int(numberOfGridLinesY)
         step = step == 0 ? 1 : step
         let height = drawingHeight / maximumYValue
-        for var index = 0; index <= Int(maximumYValue); index += step {
+        for index in stride(from: 0, to: Int(maximumYValue), by: step) {
             let yValue = self.bounds.height - (CGFloat(index) * height) - (axisInset * 1.5)
             let label = UILabel(frame: CGRect(x: 0, y: yValue, width: axisInset, height: axisInset))
-            label.font = UIFont.systemFontOfSize(10)
-            label.textAlignment = NSTextAlignment.Center
+            label.font = UIFont.systemFont(ofSize: 10)
+            label.textAlignment = NSTextAlignment.center
             label.text = String(index)
             self.addSubview(label)
         }
@@ -617,7 +617,7 @@ class LineChart: UIControl {
     /**
     * Add line chart
     */
-    func addLine(data: Array<CGFloat>) {
+    func addLine(_ data: Array<CGFloat>) {
         self.dataStore.append(data)
         self.setNeedsDisplay()
     }
@@ -649,7 +649,7 @@ class LineChart: UIControl {
 /**
 * Convert hex color to UIColor
 */
-func UIColorFromHex(hex: Int) -> UIColor {
+func UIColorFromHex(_ hex: Int) -> UIColor {
     let red = CGFloat((hex & 0xFF0000) >> 16) / 255.0
     let green = CGFloat((hex & 0xFF00) >> 8) / 255.0
     let blue = CGFloat((hex & 0xFF)) / 255.0
@@ -659,7 +659,7 @@ func UIColorFromHex(hex: Int) -> UIColor {
 // graphIndexToTimeString takes a graphIndex and a boolean that relays whether or not we would like longform times (10:00 AM is long-form, 10AM isn't)
 // in return. This function is very specifically used by lineChart and SpotDetailViewController to respond to the user's touches on a LineChart object and
 // display the time represented by that x-coordinate on the graph to the user on a corresponding label somewhere in that view.
-func graphIndexToTimeString(graphIndex: Int, longForm: Bool) -> String {
+func graphIndexToTimeString(_ graphIndex: Int, longForm: Bool) -> String {
     
     // temporary storage of strings
     var stringHour = ""
@@ -670,7 +670,7 @@ func graphIndexToTimeString(graphIndex: Int, longForm: Bool) -> String {
     var hourOfDay = Int(graphIndex)
     
     // return "Now" if the user has touched an index on a 24-hour graph that represents the current hour of the day
-    if hourOfDay == NSDate().hour()  {
+    if hourOfDay == Date().hour()  {
         return "Now"
     }
     

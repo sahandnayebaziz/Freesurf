@@ -1,17 +1,12 @@
 source 'https://github.com/CocoaPods/Specs.git'
-platform :ios, '8.0'
+platform :ios, '9.0'
 use_frameworks!
 
 target 'Freesurf' do
 
-pod 'Alamofire', :git => 'https://github.com/Alamofire/Alamofire.git'
-pod 'SnapKit', :git => 'https://github.com/SnapKit/SnapKit', :branch => 'swift-2.0'
-pod 'PermissionScope', :git => 'https://github.com/nickoneill/PermissionScope.git', :branch => 'swift2'
-pod 'SwiftLocation', :git => 'https://github.com/malcommac/SwiftLocation.git', :branch => 'swift-2.0'
+pod 'AFDateHelper'
+pod 'Alamofire'
+pod 'ReachabilitySwift'
+pod 'SnapKit'
 
 end
-
-target 'FreesurfTests' do
-
-end
-

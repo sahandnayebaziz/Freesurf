@@ -45,7 +45,7 @@ class DetailViewModel {
         }
         
         if let condition = values.condition {
-            self.condition = condition.uppercaseString
+            self.condition = condition.uppercased()
         }
         else {
             self.condition = " "
