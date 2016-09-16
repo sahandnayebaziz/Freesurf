@@ -18,7 +18,7 @@ class SpotCellViewModel {
     var colors:[CGColor]
     
     // MARK: - Initializer -
-    init(name:String, height:Int?, waterTemp:Int?, swell:(height:Int, period:Int, direction:String)?, requestsComplete:Bool) {
+    init(name:String, height:Int?, waterTemp:Int?, swell:Swell?, requestsComplete:Bool) {
         
         self.name = name
         

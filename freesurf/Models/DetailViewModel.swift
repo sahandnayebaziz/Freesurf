@@ -15,7 +15,6 @@ class DetailViewModel {
     var height:String
     var temp:String
     
-    
     var swellDirection:String
     var swellPeriod:String
     var condition:String
@@ -25,7 +24,7 @@ class DetailViewModel {
     var heights:[CGFloat]
     
     // MARK: - Initializers -
-    init(values:(name:String, height:Int?, waterTemp:Int?, swell:(height:Int, period:Int, direction:String)?, condition:String?, wind:(speedInMPH:Int, direction:String)?, tides:[Float]?, heights:[Float]?)) {
+    init(values:(name:String, height:Int?, waterTemp:Int?, swell:Swell?, condition:String?, wind:Wind?, tides:[Float]?, heights:[Float]?)) {
         
         self.name = values.name
         
@@ -52,7 +51,7 @@ class DetailViewModel {
         }
         
         if let wind = values.wind {
-            self.wind = "\(wind.direction) @ \(wind.speedInMPH) MPH"
+            self.wind = "\(wind.direction) @ \(wind.speed) MPH"
         }
         else {
             self.wind = " "

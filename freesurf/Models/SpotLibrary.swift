@@ -12,11 +12,29 @@ import CoreLocation
 import AFDateHelper
 
 struct SpotData {
-    var name:String
-    var county:String
-    var location:CLLocation?
-    var heights:[Float]?
-    var conditions:String?
+    var name: String
+    var county: String
+    var location: CLLocation?
+    var heights: [Float]?
+    var conditions: String?
+}
+
+struct Swell {
+    var height: Int
+    var period: Int
+    var direction: String
+}
+
+struct Wind {
+    var speed: Int
+    var direction: String
+}
+
+struct CountyData {
+    var waterTemperature: Int?
+    var tides: [Float]?
+    var swells: [Swell]?
+    var wind: Wind?
 }
 
 // a SpotLibrary object holds all surf weather data used at runtime.
@@ -28,9 +46,9 @@ class SpotLibrary {
     var selectedSpotIDs:[Int]
     var allSpotsHaveBeenDownloaded:Bool = false
     
-    var spotDataByID:[Int:SpotData]
+    var spotDataByID: [Int: SpotData]
     var spotDataRequestLog:[Int:(name:Bool, county:Bool, heights:Bool, conditions:Bool)]
-    var countyDataByName:[String:(waterTemp:Int?, tides:[Float]?, swells:[(height:Int, period:Int, direction:String)]?, wind:(speedInMPH:Int, direction:String)?)]
+    var countyDataByName: [String: CountyData]
     var countyDataRequestLog:[String:(waterTemp:Bool, tides:Bool, swells:Bool, wind:Bool)]
     
     var currentHour:Int
@@ -60,13 +78,13 @@ class SpotLibrary {
     func getCountyNames() {
         let dataURL:URL = URL(string: "http://api.spitcast.com/api/spot/all")!
         request(dataURL, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: nil)
-            .responseJSON { response in
+            .responseData { response in
                 guard let httpResponse = response.response else {
                     print("error downloading county names")
                     return
                 }
                 
-                guard let responseData = response.result.value as? Data else {
+                guard let responseData = response.result.value else {
                     print("error getting data")
                     return
                 }
@@ -74,43 +92,23 @@ class SpotLibrary {
                 if httpResponse.statusCode == 200 {
                     let jsonData = try? JSONSerialization.jsonObject(with: responseData, options: [])
                     
-//                    if let nestedDictionary = dictionary["anotherKey"] as? [String: Any]
-                    guard let object = jsonData as? [String: Any] else {
+                    guard let array = jsonData as? [Any] else {
                         print("couldn't make object")
                         return
                     }
                     
-                    print(object)
-                    for _ in 0...object.keys.count {
-                        if let nestedSpot = object["1"] as? [String: Any] {
-                            print(nestedSpot["county_name"] as? String)
+                    for item in array {
+                        if let nestedCounty = item as? [String: Any] {
+                            if let countyName = nestedCounty["county_name"] as? String {
+                                self.initializeCountyData(countyName)
+                            }
                         }
                     }
                     
+                    print(self.allCountyNames)
+                    self.getSpotsInCounties(self.allCountyNames)
                 }
         }
-//        Alamofire.request(.GET, dataURL, parameters: nil, encoding: .JSON)
-//            .validate()
-//            .responseJSON { _, _, result in
-//                switch result {
-//                case .Success:
-//                    if result.value != nil {
-//                        let json = JSON(result.value!)
-//                        let numberOfSpotsInJSONResponse = json.count
-//                        for var index = 0; index < numberOfSpotsInJSONResponse; index++ {
-//                            if let countyName:String = json[index]["county_name"].string {
-//                                self.initializeCountyData(countyName)
-//                            }
-//                            else {
-//                                NSLog("A county name could not be read.")
-//                            }
-//                        }
-//                        self.getSpotsInCounties(self.allCountyNames)
-//                    }
-//                case .Failure(_, let error):
-//                    NSLog("\(error)")
-//                }
-//        }
     }
     
     func getSpotsInCounties(_ counties:[String]) {
@@ -371,31 +369,30 @@ class SpotLibrary {
     }
     
     func waterTempForSpotID(_ id:Int) -> Int? {
-        return self.countyDataByName[self.countyForSpotID(id)]?.waterTemp
+        return self.countyDataByName[self.countyForSpotID(id)]?.waterTemperature
     }
     
     func tidesForSpotID(_ id:Int) -> [Float]? { return self.countyDataByName[self.countyForSpotID(id)]!.tides }
     func heightsForSpotID(_ id:Int) -> [Float]? { return self.spotDataByID[id]!.heights }
-    func swellsForSpotID(_ id:Int) -> [(height:Int, period:Int, direction:String)]? { return self.countyDataByName[self.countyForSpotID(id)]!.swells }
-    func windForSpotID(_ id:Int) -> (speedInMPH:Int, direction:String)? { return self.countyDataByName[self.countyForSpotID(id)]!.wind }
+    func swellsForSpotID(_ id:Int) -> [Swell]? { return self.countyDataByName[self.countyForSpotID(id)]!.swells }
+    func windForSpotID(_ id:Int) -> Wind? { return self.countyDataByName[self.countyForSpotID(id)]!.wind }
     
-    func significantSwellForSpotID(_ id:Int) -> (height:Int, period:Int, direction:String)? {
-        if let swells = self.countyDataByName[self.countyForSpotID(id)]!.swells {
-            var mostSignificantSwell = swells[0]
-            for index in 1 ..< swells.count {
-                if swells[index].height > mostSignificantSwell.height {
-                    mostSignificantSwell = swells[index]
-                }
-            }
-            return mostSignificantSwell
-        }
-        else {
+    func significantSwellForSpotID(_ id:Int) -> Swell? {
+        guard let swells = self.countyDataByName[self.countyForSpotID(id)]!.swells else {
             return nil
         }
+        
+        var mostSignificantSwell = swells[0]
+        for index in 1 ..< swells.count {
+            if swells[index].height > mostSignificantSwell.height {
+                mostSignificantSwell = swells[index]
+            }
+        }
+        return mostSignificantSwell
     }
     
     // MARK: - Get data for view models -
-    func allSpotCellDataIfRequestsComplete(_ id: Int) -> (height:Int?, waterTemp:Int?, swell:(height:Int, period:Int, direction:String)?)? {
+    func allSpotCellDataIfRequestsComplete(_ id: Int) -> (height:Int?, waterTemp:Int?, swell:Swell?)? {
         if let spotRequests = self.spotDataRequestLog[id] {
             if let countyRequests = self.countyDataRequestLog[self.countyForSpotID(id)] {
                 if spotRequests.heights && spotRequests.conditions && countyRequests.waterTemp && countyRequests.swells && countyRequests.tides && countyRequests.wind {
@@ -406,7 +403,7 @@ class SpotLibrary {
         return nil
     }
     
-    func allDetailViewData(_ id: Int) -> (name:String, height:Int?, waterTemp:Int?, swell:(height:Int, period:Int, direction:String)?, condition:String?, wind:(speedInMPH:Int, direction:String)?, tides:[Float]?, heights:[Float]?) {
+    func allDetailViewData(_ id: Int) -> (name:String, height:Int?, waterTemp:Int?, swell:Swell?, condition:String?, wind:Wind?, tides:[Float]?, heights:[Float]?) {
         return (name:self.nameForSpotID(id), height: self.heightForSpotIDAtCurrentHour(id), waterTemp: self.waterTempForSpotID(id), swell:self.significantSwellForSpotID(id), condition:self.conditionForSpotID(id), wind:self.windForSpotID(id), tides:self.tidesForSpotID(id), heights:heightsForSpotID(id))
     }
     
@@ -447,7 +444,7 @@ class SpotLibrary {
     func initializeCountyData(_ countyName:String) {
         if (!self.allCountyNames.contains(countyName)) {
             self.allCountyNames.append(countyName)
-            self.countyDataByName[countyName] = (waterTemp:nil, tides:nil, swells:nil, wind:nil)
+            self.countyDataByName[countyName] = CountyData(waterTemperature: nil, tides: nil, swells: nil, wind: nil)
             self.countyDataRequestLog[countyName] = (waterTemp:false, tides:false, swells:false, wind:false)
         }
     }

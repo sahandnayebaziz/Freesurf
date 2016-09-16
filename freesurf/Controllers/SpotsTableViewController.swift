@@ -12,7 +12,7 @@ import ReachabilitySwift
 class SpotsTableViewController: UITableViewController, SpotLibraryDelegate, UISplitViewControllerDelegate {
     
     // MARK: - Properties -
-    var spotLibrary:SpotLibrary = SpotLibrary()
+    var spotLibrary = SpotLibrary()
     var reachability = Reachability()!
     var usingUserDefaults:Bool = false
     var collapseDetailViewController = true
@@ -224,35 +224,36 @@ class SpotsTableViewController: UITableViewController, SpotLibraryDelegate, UISp
             usingUserDefaults = true
             self.spotLibrary.deserializeSpotLibraryFromString(exportString)
             self.spotsTableView.reloadData()
+            
         }
     }
     
     func downloadMissingSpotInfo() {
-        if reachability.isReachable {
-            if spotLibrary.spotDataByID.isEmpty || usingUserDefaults {
-                dispatch_to_background_queue {
-                    self.spotLibrary.getCountyNames()
-                }
-                
-                usingUserDefaults = false;
-            }
-            
-            if spotLibrary.selectedSpotIDs.count > 0 {
-                for spot in spotLibrary.selectedSpotIDs {
-                    if self.spotLibrary.allSpotCellDataIfRequestsComplete(spot) == nil {
-                        
-                        dispatch_to_background_queue {
-                            self.spotLibrary.getSpotHeightsForToday(spot)
-                            let county = self.spotLibrary.countyForSpotID(spot)
-                            self.spotLibrary.getCountyWaterTemp(county, spotSender: spot)
-                            self.spotLibrary.getCountyTideForToday(county, spotSender: spot)
-                            self.spotLibrary.getCountySwell(county, spotSender: spot)
-                            self.spotLibrary.getCountyWind(county, spotSender: spot)
-                        }
-                    }
-                }
-            }
-        }
+//        if reachability.isReachable {
+//            if spotLibrary.spotDataByID.isEmpty || usingUserDefaults {
+//                dispatch_to_background_queue {
+//                    self.spotLibrary.getCountyNames()
+//                }
+//                
+//                usingUserDefaults = false;
+//            }
+//            
+//            if spotLibrary.selectedSpotIDs.count > 0 {
+//                for spot in spotLibrary.selectedSpotIDs {
+//                    if self.spotLibrary.allSpotCellDataIfRequestsComplete(spot) == nil {
+//                        
+//                        dispatch_to_background_queue {
+//                            self.spotLibrary.getSpotHeightsForToday(spot)
+//                            let county = self.spotLibrary.countyForSpotID(spot)
+//                            self.spotLibrary.getCountyWaterTemp(county, spotSender: spot)
+//                            self.spotLibrary.getCountyTideForToday(county, spotSender: spot)
+//                            self.spotLibrary.getCountySwell(county, spotSender: spot)
+//                            self.spotLibrary.getCountyWind(county, spotSender: spot)
+//                        }
+//                    }
+//                }
+//            }
+//        }
     }
 }
 
