@@ -9,29 +9,45 @@
 import UIKit
 import QuartzCore
 
-// a SpotCell displays a preview of spot information on the main view
-class SpotCell: UITableViewCell {
+protocol SpotDataDelegate {
+    func didUpdate(forSpot spot: SpotData, county: CountyData)
+}
 
-    // MARK: - Properties -
+class SpotCell: UITableViewCell, SpotDataDelegate {
+    
+    var representedSpot: SpotData? = nil
+
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var heightLabel: UILabel!
     @IBOutlet weak var tempAndSwellLabel: UILabel!
     var gradient:CAGradientLayer = CAGradientLayer()
-
-    // MARK: - Initializers -
-    convenience init(model:SpotCellViewModel) {
-        self.init()
-        setValues(model)
+    
+    func set(forSpot spot: SpotData) {
+        representedSpot = spot
     }
     
-    // MARK: - Methods -
-    func setValues(_ model: SpotCellViewModel) {
-        self.nameLabel.text = model.name
-        self.heightLabel.text = model.height
-        self.tempAndSwellLabel.text = model.tempAndSwell
-        self.gradient.colors = model.colors
+    func didUpdate(forSpot spot: SpotData, county: CountyData) {
+        guard representedSpot != nil else {
+            return
+        }
         
-        self.gradient.frame = self.bounds
-        self.layer.insertSublayer(gradient, at: 0)
+        guard spot.id == representedSpot!.id else {
+            NSLog("saw update for spot that's not for this cell")
+            return
+        }
+        
+        NSLog("saw update for spot that is for this cell")
+        
+        dispatch_to_main_queue {
+            self.clipsToBounds = true
+            self.backgroundColor = UIColor.clear
+            
+            self.nameLabel.text = spot.name
+            self.tempAndSwellLabel.text = county.temperatureAndSwellSummary
+            self.gradient.colors = spot.gradientColorsForHeight
+            
+            self.gradient.frame = self.bounds
+            self.layer.insertSublayer(self.gradient, at: 0)
+        }
     }
 }

@@ -10,153 +10,34 @@ import UIKit
 import Alamofire
 import CoreLocation
 import AFDateHelper
+import PromiseKit
 
-struct SpotData {
-    var name: String
-    var county: String
-    var location: CLLocation?
-    var heights: [Float]?
-    var conditions: String?
-}
-
-struct Swell {
-    var height: Int
-    var period: Int
-    var direction: String
-}
-
-struct Wind {
-    var speed: Int
-    var direction: String
-}
-
-struct CountyData {
-    var waterTemperature: Int?
-    var tides: [Float]?
-    var swells: [Swell]?
-    var wind: Wind?
+protocol SpotLibraryDelegate {
+    func didLoadSavedSpots(spotsFound: Bool)
 }
 
 // a SpotLibrary object holds all surf weather data used at runtime.
 class SpotLibrary {
     
     // MARK: - Properties -
-    var allCountyNames:[String]
-    var allSpotIDs:[Int]
-    var selectedSpotIDs:[Int]
-    var allSpotsHaveBeenDownloaded:Bool = false
+    var allSpotIDs = Set<Int>()
+    var selectedSpotIDs: [Int] = []
     
-    var spotDataByID: [Int: SpotData]
-    var spotDataRequestLog:[Int:(name:Bool, county:Bool, heights:Bool, conditions:Bool)]
-    var countyDataByName: [String: CountyData]
-    var countyDataRequestLog:[String:(waterTemp:Bool, tides:Bool, swells:Bool, wind:Bool)]
+    var spotDataByID: [Int: SpotData] = [:]
+    var spotDataRequestLog: [Int:(name:Bool, county:Bool, heights:Bool, conditions:Bool)] = [:]
+    var countyDataByName: [String: CountyData] = [:]
+    var countyDataRequestLog: [String:(waterTemp:Bool, tides:Bool, swells:Bool, wind:Bool)] = [:]
     
-    var currentHour:Int
-    var delegate:SpotLibraryDelegate?
+    var currentHour: Int = Date().hour()
+    let delegate: SpotLibraryDelegate
     
-    
-    // MARK: - Initializers -
-    init() {
-        allCountyNames = []
-        allSpotIDs = []
-        selectedSpotIDs = []
+    init(delegate: SpotLibraryDelegate) {
+        self.delegate = delegate
+        deserializeSpotLibraryFromString()
         
-        spotDataByID = [:]
-        countyDataByName = [:]
-        spotDataRequestLog = [:]
-        countyDataRequestLog = [:]
-        
-        currentHour = Date().hour()
-    }
-    
-    convenience init(serializedSpotLibrary:String) {
-        self.init()
-        self.deserializeSpotLibraryFromString(serializedSpotLibrary)
-    }
-    
-    // MARK: - Spitcast GET methods -
-    func getCountyNames() {
-        let dataURL:URL = URL(string: "http://api.spitcast.com/api/spot/all")!
-        request(dataURL, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: nil)
-            .responseData { response in
-                guard let httpResponse = response.response else {
-                    print("error downloading county names")
-                    return
-                }
-                
-                guard let responseData = response.result.value else {
-                    print("error getting data")
-                    return
-                }
-                
-                if httpResponse.statusCode == 200 {
-                    let jsonData = try? JSONSerialization.jsonObject(with: responseData, options: [])
-                    
-                    guard let array = jsonData as? [Any] else {
-                        print("couldn't make object")
-                        return
-                    }
-                    
-                    for item in array {
-                        if let nestedCounty = item as? [String: Any] {
-                            if let countyName = nestedCounty["county_name"] as? String {
-                                self.initializeCountyData(countyName)
-                            }
-                        }
-                    }
-                    
-                    print(self.allCountyNames)
-                    self.getSpotsInCounties(self.allCountyNames)
-                }
+        Spitcast.getAllCountyNames().then { countyNames -> Void in
+            print(countyNames)
         }
-    }
-    
-    func getSpotsInCounties(_ counties:[String]) {
-//        var listOfCounties = counties
-//        if (!listOfCounties.isEmpty) {
-//            let formattedCountyNameForRequest = listOfCounties[0].stringByReplacingOccurrencesOfString(" ", withString: "-", options: NSString.CompareOptions.LiteralSearch, range: nil).lowercased()
-//            let dataURL = URL(string: "http://api.spitcast.com/api/county/spots/\(formattedCountyNameForRequest)/")!
-//            
-//            Alamofire.request(.GET, dataURL, parameters: nil, encoding: .JSON)
-//                .validate()
-//                .responseJSON { _, _, result in
-//                    switch result {
-//                    case .Success:
-//                        if result.value != nil {
-//                            let json = JSON(result.value!)
-//                            let numberOfSpotsInCounty = json.count
-//                            
-//                            for var index = 0; index < numberOfSpotsInCounty; index++ {
-//                                
-//                                if let existingSpotID:Int = json[index]["spot_id"].int {
-//                                    let name:String = json[index]["spot_name"].string!
-//                                    let county:String = listOfCounties[0]
-//                                    
-//                                    let long = json[index]["longitude"].double!
-//                                    let lat = json[index]["latitude"].double!
-//                                    let location = CLLocation(latitude: lat, longitude: long)
-//                                    
-//                                    if !self.allSpotIDs.contains(existingSpotID) {
-//                                        self.allSpotIDs.append(existingSpotID)
-//                                        self.spotDataByID[existingSpotID] = SpotData(name: name, county: county, location: nil, heights: nil, conditions: nil)
-//                                        self.spotDataRequestLog[existingSpotID] = (name:true, county:true, heights:false, conditions:false)
-//                                    }
-//                                    self.spotDataByID[existingSpotID]?.location = location
-//                                }
-//                            }
-//                        }
-//                        
-//                        listOfCounties.removeAtIndex(0)
-//                        self.getSpotsInCounties(listOfCounties)
-//                    case .Failure(_, let error):
-//                        NSLog("\(error)")
-//                    }
-//            }
-//        }
-//        else {
-//            self.allSpotsHaveBeenDownloaded = true
-//        }
-        
     }
     
     func getSpotHeightsForToday(_ spotID:Int) {
@@ -409,7 +290,6 @@ class SpotLibrary {
     
     func notifyViewOfComplete(_ id: Int) {
         if allSpotCellDataIfRequestsComplete(id) != nil {
-            delegate?.didDownloadDataForSpot()
         }
     }
     
@@ -423,30 +303,31 @@ class SpotLibrary {
         return exportString
     }
     
-    func deserializeSpotLibraryFromString(_ exportString: String) {
-        let listOfSpotExports:[String] = exportString.components(separatedBy: ",")
-        for spotExport in listOfSpotExports {
-            var spotAttributes:[String] = spotExport.components(separatedBy: ".")
-            if spotAttributes.count == 3 {
-                let spotID:Int = Int(spotAttributes[0])!
-                let spotName:String = spotAttributes[1]
-                let spotCounty:String = spotAttributes[2]
-
-                self.allSpotIDs.append(spotID)
-                self.selectedSpotIDs.append(spotID)
-                self.spotDataByID[spotID] = SpotData(name: spotName, county: spotCounty, location: nil, heights: nil, conditions: nil)
-                self.spotDataRequestLog[spotID] = (name: true, county: true, heights: false, conditions: false)
-                initializeCountyData(spotCounty)
-            }
-        }
+    func deserializeSpotLibraryFromString() {
+//        guard let exportString = Defaults.getSavedSpots() else {
+//            return
+//        }
+//        
+//        let listOfSpotExports:[String] = exportString.components(separatedBy: ",")
+//        for spotExport in listOfSpotExports {
+//            var spotAttributes:[String] = spotExport.components(separatedBy: ".")
+//            if spotAttributes.count == 3 {
+//                let spotID:Int = Int(spotAttributes[0])!
+//                let spotName:String = spotAttributes[1]
+//                let spotCounty:String = spotAttributes[2]
+//
+//                self.allSpotIDs.insert(spotID)
+//                self.selectedSpotIDs.append(spotID)
+//                self.spotDataByID[spotID] = SpotData(id: spotID, name: spotName, county: spotCounty, location: nil, heights: nil, conditions: nil)
+//                self.spotDataRequestLog[spotID] = (name: true, county: true, heights: false, conditions: false)
+//                initializeCountyData(spotCounty)
+//            }
+//        }
     }
 
     func initializeCountyData(_ countyName:String) {
-        if (!self.allCountyNames.contains(countyName)) {
-            self.allCountyNames.append(countyName)
-            self.countyDataByName[countyName] = CountyData(waterTemperature: nil, tides: nil, swells: nil, wind: nil)
-            self.countyDataRequestLog[countyName] = (waterTemp:false, tides:false, swells:false, wind:false)
-        }
+//            self.countyDataByName[countyName] = CountyData(waterTemperature: nil, tides: nil, swells: nil, wind: nil)
+//            self.countyDataRequestLog[countyName] = (waterTemp:false, tides:false, swells:false, wind:false)
     }
     
     // MARK: - SpotLibrary math -
@@ -456,21 +337,6 @@ class SpotLibrary {
         let listOfDirections:[String] = ["N", "NNW", "NW", "WNW", "W", "WSW", "SW", "SSW", "S", "SSE", "SE", "ESE", "E", "ENE", "NE", "NNE", "N"]
         return listOfDirections[((degrees) + (360/16)/2) % 360 / (360/16)]
     }
-    
-//    func acs(s1:Student, s2:Student) -> Bool {
-//        return s1.name < s2.name
-//    }
-//    func des(s1:Student, s2:Student) -> Bool {
-//        return s1.name > s2.name
-//    }
-//    var n1 = sorted(studentrecord, acs) // Alex, John, Tom
-//    var n2 = sorted(studentrecord, des) // Tom, John, Alex
-}
-
-// MARK: - Delegate methods -
-@objc protocol SpotLibraryDelegate {
-    
-    func didDownloadDataForSpot()
 }
 
 
