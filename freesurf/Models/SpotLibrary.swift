@@ -12,8 +12,11 @@ import CoreLocation
 import AFDateHelper
 import PromiseKit
 
-protocol SpotLibraryDelegate {
+protocol SpotDataDelegate {
     func didLoadSavedSpots(spotsFound: Bool)
+    func didUpdate(forSpot spot: SpotData, county: CountyData)
+    
+    func _devDidLoadAllSpots()
 }
 
 // a SpotLibrary object holds all surf weather data used at runtime.
@@ -29,14 +32,21 @@ class SpotLibrary {
     var countyDataRequestLog: [String:(waterTemp:Bool, tides:Bool, swells:Bool, wind:Bool)] = [:]
     
     var currentHour: Int = Date().hour()
-    let delegate: SpotLibraryDelegate
+    let delegate: SpotDataDelegate
     
-    init(delegate: SpotLibraryDelegate) {
+    init(delegate: SpotDataDelegate) {
         self.delegate = delegate
         deserializeSpotLibraryFromString()
         
-        Spitcast.getAllCountyNames().then { countyNames -> Void in
-            print(countyNames)
+        Spitcast.getAllCountyNames()
+        .then { counties -> Promise<[Int: SpotData]> in
+            for county in counties {
+                self.countyDataByName[county] = CountyData(waterTemperature: nil, tides: nil, swells: nil, wind: nil)
+            }
+            return Spitcast.get(allSpotsForCounties: counties)
+        }.then { spotMap -> Void in
+            self.spotDataByID = spotMap
+            delegate._devDidLoadAllSpots()
         }
     }
     

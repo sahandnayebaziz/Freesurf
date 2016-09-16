@@ -9,9 +9,7 @@
 import UIKit
 import QuartzCore
 
-protocol SpotDataDelegate {
-    func didUpdate(forSpot spot: SpotData, county: CountyData)
-}
+
 
 class SpotCell: UITableViewCell, SpotDataDelegate {
     
@@ -24,6 +22,9 @@ class SpotCell: UITableViewCell, SpotDataDelegate {
     
     func set(forSpot spot: SpotData) {
         representedSpot = spot
+        NSLog("set cell for \(spot.id)")
+        self.clipsToBounds = true
+        self.backgroundColor = UIColor.clear
     }
     
     func didUpdate(forSpot spot: SpotData, county: CountyData) {
@@ -39,8 +40,7 @@ class SpotCell: UITableViewCell, SpotDataDelegate {
         NSLog("saw update for spot that is for this cell")
         
         dispatch_to_main_queue {
-            self.clipsToBounds = true
-            self.backgroundColor = UIColor.clear
+            
             
             self.nameLabel.text = spot.name
             self.tempAndSwellLabel.text = county.temperatureAndSwellSummary
@@ -50,4 +50,7 @@ class SpotCell: UITableViewCell, SpotDataDelegate {
             self.layer.insertSublayer(self.gradient, at: 0)
         }
     }
+    
+    func didLoadSavedSpots(spotsFound: Bool) {}
+    func _devDidLoadAllSpots() {}
 }

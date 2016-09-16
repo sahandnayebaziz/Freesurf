@@ -9,7 +9,7 @@
 import UIKit
 import ReachabilitySwift
 
-class SpotsTableViewController: UITableViewController, SpotLibraryDelegate, SpotDataDelegate, UISplitViewControllerDelegate {
+class SpotsTableViewController: UITableViewController, SpotDataDelegate, UISplitViewControllerDelegate {
     
     var library: SpotLibrary!
     var usingUserDefaults:Bool = false
@@ -51,11 +51,16 @@ class SpotsTableViewController: UITableViewController, SpotLibraryDelegate, Spot
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return library.selectedSpotIDs.count
+        return library.spotDataByID.keys.sorted().count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = spotsTableView.dequeueReusableCell(withIdentifier: "spotCell", for: indexPath) as! SpotCell
+        let spotId = library.spotDataByID.keys.sorted()[indexPath.row]
+        let spot = library.spotDataByID[spotId]!
+        let county = library.countyDataByName[spot.county]!
+        cell.set(forSpot: spot)
+        cell.didUpdate(forSpot: spot, county: county)
         return cell
     }
     
@@ -147,6 +152,10 @@ class SpotsTableViewController: UITableViewController, SpotLibraryDelegate, Spot
 //                }
 //            }
 //        }
+    }
+    
+    func _devDidLoadAllSpots() {
+        spotsTableView.reloadData()
     }
     
     func didLoadSavedSpots(spotsFound: Bool) {
