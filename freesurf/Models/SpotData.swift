@@ -59,6 +59,35 @@ struct SpotData {
         
         return "\(Int(heights[currentHour]))ft"
     }
+    
+    var heightRangeString: String {
+        guard let heights = heights else {
+            return "--ft"
+        }
+        
+        let currentHour = Date().hour()
+        guard heights.count >= currentHour else {
+            NSLog("Incomplete heights error")
+            return "--ft"
+        }
+        
+        let height = Int(heights[currentHour])
+        return "\(height)-\(height + 1)ft"
+    }
+    
+    var conditionString: String {
+        guard let conditions = conditions else {
+            return ""
+        }
+        
+        let currentHour = Date().hour()
+        guard conditions.count >= currentHour else {
+            NSLog("Incomplete swells error")
+            return ""
+        }
+        
+        return conditions[currentHour].uppercased()
+    }
 }
 
 struct Swell: Equatable, Comparable {
@@ -109,8 +138,28 @@ struct CountyData {
     }
     
     var temperatureAndSwellSummary: String {
-        let temperature = waterTemperature != nil ? "\(waterTemperature!)°" : ""
+        let temperature = waterTemperature != nil ? "\(waterTemperature!)° " : ""
         let swell = significantSwell != nil ? "\(significantSwell!.period)s \(significantSwell!.direction)" : ""
-        return "\(temperature) \(swell)"
+        return "\(temperature)\(swell)"
+    }
+    
+    var waterTemperatureString: String {
+        return waterTemperature != nil ? "\(waterTemperature!)°" : ""
+    }
+    
+    var periodString: String {
+        guard let period = significantSwell?.period else {
+            return ""
+        }
+        
+        return "\(period) SEC"
+    }
+    
+    var windString: String {
+        guard let wind = wind else {
+            return ""
+        }
+        
+        return "\(wind.direction) @ \(wind.speed) MPH"
     }
 }

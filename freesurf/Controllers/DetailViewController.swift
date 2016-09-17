@@ -9,13 +9,7 @@
 import UIKit
 import SnapKit
 
-// DetailViewController displays detailed forecast information for a surf spot.
-class DetailViewController: UIViewController, UIScrollViewDelegate, LineChartDelegate {
-
-    // MARK: - Properties -
-    var model:DetailViewModel?
-    var selectedSpotID:Int!
-    var currentHour:Int!
+class DetailViewController: UIViewController, UIScrollViewDelegate, SpotDataDelegate, LineChartDelegate {
 
     let gradient:CAGradientLayer = CAGradientLayer()
 
@@ -51,103 +45,97 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, LineChartDel
         navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
         navigationItem.leftItemsSupplementBackButton = true
         
-        if let model = model {
-            self.setLabels(model)
-            self.setCharts(model)
-            
-            self.tideChart.simulateTouchAtIndex(self.currentHour)
-            self.swellChart.simulateTouchAtIndex(self.currentHour)
-        }
-        else {
-            let welcomeView = UIView(frame: CGRect.zero)
-            welcomeView.backgroundColor = self.view.backgroundColor
-            self.view.addSubview(welcomeView)
-            welcomeView.snp.makeConstraints { make in
-                make.centerY.equalTo(view.snp.centerY)
-                make.centerX.equalTo(view.snp.centerX)
-                make.height.equalTo(view.snp.height)
-                make.width.equalTo(view.snp.width)
-            }
-            
-            let label = UILabel(frame: CGRect.zero)
-            if #available(iOS 8.2, *) {
-                label.font = UIFont.systemFont(ofSize: 24.0, weight: 0.1)
-            } else {
-                label.font = UIFont.systemFont(ofSize: 24.0)
-                // Fallback on earlier versions
-            }
-            label.textColor = UIColor.lightGray
-            label.textAlignment = .center
-            label.text = "Tap a spot to view a forecast"
-            welcomeView.addSubview(label)
-            label.snp.makeConstraints { make in
-                make.centerX.equalTo(welcomeView.snp.centerX)
-                make.centerY.equalTo(welcomeView.snp.centerY).offset(-100)
-                make.height.equalTo(200)
-                make.width.equalTo(welcomeView.snp.width)
-            }
-        }
+//        if let model = model {
+//            self.setLabels(model)
+//            self.setCharts(model)
+//            
+//            self.tideChart.simulateTouchAtIndex(self.currentHour)
+//            self.swellChart.simulateTouchAtIndex(self.currentHour)
+//        }
+//            let welcomeView = UIView(frame: CGRect.zero)
+//            welcomeView.backgroundColor = self.view.backgroundColor
+//            self.view.addSubview(welcomeView)
+//            welcomeView.snp.makeConstraints { make in
+//                make.centerY.equalTo(view.snp.centerY)
+//                make.centerX.equalTo(view.snp.centerX)
+//                make.height.equalTo(view.snp.height)
+//                make.width.equalTo(view.snp.width)
+//            }
+//            
+//            let label = UILabel(frame: CGRect.zero)
+//            label.font = UIFont.systemFont(ofSize: 24.0, weight: 0.1)
+//            label.textColor = UIColor.lightGray
+//            label.textAlignment = .center
+//            label.text = "Tap a spot to view a forecast"
+//            welcomeView.addSubview(label)
+//            label.snp.makeConstraints { make in
+//                make.centerX.equalTo(welcomeView.snp.centerX)
+//                make.centerY.equalTo(welcomeView.snp.centerY).offset(-100)
+//                make.height.equalTo(200)
+//                make.width.equalTo(welcomeView.snp.width)
+//            }
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        if let _ = model {
-            self.tideChart.highlightDataPoints(self.currentHour)
-            self.swellChart.highlightDataPoints(self.currentHour)
-        }
-        
+//        if let _ = model {
+//            self.tideChart.highlightDataPoints(self.currentHour)
+//            self.swellChart.highlightDataPoints(self.currentHour)
+//        }
     }
     
     override var preferredStatusBarStyle : UIStatusBarStyle {
         return UIStatusBarStyle.lightContent
     }
     
-    // MARK: - Methods -
-    func setLabels(_ model:DetailViewModel) {
-        self.title = model.name
-        self.spotWaterTempLabel.text = model.temp
-        self.spotCurrentHeightLabel.text = model.height
-        self.spotDirectionLabel.text = model.swellDirection
-        self.spotPeriodLabel.text = model.swellPeriod
-        self.spotConditionLabel.text = model.condition
-        self.spotWindLabel.text = model.wind
+    func did(updateSpot spot: SpotData) {
+        title = spot.name
+        spotCurrentHeightLabel.text = spot.heightRangeString
+        spotConditionLabel.text = spot.conditionString
+    }
+    
+    func did(updateCounty county: CountyData) {
+        spotWaterTempLabel.text = county.waterTemperatureString
+        spotDirectionLabel.text = county.significantSwell?.direction
+        spotPeriodLabel.text = county.periodString
+        spotWindLabel.text = county.windString
     }
 
-    func setCharts(_ model:DetailViewModel) {
-
-        tideChart.addLine(model.tides)
-        swellChart.addLine(model.heights)
-        
-        for chart in [tideChart, swellChart] {
-            chart.animationEnabled = false
-            chart.areaUnderLinesVisible = false
-            chart.axesColor = UIColor.clear
-            chart.gridColor = UIColor.clear
-            chart.labelsXVisible = true
-            chart.labelsYVisible = false
-            chart.axisInset = 24
-            chart.dotsBackgroundColor = UIColor(red: 97/255.0, green: 177/255.0, blue: 237/255.0, alpha: 1)
-        }
-        
-        targetView.addSubview(tideChart)
-        tideChart.snp.makeConstraints { make in
-            make.height.equalTo(tideChartView.snp.height)
-            make.width.equalTo(tideChartView.snp.width)
-            make.centerX.equalTo(tideChartView.snp.centerX)
-            make.centerY.equalTo(tideChartView.snp.centerY)
-        }
-        
-        targetView.addSubview(swellChart)
-        swellChart.snp.makeConstraints { make in
-            make.height.equalTo(swellChartView.snp.height)
-            make.width.equalTo(swellChartView.snp.width)
-            make.centerX.equalTo(swellChartView.snp.centerX)
-            make.centerY.equalTo(swellChartView.snp.centerY)
-        }
-        
-        tideChart.delegate = self
-        swellChart.delegate = self
-        
-    }
+//    func setCharts(_ model:DetailViewModel) {
+//
+//        tideChart.addLine(model.tides)
+//        swellChart.addLine(model.heights)
+//        
+//        for chart in [tideChart, swellChart] {
+//            chart.animationEnabled = false
+//            chart.areaUnderLinesVisible = false
+//            chart.axesColor = UIColor.clear
+//            chart.gridColor = UIColor.clear
+//            chart.labelsXVisible = true
+//            chart.labelsYVisible = false
+//            chart.axisInset = 24
+//            chart.dotsBackgroundColor = UIColor(red: 97/255.0, green: 177/255.0, blue: 237/255.0, alpha: 1)
+//        }
+//        
+//        targetView.addSubview(tideChart)
+//        tideChart.snp.makeConstraints { make in
+//            make.height.equalTo(tideChartView.snp.height)
+//            make.width.equalTo(tideChartView.snp.width)
+//            make.centerX.equalTo(tideChartView.snp.centerX)
+//            make.centerY.equalTo(tideChartView.snp.centerY)
+//        }
+//        
+//        targetView.addSubview(swellChart)
+//        swellChart.snp.makeConstraints { make in
+//            make.height.equalTo(swellChartView.snp.height)
+//            make.width.equalTo(swellChartView.snp.width)
+//            make.centerX.equalTo(swellChartView.snp.centerX)
+//            make.centerY.equalTo(swellChartView.snp.centerY)
+//        }
+//        
+//        tideChart.delegate = self
+//        swellChart.delegate = self
+//        
+//    }
     
     override func didRotate(from fromInterfaceOrientation: UIInterfaceOrientation) {
         tideChart.setNeedsDisplay()

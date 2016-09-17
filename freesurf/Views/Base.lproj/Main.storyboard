@@ -99,9 +99,9 @@
                                     </constraints>
                                     <variation key="default">
                                         <mask key="constraints">
-                                            <exclude reference="tqG-0H-IDP"/>
                                             <exclude reference="KDj-5W-REx"/>
                                             <exclude reference="OMF-OQ-mRQ"/>
+                                            <exclude reference="tqG-0H-IDP"/>
                                             <exclude reference="IQx-fZ-2OP"/>
                                             <exclude reference="rFc-MN-6mG"/>
                                         </mask>
@@ -470,13 +470,13 @@
                                         </constraints>
                                         <variation key="default">
                                             <mask key="constraints">
+                                                <exclude reference="1eg-A4-XNu"/>
                                                 <exclude reference="0ZW-5x-nQZ"/>
                                                 <exclude reference="Pwj-Ki-2FN"/>
                                                 <exclude reference="eBR-GE-txW"/>
                                                 <exclude reference="jYf-Ta-O9w"/>
                                                 <exclude reference="X1Z-RQ-2nl"/>
                                                 <exclude reference="mqh-xk-a1Z"/>
-                                                <exclude reference="1eg-A4-XNu"/>
                                                 <exclude reference="Lux-s8-ebh"/>
                                                 <exclude reference="9nD-4Y-ujK"/>
                                             </mask>

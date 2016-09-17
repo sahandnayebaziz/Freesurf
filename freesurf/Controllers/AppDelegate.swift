@@ -15,12 +15,34 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool
     {
+//        MyFirstViewController* firstVC = [[MyFirstViewController alloc] init];
+//        MySecondViewController* secondVC = [[MySecondViewController alloc] init];
+//        
+//        UISplitViewController* splitVC = [[UISplitViewController alloc] init];
+//        splitVC.viewControllers = [NSArray arrayWithObjects:firstVC, secondVC, nil];
+//        
+//        window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+//        window.rootViewController = splitVC;
+//        [window makeKeyAndVisible];
+//        
+//        return YES;
+        let master = SpotsViewController()
+        let masterNav = UINavigationController(rootViewController: master)
         
+        let detail = DetailViewController(nibName: nil, bundle: nil)
+        let detailNav = UINavigationController(rootViewController: detail)
+        
+        let splitView = UISplitViewController()
+        splitView.viewControllers = [masterNav, detailNav]
+        
+        window = UIWindow(frame: UIScreen.main.bounds)
+        if let window = window {
+            window.backgroundColor = UIColor.white
+            window.rootViewController = splitView
+            window.makeKeyAndVisible()
+        }
+
         URLCache.shared = URLCache(memoryCapacity: 0, diskCapacity: 0, diskPath: nil)
-//        let splitViewController = self.window!.rootViewController as! UISplitViewController
-//        let navigationController = splitViewController.viewControllers[splitViewController.viewControllers.count-1] as! UINavigationController
-//        navigationController.topViewController.navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem()
-//        splitViewController.delegate = self
         return true
     }
     

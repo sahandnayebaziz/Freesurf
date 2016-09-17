@@ -17,8 +17,9 @@
 		D81925661A48FE8600925B51 /* LICENSE2 in Resources */ = {isa = PBXBuildFile; fileRef = D81925651A48FE8600925B51 /* LICENSE2 */; };
 		D82AACBE1A7EAB3D00D2ED5B /* DetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D82AACBD1A7EAB3D00D2ED5B /* DetailViewModel.swift */; };
 		D82C59711A33E69600896BBA /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D82C59701A33E69600896BBA /* DetailViewController.swift */; };
+		D84542871D8DDD84009753BD /* FooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D84542861D8DDD84009753BD /* FooterView.swift */; };
 		D86544EA1BA364B2000965DD /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D86544E91BA364B2000965DD /* Launch Screen.storyboard */; };
-		D86F621D198F02DF0070B713 /* SpotsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86F621C198F02DF0070B713 /* SpotsTableViewController.swift */; };
+		D86F621D198F02DF0070B713 /* SpotsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86F621C198F02DF0070B713 /* SpotsViewController.swift */; };
 		D8A0427F1D8C9576000F3D45 /* Defaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A0427E1D8C9576000F3D45 /* Defaults.swift */; };
 		D8A042811D8C98E7000F3D45 /* SpotData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A042801D8C98E7000F3D45 /* SpotData.swift */; };
 		D8A042851D8CAA38000F3D45 /* Spitcast.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A042841D8CAA38000F3D45 /* Spitcast.swift */; };
@@ -60,8 +61,9 @@
 		D81925651A48FE8600925B51 /* LICENSE2 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE2; sourceTree = "<group>"; };
 		D82AACBD1A7EAB3D00D2ED5B /* DetailViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewModel.swift; sourceTree = "<group>"; };
 		D82C59701A33E69600896BBA /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		D84542861D8DDD84009753BD /* FooterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FooterView.swift; sourceTree = "<group>"; };
 		D86544E91BA364B2000965DD /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
-		D86F621C198F02DF0070B713 /* SpotsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpotsTableViewController.swift; sourceTree = "<group>"; };
+		D86F621C198F02DF0070B713 /* SpotsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpotsViewController.swift; sourceTree = "<group>"; };
 		D8A0427E1D8C9576000F3D45 /* Defaults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Defaults.swift; sourceTree = "<group>"; };
 		D8A042801D8C98E7000F3D45 /* SpotData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpotData.swift; sourceTree = "<group>"; };
 		D8A042841D8CAA38000F3D45 /* Spitcast.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Spitcast.swift; sourceTree = "<group>"; };
@@ -161,7 +163,7 @@
 				D801177A198D64C200509A27 /* AppDelegate.swift */,
 				D82C59701A33E69600896BBA /* DetailViewController.swift */,
 				D8F6636819D5F14F000B062C /* SearchTableViewController.swift */,
-				D86F621C198F02DF0070B713 /* SpotsTableViewController.swift */,
+				D86F621C198F02DF0070B713 /* SpotsViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -182,6 +184,7 @@
 			children = (
 				D801177E198D64C200509A27 /* Main.storyboard */,
 				D86544E91BA364B2000965DD /* Launch Screen.storyboard */,
+				D84542861D8DDD84009753BD /* FooterView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -323,9 +326,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D86F621D198F02DF0070B713 /* SpotsTableViewController.swift in Sources */,
+				D86F621D198F02DF0070B713 /* SpotsViewController.swift in Sources */,
 				D8A0427F1D8C9576000F3D45 /* Defaults.swift in Sources */,
 				D818F3D3198EEE390098FE82 /* SpotLibrary.swift in Sources */,
+				D84542871D8DDD84009753BD /* FooterView.swift in Sources */,
 				D8B5681619C8914E000817AA /* threading.swift in Sources */,
 				D8F6636919D5F14F000B062C /* SearchTableViewController.swift in Sources */,
 				D8F6636519D5EF87000B062C /* search.swift in Sources */,
@@ -376,7 +380,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -424,7 +428,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -451,7 +455,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				INFOPLIST_FILE = freesurf/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -470,7 +474,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				INFOPLIST_FILE = freesurf/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

@@ -25,10 +25,8 @@ struct SpotSelectionResponse {
     var didAddSpot: Bool
 }
 
-// a SpotLibrary object holds all surf weather data used at runtime.
 class SpotLibrary {
     
-    // MARK: - Properties -
     var spotDataByID: [Int: SpotData] = [:]
     var countyDataByName: [String: CountyData] = [:]
     var selectedSpotIDs: [Int] = []
@@ -36,8 +34,8 @@ class SpotLibrary {
     let tableViewDelegate: SpotTableViewDelegate?
     let dataDelegate: SpotDataDelegate?
     
-    init(delegate: SpotDataDelegate, tableViewDelegate: SpotTableViewDelegate?) {
-        self.dataDelegate = delegate
+    init(dataDelegate: SpotDataDelegate, tableViewDelegate: SpotTableViewDelegate?) {
+        self.dataDelegate = dataDelegate
         self.tableViewDelegate = tableViewDelegate
     }
     
@@ -213,9 +211,6 @@ class SpotLibrary {
 //        }
 //    }
     }
-//    func allDetailViewData(_ id: Int) -> (name:String, height:Int?, waterTemp:Int?, swell:Swell?, condition:String?, wind:Wind?, tides:[Float]?, heights:[Float]?) {
-//        return (name:"", height: self.heightForSpotIDAtCurrentHour(id), waterTemp: self.waterTempForSpotID(id), swell:self.significantSwellForSpotID(id), condition:self.conditionForSpotID(id), wind:self.windForSpotID(id), tides:self.tidesForSpotID(id), heights:heightsForSpotID(id))
-//    }
 }
 
 
