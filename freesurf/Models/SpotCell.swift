@@ -52,12 +52,8 @@ class SpotCell: UITableViewCell, SpotDataDelegate {
         guard county.name == representedSpot!.county else {
             return
         }
-    }
-    
-    func didUpdate(forSpot spot: SpotData, county: CountyData) {
         
         self.tempAndSwellLabel.text = county.temperatureAndSwellSummary
-        
     }
     
     func didLoadSavedSpots(spotsFound: Bool) {}

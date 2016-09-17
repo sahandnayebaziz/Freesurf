@@ -65,6 +65,13 @@ struct Swell: Equatable, Comparable {
     var height: Int
     var period: Int
     var direction: String
+    
+    static func inFeet(heightMeters: Float) -> Int { return Int(heightMeters * 3.2) }
+    
+    static func toString(degrees: Int) -> String {
+        let listOfDirections:[String] = ["N", "NNW", "NW", "WNW", "W", "WSW", "SW", "SSW", "S", "SSE", "SE", "ESE", "E", "ENE", "NE", "NNE", "N"]
+        return listOfDirections[((degrees) + (360/16)/2) % 360 / (360/16)]
+    }
 }
 
 func ==(lhs: Swell, rhs: Swell) -> Bool {
@@ -84,14 +91,21 @@ struct CountyData {
     var name: String
     var waterTemperature: Int?
     var tides: [Float]?
-    var swells: [Swell]?
+    var swells: [[Swell]]?
     var wind: Wind?
     
     var significantSwell: Swell? {
         guard let allSwells = self.swells else {
             return nil
         }
-        return allSwells.max()
+        
+        let currentHour = Date().hour()
+        guard allSwells.count >= currentHour else {
+            NSLog("Incomplete swells error")
+            return nil
+        }
+        
+        return allSwells[currentHour].max()
     }
     
     var temperatureAndSwellSummary: String {

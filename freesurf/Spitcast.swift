@@ -24,6 +24,21 @@ struct SpotHeightResponse {
     var conditions: [String]?
 }
 
+struct CountyWaterTemperatureResponse {
+    var county: String
+    var waterTemperature: Int
+}
+
+struct CountyTidesResponse {
+    var county: String
+    var tides: [Float]
+}
+
+struct CountySwellsResponse {
+    var county: String
+    var swells: [[Swell]]
+}
+
 struct Spitcast {
     private static let spitcastURL = "http://api.spitcast.com/api"
     
@@ -149,4 +164,157 @@ struct Spitcast {
             }
         }
     }
+    
+    static func get(waterTemperatureForCounty county: String) -> Promise<CountyWaterTemperatureResponse> {
+        return Promise { resolve, reject in
+            request(spitcastURL + "/county/water-temperature/" + format(stringForAPI: county), method: .get, parameters: nil, encoding: JSONEncoding.default, headers: nil)
+                .responseData { response in
+                    guard let httpResponse = response.response, let responseData = response.result.value else {
+                        return reject(SpitcastError.BadResponse)
+                    }
+                    
+                    if httpResponse.statusCode == 200 {
+                        let jsonData = try? JSONSerialization.jsonObject(with: responseData, options: [])
+                        guard let object = jsonData as? [String: Any] else {
+                            return reject(SpitcastError.BadData)
+                        }
+                        
+                        guard let temperature = object["fahrenheit"] as? Int else {
+                            return reject(SpitcastError.BadData)
+                        }
+                        
+                        resolve(CountyWaterTemperatureResponse(county: county, waterTemperature: temperature))
+                    } else {
+                        return reject(SpitcastError.BadResponse)
+                    }
+            }
+        }
+    }
+    
+    static func get(tidesForCounty county: String) -> Promise<CountyTidesResponse> {
+        return Promise { resolve, reject in
+            request(spitcastURL + "/county/tide/" + format(stringForAPI: county), method: .get, parameters: nil, encoding: JSONEncoding.default, headers: nil)
+                .responseData { response in
+                    guard let httpResponse = response.response, let responseData = response.result.value else {
+                        return reject(SpitcastError.BadResponse)
+                    }
+                    
+                    if httpResponse.statusCode == 200 {
+                        let jsonData = try? JSONSerialization.jsonObject(with: responseData, options: [])
+                        guard let array = jsonData as? [Any] else {
+                            return reject(SpitcastError.BadData)
+                        }
+                        
+                        var tides: [Float] = []
+                        for item in array {
+                            if let item = item as? [String: Any] {
+                                if let tide = item["tide"] as? Float {
+                                    tides.append(tide)
+                                }
+                            }
+                        }
+                        
+                        if tides.isEmpty {
+                            reject(SpitcastError.BadData)
+                        } else {
+                            resolve(CountyTidesResponse(county: county, tides: tides))
+                        }
+                    } else {
+                        return reject(SpitcastError.BadResponse)
+                    }
+            }
+        }
+    }
+    
+    static func get(swellsForCounty county: String) -> Promise<CountySwellsResponse> {
+        return Promise { resolve, reject in
+            request(spitcastURL + "/county/swell/" + format(stringForAPI: county), method: .get, parameters: nil, encoding: JSONEncoding.default, headers: nil)
+                .responseData { response in
+                    guard let httpResponse = response.response, let responseData = response.result.value else {
+                        return reject(SpitcastError.BadResponse)
+                    }
+                    
+                    if httpResponse.statusCode == 200 {
+                        let jsonData = try? JSONSerialization.jsonObject(with: responseData, options: [])
+                        guard let array = jsonData as? [Any] else {
+                            return reject(SpitcastError.BadData)
+                        }
+                        
+                        var swells: [[Swell]] = []
+                        for item in array {
+                            if let item = item as? [String: Any] {
+                                var swellsAtThisHour: [Swell] = []
+                                for key in 0...5 {
+                                    if let swell = item["\(key)"] as? [String: Any] {
+                                        if let heightInMeters = swell["hs"] as? Float, let periodInSeconds = swell["tp"] as? Float, let directionInDegrees = swell["dir"] as? Int {
+                                            swellsAtThisHour.append(Swell(height: Swell.inFeet(heightMeters: heightInMeters), period: Int(periodInSeconds), direction: Swell.toString(degrees: directionInDegrees)))
+                                        }
+                                    }
+                                }
+                                swells.append(swellsAtThisHour)
+                            }
+                        }
+                        
+                        if swells.isEmpty {
+                            return reject(SpitcastError.BadData)
+                        } else {
+                            return resolve(CountySwellsResponse(county: county, swells: swells))
+                        }
+                    } else {
+                        
+                        return reject(SpitcastError.BadResponse)
+                    }
+            }
+        }
+    }
+    
+    
+    
+//    func getCountySwell(_ county:String, spotSender: Int?) {
+        //        let formattedCountyNameForRequest = county.stringByReplacingOccurrencesOfString(" ", withString: "-", options: NSString.CompareOptions.LiteralSearch, range: nil).lowercased()
+        //        let dataURL:URL = URL(string: "http://api.spitcast.com/api/county/swell/\(formattedCountyNameForRequest)/")!
+        //
+        //        Alamofire.request(.GET, dataURL, parameters: nil, encoding: .JSON)
+        //            .validate()
+        //            .responseJSON { _, _, result in
+        //                switch result {
+        //                case .Success:
+        //                    if result.value != nil {
+        //                        let json = JSON(result.value!)
+        //
+        //                        var allSwellsInThisCounty:[(height:Int, period:Int, direction:String)] = []
+        //                        let possibleSwellNumberInSpitcastResponse = ["0", "1", "2", "3", "4", "5"]
+        //
+        //                        for (var index = 0; index < possibleSwellNumberInSpitcastResponse.count; index++) {
+        //
+        //                            if let directionInDegrees:Int = json[self.currentHour][possibleSwellNumberInSpitcastResponse[index]]["dir"].int {
+        //                                if let heightInMeters:Float = json[self.currentHour][possibleSwellNumberInSpitcastResponse[index]]["hs"].float {
+        //                                    if let periodInSeconds:Float = json[self.currentHour][possibleSwellNumberInSpitcastResponse[index]]["tp"].float {
+        //
+        //                                        let heightInFeet = self.swellMetersToFeet(heightInMeters)
+        //                                        let directionInHeading = self.degreesToDirection(directionInDegrees)
+        //                                        let periodAsInt:Int = Int(periodInSeconds)
+        //
+        //                                        allSwellsInThisCounty += [(height:heightInFeet, period:periodAsInt, direction:directionInHeading)]
+        //                                    }
+        //                                }
+        //                            }
+        //                        }
+        //
+        //                        if allSwellsInThisCounty.count > 0 {
+        //                            self.countyDataByName[county]!.swells = allSwellsInThisCounty
+        //                        }
+        //                    }
+        //
+        //                    self.countyDataRequestLog[county]!.swells = true
+        //                    
+        //                    if let spotID = spotSender {
+        //                        self.notifyViewOfComplete(spotID)
+        //                    }
+        //                case .Failure(_, let error):
+        //                    NSLog("\(error)")
+        //                }
+        //        }
+//    }
+    
 }

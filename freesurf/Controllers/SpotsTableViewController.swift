@@ -61,7 +61,8 @@ class SpotsTableViewController: UITableViewController, SpotDataDelegate, SpotTab
         let spotId = library.selectedSpotIDs[indexPath.row]
         let spot = library.spotDataByID[spotId]!
         cell.set(forSpot: spot)
-        cell.didUpdate(forSpot: spot, county: library.countyDataByName[spot.county]!)
+        cell.did(updateSpot: spot)
+        cell.did(updateCounty: library.countyDataByName[spot.county]!)
         return cell
     }
     

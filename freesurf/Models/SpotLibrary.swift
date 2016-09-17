@@ -47,9 +47,9 @@ class SpotLibrary {
             selectedSpotIDs.append(spot.id)
             spotDataByID[spot.id] = spot
             countyDataByName[spot.county] = CountyData(name: spot.county, waterTemperature: nil, tides: nil, swells: nil, wind: nil)
-            dispatch_to_background_queue {
-                self.get(dataForSpotId: spot.id)
-            }
+        }
+        dispatch_to_background_queue {
+            self.get(dataForSpots: savedSpots)
         }
         self.tableViewDelegate?.didLoadSavedSpots(spotsFound: !savedSpots.isEmpty)
         
@@ -95,6 +95,11 @@ class SpotLibrary {
     }
     
     func get(dataForSpotId spotId: Int) {
+        get(spotDataForSpotId: spotId)
+        get(countyDataForCounty: spotDataByID[spotId]!.county)
+    }
+    
+    private func get(spotDataForSpotId spotId: Int) {
         let spot = spotDataByID[spotId]!
         if spot.heights == nil {
             Spitcast.get(heightsAndConditionsForSpot: spotId)
@@ -111,136 +116,70 @@ class SpotLibrary {
         }
     }
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    func getCountyWaterTemp(_ county:String, spotSender: Int?) {
-//        let formattedCountyNameForRequest = county.stringByReplacingOccurrencesOfString(" ", withString: "-", options: NSString.CompareOptions.LiteralSearch, range: nil).lowercased()
-//        let dataURL = URL(string: "http://api.spitcast.com/api/county/water-temperature/\(formattedCountyNameForRequest)/")!
-//        
-//        Alamofire.request(.GET, dataURL, parameters: nil, encoding: .JSON)
-//            .validate()
-//            .responseJSON { _, _, result in
-//                switch result {
-//                case .Success:
-//                    if result.value != nil {
-//                        let json = JSON(result.value!)
-//                        if let temp = json["fahrenheit"].int {
-//                            self.countyDataByName[county]!.waterTemp = temp
-//                        }
-//                        else {
-//                            self.countyDataByName[county]!.waterTemp = nil
-//                        }
-//                    }
-//                    
-//                    self.countyDataRequestLog[county]!.waterTemp = true
-//                    
-//                    if let spotID = spotSender {
-//                        self.notifyViewOfComplete(spotID)
-//                    }
-//                case .Failure(_, let error):
-//                    NSLog("\(error)")
-//                }
-//        }
+    private func get(countyDataForCounty county: String) {
+        let county = countyDataByName[county]!
+        if county.waterTemperature == nil {
+            Spitcast.get(waterTemperatureForCounty: county.name)
+            .then { response -> Void in
+                dispatch_to_main_queue {
+                    let county = self.countyDataByName[response.county]!
+                    let updatedCounty = CountyData(name: county.name, waterTemperature: response.waterTemperature, tides: county.tides, swells: county.swells, wind: county.wind)
+                    self.update(countyDataWith: updatedCounty)
+                }
+            }.recover { error -> Void in
+                NSLog("\(error) in water temperature for county.")
+            }
+        }
+        
+        if county.tides == nil {
+            Spitcast.get(tidesForCounty: county.name)
+            .then { response -> Void in
+                dispatch_to_main_queue {
+                    let county = self.countyDataByName[response.county]!
+                    let updatedCounty = CountyData(name: county.name, waterTemperature: county.waterTemperature, tides: response.tides, swells: county.swells, wind: county.wind)
+                    self.update(countyDataWith: updatedCounty)
+                }
+            }.recover { error -> Void in
+                NSLog("\(error) in tide for county.")
+            }
+        }
+        
+        if county.swells == nil {
+            Spitcast.get(swellsForCounty: county.name)
+            .then { response -> Void in
+                let county = self.countyDataByName[response.county]!
+                let updatedCounty = CountyData(name: county.name, waterTemperature: county.waterTemperature, tides: county.tides, swells: response.swells, wind: county.wind)
+                self.update(countyDataWith: updatedCounty)
+            }.recover { error -> Void in
+                NSLog("\(error) in swells for county.")
+            }
+        }
     }
     
-    
-    func getCountyTideForToday(_ county:String, spotSender: Int?) {
-//        var tideLevelsForToday:[Float] = []
-//        let formattedCountyNameForRequest = county.stringByReplacingOccurrencesOfString(" ", withString: "-", options: NSString.CompareOptions.LiteralSearch, range: nil).lowercased()
-//        let dataURL:URL = URL(string: "http://api.spitcast.com/api/county/tide/\(formattedCountyNameForRequest)/")!
-//        
-//        Alamofire.request(.GET, dataURL, parameters: nil, encoding: .JSON)
-//            .validate()
-//            .responseJSON { _, _, result in
-//                switch result {
-//                case .Success:
-//                    if result.value != nil {
-//                        let json = JSON(result.value!)
-//                        
-//                        for var index = 0; index < 24; index++ {
-//                            if let tide = json[index]["tide"].float {
-//                                tideLevelsForToday.append(tide)
-//                            }
-//                        }
-//                        
-//                        if tideLevelsForToday.count > 0 {
-//                            self.countyDataByName[county]!.tides = tideLevelsForToday
-//                        }
-//                    }
-//                    
-//                    self.countyDataRequestLog[county]!.tides = true
-//                    
-//                    if let spotID = spotSender {
-//                        self.notifyViewOfComplete(spotID)
-//                    }
-//                case .Failure(_, let error):
-//                    NSLog("\(error)")
-//                }
-//        }
+    private func update(countyDataWith county: CountyData) {
+        countyDataByName[county.name] = county
+        dataDelegate?.did(updateCounty: countyDataByName[county.name]!)
     }
     
-    func getCountySwell(_ county:String, spotSender: Int?) {
-//        let formattedCountyNameForRequest = county.stringByReplacingOccurrencesOfString(" ", withString: "-", options: NSString.CompareOptions.LiteralSearch, range: nil).lowercased()
-//        let dataURL:URL = URL(string: "http://api.spitcast.com/api/county/swell/\(formattedCountyNameForRequest)/")!
-//        
-//        Alamofire.request(.GET, dataURL, parameters: nil, encoding: .JSON)
-//            .validate()
-//            .responseJSON { _, _, result in
-//                switch result {
-//                case .Success:
-//                    if result.value != nil {
-//                        let json = JSON(result.value!)
-//                        
-//                        var allSwellsInThisCounty:[(height:Int, period:Int, direction:String)] = []
-//                        let possibleSwellNumberInSpitcastResponse = ["0", "1", "2", "3", "4", "5"]
-//                        
-//                        for (var index = 0; index < possibleSwellNumberInSpitcastResponse.count; index++) {
-//                            
-//                            if let directionInDegrees:Int = json[self.currentHour][possibleSwellNumberInSpitcastResponse[index]]["dir"].int {
-//                                if let heightInMeters:Float = json[self.currentHour][possibleSwellNumberInSpitcastResponse[index]]["hs"].float {
-//                                    if let periodInSeconds:Float = json[self.currentHour][possibleSwellNumberInSpitcastResponse[index]]["tp"].float {
-//                                        
-//                                        let heightInFeet = self.swellMetersToFeet(heightInMeters)
-//                                        let directionInHeading = self.degreesToDirection(directionInDegrees)
-//                                        let periodAsInt:Int = Int(periodInSeconds)
-//                                        
-//                                        allSwellsInThisCounty += [(height:heightInFeet, period:periodAsInt, direction:directionInHeading)]
-//                                    }
-//                                }
-//                            }
-//                        }
-//                        
-//                        if allSwellsInThisCounty.count > 0 {
-//                            self.countyDataByName[county]!.swells = allSwellsInThisCounty
-//                        }
-//                    }
-//                    
-//                    self.countyDataRequestLog[county]!.swells = true
-//                    
-//                    if let spotID = spotSender {
-//                        self.notifyViewOfComplete(spotID)
-//                    }
-//                case .Failure(_, let error):
-//                    NSLog("\(error)")
-//                }
-//        }
+    private func get(dataForSpots spots: [SpotData]) {
+        
+        var counties = Set<String>()
+        
+        for spot in spots {
+            counties.insert(spot.county)
+            dispatch_to_background_queue {
+                NSLog("dispatching get for \(spot.id)")
+                self.get(spotDataForSpotId: spot.id)
+            }
+        }
+        
+        for county in counties {
+            dispatch_to_background_queue {
+                NSLog("dispatching get for \(county)")
+                self.get(countyDataForCounty: county)
+            }
+        }
+        
     }
     
     func getCountyWind(_ county:String, spotSender: Int?) {
@@ -277,14 +216,6 @@ class SpotLibrary {
 //    func allDetailViewData(_ id: Int) -> (name:String, height:Int?, waterTemp:Int?, swell:Swell?, condition:String?, wind:Wind?, tides:[Float]?, heights:[Float]?) {
 //        return (name:"", height: self.heightForSpotIDAtCurrentHour(id), waterTemp: self.waterTempForSpotID(id), swell:self.significantSwellForSpotID(id), condition:self.conditionForSpotID(id), wind:self.windForSpotID(id), tides:self.tidesForSpotID(id), heights:heightsForSpotID(id))
 //    }
-    
-    // MARK: - SpotLibrary math -
-    func swellMetersToFeet(_ height:Float) -> Int { return Int(height * 3.2) }
-
-    func degreesToDirection(_ degrees:Int) -> String {
-        let listOfDirections:[String] = ["N", "NNW", "NW", "WNW", "W", "WSW", "SW", "SSW", "S", "SSE", "SE", "ESE", "E", "ENE", "NE", "NNE", "N"]
-        return listOfDirections[((degrees) + (360/16)/2) % 360 / (360/16)]
-    }
 }
 
 
