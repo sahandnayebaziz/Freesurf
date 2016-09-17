@@ -24,6 +24,7 @@
 		D8A042851D8CAA38000F3D45 /* Spitcast.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A042841D8CAA38000F3D45 /* Spitcast.swift */; };
 		D8B5681619C8914E000817AA /* threading.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B5681519C8914E000817AA /* threading.swift */; };
 		D8B89E131A47BFE100BBEAD5 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D8B89E121A47BFE100BBEAD5 /* Images.xcassets */; };
+		D8C3A9381D8D977200776F87 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D8011779198D64C200509A27 /* Info.plist */; };
 		D8F6636519D5EF87000B062C /* search.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8F6636419D5EF87000B062C /* search.swift */; };
 		D8F6636919D5F14F000B062C /* SearchTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8F6636819D5F14F000B062C /* SearchTableViewController.swift */; };
 /* End PBXBuildFile section */
@@ -49,7 +50,7 @@
 		C3682627BB190CAD8B7347BB /* Pods-FreesurfTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FreesurfTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-FreesurfTests/Pods-FreesurfTests.debug.xcconfig"; sourceTree = "<group>"; };
 		C5645533FF61AB9CCF95D447 /* Pods-Freesurf.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Freesurf.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Freesurf/Pods-Freesurf.debug.xcconfig"; sourceTree = "<group>"; };
 		D8011775198D64C200509A27 /* Freesurf.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Freesurf.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		D8011779198D64C200509A27 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D8011779198D64C200509A27 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = "freesurf/Supporting Files/Info.plist"; sourceTree = SOURCE_ROOT; };
 		D801177A198D64C200509A27 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D801177F198D64C200509A27 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		D801B1621A3D172200C1751F /* DotCALayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DotCALayer.swift; sourceTree = "<group>"; };
@@ -270,6 +271,7 @@
 				D81925661A48FE8600925B51 /* LICENSE2 in Resources */,
 				D8011780198D64C200509A27 /* Main.storyboard in Resources */,
 				D8B89E131A47BFE100BBEAD5 /* Images.xcassets in Resources */,
+				D8C3A9381D8D977200776F87 /* Info.plist in Resources */,
 				D86544EA1BA364B2000965DD /* Launch Screen.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -382,7 +384,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 7;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -430,7 +432,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 7;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -457,7 +459,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 7;
 				INFOPLIST_FILE = "$(SRCROOT)/freesurf/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -476,7 +478,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 7;
 				INFOPLIST_FILE = "$(SRCROOT)/freesurf/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
