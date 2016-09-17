@@ -22,8 +22,12 @@ class SpotCell: UITableViewCell, SpotDataDelegate {
     
     func set(forSpot spot: SpotData) {
         representedSpot = spot
-        self.clipsToBounds = true
-        self.backgroundColor = UIColor.clear
+        clipsToBounds = true
+        backgroundColor = UIColor.clear
+        
+        gradient.colors = spot.gradientColorsForHeight
+        gradient.frame = self.bounds
+        layer.insertSublayer(gradient, at: 0)
     }
     
     func didUpdate(forSpot spot: SpotData, county: CountyData) {
@@ -38,10 +42,8 @@ class SpotCell: UITableViewCell, SpotDataDelegate {
         self.heightLabel.text = spot.heightString
         self.nameLabel.text = spot.name
         self.tempAndSwellLabel.text = county.temperatureAndSwellSummary
-//        self.gradient.colors = spot.gradientColorsForHeight
-        
-//        self.gradient.frame = self.bounds
-//        self.layer.insertSublayer(self.gradient, at: 0)
+        gradient.colors = spot.gradientColorsForHeight
+
     }
     
     func didLoadSavedSpots(spotsFound: Bool) {}

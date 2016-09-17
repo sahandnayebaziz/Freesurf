@@ -19,7 +19,6 @@ struct Defaults {
             serialized += "\(spot.id).\(spot.name).\(spot.county),"
         }
         userDefaults.set(serialized, forKey: keyForSavedSpots)
-        NSLog("updated saved spots")
     }
     
     static func getSavedSpots() -> [SpotData] {
