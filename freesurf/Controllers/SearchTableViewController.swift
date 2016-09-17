@@ -44,20 +44,21 @@ class SearchTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.searchTableView.separatorStyle = UITableViewCellSeparatorStyle.none
-        self.searchTableView.backgroundColor = UIColor.clear
-        self.displayingNearby = false
+        searchTableView.separatorStyle = UITableViewCellSeparatorStyle.none
+        searchTableView.backgroundColor = UIColor.clear
+        displayingNearby = false
         
         let blurEffect:UIBlurEffect = UIBlurEffect(style: UIBlurEffectStyle.dark)
         let blurEffectView:UIVisualEffectView = UIVisualEffectView(effect: blurEffect)
         blurEffectView.frame = searchTableView.bounds
-        self.searchTableView.backgroundView = blurEffectView
+        searchTableView.backgroundView = blurEffectView
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Nearby", style: .plain, target: self, action: #selector(SearchTableViewController.tappedNearby))
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        self.searchField.becomeFirstResponder()
+        searchField.becomeFirstResponder()
+        display(resultsForSearch: "")
     }
     
     // MARK: - Interface Actions -
@@ -73,9 +74,21 @@ class SearchTableViewController: UITableViewController {
     }
     
     @IBAction func editingchanged(_ sender: UITextField) {
-        let input = sender.text!.lowercased()
+        guard let input = sender.text else {
+            return
+        }
+        
         self.displayingNearby = false
-        results = spotLibrary.spotDataByID.keys.map({ self.spotLibrary.spotDataByID[$0]! }).filter({ $0.name.lowercased().contains(input) || $0.county.lowercased().contains(input)}).map({ $0.id })
+        display(resultsForSearch: input.lowercased())
+    }
+    
+    private func display(resultsForSearch searchText: String) {
+        if searchText == "" {
+            results = spotLibrary.spotDataByID.keys.map({ self.spotLibrary.spotDataByID[$0]! }).sorted(by: { $0.name < $1.name }).map({ $0.id })
+        } else {
+            results = spotLibrary.spotDataByID.keys.map({ self.spotLibrary.spotDataByID[$0]! }).sorted(by: { $0.name < $1.name }).filter({ $0.name.lowercased().contains(searchText) || $0.county.lowercased().contains(searchText)}).map({ $0.id })
+        }
+        
         self.searchTableView.reloadData()
     }
     

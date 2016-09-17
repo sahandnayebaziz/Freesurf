@@ -27,6 +27,8 @@ class SpotsTableViewController: UITableViewController, SpotDataDelegate, SpotTab
         
         footer.frame = CGRect(x: footer.frame.minX, y: footer.frame.minY, width: footer.frame.maxX, height: 130)
         spotsTableView.tableFooterView = footer
+        
+        library.loadData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -58,9 +60,8 @@ class SpotsTableViewController: UITableViewController, SpotDataDelegate, SpotTab
         let cell = spotsTableView.dequeueReusableCell(withIdentifier: "spotCell", for: indexPath) as! SpotCell
         let spotId = library.selectedSpotIDs[indexPath.row]
         let spot = library.spotDataByID[spotId]!
-        let county = library.countyDataByName[spot.county]!
         cell.set(forSpot: spot)
-        cell.didUpdate(forSpot: spot, county: county)
+        cell.didUpdate(forSpot: spot, county: library.countyDataByName[spot.county]!)
         return cell
     }
     
@@ -164,8 +165,7 @@ class SpotsTableViewController: UITableViewController, SpotDataDelegate, SpotTab
         library.select(spotWithId: spotId).then { result -> Void in
             if result.didAddSpot {
                 self.spotsTableView.reloadData()
-            } else {
-                NSLog("skipped reload")
+                self.library.get(dataForSpotId: spotId)
             }
         }
     }

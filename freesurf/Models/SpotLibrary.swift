@@ -39,17 +39,26 @@ class SpotLibrary {
     init(delegate: SpotDataDelegate, tableViewDelegate: SpotTableViewDelegate?) {
         self.dataDelegate = delegate
         self.tableViewDelegate = tableViewDelegate
-        deserializeSpotLibraryFromString()
+    }
+    
+    func loadData() {
+        let savedSpots = Defaults.getSavedSpots()
+        for spot in savedSpots {
+            selectedSpotIDs.append(spot.id)
+            spotDataByID[spot.id] = spot
+            countyDataByName[spot.county] = CountyData(waterTemperature: nil, tides: nil, swells: nil, wind: nil)
+        }
+        self.tableViewDelegate?.didLoadSavedSpots(spotsFound: !savedSpots.isEmpty)
         
         Spitcast.getAllCountyNames()
-        .then { counties -> Promise<[Int: SpotData]> in
-            for county in counties {
-                self.countyDataByName[county] = CountyData(waterTemperature: nil, tides: nil, swells: nil, wind: nil)
-            }
-            return Spitcast.get(allSpotsForCounties: counties)
-        }.then { spotMap -> Void in
-            self.spotDataByID = spotMap
-            tableViewDelegate?._devDidLoadAllSpots()
+            .then { counties -> Promise<[Int: SpotData]> in
+                for county in counties {
+                    self.countyDataByName[county] = CountyData(waterTemperature: nil, tides: nil, swells: nil, wind: nil)
+                }
+                return Spitcast.get(allSpotsForCounties: counties)
+            }.then { spotMap -> Void in
+                self.spotDataByID = spotMap
+                self.tableViewDelegate?._devDidLoadAllSpots()
         }
     }
     
@@ -60,8 +69,17 @@ class SpotLibrary {
             }
             
             selectedSpotIDs.append(newSpotId)
+            dispatch_to_background_queue {
+                Defaults.save(selectedSpots: self.selectedSpotIDs.map({ self.spotDataByID[$0]! }))
+            }
             return resolve(SpotSelectionResponse(didAddSpot: true))
         }
+    }
+    
+    func get(dataForSpotId spotId: Int) {
+        let data = spotDataByID[spotId]!
+        dataDelegate?.didUpdate(forSpot: data, county: countyDataByName[data.county]!)
+        // get requests then fire update
     }
     
     func getSpotHeightsForToday(_ spotID:Int) {
@@ -252,43 +270,6 @@ class SpotLibrary {
 //    func allDetailViewData(_ id: Int) -> (name:String, height:Int?, waterTemp:Int?, swell:Swell?, condition:String?, wind:Wind?, tides:[Float]?, heights:[Float]?) {
 //        return (name:"", height: self.heightForSpotIDAtCurrentHour(id), waterTemp: self.waterTempForSpotID(id), swell:self.significantSwellForSpotID(id), condition:self.conditionForSpotID(id), wind:self.windForSpotID(id), tides:self.tidesForSpotID(id), heights:heightsForSpotID(id))
 //    }
-    
-    // MARK: - SpotLibrary management -
-    
-    func serializeSpotLibraryToString() -> String {
-        var exportString:String = ""
-        for spotID in self.selectedSpotIDs {
-            exportString += "\(spotID).\("").\(""),"
-        }
-        return exportString
-    }
-    
-    func deserializeSpotLibraryFromString() {
-//        guard let exportString = Defaults.getSavedSpots() else {
-//            return
-//        }
-//        
-//        let listOfSpotExports:[String] = exportString.components(separatedBy: ",")
-//        for spotExport in listOfSpotExports {
-//            var spotAttributes:[String] = spotExport.components(separatedBy: ".")
-//            if spotAttributes.count == 3 {
-//                let spotID:Int = Int(spotAttributes[0])!
-//                let spotName:String = spotAttributes[1]
-//                let spotCounty:String = spotAttributes[2]
-//
-//                self.allSpotIDs.insert(spotID)
-//                self.selectedSpotIDs.append(spotID)
-//                self.spotDataByID[spotID] = SpotData(id: spotID, name: spotName, county: spotCounty, location: nil, heights: nil, conditions: nil)
-//                self.spotDataRequestLog[spotID] = (name: true, county: true, heights: false, conditions: false)
-//                initializeCountyData(spotCounty)
-//            }
-//        }
-    }
-
-    func initializeCountyData(_ countyName:String) {
-//            self.countyDataByName[countyName] = CountyData(waterTemperature: nil, tides: nil, swells: nil, wind: nil)
-//            self.countyDataRequestLog[countyName] = (waterTemp:false, tides:false, swells:false, wind:false)
-    }
     
     // MARK: - SpotLibrary math -
     func swellMetersToFeet(_ height:Float) -> Int { return Int(height * 3.2) }
