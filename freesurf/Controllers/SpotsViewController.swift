@@ -15,7 +15,7 @@ class SpotsViewController: UIViewController, UITableViewDataSource, UITableViewD
     var library: SpotLibrary!
     var usingUserDefaults:Bool = false
     
-    let tableView = UITableView()
+    let tableView = UITableView(frame: CGRect.zero, style: .grouped)
     var collapseDetailViewController = true
     
     override func viewDidLoad() {
@@ -58,6 +58,10 @@ class SpotsViewController: UIViewController, UITableViewDataSource, UITableViewD
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return CGFloat.leastNonzeroMagnitude
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
@@ -124,16 +128,17 @@ class SpotsViewController: UIViewController, UITableViewDataSource, UITableViewD
             return
         }
         
-        source.searchField.resignFirstResponder()
+//        source.searchField.resignFirstResponder()
         source.dismiss(animated: true, completion: nil)
     }
     
     func didTapAdd() {
-//        let vc = SearchTableViewController()
-//        let nav = UINavigationController
-//        destination.spotLibrary = self.library
-//        destination.delegate = self
-        NSLog("did tap add")
+        let vc = SearchTableViewController(spotLibrary: library, delegate: self)
+        let nav = UINavigationController(rootViewController: vc)
+        nav.modalPresentationStyle = .overCurrentContext
+        vc.view.backgroundColor = UIColor(red: 13/255.0, green: 13/255.0, blue: 13/255.0, alpha: 1.0)
+        nav.view.backgroundColor = UIColor.clear
+        present(nav, animated: true, completion: nil)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any!) {
