@@ -30,7 +30,7 @@ class SpotCell: UITableViewCell, SpotDataDelegate {
         layer.insertSublayer(gradient, at: 0)
     }
     
-    func didUpdate(forSpot spot: SpotData, county: CountyData) {
+    func did(updateSpot spot: SpotData) {
         guard representedSpot != nil else {
             return
         }
@@ -41,9 +41,23 @@ class SpotCell: UITableViewCell, SpotDataDelegate {
         
         self.heightLabel.text = spot.heightString
         self.nameLabel.text = spot.name
-        self.tempAndSwellLabel.text = county.temperatureAndSwellSummary
         gradient.colors = spot.gradientColorsForHeight
-
+    }
+    
+    func did(updateCounty county: CountyData) {
+        guard representedSpot != nil else {
+            return
+        }
+        
+        guard county.name == representedSpot!.county else {
+            return
+        }
+    }
+    
+    func didUpdate(forSpot spot: SpotData, county: CountyData) {
+        
+        self.tempAndSwellLabel.text = county.temperatureAndSwellSummary
+        
     }
     
     func didLoadSavedSpots(spotsFound: Bool) {}

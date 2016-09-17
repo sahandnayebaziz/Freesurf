@@ -135,10 +135,6 @@ class SpotsTableViewController: UITableViewController, SpotDataDelegate, SpotTab
         }
     }
     
-    func _devDidLoadAllSpots() {
-        NSLog("All spots and counties downloaded")
-    }
-    
     func didLoadSavedSpots(spotsFound: Bool) {
         if spotsFound {
             usingUserDefaults = true
@@ -155,14 +151,25 @@ class SpotsTableViewController: UITableViewController, SpotDataDelegate, SpotTab
         }
     }
     
-    func didUpdate(forSpot spot: SpotData, county: CountyData) {
+    func did(updateSpot spot: SpotData) {
         guard let visibleCells = spotsTableView.visibleCells as? [SpotCell] else {
             NSLog("Unable to get visible cells.")
             return
         }
         
         for cell in visibleCells {
-            cell.didUpdate(forSpot: spot, county: county)
+            cell.did(updateSpot: spot)
+        }
+    }
+    
+    func did(updateCounty county: CountyData) {
+        guard let visibleCells = spotsTableView.visibleCells as? [SpotCell] else {
+            NSLog("Unable to get visible cells.")
+            return
+        }
+        
+        for cell in visibleCells {
+            cell.did(updateCounty: county)
         }
     }
     

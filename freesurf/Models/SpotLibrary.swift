@@ -13,12 +13,12 @@ import AFDateHelper
 import PromiseKit
 
 protocol SpotDataDelegate {
-    func didUpdate(forSpot spot: SpotData, county: CountyData)
+    func did(updateSpot spot: SpotData)
+    func did(updateCounty county: CountyData)
 }
 
 protocol SpotTableViewDelegate {
     func didLoadSavedSpots(spotsFound: Bool)
-    func _devDidLoadAllSpots()
 }
 
 struct SpotSelectionResponse {
@@ -46,7 +46,7 @@ class SpotLibrary {
         for spot in savedSpots {
             selectedSpotIDs.append(spot.id)
             spotDataByID[spot.id] = spot
-            countyDataByName[spot.county] = CountyData(waterTemperature: nil, tides: nil, swells: nil, wind: nil)
+            countyDataByName[spot.county] = CountyData(name: spot.county, waterTemperature: nil, tides: nil, swells: nil, wind: nil)
             dispatch_to_background_queue {
                 self.get(dataForSpotId: spot.id)
             }
@@ -55,8 +55,10 @@ class SpotLibrary {
         
         Spitcast.getAllCountyNames()
             .then { counties -> Promise<[Int: SpotData]> in
-                for county in counties {
-                    self.countyDataByName[county] = CountyData(waterTemperature: nil, tides: nil, swells: nil, wind: nil)
+                for name in counties {
+                    if !self.countyDataByName.keys.contains(name) {
+                        self.countyDataByName[name] = CountyData(name: name, waterTemperature: nil, tides: nil, swells: nil, wind: nil)
+                    }
                 }
                 return Spitcast.get(allSpotsForCounties: counties)
             }.then { spotMap -> Void in
@@ -65,7 +67,6 @@ class SpotLibrary {
                         self.spotDataByID[key] = spotMap[key]
                     }
                 }
-                self.tableViewDelegate?._devDidLoadAllSpots()
             }.recover { error -> Void in
                 print("Error in initial sequence")
                 print(error)
@@ -102,7 +103,7 @@ class SpotLibrary {
                     let spot = self.spotDataByID[response.id]!
                     let updatedSpot = SpotData(id: spot.id, name: spot.name, county: spot.county, location: spot.location, heights: response.heights, conditions: response.conditions)
                     self.spotDataByID[response.id] = updatedSpot
-                    self.dataDelegate?.didUpdate(forSpot: self.spotDataByID[response.id]!, county: self.countyDataByName[spot.county]!)
+                    self.dataDelegate?.did(updateSpot: self.spotDataByID[response.id]!)
                 }
             }.recover { error -> Void in
                 print(error)

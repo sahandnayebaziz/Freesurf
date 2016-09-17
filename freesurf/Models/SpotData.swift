@@ -81,6 +81,7 @@ struct Wind {
 }
 
 struct CountyData {
+    var name: String
     var waterTemperature: Int?
     var tides: [Float]?
     var swells: [Swell]?
