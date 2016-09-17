@@ -29,6 +29,8 @@
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>... to search for nearby surf spots</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>... to search for nearby surf spots</string>
 	<key>UILaunchStoryboardName</key>
 	<string>Launch Screen</string>
 	<key>UIMainStoryboardFile</key>
