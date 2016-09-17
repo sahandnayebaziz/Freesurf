@@ -81,6 +81,19 @@ class SpotsTableViewController: UITableViewController, SpotDataDelegate, SpotTab
         
     }
     
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            spotsTableView.beginUpdates()
+            library.delete(spotAtIndex: indexPath.row)
+            spotsTableView.deleteRows(at: [indexPath], with: .fade)
+            spotsTableView.endUpdates()
+        }
+    }
+    
     @IBAction func unwindToList(_ segue:UIStoryboardSegue) {
         guard let id = segue.identifier else {
             NSLog("Error unwinding to list.")
@@ -120,34 +133,6 @@ class SpotsTableViewController: UITableViewController, SpotDataDelegate, SpotTab
             destinationView.selectedSpotID = rowID
             destinationView.currentHour = Date().hour()
         }
-    }
-    
-    func downloadMissingSpotInfo() {
-//        if reachability.isReachable {
-//            if library.spotDataByID.isEmpty || usingUserDefaults {
-//                dispatch_to_background_queue {
-//                    self.library.getCountyNames()
-//                }
-//                
-//                usingUserDefaults = false;
-//            }
-//            
-//            if library.selectedSpotIDs.count > 0 {
-//                for spot in library.selectedSpotIDs {
-//                    if self.library.allSpotCellDataIfRequestsComplete(spot) == nil {
-//                        
-//                        dispatch_to_background_queue {
-//                            self.library.getSpotHeightsForToday(spot)
-//                            let county = self.library.countyForSpotID(spot)
-//                            self.library.getCountyWaterTemp(county, spotSender: spot)
-//                            self.library.getCountyTideForToday(county, spotSender: spot)
-//                            self.library.getCountySwell(county, spotSender: spot)
-//                            self.library.getCountyWind(county, spotSender: spot)
-//                        }
-//                    }
-//                }
-//            }
-//        }
     }
     
     func _devDidLoadAllSpots() {

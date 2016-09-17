@@ -16,7 +16,7 @@ struct SpotData {
     var county: String
     var location: CLLocation?
     var heights: [Float]?
-    var conditions: String?
+    var conditions: [String]?
     
     var gradientColorsForHeight: [CGColor] {
         let topColor: UIColor
@@ -47,10 +47,17 @@ struct SpotData {
     }
     
     var heightString: String {
-        guard heights != nil else {
+        guard let heights = heights else {
             return "--ft"
         }
-        return ""
+        
+        let currentHour = Date().hour()
+        guard heights.count >= currentHour else {
+            NSLog("Incomplete heights error")
+            return "--ft"
+        }
+        
+        return "\(Int(heights[currentHour]))ft"
     }
 }
 

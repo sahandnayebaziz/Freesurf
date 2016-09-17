@@ -18,6 +18,12 @@ struct SpotDownloadResponse {
     var data: [SpotData]
 }
 
+struct SpotHeightResponse {
+    var id: Int
+    var heights: [Float]?
+    var conditions: [String]?
+}
+
 struct Spitcast {
     private static let spitcastURL = "http://api.spitcast.com/api"
     
@@ -113,50 +119,34 @@ struct Spitcast {
         }
     }
     
-    //        var listOfCounties = counties
-    //        if (!listOfCounties.isEmpty) {
-    //            let formattedCountyNameForRequest = listOfCounties[0].stringByReplacingOccurrencesOfString(" ", withString: "-", options: NSString.CompareOptions.LiteralSearch, range: nil).lowercased()
-    //            let dataURL = URL(string: "http://api.spitcast.com/api/county/spots/\(formattedCountyNameForRequest)/")!
-    //
-    //            Alamofire.request(.GET, dataURL, parameters: nil, encoding: .JSON)
-    //                .validate()
-    //                .responseJSON { _, _, result in
-    //                    switch result {
-    //                    case .Success:
-    //                        if result.value != nil {
-    //                            let json = JSON(result.value!)
-    //                            let numberOfSpotsInCounty = json.count
-    //
-    //                            for var index = 0; index < numberOfSpotsInCounty; index++ {
-    //
-    //                                if let existingSpotID:Int = json[index]["spot_id"].int {
-    //                                    let name:String = json[index]["spot_name"].string!
-    //                                    let county:String = listOfCounties[0]
-    //
-    //                                    let long = json[index]["longitude"].double!
-    //                                    let lat = json[index]["latitude"].double!
-    //                                    let location = CLLocation(latitude: lat, longitude: long)
-    //
-    //                                    if !self.allSpotIDs.contains(existingSpotID) {
-    //                                        self.allSpotIDs.append(existingSpotID)
-    //                                        self.spotDataByID[existingSpotID] = SpotData(name: name, county: county, location: nil, heights: nil, conditions: nil)
-    //                                        self.spotDataRequestLog[existingSpotID] = (name:true, county:true, heights:false, conditions:false)
-    //                                    }
-    //                                    self.spotDataByID[existingSpotID]?.location = location
-    //                                }
-    //                            }
-    //                        }
-    //
-    //                        listOfCounties.removeAtIndex(0)
-    //                        self.getSpotsInCounties(listOfCounties)
-    //                    case .Failure(_, let error):
-    //                        NSLog("\(error)")
-    //                    }
-    //            }
-    //        }
-    //        else {
-    //            self.allSpotsHaveBeenDownloaded = true
-    //        }
-    
-    
+    static func get(heightsAndConditionsForSpot spotId: Int) -> Promise<SpotHeightResponse> {
+        return Promise { resolve, reject in
+            request(spitcastURL + "/spot/forecast/\(spotId)", method: .get, parameters: nil, encoding: JSONEncoding.default, headers: nil)
+                .responseData { response in
+                    guard let httpResponse = response.response, let responseData = response.result.value else {
+                        return reject(SpitcastError.BadResponse)
+                    }
+                    
+                    if httpResponse.statusCode == 200 {
+                        let jsonData = try? JSONSerialization.jsonObject(with: responseData, options: [])
+                        guard let array = jsonData as? [Any] else {
+                            return reject(SpitcastError.BadData)
+                        }
+                        
+                        var heights: [Float] = []
+                        var conditions: [String] = []
+                        for item in array {
+                            if let spot = item as? [String: Any] {
+                                if let height = spot["size_ft"] as? Float { heights.append(height) }
+                                if let condition = spot["shape_full"] as? String { conditions.append(condition) }
+                            }
+                        }
+                        
+                        resolve(SpotHeightResponse(id: spotId, heights: heights.isEmpty ? nil : heights, conditions: conditions.isEmpty ? nil : conditions))
+                    } else {
+                        return reject(SpitcastError.BadResponse)
+                    }
+            }
+        }
+    }
 }

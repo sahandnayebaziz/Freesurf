@@ -22,7 +22,6 @@ class SpotCell: UITableViewCell, SpotDataDelegate {
     
     func set(forSpot spot: SpotData) {
         representedSpot = spot
-        NSLog("set cell for \(spot.id)")
         self.clipsToBounds = true
         self.backgroundColor = UIColor.clear
     }
@@ -33,21 +32,16 @@ class SpotCell: UITableViewCell, SpotDataDelegate {
         }
         
         guard spot.id == representedSpot!.id else {
-            NSLog("saw update for spot that's not for this cell")
             return
         }
         
-        NSLog("saw update for spot that is for this cell")
+        self.heightLabel.text = spot.heightString
+        self.nameLabel.text = spot.name
+        self.tempAndSwellLabel.text = county.temperatureAndSwellSummary
+//        self.gradient.colors = spot.gradientColorsForHeight
         
-        dispatch_to_main_queue {
-            self.heightLabel.text = spot.heightString
-            self.nameLabel.text = spot.name
-            self.tempAndSwellLabel.text = county.temperatureAndSwellSummary
-            self.gradient.colors = spot.gradientColorsForHeight
-            
-            self.gradient.frame = self.bounds
-            self.layer.insertSublayer(self.gradient, at: 0)
-        }
+//        self.gradient.frame = self.bounds
+//        self.layer.insertSublayer(self.gradient, at: 0)
     }
     
     func didLoadSavedSpots(spotsFound: Bool) {}

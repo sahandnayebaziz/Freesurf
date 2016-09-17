@@ -32,11 +32,9 @@ struct Defaults {
         let spotsSerialized = serialized.components(separatedBy: ",")
         for spot in spotsSerialized {
             let spotAttributes = spot.components(separatedBy: ".")
-            guard spotAttributes.count == 3 else {
-                break
+            if spotAttributes.count == 3 {
+                spots.append(SpotData(id: Int(spotAttributes[0])!, name: spotAttributes[1], county: spotAttributes[2], location: nil, heights: nil, conditions: nil))
             }
-            
-            spots.append(SpotData(id: Int(spotAttributes[0])!, name: spotAttributes[1], county: spotAttributes[2], location: nil, heights: nil, conditions: nil))
         }
         
         return spots

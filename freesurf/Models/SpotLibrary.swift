@@ -47,6 +47,9 @@ class SpotLibrary {
             selectedSpotIDs.append(spot.id)
             spotDataByID[spot.id] = spot
             countyDataByName[spot.county] = CountyData(waterTemperature: nil, tides: nil, swells: nil, wind: nil)
+            dispatch_to_background_queue {
+                self.get(dataForSpotId: spot.id)
+            }
         }
         self.tableViewDelegate?.didLoadSavedSpots(spotsFound: !savedSpots.isEmpty)
         
@@ -57,8 +60,15 @@ class SpotLibrary {
                 }
                 return Spitcast.get(allSpotsForCounties: counties)
             }.then { spotMap -> Void in
-                self.spotDataByID = spotMap
+                for key in spotMap.keys {
+                    if !self.spotDataByID.keys.contains(key) {
+                        self.spotDataByID[key] = spotMap[key]
+                    }
+                }
                 self.tableViewDelegate?._devDidLoadAllSpots()
+            }.recover { error -> Void in
+                print("Error in initial sequence")
+                print(error)
         }
     }
     
@@ -76,52 +86,48 @@ class SpotLibrary {
         }
     }
     
-    func get(dataForSpotId spotId: Int) {
-        let data = spotDataByID[spotId]!
-        dataDelegate?.didUpdate(forSpot: data, county: countyDataByName[data.county]!)
-        // get requests then fire update
+    func delete(spotAtIndex index: Int) {
+        selectedSpotIDs.remove(at: index)
+        dispatch_to_background_queue {
+            Defaults.save(selectedSpots: self.selectedSpotIDs.map({ self.spotDataByID[$0]! }))
+        }
     }
     
-    func getSpotHeightsForToday(_ spotID:Int) {
-//        let dataURL:URL = URL(string: "http://api.spitcast.com/api/spot/forecast/\(spotID)")!
-//        Alamofire.request(.GET, dataURL, parameters: nil, encoding: .JSON)
-//            .validate()
-//            .responseJSON { _, _, result in
-//                switch result {
-//                case .Success:
-//                    if result.value != nil {
-//                        let json = JSON(result.value!)
-//                        
-//                        var swellHeightsByHour:[Float] = []
-//                        for var index = 0; index < 24; index++ {
-//                            if let swellHeight = json[index]["size_ft"].float {
-//                                swellHeightsByHour.append(swellHeight)
-//                            }
-//                        }
-//                        if swellHeightsByHour.count > 0 {
-//                            self.spotDataByID[spotID]!.heights = swellHeightsByHour
-//                        }
-//                        else {
-//                            self.spotDataByID[spotID]!.heights = nil
-//                        }
-//                        
-//                        if let conditions:String = json[0]["shape_full"].string {
-//                            self.spotDataByID[spotID]!.conditions = conditions
-//                        }
-//                        else {
-//                            self.spotDataByID[spotID]!.conditions = nil
-//                        }
-//                    }
-//                    
-//                    self.spotDataRequestLog[spotID]!.conditions = true
-//                    self.spotDataRequestLog[spotID]!.heights = true
-//                    
-//                    self.notifyViewOfComplete(spotID)
-//                case .Failure(_, let error):
-//                    NSLog("\(error)")
-//                }
-//        }
+    func get(dataForSpotId spotId: Int) {
+        let spot = spotDataByID[spotId]!
+        if spot.heights == nil {
+            Spitcast.get(heightsAndConditionsForSpot: spotId)
+            .then { response -> Void in
+                dispatch_to_main_queue {
+                    let spot = self.spotDataByID[response.id]!
+                    let updatedSpot = SpotData(id: spot.id, name: spot.name, county: spot.county, location: spot.location, heights: response.heights, conditions: response.conditions)
+                    self.spotDataByID[response.id] = updatedSpot
+                    self.dataDelegate?.didUpdate(forSpot: self.spotDataByID[response.id]!, county: self.countyDataByName[spot.county]!)
+                }
+            }.recover { error -> Void in
+                print(error)
+            }
+        }
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     func getCountyWaterTemp(_ county:String, spotSender: Int?) {
 //        let formattedCountyNameForRequest = county.stringByReplacingOccurrencesOfString(" ", withString: "-", options: NSString.CompareOptions.LiteralSearch, range: nil).lowercased()
