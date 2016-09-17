@@ -1,0 +1,11 @@
+View beautiful, hourly surf forecasts with Freesurf. Using Spitcast's reliable data, Freesurf provides detailed surf forecasts for all of your favorite California surf spots.
+
+When you select a surf spot with Freesurf, the spot will instantly be added to your list and the most current forecast for swells, tides, and conditions will be displayed. Capture the entire California coast's surf conditions with a glance. Keep track of your favorite hometown spot. Freesurf provides a quick look at all of your favorite spots and takes you deeper with a single tap.
+
+Features:
+
+* View beautiful, hourly surf forecasts for California surf spots
+* Explore in-depth forecasts for swells, tides, and conditions provided by Spitcast
+* Speed up your surf check by comparing your all of your favorite spots with a glance
+* Know the conditions immediately with a simple design that gets out of the way of your surf check
+* Download and start adding your favorite spots. No sign up or account required.
