@@ -9,7 +9,7 @@
 import UIKit
 import ReachabilitySwift
 
-class SpotsTableViewController: UITableViewController, SpotDataDelegate, UISplitViewControllerDelegate {
+class SpotsTableViewController: UITableViewController, SpotDataDelegate, SpotTableViewDelegate, SearchResultDelegate, UISplitViewControllerDelegate {
     
     var library: SpotLibrary!
     var usingUserDefaults:Bool = false
@@ -20,7 +20,7 @@ class SpotsTableViewController: UITableViewController, SpotDataDelegate, UISplit
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        library = SpotLibrary(delegate: self)
+        library = SpotLibrary(delegate: self, tableViewDelegate: self)
         
         spotsTableView.backgroundColor = UIColor(red: 13/255.0, green: 13/255.0, blue: 13/255.0, alpha: 1.0)
         splitViewController?.delegate = self
@@ -72,10 +72,10 @@ class SpotsTableViewController: UITableViewController, SpotDataDelegate, UISplit
         collapseDetailViewController = false
         let rowID = self.library.selectedSpotIDs[(indexPath as NSIndexPath).row]
         
-        if self.library.allSpotCellDataIfRequestsComplete(rowID) != nil {
-            self.performSegue(withIdentifier: "openSpotDetail", sender: nil)
-        }
-        
+//        if self.library.allSpotCellDataIfRequestsComplete(rowID) != nil {
+//            self.performSegue(withIdentifier: "openSpotDetail", sender: nil)
+//        }
+//        
         spotsTableView.deselectRow(at: indexPath, animated: false)
         
     }
@@ -96,12 +96,8 @@ class SpotsTableViewController: UITableViewController, SpotDataDelegate, UISplit
             return
         }
         
-        source.spotLibrary = self.library
         source.searchField.resignFirstResponder()
         source.dismiss(animated: true, completion: nil)
-        
-        tableView.reloadData()
-        downloadMissingSpotInfo()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any!) {
@@ -110,6 +106,7 @@ class SpotsTableViewController: UITableViewController, SpotDataDelegate, UISplit
             let destinationView:SearchTableViewController = nav.topViewController as! SearchTableViewController
             
             destinationView.spotLibrary = self.library
+            destinationView.delegate = self
         }
         
         if segue.identifier! == "openSpotDetail" {
@@ -118,9 +115,7 @@ class SpotsTableViewController: UITableViewController, SpotDataDelegate, UISplit
             
             let indexPath:IndexPath = spotsTableView.indexPathForSelectedRow!
             let rowID = self.library.selectedSpotIDs[(indexPath as NSIndexPath).row]
-            
-            let model = DetailViewModel(values: self.library.allDetailViewData(rowID))
-            destinationView.model = model
+
             destinationView.selectedSpotID = rowID
             destinationView.currentHour = Date().hour()
         }
@@ -162,6 +157,16 @@ class SpotsTableViewController: UITableViewController, SpotDataDelegate, UISplit
         if spotsFound {
             usingUserDefaults = true
             spotsTableView.reloadData()
+        }
+    }
+    
+    func did(selectSpotId spotId: Int) {
+        library.select(spotWithId: spotId).then { result -> Void in
+            if result.didAddSpot {
+                self.spotsTableView.reloadData()
+            } else {
+                NSLog("skipped reload")
+            }
         }
     }
     

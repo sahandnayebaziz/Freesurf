@@ -13,29 +13,32 @@ import AFDateHelper
 import PromiseKit
 
 protocol SpotDataDelegate {
-    func didLoadSavedSpots(spotsFound: Bool)
     func didUpdate(forSpot spot: SpotData, county: CountyData)
-    
+}
+
+protocol SpotTableViewDelegate {
+    func didLoadSavedSpots(spotsFound: Bool)
     func _devDidLoadAllSpots()
+}
+
+struct SpotSelectionResponse {
+    var didAddSpot: Bool
 }
 
 // a SpotLibrary object holds all surf weather data used at runtime.
 class SpotLibrary {
     
     // MARK: - Properties -
-    var allSpotIDs = Set<Int>()
+    var spotDataByID: [Int: SpotData] = [:]
+    var countyDataByName: [String: CountyData] = [:]
     var selectedSpotIDs: [Int] = []
     
-    var spotDataByID: [Int: SpotData] = [:]
-    var spotDataRequestLog: [Int:(name:Bool, county:Bool, heights:Bool, conditions:Bool)] = [:]
-    var countyDataByName: [String: CountyData] = [:]
-    var countyDataRequestLog: [String:(waterTemp:Bool, tides:Bool, swells:Bool, wind:Bool)] = [:]
+    let tableViewDelegate: SpotTableViewDelegate?
+    let dataDelegate: SpotDataDelegate?
     
-    var currentHour: Int = Date().hour()
-    let delegate: SpotDataDelegate
-    
-    init(delegate: SpotDataDelegate) {
-        self.delegate = delegate
+    init(delegate: SpotDataDelegate, tableViewDelegate: SpotTableViewDelegate?) {
+        self.dataDelegate = delegate
+        self.tableViewDelegate = tableViewDelegate
         deserializeSpotLibraryFromString()
         
         Spitcast.getAllCountyNames()
@@ -46,7 +49,18 @@ class SpotLibrary {
             return Spitcast.get(allSpotsForCounties: counties)
         }.then { spotMap -> Void in
             self.spotDataByID = spotMap
-            delegate._devDidLoadAllSpots()
+            tableViewDelegate?._devDidLoadAllSpots()
+        }
+    }
+    
+    func select(spotWithId newSpotId: Int) -> Promise<SpotSelectionResponse> {
+        return Promise { resolve, reject in
+            guard !selectedSpotIDs.contains(newSpotId) else {
+                return resolve(SpotSelectionResponse(didAddSpot: false))
+            }
+            
+            selectedSpotIDs.append(newSpotId)
+            return resolve(SpotSelectionResponse(didAddSpot: true))
         }
     }
     
@@ -233,82 +247,18 @@ class SpotLibrary {
 //                    NSLog("\(error)")
 //                }
 //        }
+//    }
     }
-    
-    // MARK: - Get spot values -
-    
-    func nameForSpotID(_ id:Int) -> String { return self.spotDataByID[id]!.name }
-    func countyForSpotID(_ id:Int) -> String { return self.spotDataByID[id]!.county }
-    func locationForSpotID(_ id:Int) -> CLLocation? { return self.spotDataByID[id]!.location }
-    
-    func heightForSpotIDAtCurrentHour(_ id:Int) -> Int? {
-        if let height:Float = self.spotDataByID[id]!.heights?[self.currentHour] {
-            return Int(height)
-        }
-        else {
-            return nil
-        }
-    }
-    
-    func conditionForSpotID(_ id:Int) -> String? {
-        if let conditions:String = self.spotDataByID[id]!.conditions {
-            return conditions
-        }
-        else {
-            return nil
-        }
-    }
-    
-    func waterTempForSpotID(_ id:Int) -> Int? {
-        return self.countyDataByName[self.countyForSpotID(id)]?.waterTemperature
-    }
-    
-    func tidesForSpotID(_ id:Int) -> [Float]? { return self.countyDataByName[self.countyForSpotID(id)]!.tides }
-    func heightsForSpotID(_ id:Int) -> [Float]? { return self.spotDataByID[id]!.heights }
-    func swellsForSpotID(_ id:Int) -> [Swell]? { return self.countyDataByName[self.countyForSpotID(id)]!.swells }
-    func windForSpotID(_ id:Int) -> Wind? { return self.countyDataByName[self.countyForSpotID(id)]!.wind }
-    
-    func significantSwellForSpotID(_ id:Int) -> Swell? {
-        guard let swells = self.countyDataByName[self.countyForSpotID(id)]!.swells else {
-            return nil
-        }
-        
-        var mostSignificantSwell = swells[0]
-        for index in 1 ..< swells.count {
-            if swells[index].height > mostSignificantSwell.height {
-                mostSignificantSwell = swells[index]
-            }
-        }
-        return mostSignificantSwell
-    }
-    
-    // MARK: - Get data for view models -
-    func allSpotCellDataIfRequestsComplete(_ id: Int) -> (height:Int?, waterTemp:Int?, swell:Swell?)? {
-        if let spotRequests = self.spotDataRequestLog[id] {
-            if let countyRequests = self.countyDataRequestLog[self.countyForSpotID(id)] {
-                if spotRequests.heights && spotRequests.conditions && countyRequests.waterTemp && countyRequests.swells && countyRequests.tides && countyRequests.wind {
-                    return (height: self.heightForSpotIDAtCurrentHour(id), waterTemp: self.waterTempForSpotID(id), swell:self.significantSwellForSpotID(id))
-                }
-            }
-        }
-        return nil
-    }
-    
-    func allDetailViewData(_ id: Int) -> (name:String, height:Int?, waterTemp:Int?, swell:Swell?, condition:String?, wind:Wind?, tides:[Float]?, heights:[Float]?) {
-        return (name:self.nameForSpotID(id), height: self.heightForSpotIDAtCurrentHour(id), waterTemp: self.waterTempForSpotID(id), swell:self.significantSwellForSpotID(id), condition:self.conditionForSpotID(id), wind:self.windForSpotID(id), tides:self.tidesForSpotID(id), heights:heightsForSpotID(id))
-    }
-    
-    func notifyViewOfComplete(_ id: Int) {
-        if allSpotCellDataIfRequestsComplete(id) != nil {
-        }
-    }
+//    func allDetailViewData(_ id: Int) -> (name:String, height:Int?, waterTemp:Int?, swell:Swell?, condition:String?, wind:Wind?, tides:[Float]?, heights:[Float]?) {
+//        return (name:"", height: self.heightForSpotIDAtCurrentHour(id), waterTemp: self.waterTempForSpotID(id), swell:self.significantSwellForSpotID(id), condition:self.conditionForSpotID(id), wind:self.windForSpotID(id), tides:self.tidesForSpotID(id), heights:heightsForSpotID(id))
+//    }
     
     // MARK: - SpotLibrary management -
     
     func serializeSpotLibraryToString() -> String {
         var exportString:String = ""
         for spotID in self.selectedSpotIDs {
-            exportString += "\(spotID).\(self.nameForSpotID(spotID)).\(self.countyForSpotID(spotID)),"
+            exportString += "\(spotID).\("").\(""),"
         }
         return exportString
     }

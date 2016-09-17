@@ -45,6 +45,13 @@ struct SpotData {
         
         return [topColor.cgColor, bottomColor.cgColor]
     }
+    
+    var heightString: String {
+        guard heights != nil else {
+            return "--ft"
+        }
+        return ""
+    }
 }
 
 struct Swell: Equatable, Comparable {

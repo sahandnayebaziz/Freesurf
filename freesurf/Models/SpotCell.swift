@@ -40,8 +40,7 @@ class SpotCell: UITableViewCell, SpotDataDelegate {
         NSLog("saw update for spot that is for this cell")
         
         dispatch_to_main_queue {
-            
-            
+            self.heightLabel.text = spot.heightString
             self.nameLabel.text = spot.name
             self.tempAndSwellLabel.text = county.temperatureAndSwellSummary
             self.gradient.colors = spot.gradientColorsForHeight

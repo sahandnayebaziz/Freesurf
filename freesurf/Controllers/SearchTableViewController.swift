@@ -10,13 +10,18 @@ import UIKit
 import SnapKit
 import CoreLocation
 
+protocol SearchResultDelegate {
+    func did(selectSpotId spotId: Int)
+}
+
 // SearchTableViewController lets you search for and add a new spot.
 class SearchTableViewController: UITableViewController {
     
     // MARK: - Properties -
     var spotLibrary:SpotLibrary!
     var results:[Int] = []
-    var currentLocation = CLLocation()
+    var delegate: SearchResultDelegate!
+    
     var displayingNearby = false {
         didSet {
             if displayingNearby {
@@ -58,11 +63,12 @@ class SearchTableViewController: UITableViewController {
     // MARK: - Interface Actions -
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let _ = sender as? UITableViewCell {
-            let indexPath:IndexPath = searchTableView.indexPathForSelectedRow!
-            
-            if !(self.spotLibrary.selectedSpotIDs.contains(results[(indexPath as NSIndexPath).row])) {
-                spotLibrary.selectedSpotIDs.append(results[(indexPath as NSIndexPath).row])
+            guard let row = searchTableView.indexPathForSelectedRow?.row else {
+                NSLog("Error selecting row")
+                return
             }
+            
+            delegate.did(selectSpotId: results[row])
         }
     }
     
@@ -99,7 +105,6 @@ class SearchTableViewController: UITableViewController {
 //        }
     }
     
-    // MARK: - Table view methods -
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -113,8 +118,8 @@ class SearchTableViewController: UITableViewController {
         
         let cell:UITableViewCell = self.searchTableView.dequeueReusableCell(withIdentifier: "searchCell") as UITableViewCell!
         
-        cell.textLabel!.text = spotLibrary.nameForSpotID(rowID)
-        cell.detailTextLabel!.text = spotLibrary.countyForSpotID(rowID)
+        cell.textLabel!.text = spotLibrary.spotDataByID[rowID]!.name
+        cell.detailTextLabel!.text = spotLibrary.spotDataByID[rowID]!.county
         cell.backgroundColor = UIColor.clear
         
         return cell
@@ -129,12 +134,13 @@ class SearchTableViewController: UITableViewController {
     }
     
     func nearer(_ id1:Int, id2:Int) -> Bool {
-        if let l1 = self.spotLibrary.locationForSpotID(id1), let l2 = self.spotLibrary.locationForSpotID(id2) {
-            return currentLocation.distance(from: l1) < currentLocation.distance(from: l2)
-        }
-        else {
-            return false
-        }
+//        if let l1 = self.spotLibrary.locationForSpotID(id1), let l2 = self.spotLibrary.locationForSpotID(id2) {
+//            return currentLocation.distance(from: l1) < currentLocation.distance(from: l2)
+//        }
+//        else {
+//            return false
+//        }
+        return true
     }
     
     func listNearbySpots() {

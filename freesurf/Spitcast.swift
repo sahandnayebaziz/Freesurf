@@ -69,7 +69,6 @@ struct Spitcast {
                 var map: [Int: SpotData] = [:]
                 for response in responses {
                     for spot in response.data {
-                        print(spot.name)
                         map[spot.id] = spot
                     }
                 }
