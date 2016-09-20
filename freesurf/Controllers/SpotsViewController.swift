@@ -95,7 +95,15 @@ class SpotsViewController: UIViewController, UITableViewDataSource, UITableViewD
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath:IndexPath) {
         collapseDetailViewController = false
-        self.performSegue(withIdentifier: "openSpotDetail", sender: nil)
+        
+        let vc = DetailViewController(nibName: nil, bundle: nil)
+        let nav = UINavigationController(rootViewController: vc)
+        let spotId = library.selectedSpotIDs[indexPath.row]
+        let spot = library.spotDataByID[spotId]!
+        let county = library.countyDataByName[spot.county]!
+        vc.did(updateSpot: spot)
+        vc.did(updateCounty: county)
+        splitViewController?.showDetailViewController(nav, sender: nil)
     }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -121,27 +129,7 @@ class SpotsViewController: UIViewController, UITableViewDataSource, UITableViewD
         library.selectedSpotIDs.insert(spot, at: destinationIndexPath.row)
         library.saveSelectedSpotsToDefaults()
     }
-    
-    @IBAction func unwindToList(_ segue:UIStoryboardSegue) {
-        guard let id = segue.identifier else {
-            NSLog("Error unwinding to list.")
-            return
-        }
-        
-        guard id == "unwindFromSearchCell" || id == "unwindFromSearchCancelButton" else {
-            NSLog("Error unwinding to list.")
-            return
-        }
-        
-        guard let source = segue.source as? SearchTableViewController else {
-            NSLog("Error unwinding to list.")
-            return
-        }
-        
-//        source.searchField.resignFirstResponder()
-        source.dismiss(animated: true, completion: nil)
-    }
-    
+
     func didTapAdd() {
         let vc = SearchTableViewController(spotLibrary: library, delegate: self)
         let nav = UINavigationController(rootViewController: vc)
@@ -149,18 +137,6 @@ class SpotsViewController: UIViewController, UITableViewDataSource, UITableViewD
         vc.view.backgroundColor = UIColor.clear
         nav.view.backgroundColor = UIColor.clear
         present(nav, animated: true, completion: nil)
-    }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any!) {
-        
-        if segue.identifier! == "openSpotDetail" {
-            let destination = (segue.destination as! UINavigationController).topViewController as! DetailViewController
-            let spotId = library.selectedSpotIDs[(tableView.indexPathForSelectedRow!).row]
-            let spot = library.spotDataByID[spotId]!
-            let county = library.countyDataByName[spot.county]!
-            destination.did(updateSpot: spot)
-            destination.did(updateCounty: county)
-        }
     }
     
     func didLoadSavedSpots(spotsFound: Bool) {

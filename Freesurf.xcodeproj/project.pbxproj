@@ -18,6 +18,8 @@
 		D82AACBE1A7EAB3D00D2ED5B /* DetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D82AACBD1A7EAB3D00D2ED5B /* DetailViewModel.swift */; };
 		D82C59711A33E69600896BBA /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D82C59701A33E69600896BBA /* DetailViewController.swift */; };
 		D84542871D8DDD84009753BD /* FooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D84542861D8DDD84009753BD /* FooterView.swift */; };
+		D85EBAC21D916A0D00CF00B8 /* HeightAndTemperatureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85EBAC11D916A0D00CF00B8 /* HeightAndTemperatureView.swift */; };
+		D85EBAC41D916EAA00CF00B8 /* ConditionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85EBAC31D916EAA00CF00B8 /* ConditionsView.swift */; };
 		D86544EA1BA364B2000965DD /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D86544E91BA364B2000965DD /* Launch Screen.storyboard */; };
 		D86F621D198F02DF0070B713 /* SpotsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86F621C198F02DF0070B713 /* SpotsViewController.swift */; };
 		D89BF3031D8E01AE0029F1C6 /* LPRTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D89BF3021D8E01AE0029F1C6 /* LPRTableView.swift */; };
@@ -61,8 +63,10 @@
 		D818F3D2198EEE390098FE82 /* SpotLibrary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpotLibrary.swift; sourceTree = "<group>"; };
 		D81925651A48FE8600925B51 /* LICENSE2 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE2; sourceTree = "<group>"; };
 		D82AACBD1A7EAB3D00D2ED5B /* DetailViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewModel.swift; sourceTree = "<group>"; };
-		D82C59701A33E69600896BBA /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		D82C59701A33E69600896BBA /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DetailViewController.swift; path = Controllers/DetailViewController.swift; sourceTree = "<group>"; };
 		D84542861D8DDD84009753BD /* FooterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FooterView.swift; sourceTree = "<group>"; };
+		D85EBAC11D916A0D00CF00B8 /* HeightAndTemperatureView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeightAndTemperatureView.swift; sourceTree = "<group>"; };
+		D85EBAC31D916EAA00CF00B8 /* ConditionsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConditionsView.swift; sourceTree = "<group>"; };
 		D86544E91BA364B2000965DD /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		D86F621C198F02DF0070B713 /* SpotsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpotsViewController.swift; sourceTree = "<group>"; };
 		D89BF3021D8E01AE0029F1C6 /* LPRTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LPRTableView.swift; sourceTree = "<group>"; };
@@ -130,6 +134,7 @@
 		D8011777198D64C200509A27 /* freesurf */ = {
 			isa = PBXGroup;
 			children = (
+				D85EBABF1D9169E600CF00B8 /* View families */,
 				D8A0427D1D8C9569000F3D45 /* Configuration families */,
 				D84F16FA19C76E4E0050E4FC /* Libraries */,
 				D86F621A198EFA9A0070B713 /* Models */,
@@ -160,11 +165,28 @@
 			path = Libraries;
 			sourceTree = "<group>";
 		};
+		D85EBABF1D9169E600CF00B8 /* View families */ = {
+			isa = PBXGroup;
+			children = (
+				D85EBAC01D9169EE00CF00B8 /* Detail */,
+			);
+			name = "View families";
+			sourceTree = "<group>";
+		};
+		D85EBAC01D9169EE00CF00B8 /* Detail */ = {
+			isa = PBXGroup;
+			children = (
+				D82C59701A33E69600896BBA /* DetailViewController.swift */,
+				D85EBAC11D916A0D00CF00B8 /* HeightAndTemperatureView.swift */,
+				D85EBAC31D916EAA00CF00B8 /* ConditionsView.swift */,
+			);
+			name = Detail;
+			sourceTree = "<group>";
+		};
 		D86F6219198EFA910070B713 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
 				D801177A198D64C200509A27 /* AppDelegate.swift */,
-				D82C59701A33E69600896BBA /* DetailViewController.swift */,
 				D8F6636819D5F14F000B062C /* SearchTableViewController.swift */,
 				D86F621C198F02DF0070B713 /* SpotsViewController.swift */,
 			);
@@ -329,6 +351,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D85EBAC21D916A0D00CF00B8 /* HeightAndTemperatureView.swift in Sources */,
 				D86F621D198F02DF0070B713 /* SpotsViewController.swift in Sources */,
 				D8A0427F1D8C9576000F3D45 /* Defaults.swift in Sources */,
 				D818F3D3198EEE390098FE82 /* SpotLibrary.swift in Sources */,
@@ -342,6 +365,7 @@
 				D8A042811D8C98E7000F3D45 /* SpotData.swift in Sources */,
 				D801177B198D64C200509A27 /* AppDelegate.swift in Sources */,
 				D82C59711A33E69600896BBA /* DetailViewController.swift in Sources */,
+				D85EBAC41D916EAA00CF00B8 /* ConditionsView.swift in Sources */,
 				D811E9201A06DD1200EF9035 /* SpotCell.swift in Sources */,
 				D89BF3031D8E01AE0029F1C6 /* LPRTableView.swift in Sources */,
 				D82AACBE1A7EAB3D00D2ED5B /* DetailViewModel.swift in Sources */,
@@ -384,7 +408,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 6;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -432,7 +456,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 6;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -459,7 +483,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 6;
 				INFOPLIST_FILE = freesurf/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -478,7 +502,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 6;
 				INFOPLIST_FILE = freesurf/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

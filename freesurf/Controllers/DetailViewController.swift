@@ -10,8 +10,13 @@ import UIKit
 import SnapKit
 
 class DetailViewController: UIViewController, UIScrollViewDelegate, SpotDataDelegate, LineChartDelegate {
-
-    let gradient:CAGradientLayer = CAGradientLayer()
+    
+    let scrollView = UIScrollView()
+    let stackView = UIStackView()
+    
+    let heightAndTemperatureView = HeightAndTemperatureView()
+    let conditionsView = ConditionsView()
+    
 
     var tideChart:LineChart = LineChart(frame: CGRect.zero, identifier: "tideChart")
     var swellChart:LineChart = LineChart(frame: CGRect.zero, identifier: "swellChart")
@@ -35,8 +40,41 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, SpotDataDele
     // MARK: - View Methods -
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         self.view.backgroundColor = UIColor(red: 13/255.0, green: 13/255.0, blue: 13/255.0, alpha: 1.0)
+        
+        view.addSubview(scrollView)
+        scrollView.snp.makeConstraints { make in
+            make.top.equalTo(view)
+            make.bottom.equalTo(view)
+            make.left.equalTo(view)
+            make.right.equalTo(view)
+            make.height.equalTo(view)
+            make.width.equalTo(view)
+        }
+        
+        stackView.axis = .vertical
+        stackView.distribution = .fill
+        stackView.alignment = .center
+        stackView.spacing = 20
+        scrollView.addSubview(stackView)
+        stackView.snp.makeConstraints { make in
+            make.top.equalTo(scrollView)
+            make.bottom.equalTo(scrollView)
+            make.right.equalTo(scrollView)
+            make.left.equalTo(scrollView)
+            make.width.equalTo(scrollView)
+            make.centerX.equalTo(scrollView)
+        }
+        
+        stackView.addArrangedSubview(heightAndTemperatureView)
+        heightAndTemperatureView.snp.makeConstraints { make in
+            make.width.equalTo(stackView).offset(-40)
+        }
+        
+        stackView.addArrangedSubview(conditionsView)
+        conditionsView.snp.makeConstraints { make in
+            make.width.equalTo(stackView).offset(-40)
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -89,15 +127,20 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, SpotDataDele
     
     func did(updateSpot spot: SpotData) {
         title = spot.name
-        spotCurrentHeightLabel.text = spot.heightRangeString
-        spotConditionLabel.text = spot.conditionString
+        
+        for delegate in [heightAndTemperatureView, conditionsView] as [SpotDataDelegate] {
+            delegate.did(updateSpot: spot)
+        }
     }
     
     func did(updateCounty county: CountyData) {
-        spotWaterTempLabel.text = county.waterTemperatureString
-        spotDirectionLabel.text = county.significantSwell?.direction
-        spotPeriodLabel.text = county.periodString
-        spotWindLabel.text = county.windString
+        for delegate in [heightAndTemperatureView, conditionsView] as [SpotDataDelegate] {
+            delegate.did(updateCounty: county)
+        }
+//        spotWaterTempLabel.text = county.waterTemperatureString
+//        spotDirectionLabel.text = county.significantSwell?.direction
+//        spotPeriodLabel.text = county.periodString
+//        spotWindLabel.text = county.windString
     }
 
 //    func setCharts(_ model:DetailViewModel) {
