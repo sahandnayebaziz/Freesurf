@@ -42,7 +42,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             window.makeKeyAndVisible()
         }
 
-        URLCache.shared = URLCache(memoryCapacity: 0, diskCapacity: 0, diskPath: nil)
         return true
     }
     
