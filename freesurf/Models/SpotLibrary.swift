@@ -78,23 +78,25 @@ class SpotLibrary {
             }
             
             selectedSpotIDs.append(newSpotId)
-            dispatch_to_background_queue {
-                Defaults.save(selectedSpots: self.selectedSpotIDs.map({ self.spotDataByID[$0]! }))
-            }
+            saveSelectedSpotsToDefaults()
             return resolve(SpotSelectionResponse(didAddSpot: true))
         }
     }
     
     func delete(spotAtIndex index: Int) {
         selectedSpotIDs.remove(at: index)
-        dispatch_to_background_queue {
-            Defaults.save(selectedSpots: self.selectedSpotIDs.map({ self.spotDataByID[$0]! }))
-        }
+        saveSelectedSpotsToDefaults()
     }
     
     func get(dataForSpotId spotId: Int) {
         get(spotDataForSpotId: spotId)
         get(countyDataForCounty: spotDataByID[spotId]!.county)
+    }
+    
+    func saveSelectedSpotsToDefaults() {
+        dispatch_to_background_queue {
+            Defaults.save(selectedSpots: self.selectedSpotIDs.map({ self.spotDataByID[$0]! }))
+        }
     }
     
     private func get(spotDataForSpotId spotId: Int) {

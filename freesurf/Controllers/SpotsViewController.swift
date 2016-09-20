@@ -13,9 +13,8 @@ import ReachabilitySwift
 class SpotsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, SpotDataDelegate, SpotTableViewDelegate, SearchResultDelegate, UISplitViewControllerDelegate, FooterViewDelegate {
     
     var library: SpotLibrary!
-    var usingUserDefaults:Bool = false
     
-    let tableView = UITableView(frame: CGRect.zero, style: .grouped)
+    let tableView = LPRTableView(frame: CGRect.zero, style: .grouped)
     var collapseDetailViewController = true
     
     override func viewDidLoad() {
@@ -112,6 +111,17 @@ class SpotsViewController: UIViewController, UITableViewDataSource, UITableViewD
         }
     }
     
+    func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        let spot = library.selectedSpotIDs[sourceIndexPath.row]
+        library.selectedSpotIDs.remove(at: sourceIndexPath.row)
+        library.selectedSpotIDs.insert(spot, at: destinationIndexPath.row)
+        library.saveSelectedSpotsToDefaults()
+    }
+    
     @IBAction func unwindToList(_ segue:UIStoryboardSegue) {
         guard let id = segue.identifier else {
             NSLog("Error unwinding to list.")
@@ -136,7 +146,7 @@ class SpotsViewController: UIViewController, UITableViewDataSource, UITableViewD
         let vc = SearchTableViewController(spotLibrary: library, delegate: self)
         let nav = UINavigationController(rootViewController: vc)
         nav.modalPresentationStyle = .overCurrentContext
-        vc.view.backgroundColor = UIColor(red: 13/255.0, green: 13/255.0, blue: 13/255.0, alpha: 1.0)
+        vc.view.backgroundColor = UIColor.clear
         nav.view.backgroundColor = UIColor.clear
         present(nav, animated: true, completion: nil)
     }
@@ -155,7 +165,6 @@ class SpotsViewController: UIViewController, UITableViewDataSource, UITableViewD
     
     func didLoadSavedSpots(spotsFound: Bool) {
         if spotsFound {
-            usingUserDefaults = true
             tableView.reloadData()
         }
     }
