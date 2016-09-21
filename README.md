@@ -1,21 +1,6 @@
-# Freesurf
-
 Freesurf is an iOS app that displays surf forecasts for surfers in California using the [Spitcast API]. Freesurf was made by [Sahand Nayebaziz].
 
-### App Store
-
 [Download Freesurf on the App Store]
-
-### Version
-1.2
-
-### Screenshots
-![Empty view](screenshot1.png?raw=true "Empty View")
-
-![Spots view](screenshot2.png?raw=true "Spots View")
-
-![Detail view](screenshot3.png?raw=true "Detail View")
-
 
 [Spitcast API]:http://spitcast.com/
 [Sahand Nayebaziz]:http://sahand.me/
