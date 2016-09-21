@@ -11,18 +11,94 @@ import SnapKit
 
 class DetailViewController: UIViewController, UIScrollViewDelegate, SpotDataDelegate {
     
-    let scrollView = UIScrollView()
-    let stackView = UIStackView()
+    var representedSpot: SpotData? = nil
+    let welcomeLabel = UILabel()
     
+    var scrollView: UIScrollView? = nil
+    let stackView = UIStackView()
+
     let heightAndTemperatureView = HeightAndTemperatureView()
     let conditionsView = ConditionsView()
     let tideChart = ChartView(type: .tides)
     let heightChart = ChartView(type: .swell)
     
+    init(forSpot spot: SpotData?) {
+        representedSpot = spot
+        super.init(nibName: nil, bundle: nil)
+        
+        if spot == nil {
+            setForNoSpot()
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor(red: 13/255.0, green: 13/255.0, blue: 13/255.0, alpha: 1.0)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(false)
+        
+        navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
+        navigationItem.leftItemsSupplementBackButton = true
         navigationController?.navigationBar.barStyle = .black
+    }
+    
+    func did(updateSpot spot: SpotData) {
+        guard let representedSpot = representedSpot else {
+            return
+        }
+        
+        guard representedSpot.id == spot.id else {
+            return
+        }
+        
+        setForSpot()
+        title = spot.name
+        
+        for delegate in [heightAndTemperatureView, conditionsView, tideChart, heightChart] as [SpotDataDelegate] {
+            delegate.did(updateSpot: spot)
+        }
+    }
+    
+    func did(updateCounty county: CountyData) {
+        guard let representedSpot = representedSpot else {
+            return
+        }
+        
+        guard representedSpot.county == county.name else {
+            return
+        }
+        
+        for delegate in [heightAndTemperatureView, conditionsView, tideChart, heightChart] as [SpotDataDelegate] {
+            delegate.did(updateCounty: county)
+        }
+    }
+    
+    func setForNoSpot() {
+        title = ""
+        welcomeLabel.text = "Tap a spot to view a forecast"
+        welcomeLabel.textAlignment = .center
+        welcomeLabel.textColor = UIColor.lightText
+        view.addSubview(welcomeLabel)
+        welcomeLabel.snp.makeConstraints { make in
+            make.center.equalTo(view)
+        }
+        
+        scrollView?.removeFromSuperview()
+    }
+    
+    private func setForSpot() {
+        guard scrollView == nil else {
+            return
+        }
+        
+        welcomeLabel.removeFromSuperview()
+        
+        self.scrollView = UIScrollView()
+        guard let scrollView = scrollView else {
+            return
+        }
         
         view.addSubview(scrollView)
         scrollView.snp.makeConstraints { make in
@@ -77,31 +153,15 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, SpotDataDele
             make.width.equalTo(stackView).offset(-40)
         }
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(false)
-        
-        navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
-        navigationItem.leftItemsSupplementBackButton = true
-    }
 
-    func did(updateSpot spot: SpotData) {
-        title = spot.name
-        
-        for delegate in [heightAndTemperatureView, conditionsView, tideChart, heightChart] as [SpotDataDelegate] {
-            delegate.did(updateSpot: spot)
-        }
-    }
-    
-    func did(updateCounty county: CountyData) {
-        for delegate in [heightAndTemperatureView, conditionsView, tideChart, heightChart] as [SpotDataDelegate] {
-            delegate.did(updateCounty: county)
-        }
-    }
     
     override func didRotate(from fromInterfaceOrientation: UIInterfaceOrientation) {
         tideChart.chart.setNeedsDisplay()
         heightChart.chart.setNeedsDisplay()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
 }

@@ -109,7 +109,7 @@ class ChartView: UIView, SpotDataDelegate, LineChartDelegate {
     }
     
     func didSelectDataPoint(_ x: CGFloat, yValues: Array<CGFloat>, chartIdentifier: String) {
-        let chartIndexTouched = x < 0 ? 0 : x > 23 ? 23 : Int(x)
+        let chartIndexTouched = x < 0 ? 0 : x > 24 ? 24 : Int(x)
         
         timeLabel.text = graphIndexToTimeString(chartIndexTouched, longForm: true)
         valueLabel.text = "\(Int(yValues.first!))ft"

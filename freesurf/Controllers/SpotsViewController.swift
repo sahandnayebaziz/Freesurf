@@ -83,7 +83,9 @@ class SpotsViewController: UIViewController, UITableViewDataSource, UITableViewD
         let spot = library.spotDataByID[spotId]!
         cell.set(forSpot: spot)
         cell.did(updateSpot: spot)
-        cell.did(updateCounty: library.countyDataByName[spot.county]!)
+        if let county = library.countyDataByName[spot.county] {
+            cell.did(updateCounty: county)
+        }
         return cell
     }
     
@@ -94,13 +96,15 @@ class SpotsViewController: UIViewController, UITableViewDataSource, UITableViewD
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath:IndexPath) {
         collapseDetailViewController = false
         
-        let vc = DetailViewController(nibName: nil, bundle: nil)
-        let nav = UINavigationController(rootViewController: vc)
         let spotId = library.selectedSpotIDs[indexPath.row]
         let spot = library.spotDataByID[spotId]!
-        let county = library.countyDataByName[spot.county]!
+        
+        let vc = DetailViewController(forSpot: spot)
+        let nav = UINavigationController(rootViewController: vc)
         vc.did(updateSpot: spot)
-        vc.did(updateCounty: county)
+        if let county = library.countyDataByName[spot.county] {
+            vc.did(updateCounty: county)
+        }
         splitViewController?.showDetailViewController(nav, sender: nil)
     }
     
@@ -114,6 +118,22 @@ class SpotsViewController: UIViewController, UITableViewDataSource, UITableViewD
             library.delete(spotAtIndex: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
             tableView.endUpdates()
+            
+            if library.selectedSpotIDs.isEmpty {
+                guard let splitViewController = splitViewController else {
+                    return
+                }
+                
+                guard splitViewController.viewControllers.count == 2 else {
+                    return
+                }
+                
+                guard let detailView = ((splitViewController.viewControllers[1] as? UINavigationController)?.topViewController as? DetailViewController) else {
+                    return
+                }
+                
+                detailView.setForNoSpot()
+            }
         }
     }
     
@@ -154,24 +174,50 @@ class SpotsViewController: UIViewController, UITableViewDataSource, UITableViewD
     
     func did(updateSpot spot: SpotData) {
         guard let visibleCells = tableView.visibleCells as? [SpotCell] else {
-            NSLog("Unable to get visible cells.")
             return
         }
         
         for cell in visibleCells {
             cell.did(updateSpot: spot)
         }
+        
+        guard let splitViewController = splitViewController else {
+            return
+        }
+        
+        guard splitViewController.viewControllers.count == 2 else {
+            return
+        }
+        
+        guard let detailView = ((splitViewController.viewControllers[1] as? UINavigationController)?.topViewController as? DetailViewController) else {
+            return
+        }
+        
+        detailView.did(updateSpot: spot)
     }
     
     func did(updateCounty county: CountyData) {
         guard let visibleCells = tableView.visibleCells as? [SpotCell] else {
-            NSLog("Unable to get visible cells.")
             return
         }
         
         for cell in visibleCells {
             cell.did(updateCounty: county)
         }
+        
+        guard let splitViewController = splitViewController else {
+            return
+        }
+        
+        guard splitViewController.viewControllers.count == 2 else {
+            return
+        }
+        
+        guard let detailView = ((splitViewController.viewControllers[1] as? UINavigationController)?.topViewController as? DetailViewController) else {
+            return
+        }
+        
+        detailView.did(updateCounty: county)
     }
 }
 

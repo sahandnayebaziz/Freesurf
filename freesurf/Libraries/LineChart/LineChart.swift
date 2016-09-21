@@ -420,8 +420,8 @@ class LineChart: UIControl {
         if indexToDisplayLine < 0 {
             indexToDisplayLine = 0
         }
-        if indexToDisplayLine > 23 {
-            indexToDisplayLine = 23
+        if indexToDisplayLine > 24 {
+            indexToDisplayLine = 24
         }
         
         // get axis
@@ -686,8 +686,9 @@ func graphIndexToTimeString(_ graphIndex: Int, longForm: Bool) -> String {
     }
     else if hourOfDay >= 12 {
         string12HourExtension = "PM"
-        if hourOfDay == 23 {
-            stringHour = "11"
+        if hourOfDay == 24 {
+            stringHour = "12"
+            string12HourExtension = "AM"
         }
         else {
             hourOfDay = hourOfDay - 12

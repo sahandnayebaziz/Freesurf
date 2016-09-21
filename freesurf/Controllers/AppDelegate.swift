@@ -18,7 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let master = SpotsViewController()
         let masterNav = UINavigationController(rootViewController: master)
         
-        let detail = DetailViewController(nibName: nil, bundle: nil)
+        let detail = DetailViewController(forSpot: nil)
         let detailNav = UINavigationController(rootViewController: detail)
         
         let splitView = LightStatusBarSplitViewController()
