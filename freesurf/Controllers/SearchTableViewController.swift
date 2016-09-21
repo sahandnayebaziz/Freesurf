@@ -33,7 +33,8 @@ class SearchTableViewController: UIViewController, UITableViewDataSource, UITabl
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        navigationController?.navigationBar.barStyle = .blackTranslucent
+        navigationController?.navigationBar.barStyle = .black
+        navigationController?.navigationBar.isTranslucent = true
         navigationItem.prompt = "Enter name of county or surf spot"
         
         view.addSubview(searchTableView)
@@ -135,10 +136,6 @@ class SearchTableViewController: UIViewController, UITableViewDataSource, UITabl
     
     func tappedNearby() {
         
-    }
-
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
     }
     
     required init?(coder aDecoder: NSCoder) {

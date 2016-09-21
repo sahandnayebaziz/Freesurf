@@ -46,7 +46,7 @@ class ConditionsView: UIView, SpotDataDelegate {
             label.font = UIFont.systemFont(ofSize: 18, weight: UIFontWeightRegular)
             label.textAlignment = .left
             label.text = metric
-            label.textColor = UIColor.white
+            label.textColor = Colors.blue
             labelsStackView.addArrangedSubview(label)
         }
         

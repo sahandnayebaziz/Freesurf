@@ -22,7 +22,9 @@ class SpotsViewController: UIViewController, UITableViewDataSource, UITableViewD
         library = SpotLibrary(dataDelegate: self, tableViewDelegate: self)
         
         title = "Spots"
-        navigationController?.navigationBar.barStyle = .blackTranslucent
+        splitViewController!.navigationController?.navigationBar.barStyle = .black
+        navigationController?.navigationBar.barStyle = .black
+        navigationController?.navigationBar.isTranslucent = true
         
         view.addSubview(tableView)
         tableView.snp.makeConstraints { make in
@@ -53,10 +55,6 @@ class SpotsViewController: UIViewController, UITableViewDataSource, UITableViewD
     
     func splitViewController(_ splitViewController: UISplitViewController, collapseSecondary secondaryViewController: UIViewController, onto primaryViewController: UIViewController) -> Bool {
         return collapseDetailViewController
-    }
-    
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {

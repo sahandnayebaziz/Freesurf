@@ -120,11 +120,7 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, SpotDataDele
 //            self.swellChart.highlightDataPoints(self.currentHour)
 //        }
     }
-    
-    override var preferredStatusBarStyle : UIStatusBarStyle {
-        return UIStatusBarStyle.lightContent
-    }
-    
+
     func did(updateSpot spot: SpotData) {
         title = spot.name
         

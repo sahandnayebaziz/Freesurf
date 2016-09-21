@@ -29,12 +29,12 @@ class HeightAndTemperatureView: UIView, SpotDataDelegate {
         
         stackView.addArrangedSubview(temperatureLabel)
         temperatureLabel.font = UIFont.systemFont(ofSize: 48, weight: UIFontWeightThin)
-        temperatureLabel.textColor = UIColor.white
+        temperatureLabel.textColor = Colors.blue
         temperatureLabel.textAlignment = .left
         
         stackView.addArrangedSubview(heightLabel)
         heightLabel.font = UIFont.systemFont(ofSize: 72, weight: UIFontWeightThin)
-        heightLabel.textColor = UIColor.white
+        heightLabel.textColor = Colors.blue
         heightLabel.textAlignment = .right
     }
     
