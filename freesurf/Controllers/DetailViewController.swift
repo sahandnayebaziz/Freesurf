@@ -22,6 +22,7 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, SpotDataDele
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor(red: 13/255.0, green: 13/255.0, blue: 13/255.0, alpha: 1.0)
+        navigationController?.navigationBar.barStyle = .black
         
         view.addSubview(scrollView)
         scrollView.snp.makeConstraints { make in
