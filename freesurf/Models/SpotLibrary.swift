@@ -168,14 +168,12 @@ class SpotLibrary {
         for spot in spots {
             counties.insert(spot.county)
             dispatch_to_background_queue {
-                NSLog("dispatching get for \(spot.id)")
                 self.get(spotDataForSpotId: spot.id)
             }
         }
         
         for county in counties {
             dispatch_to_background_queue {
-                NSLog("dispatching get for \(county)")
                 self.get(countyDataForCounty: county)
             }
         }

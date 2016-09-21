@@ -20,6 +20,7 @@
 		D84542871D8DDD84009753BD /* FooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D84542861D8DDD84009753BD /* FooterView.swift */; };
 		D84CF5A51D92022200170362 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = D84CF5A41D92022200170362 /* Colors.swift */; };
 		D84CF5A91D92057900170362 /* LightStatusBarSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D84CF5A81D92057900170362 /* LightStatusBarSplitViewController.swift */; };
+		D84CF5AB1D92063100170362 /* ChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D84CF5AA1D92063100170362 /* ChartView.swift */; };
 		D85EBAC21D916A0D00CF00B8 /* HeightAndTemperatureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85EBAC11D916A0D00CF00B8 /* HeightAndTemperatureView.swift */; };
 		D85EBAC41D916EAA00CF00B8 /* ConditionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85EBAC31D916EAA00CF00B8 /* ConditionsView.swift */; };
 		D86544EA1BA364B2000965DD /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D86544E91BA364B2000965DD /* Launch Screen.storyboard */; };
@@ -69,6 +70,7 @@
 		D84542861D8DDD84009753BD /* FooterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FooterView.swift; sourceTree = "<group>"; };
 		D84CF5A41D92022200170362 /* Colors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		D84CF5A81D92057900170362 /* LightStatusBarSplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LightStatusBarSplitViewController.swift; sourceTree = "<group>"; };
+		D84CF5AA1D92063100170362 /* ChartView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartView.swift; sourceTree = "<group>"; };
 		D85EBAC11D916A0D00CF00B8 /* HeightAndTemperatureView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeightAndTemperatureView.swift; sourceTree = "<group>"; };
 		D85EBAC31D916EAA00CF00B8 /* ConditionsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConditionsView.swift; sourceTree = "<group>"; };
 		D86544E91BA364B2000965DD /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
@@ -184,6 +186,7 @@
 				D82C59701A33E69600896BBA /* DetailViewController.swift */,
 				D85EBAC11D916A0D00CF00B8 /* HeightAndTemperatureView.swift */,
 				D85EBAC31D916EAA00CF00B8 /* ConditionsView.swift */,
+				D84CF5AA1D92063100170362 /* ChartView.swift */,
 			);
 			name = Detail;
 			sourceTree = "<group>";
@@ -374,6 +377,7 @@
 				D801177B198D64C200509A27 /* AppDelegate.swift in Sources */,
 				D82C59711A33E69600896BBA /* DetailViewController.swift in Sources */,
 				D85EBAC41D916EAA00CF00B8 /* ConditionsView.swift in Sources */,
+				D84CF5AB1D92063100170362 /* ChartView.swift in Sources */,
 				D811E9201A06DD1200EF9035 /* SpotCell.swift in Sources */,
 				D89BF3031D8E01AE0029F1C6 /* LPRTableView.swift in Sources */,
 				D82AACBE1A7EAB3D00D2ED5B /* DetailViewModel.swift in Sources */,
