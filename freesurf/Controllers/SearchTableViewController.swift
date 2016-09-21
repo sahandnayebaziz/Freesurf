@@ -54,7 +54,7 @@ class SearchTableViewController: UIViewController, UITableViewDataSource, UITabl
         blurEffectView.frame = searchTableView.bounds
         searchTableView.backgroundView = blurEffectView
         
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Nearby", style: .plain, target: self, action: #selector(SearchTableViewController.tappedNearby))
+//        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Nearby", style: .plain, target: self, action: #selector(SearchTableViewController.tappedNearby))
         let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(self.didTapCancel))
         cancelButton.tintColor = UIColor.white
         navigationItem.rightBarButtonItem = cancelButton
