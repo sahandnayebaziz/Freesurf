@@ -10,15 +10,7 @@ import Foundation
 import QuartzCore
 
 extension String {
-    func contains(other: String) -> Bool{
-        var start = startIndex
-        repeat{
-            let subString = self[Range(start: start++, end: endIndex)].lowercaseString
-            if subString.hasPrefix(other.lowercaseString){
-                return true
-            }
-            
-        }while start != endIndex
-        return false
+    func contains(otherString: String) -> Bool {
+        return self.range(of: otherString) != nil
     }
 }

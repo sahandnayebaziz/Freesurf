@@ -8,145 +8,125 @@
 
 import UIKit
 import SnapKit
-import SwiftLocation
-import PermissionScope
 import CoreLocation
 
-// SearchTableViewController lets you search for and add a new spot.
-class SearchTableViewController: UITableViewController {
+protocol SearchResultDelegate {
+    func did(selectSpotId spotId: Int)
+}
+
+class SearchTableViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
-    // MARK: - Properties -
-    var spotLibrary:SpotLibrary!
-    var results:[Int] = []
-    var currentLocation = CLLocation()
-    var displayingNearby = false {
-        didSet {
-            if displayingNearby {
-                self.navigationItem.prompt = "Now displaying nearby spots"
-            }
-            else {
-                self.navigationItem.prompt = "Enter name of county or surf spot"
-            }
-        }
-    }
+    var spotLibrary: SpotLibrary
+    var results: [Int] = []
+    var delegate: SearchResultDelegate
     
-    // MARK: - Interface Outlets -
-    @IBOutlet var searchTableView: UITableView!
-    @IBOutlet weak var searchField: UITextField!
-    var headerView = UIView()
-    var nearbyButton = UIButton()
-    let permissionView = PermissionScope()
+    var searchTableView = UITableView(frame: CGRect.zero, style: .plain)
+    let searchField = UITextField()
     var nearbyIndicator = UIActivityIndicatorView()
     
-    // MARK: - View methods -
+    init(spotLibrary: SpotLibrary, delegate: SearchResultDelegate) {
+        self.spotLibrary = spotLibrary
+        self.delegate = delegate
+        super.init(nibName: nil, bundle: nil)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.searchTableView.separatorStyle = UITableViewCellSeparatorStyle.None
-        self.searchTableView.backgroundColor = UIColor.clearColor()
-        self.displayingNearby = false
+        navigationController?.navigationBar.barStyle = .black
+        navigationController?.navigationBar.isTranslucent = true
+        navigationItem.prompt = "Enter name of county or surf spot"
         
-        let blurEffect:UIBlurEffect = UIBlurEffect(style: UIBlurEffectStyle.Dark)
+        view.addSubview(searchTableView)
+        searchTableView.snp.makeConstraints { make in
+            make.top.equalTo(0)
+            make.bottom.equalToSuperview()
+            make.width.equalTo(view.snp.width)
+            make.centerX.equalTo(view.snp.centerX)
+        }
+        searchTableView.dataSource = self
+        searchTableView.delegate = self
+        searchTableView.separatorStyle = UITableViewCellSeparatorStyle.none
+        searchTableView.backgroundColor = UIColor.clear
+        
+        let blurEffect:UIBlurEffect = UIBlurEffect(style: UIBlurEffectStyle.dark)
         let blurEffectView:UIVisualEffectView = UIVisualEffectView(effect: blurEffect)
         blurEffectView.frame = searchTableView.bounds
-        self.searchTableView.backgroundView = blurEffectView
+        searchTableView.backgroundView = blurEffectView
         
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Nearby", style: .Plain, target: self, action: "tappedNearby")
+//        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Nearby", style: .plain, target: self, action: #selector(SearchTableViewController.tappedNearby))
+        let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(self.didTapCancel))
+        cancelButton.tintColor = UIColor.white
+        navigationItem.rightBarButtonItem = cancelButton
+        display(resultsForSearch: "")
         
-        permissionView.addPermission(LocationWhileInUsePermission(), message: "We use this to show you nearby surf spots.")
-        permissionView.bodyLabel.text = "We need your permission first."
+        searchField.frame = CGRect(x: 60, y: 37, width: 240, height: 30)
+        searchField.backgroundColor = UIColor.black
+        searchField.textColor = UIColor.white
+        searchField.borderStyle = .roundedRect
+        searchField.keyboardAppearance = .dark
+        navigationItem.titleView = searchField
+        
+        searchField.addTarget(self, action: #selector(editingchanged(_:)), for: .editingChanged)
     }
     
-    override func viewWillAppear(animated: Bool) {
-        self.searchField.becomeFirstResponder()
+    override func viewWillAppear(_ animated: Bool) {
+        searchField.becomeFirstResponder()
     }
     
-    // MARK: - Interface Actions -
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if sender!.isKindOfClass(UITableViewCell) {
-            
-            let indexPath:NSIndexPath = searchTableView.indexPathForSelectedRow!
-            
-            if !(self.spotLibrary.selectedSpotIDs.contains(results[indexPath.row])) {
-                spotLibrary.selectedSpotIDs.append(results[indexPath.row])
-            }
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return results.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        var cell = searchTableView.dequeueReusableCell(withIdentifier: "searchCell")
+        if cell == nil {
+            cell = UITableViewCell(style: .value1, reuseIdentifier: "searchCell")
         }
+        let rowID = self.results[(indexPath as NSIndexPath).row]
+        
+        cell?.textLabel?.text = spotLibrary.spotDataByID[rowID]!.name
+        cell?.textLabel?.textColor = UIColor.white
+        cell?.detailTextLabel?.text = spotLibrary.spotDataByID[rowID]!.county
+        cell?.backgroundColor = UIColor.clear
+        
+        return cell!
     }
     
-    @IBAction func editingchanged(sender: UITextField) {
-        self.results = []
-        self.displayingNearby = false
-        
-        let input:String = sender.text!
-        
-        if (input.characters.count != 0) {
-            for key in self.spotLibrary.spotDataByID.keys {
-                if (self.spotLibrary.spotDataByID[key]!.name.contains(input) || self.spotLibrary.spotDataByID[key]!.county.contains(input)) {
-                    self.results.append(key)
-                }
-            }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        searchField.resignFirstResponder()
+        navigationController?.dismiss(animated: true, completion: nil)
+        delegate.did(selectSpotId: results[indexPath.row])
+    }
+    
+    func didTapCancel() {
+        searchField.resignFirstResponder()
+        searchField.endEditing(false)
+        navigationController?.dismiss(animated: true, completion: nil)
+    }
+    
+    func editingchanged(_ sender: UITextField) {
+        guard let input = sender.text else {
+            return
+        }
+        display(resultsForSearch: input.lowercased())
+    }
+    
+    private func display(resultsForSearch searchText: String) {
+        if searchText == "" {
+            results = spotLibrary.spotDataByID.keys.map({ self.spotLibrary.spotDataByID[$0]! }).sorted(by: { $0.name < $1.name }).map({ $0.id })
+        } else {
+            results = spotLibrary.spotDataByID.keys.map({ self.spotLibrary.spotDataByID[$0]! }).sorted(by: { $0.name < $1.name }).filter({ $0.name.lowercased().contains(searchText) || $0.county.lowercased().contains(searchText)}).map({ $0.id })
         }
         
         self.searchTableView.reloadData()
     }
     
-    func tappedNearby() {
-        self.searchField.resignFirstResponder()
-        
-        permissionView.show({ (finished, results) -> Void in
-            if results[0].status == .Authorized {
-                
-                dispatch_to_main_queue {
-                    self.searchField.text = ""
-                    self.searchField.resignFirstResponder()
-                    self.tableView.backgroundView?.addSubview(self.nearbyIndicator)
-                    self.nearbyIndicator.hidesWhenStopped = true
-                    self.nearbyIndicator.snp_makeConstraints { make in
-                        make.centerX.equalTo(self.tableView.snp_centerX)
-                        make.centerY.equalTo(self.tableView.snp_centerY).offset(-100)
-                    }
-                    self.nearbyIndicator.startAnimating()
-                    
-                    SwiftLocation.shared.currentLocation(Accuracy.Neighborhood, timeout: 5, onSuccess: { (location) -> Void in
-                        if let location = location {
-                            self.displayingNearby = true
-                            self.currentLocation = location
-                            self.listNearbySpots()
-                        }
-                        
-                        }) { (error) -> Void in
-                            NSLog("\(error)")
-                    }
-                }
-                
-                
-                
-            }
-        })
-    }
-    
-    // MARK: - Table view methods -
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 1
-    }
-    
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return displayingNearby ? 13 : results.count
-    }
-    
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let rowID = self.results[indexPath.row]
-        
-        let cell:UITableViewCell = self.searchTableView.dequeueReusableCellWithIdentifier("searchCell") as UITableViewCell!
-        
-        cell.textLabel!.text = spotLibrary.nameForSpotID(rowID)
-        cell.detailTextLabel!.text = spotLibrary.countyForSpotID(rowID)
-        cell.backgroundColor = UIColor.clearColor()
-        
-        return cell
-    }
-    
-    override func scrollViewWillBeginDragging(scrollView: UIScrollView) {
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         // only hide the scroll view on drag if there is at least one result being displayed.
         // otherwise, the user may be confused why the keyboard hid and would have to tap the search field before typing
         if results.count > 0 {
@@ -154,23 +134,11 @@ class SearchTableViewController: UITableViewController {
         }
     }
     
-    func nearer(id1:Int, id2:Int) -> Bool {
-        if let l1 = self.spotLibrary.locationForSpotID(id1), let l2 = self.spotLibrary.locationForSpotID(id2) {
-            return currentLocation.distanceFromLocation(l1) < currentLocation.distanceFromLocation(l2)
-        }
-        else {
-            return false
-        }
+    func tappedNearby() {
+        
     }
     
-    func listNearbySpots() {
-        if !self.spotLibrary.spotDataByID.keys.isEmpty {
-            results = self.spotLibrary.spotDataByID.keys.sort(nearer)
-            dispatch_to_main_queue {
-                self.nearbyIndicator.stopAnimating()
-                self.nearbyIndicator.removeFromSuperview()
-            }
-            self.searchTableView.reloadData()
-        }
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }

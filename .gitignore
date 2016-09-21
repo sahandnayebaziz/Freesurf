@@ -31,3 +31,9 @@ DerivedData
 # Carthage/Checkouts
 
 Carthage/Build
+
+Freesurf.app.dSYM.zip
+
+fastlane/report.xml
+
+Freesurf.xcworkspace/xcuserdata/sahand.xcuserdatad/UserInterfaceState.xcuserstate
