@@ -39,6 +39,11 @@ struct CountySwellsResponse {
     var swells: [[Swell]]
 }
 
+struct CountyWindResponse {
+    var county: String
+    var winds: [Wind]
+}
+
 struct Spitcast {
     private static let spitcastURL = "http://api.spitcast.com/api"
     
@@ -265,6 +270,42 @@ struct Spitcast {
                         return reject(SpitcastError.BadResponse)
                     }
             }
+        }
+    }
+    
+    static func get(windsForCounty county: String) -> Promise<CountyWindResponse> {
+        return Promise { resolve, reject in
+            request(spitcastURL + "/county/wind/" + format(stringForAPI: county), method: .get, parameters: nil, encoding: JSONEncoding.default, headers: nil)
+                .responseData { response in
+                    guard let httpResponse = response.response, let responseData = response.result.value else {
+                        return reject(SpitcastError.BadResponse)
+                    }
+                    
+                    if httpResponse.statusCode == 200 {
+                        let jsonData = try? JSONSerialization.jsonObject(with: responseData, options: [])
+                        guard let array = jsonData as? [Any] else {
+                            return reject(SpitcastError.BadData)
+                        }
+                        
+                        var winds: [Wind] = []
+                        for item in array {
+                            if let item = item as? [String: Any] {
+                                if let speed = item["speed_mph"] as? Float, let direction = item["direction_text"] as? String {
+                                    winds.append(Wind(speed: Int(speed), direction: direction))
+                                }
+                            }
+                        }
+                        
+                        if winds.isEmpty {
+                            reject(SpitcastError.BadData)
+                        } else {
+                            resolve(CountyWindResponse(county: county, winds: winds))
+                        }
+                    } else {
+                        return reject(SpitcastError.BadResponse)
+                    }
+            }
+
         }
     }
     

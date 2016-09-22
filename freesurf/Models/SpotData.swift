@@ -121,7 +121,7 @@ struct CountyData {
     var waterTemperature: Int?
     var tides: [Float]?
     var swells: [[Swell]]?
-    var wind: Wind?
+    var winds: [Wind]?
     
     var significantSwell: Swell? {
         guard let allSwells = self.swells else {
@@ -156,10 +156,16 @@ struct CountyData {
     }
     
     var windString: String {
-        guard let wind = wind else {
+        guard let allWinds = self.winds else {
             return ""
         }
         
-        return "\(wind.direction) @ \(wind.speed) MPH"
+        let currentHour = Date().hour()
+        guard allWinds.count >= currentHour else {
+            NSLog("Incomplete winds error")
+            return ""
+        }
+        
+        return "\(allWinds[currentHour].direction) @ \(allWinds[currentHour].speed) MPH"
     }
 }

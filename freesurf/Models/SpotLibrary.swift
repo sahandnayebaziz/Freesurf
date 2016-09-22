@@ -44,7 +44,7 @@ class SpotLibrary {
         for spot in savedSpots {
             selectedSpotIDs.append(spot.id)
             spotDataByID[spot.id] = spot
-            countyDataByName[spot.county] = CountyData(name: spot.county, waterTemperature: nil, tides: nil, swells: nil, wind: nil)
+            countyDataByName[spot.county] = CountyData(name: spot.county, waterTemperature: nil, tides: nil, swells: nil, winds: nil)
         }
         dispatch_to_background_queue {
             self.get(dataForSpots: savedSpots)
@@ -55,7 +55,7 @@ class SpotLibrary {
             .then { counties -> Promise<[Int: SpotData]> in
                 for name in counties {
                     if !self.countyDataByName.keys.contains(name) {
-                        self.countyDataByName[name] = CountyData(name: name, waterTemperature: nil, tides: nil, swells: nil, wind: nil)
+                        self.countyDataByName[name] = CountyData(name: name, waterTemperature: nil, tides: nil, swells: nil, winds: nil)
                     }
                 }
                 return Spitcast.get(allSpotsForCounties: counties)
@@ -123,7 +123,7 @@ class SpotLibrary {
             .then { response -> Void in
                 dispatch_to_main_queue {
                     let county = self.countyDataByName[response.county]!
-                    let updatedCounty = CountyData(name: county.name, waterTemperature: response.waterTemperature, tides: county.tides, swells: county.swells, wind: county.wind)
+                    let updatedCounty = CountyData(name: county.name, waterTemperature: response.waterTemperature, tides: county.tides, swells: county.swells, winds: county.winds)
                     self.update(countyDataWith: updatedCounty)
                 }
             }.recover { error -> Void in
@@ -136,7 +136,7 @@ class SpotLibrary {
             .then { response -> Void in
                 dispatch_to_main_queue {
                     let county = self.countyDataByName[response.county]!
-                    let updatedCounty = CountyData(name: county.name, waterTemperature: county.waterTemperature, tides: response.tides, swells: county.swells, wind: county.wind)
+                    let updatedCounty = CountyData(name: county.name, waterTemperature: county.waterTemperature, tides: response.tides, swells: county.swells, winds: county.winds)
                     self.update(countyDataWith: updatedCounty)
                 }
             }.recover { error -> Void in
@@ -148,10 +148,21 @@ class SpotLibrary {
             Spitcast.get(swellsForCounty: county.name)
             .then { response -> Void in
                 let county = self.countyDataByName[response.county]!
-                let updatedCounty = CountyData(name: county.name, waterTemperature: county.waterTemperature, tides: county.tides, swells: response.swells, wind: county.wind)
+                let updatedCounty = CountyData(name: county.name, waterTemperature: county.waterTemperature, tides: county.tides, swells: response.swells, winds: county.winds)
                 self.update(countyDataWith: updatedCounty)
             }.recover { error -> Void in
                 NSLog("\(error) in swells for county.")
+            }
+        }
+        
+        if county.winds == nil {
+            Spitcast.get(windsForCounty: county.name)
+                .then { response -> Void in
+                    let county = self.countyDataByName[response.county]!
+                    let updatedCounty = CountyData(name: county.name, waterTemperature: county.waterTemperature, tides: county.tides, swells: county.swells, winds: response.winds)
+                    self.update(countyDataWith: updatedCounty)
+                }.recover { error -> Void in
+                    NSLog("\(error) in swells for county.")
             }
         }
     }
@@ -178,38 +189,6 @@ class SpotLibrary {
             }
         }
         
-    }
-    
-    func getCountyWind(_ county:String, spotSender: Int?) {
-//        let formattedCountyNameForRequest = county.stringByReplacingOccurrencesOfString(" ", withString: "-", options: NSString.CompareOptions.LiteralSearch, range: nil).lowercased()
-//        let dataURL:URL = URL(string: "http://api.spitcast.com/api/county/wind/\(formattedCountyNameForRequest)/")!
-//        
-//        Alamofire.request(.GET, dataURL, parameters: nil, encoding: .JSON)
-//            .validate()
-//            .responseJSON { _, _, result in
-//                switch result {
-//                case .Success:
-//                    if result.value != nil {
-//                        let json = JSON(result.value!)
-//                        
-//                        if let speed = json[self.currentHour]["speed_mph"].float {
-//                            if let direction:String = json[self.currentHour]["direction_text"].string {
-//                                let windData = (speedInMPH:Int(speed), direction: direction)
-//                                self.countyDataByName[county]!.wind = windData
-//                            }
-//                        }
-//                    }
-//                    
-//                    self.countyDataRequestLog[county]!.wind = true
-//                    
-//                    if let spotID = spotSender {
-//                        self.notifyViewOfComplete(spotID)
-//                    }
-//                case .Failure(_, let error):
-//                    NSLog("\(error)")
-//                }
-//        }
-//    }
     }
 }
 
