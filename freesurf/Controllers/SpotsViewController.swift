@@ -17,6 +17,8 @@ class SpotsViewController: UIViewController, UITableViewDataSource, UITableViewD
     let tableView = LPRTableView(frame: CGRect.zero, style: .grouped)
     var collapseDetailViewController = true
     
+    var detailView: DetailViewController? = nil
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         library = SpotLibrary(dataDelegate: self, tableViewDelegate: self)
@@ -100,6 +102,7 @@ class SpotsViewController: UIViewController, UITableViewDataSource, UITableViewD
         let spot = library.spotDataByID[spotId]!
         
         let vc = DetailViewController(forSpot: spot)
+        detailView = vc
         let nav = UINavigationController(rootViewController: vc)
         vc.did(updateSpot: spot)
         if let county = library.countyDataByName[spot.county] {
@@ -181,19 +184,7 @@ class SpotsViewController: UIViewController, UITableViewDataSource, UITableViewD
             cell.did(updateSpot: spot)
         }
         
-        guard let splitViewController = splitViewController else {
-            return
-        }
-        
-        guard splitViewController.viewControllers.count == 2 else {
-            return
-        }
-        
-        guard let detailView = ((splitViewController.viewControllers[1] as? UINavigationController)?.topViewController as? DetailViewController) else {
-            return
-        }
-        
-        detailView.did(updateSpot: spot)
+        detailView?.did(updateSpot: spot)
     }
     
     func did(updateCounty county: CountyData) {
@@ -205,19 +196,7 @@ class SpotsViewController: UIViewController, UITableViewDataSource, UITableViewD
             cell.did(updateCounty: county)
         }
         
-        guard let splitViewController = splitViewController else {
-            return
-        }
-        
-        guard splitViewController.viewControllers.count == 2 else {
-            return
-        }
-        
-        guard let detailView = ((splitViewController.viewControllers[1] as? UINavigationController)?.topViewController as? DetailViewController) else {
-            return
-        }
-        
-        detailView.did(updateCounty: county)
+        detailView?.did(updateCounty: county)
     }
 }
 
