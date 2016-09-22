@@ -51,7 +51,7 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, SpotDataDele
         for chartView in [tideChart, heightChart] {
             if !chartView.chart.dataStore.isEmpty {
                 chartView.chart.highlightDataPoints(Date().hour())
-                chartView.chart.simulateTouchAtIndex(Date().hour())
+//                chartView.chart.simulateTouchAtIndex(Date().hour())
             }
         }
     }

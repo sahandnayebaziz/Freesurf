@@ -61,16 +61,18 @@ class ChartView: UIView, SpotDataDelegate, LineChartDelegate {
             make.top.equalTo(valueLabel.snp.bottom).offset(4)
         }
         
-        chart.axesVisible = false
+        chart.x.axis.visible = false
+        chart.x.labels.visible = false
+        chart.y.axis.visible = false
+        chart.y.labels.visible = false
+        chart.x.grid.color = UIColor.clear
+        chart.y.grid.color = UIColor.clear
+        chart.x.axis.inset = 24
+        chart.y.axis.inset = 44
+        chart.dots.color = UIColor(red: 97/255.0, green: 177/255.0, blue: 237/255.0, alpha: 1)
+        chart.area = false
         chart.delegate = self
-        chart.animationEnabled = false
-        chart.areaUnderLinesVisible = false
-        chart.axesColor = UIColor.clear
-        chart.gridColor = UIColor.clear
-        chart.labelsXVisible = false
-        chart.labelsYVisible = false
-        chart.axisInset = 24
-        chart.dotsBackgroundColor = UIColor(red: 97/255.0, green: 177/255.0, blue: 237/255.0, alpha: 1)
+        chart.animation.enabled = false
     }
     
     func did(updateSpot spot: SpotData) {
@@ -108,11 +110,16 @@ class ChartView: UIView, SpotDataDelegate, LineChartDelegate {
         chart.simulateTouchAtIndex(Date().hour())
     }
     
-    func didSelectDataPoint(_ x: CGFloat, yValues: Array<CGFloat>, chartIdentifier: String) {
+    func didSelectDataPoint(_ x: CGFloat, yValues: [CGFloat]) {
         let chartIndexTouched = x < 0 ? 0 : x > 24 ? 24 : Int(x)
+        chart.highlightDataPoints(chartIndexTouched)
         
-        timeLabel.text = graphIndexToTimeString(chartIndexTouched, longForm: true)
         valueLabel.text = "\(Int(yValues.first!))ft"
+        if chartIndexTouched == Date().hour() {
+            timeLabel.text = "Now"
+        } else {
+            timeLabel.text = Date().dateAtStartOfDay().dateByAddingHours(chartIndexTouched).toString(.custom("ha"))
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {
