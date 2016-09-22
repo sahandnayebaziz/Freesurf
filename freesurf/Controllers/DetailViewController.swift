@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AFDateHelper
 import SnapKit
 
 class DetailViewController: UIViewController, UIScrollViewDelegate, SpotDataDelegate {
@@ -42,6 +43,17 @@ class DetailViewController: UIViewController, UIScrollViewDelegate, SpotDataDele
         navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
         navigationItem.leftItemsSupplementBackButton = true
         navigationController?.navigationBar.barStyle = .black
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        for chartView in [tideChart, heightChart] {
+            if !chartView.chart.dataStore.isEmpty {
+                chartView.chart.highlightDataPoints(Date().hour())
+                chartView.chart.simulateTouchAtIndex(Date().hour())
+            }
+        }
     }
     
     func did(updateSpot spot: SpotData) {
