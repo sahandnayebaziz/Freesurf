@@ -1,19 +1,19 @@
 PODS:
   - AFDateHelper (3.5.3)
-  - Alamofire (4.0.0)
-  - PromiseKit (4.0.1):
-    - PromiseKit/Foundation (= 4.0.1)
-    - PromiseKit/QuartzCore (= 4.0.1)
-    - PromiseKit/UIKit (= 4.0.1)
-  - PromiseKit/CorePromise (4.0.1)
-  - PromiseKit/Foundation (4.0.1):
+  - Alamofire (4.0.1)
+  - PromiseKit (4.0.4):
+    - PromiseKit/Foundation (= 4.0.4)
+    - PromiseKit/QuartzCore (= 4.0.4)
+    - PromiseKit/UIKit (= 4.0.4)
+  - PromiseKit/CorePromise (4.0.4)
+  - PromiseKit/Foundation (4.0.4):
     - PromiseKit/CorePromise
-  - PromiseKit/QuartzCore (4.0.1):
+  - PromiseKit/QuartzCore (4.0.4):
     - PromiseKit/CorePromise
-  - PromiseKit/UIKit (4.0.1):
+  - PromiseKit/UIKit (4.0.4):
     - PromiseKit/CorePromise
   - ReachabilitySwift (3)
-  - SnapKit (3.0.0)
+  - SnapKit (3.0.2)
 
 DEPENDENCIES:
   - AFDateHelper
@@ -24,10 +24,10 @@ DEPENDENCIES:
 
 SPEC CHECKSUMS:
   AFDateHelper: e64bcc4a88a07e1d3e62442741b2a164adc02d77
-  Alamofire: fef59f00388f267e52d9b432aa5d93dc97190f14
-  PromiseKit: ae9e7f97ee758e23f7b9c5e80380a2e78d6338c5
+  Alamofire: 7682d43245de14874acd142ec137b144aa1dd335
+  PromiseKit: 8e8ee39d33ff199d92a1a883b5396f6285be6c91
   ReachabilitySwift: f5b9bb30a0777fac8f09ce8b067e32faeb29bb64
-  SnapKit: 98af0a4e9369d3c58f758967518081dbdc7eb1d9
+  SnapKit: 2e456761aa92d4d4067a7a5594c18769d451a8ad
 
 PODFILE CHECKSUM: 55fe850a85eb3a32348794d8bac837e8000e29c6
 
