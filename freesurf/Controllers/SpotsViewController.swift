@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import ReachabilitySwift
 
-class SpotsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, SpotDataDelegate, SpotTableViewDelegate, SearchResultDelegate, UISplitViewControllerDelegate, FooterViewDelegate {
+class SpotsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, SpotDataDelegate, SpotTableViewDelegate, SearchResultDelegate, UISplitViewControllerDelegate, FooterViewDelegate, UIViewControllerPreviewingDelegate {
     
     var library: SpotLibrary!
     
@@ -44,6 +44,10 @@ class SpotsViewController: UIViewController, UITableViewDataSource, UITableViewD
         splitViewController?.delegate = self
         
         library.loadData()
+        
+        if traitCollection.forceTouchCapability == .available {
+            registerForPreviewing(with: self, sourceView: tableView)
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -197,6 +201,27 @@ class SpotsViewController: UIViewController, UITableViewDataSource, UITableViewD
         }
         
         detailView?.did(updateCounty: county)
+    }
+    
+    public func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
+        guard let indexPath = tableView.indexPathForRow(at: location) else {
+            return nil
+        }
+        
+        let spotId = library.selectedSpotIDs[indexPath.row]
+        let spot = library.spotDataByID[spotId]!
+        
+        let vc = DetailViewController(forSpot: spot)
+        let nav = UINavigationController(rootViewController: vc)
+        vc.did(updateSpot: spot)
+        if let county = library.countyDataByName[spot.county] {
+            vc.did(updateCounty: county)
+        }
+        return nav
+    }
+    
+    func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {
+        show(viewControllerToCommit, sender: self)
     }
 }
 

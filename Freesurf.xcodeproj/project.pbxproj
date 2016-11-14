@@ -30,7 +30,6 @@
 		D8A042851D8CAA38000F3D45 /* Spitcast.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A042841D8CAA38000F3D45 /* Spitcast.swift */; };
 		D8B5681619C8914E000817AA /* threading.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B5681519C8914E000817AA /* threading.swift */; };
 		D8B89E131A47BFE100BBEAD5 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D8B89E121A47BFE100BBEAD5 /* Images.xcassets */; };
-		D8C3A9381D8D977200776F87 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D8011779198D64C200509A27 /* Info.plist */; };
 		D8F6636519D5EF87000B062C /* search.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8F6636419D5EF87000B062C /* search.swift */; };
 		D8F6636919D5F14F000B062C /* SearchTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8F6636819D5F14F000B062C /* SearchTableViewController.swift */; };
 /* End PBXBuildFile section */
@@ -246,7 +245,7 @@
 			attributes = {
 				LastSwiftMigration = 0700;
 				LastSwiftUpdateCheck = 0700;
-				LastUpgradeCheck = 0800;
+				LastUpgradeCheck = 0810;
 				ORGANIZATIONNAME = "Sahand Nayebaziz";
 				TargetAttributes = {
 					D8011774198D64C200509A27 = {
@@ -281,7 +280,6 @@
 			files = (
 				D81925661A48FE8600925B51 /* LICENSE2 in Resources */,
 				D8B89E131A47BFE100BBEAD5 /* Images.xcassets in Resources */,
-				D8C3A9381D8D977200776F87 /* Info.plist in Resources */,
 				D86544EA1BA364B2000965DD /* Launch Screen.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
