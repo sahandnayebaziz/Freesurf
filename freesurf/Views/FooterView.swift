@@ -20,7 +20,7 @@ class FooterView: UIView {
         self.delegate = delegate
         super.init(frame: CGRect.zero)
 
-        let spitcastButton = UIButton()
+        let spitcastButton = UIButton(type: .system)
         spitcastButton.setImage(#imageLiteral(resourceName: "SpitcastLogo"), for: .normal)
         addSubview(spitcastButton)
         spitcastButton.snp.makeConstraints { make in
@@ -28,6 +28,8 @@ class FooterView: UIView {
             make.top.equalTo(45)
             make.size.equalTo(45)
         }
+        spitcastButton.tintColor = UIColor.white
+        spitcastButton.addTarget(self, action: #selector(didTapSpitcast), for: .touchUpInside)
         
         let addButton = UIButton(type: .contactAdd)
         addButton.tintColor = UIColor.white
@@ -41,6 +43,10 @@ class FooterView: UIView {
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func didTapSpitcast() {
+        UIApplication.shared.openURL(URL(string: "http://www.spitcast.com")!)
     }
 
 }
