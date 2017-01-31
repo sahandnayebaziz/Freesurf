@@ -55,6 +55,11 @@ class SpotsViewController: UIViewController, UITableViewDataSource, UITableViewD
         setNeedsStatusBarAppearanceUpdate()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        tableView.visibleCells.forEach({ $0.setNeedsDisplay() })
+    }
+    
     override func didRotate(from fromInterfaceOrientation: UIInterfaceOrientation) {
         self.tableView.reloadSections(IndexSet(integer: 0), with: .none)
     }
