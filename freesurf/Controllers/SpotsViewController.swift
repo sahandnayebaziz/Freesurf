@@ -21,27 +21,28 @@ class SpotsViewController: UIViewController, UITableViewDataSource, UITableViewD
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        library = SpotLibrary(dataDelegate: self, tableViewDelegate: self)
-        
+        view.backgroundColor = .black
         title = "Spots"
+        
         splitViewController!.navigationController?.navigationBar.barStyle = .black
+        splitViewController?.delegate = self
         navigationController?.navigationBar.barStyle = .black
         navigationController?.navigationBar.isTranslucent = true
+        navigationController?.navigationBar.prefersLargeTitles = true
+        
+        library = SpotLibrary(dataDelegate: self, tableViewDelegate: self)
         
         view.addSubview(tableView)
         tableView.snp.makeConstraints { make in
-            make.top.equalTo(0)
-            make.bottom.equalToSuperview()
-            make.width.equalTo(view.snp.width)
-            make.centerX.equalTo(view.snp.centerX)
+            make.size.equalTo(view.safeAreaLayoutGuide)
+            make.center.equalTo(view.safeAreaLayoutGuide)
         }
+        tableView.sectionHeaderHeight = 0
         tableView.delegate = self
         tableView.dataSource = self
         tableView.separatorStyle = .none
         tableView.backgroundColor = UIColor(red: 13/255.0, green: 13/255.0, blue: 13/255.0, alpha: 1.0)
         tableView.register(SpotCell.self, forCellReuseIdentifier: "spotCell")
-        
-        splitViewController?.delegate = self
         
         library.loadData()
         
