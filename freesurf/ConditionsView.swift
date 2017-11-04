@@ -43,7 +43,7 @@ class ConditionsView: UIView, SpotDataDelegate {
         
         for metric in ["Direction", "Period", "Condition", "Wind"] {
             let label = UILabel()
-            label.font = UIFont.systemFont(ofSize: 18, weight: UIFontWeightRegular)
+            label.font = UIFont.systemFont(ofSize: 18, weight: UIFont.Weight.regular)
             label.textAlignment = .left
             label.text = metric
             label.textColor = Colors.blue
@@ -51,7 +51,7 @@ class ConditionsView: UIView, SpotDataDelegate {
         }
         
         for valueLabel in [directionLabel, periodLabel, conditionsLabel, windLabel] {
-            valueLabel.font = UIFont.systemFont(ofSize: 18, weight: UIFontWeightRegular)
+            valueLabel.font = UIFont.systemFont(ofSize: 18, weight: UIFont.Weight.regular)
             valueLabel.textAlignment = .left
             valueLabel.textColor = UIColor.white
             valuesStackView.addArrangedSubview(valueLabel)

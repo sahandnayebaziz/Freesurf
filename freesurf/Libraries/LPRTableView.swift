@@ -84,7 +84,7 @@ extension LPRTableView {
         longPressGestureRecognizer.isEnabled = true
     }
     
-    internal func _longPress(_ gesture: UILongPressGestureRecognizer) {
+    @objc internal func _longPress(_ gesture: UILongPressGestureRecognizer) {
         
         let location = gesture.location(in: self)
         let indexPath = indexPathForRow(at: location)
@@ -268,7 +268,7 @@ extension LPRTableView {
         }
     }
     
-    internal func _scrollTableWithCell(_ sender: CADisplayLink) {
+    @objc internal func _scrollTableWithCell(_ sender: CADisplayLink) {
         if let gesture = longPressGestureRecognizer {
             
             let location = gesture.location(in: self)

@@ -8,7 +8,7 @@
 
 import UIKit
 import SnapKit
-import ReachabilitySwift
+import Reachability
 
 class SpotsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, SpotDataDelegate, SpotTableViewDelegate, SearchResultDelegate, UISplitViewControllerDelegate, FooterViewDelegate, UIViewControllerPreviewingDelegate {
     

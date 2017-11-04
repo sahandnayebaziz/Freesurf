@@ -34,7 +34,7 @@ class SpotCell: UITableViewCell, SpotDataDelegate {
     private func createSubviews() {
         if heightLabel == nil {
             heightLabel = UILabel()
-            heightLabel?.font = UIFont.systemFont(ofSize: 59, weight: UIFontWeightThin)
+            heightLabel?.font = UIFont.systemFont(ofSize: 59, weight: UIFont.Weight.thin)
             heightLabel?.textColor = UIColor.white
             heightLabel?.textAlignment = .right
             addSubview(heightLabel!)
@@ -47,7 +47,7 @@ class SpotCell: UITableViewCell, SpotDataDelegate {
         
         if nameLabel == nil {
             nameLabel = UILabel()
-            nameLabel?.font = UIFont.systemFont(ofSize: 28, weight: UIFontWeightRegular)
+            nameLabel?.font = UIFont.systemFont(ofSize: 28, weight: UIFont.Weight.regular)
             nameLabel?.textColor = UIColor.white
             nameLabel?.textAlignment = .left
             addSubview(nameLabel!)
@@ -61,7 +61,7 @@ class SpotCell: UITableViewCell, SpotDataDelegate {
         
         if tempAndSwellLabel == nil {
             tempAndSwellLabel = UILabel()
-            tempAndSwellLabel?.font = UIFont.systemFont(ofSize: 14, weight: UIFontWeightRegular)
+            tempAndSwellLabel?.font = UIFont.systemFont(ofSize: 14, weight: UIFont.Weight.regular)
             tempAndSwellLabel?.textColor = UIColor.white
             addSubview(tempAndSwellLabel!)
             tempAndSwellLabel?.snp.makeConstraints { make in

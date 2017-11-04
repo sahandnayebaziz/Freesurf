@@ -103,13 +103,13 @@ class SearchTableViewController: UIViewController, UITableViewDataSource, UITabl
         delegate.did(selectSpotId: results[indexPath.row])
     }
     
-    func didTapCancel() {
+    @objc func didTapCancel() {
         searchField.resignFirstResponder()
         searchField.endEditing(false)
         navigationController?.dismiss(animated: true, completion: nil)
     }
     
-    func editingchanged(_ sender: UITextField) {
+    @objc func editingchanged(_ sender: UITextField) {
         guard let input = sender.text else {
             return
         }

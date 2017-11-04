@@ -41,7 +41,8 @@ import Foundation
     }
 
     /**
-     Bridge an AnyPromise to a Promise<Any>
+     Bridges an `AnyPromise` to a `Promise<Any?>`.
+
      - Note: AnyPromises fulfilled with `PMKManifold` lose all but the first fulfillment object.
      - Remark: Could not make this an initializer of `Promise` due to generics issues.
      */
@@ -126,7 +127,7 @@ import Foundation
      
      - Note: If the AnyPromise was fulfilled with a `PMKManifold`, returns only the first fulfillment object.
 
-     - Returns If `resolved`, the object that was used to resolve this promise; if `pending`, nil.
+     - Returns: The value with which this promise was resolved or `nil` if this promise is pending.
      */
     @objc private var __value: Any? {
         switch state.get() {
@@ -142,7 +143,7 @@ import Foundation
     /**
      Creates a resolved promise.
 
-     When developing your own promise systems, it is ocassionally useful to be able to return an already resolved promise.
+     When developing your own promise systems, it is occasionally useful to be able to return an already resolved promise.
 
      - Parameter value: The value with which to resolve this promise. Passing an `NSError` will cause the promise to be rejected, passing an AnyPromise will return a new AnyPromise bound to that promise, otherwise the promise will be fulfilled with the value passed.
 
@@ -205,9 +206,9 @@ import Foundation
         })
     }
 
-    @objc func __catchWithPolicy(_ policy: CatchPolicy, execute body: @escaping (Any?) -> Any?) -> AnyPromise {
+    @objc func __catchOn(_ q: DispatchQueue, withPolicy policy: CatchPolicy, execute body: @escaping (Any?) -> Any?) -> AnyPromise {
         return AnyPromise(sealant: { resolve in
-            state.catch(on: .default, policy: policy, else: resolve) { err in
+            state.catch(on: q, policy: policy, else: resolve) { err in
                 makeHandler(body, resolve)(err as NSError)
             }
         })
@@ -245,7 +246,7 @@ import Foundation
             switch resolution {
             case .rejected(let error, let token):
                 token.consumed = true  // when and join will create a new parent error that is unconsumed
-                body(error as Error)
+                body(error as NSError)
             case .fulfilled(let value):
                 body(value)
             }
@@ -255,6 +256,9 @@ import Foundation
 
 
 extension AnyPromise {
+    /**
+     - Returns: A description of the state of this promise.
+     */
     override public var description: String {
         return "AnyPromise: \(state)"
     }

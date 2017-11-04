@@ -45,7 +45,7 @@ class FooterView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func didTapSpitcast() {
+    @objc func didTapSpitcast() {
         UIApplication.shared.openURL(URL(string: "http://www.spitcast.com")!)
     }
 

@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import CoreLocation
+import AFDateHelper
 
 struct SpotData {
     var id: Int
@@ -28,7 +29,7 @@ struct SpotData {
             return [topColor.cgColor, bottomColor.cgColor]
         }
         
-        let height = allHeights[Date().hour()]
+        let height = allHeights[Date().component(.hour)!]
         
         if height <= 2 {
             topColor = UIColor(red: 70/255.0, green: 104/255.0, blue: 130/255.0, alpha: 1.0)
@@ -51,7 +52,7 @@ struct SpotData {
             return "--ft"
         }
         
-        let currentHour = Date().hour()
+        let currentHour = Date().component(.hour)!
         guard heights.count >= currentHour else {
             NSLog("Incomplete heights error")
             return "--ft"
@@ -65,7 +66,7 @@ struct SpotData {
             return "--ft"
         }
         
-        let currentHour = Date().hour()
+        let currentHour = Date().component(.hour)!
         guard heights.count >= currentHour else {
             NSLog("Incomplete heights error")
             return "--ft"
@@ -80,7 +81,7 @@ struct SpotData {
             return ""
         }
         
-        let currentHour = Date().hour()
+        let currentHour = Date().component(.hour)!
         guard conditions.count >= currentHour else {
             NSLog("Incomplete swells error")
             return ""
@@ -128,7 +129,7 @@ struct CountyData {
             return nil
         }
         
-        let currentHour = Date().hour()
+        let currentHour = Date().component(.hour)!
         guard allSwells.count >= currentHour else {
             NSLog("Incomplete swells error")
             return nil
@@ -160,7 +161,7 @@ struct CountyData {
             return ""
         }
         
-        let currentHour = Date().hour()
+        let currentHour = Date().component(.hour)!
         guard allWinds.count >= currentHour else {
             NSLog("Incomplete winds error")
             return ""

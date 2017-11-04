@@ -34,7 +34,7 @@ class ChartView: UIView, SpotDataDelegate, LineChartDelegate {
         self.type = type
         super.init(frame: CGRect.zero)
         
-        typeLabel.font = UIFont.systemFont(ofSize: 18, weight: UIFontWeightRegular)
+        typeLabel.font = UIFont.systemFont(ofSize: 18, weight: UIFont.Weight.regular)
         typeLabel.textColor = Colors.blue
         addSubview(typeLabel)
         typeLabel.snp.makeConstraints { make in
@@ -43,7 +43,7 @@ class ChartView: UIView, SpotDataDelegate, LineChartDelegate {
         }
         typeLabel.text = type.getText()
         
-        valueLabel.font = UIFont.systemFont(ofSize: 18, weight: UIFontWeightRegular)
+        valueLabel.font = UIFont.systemFont(ofSize: 18, weight: UIFont.Weight.regular)
         valueLabel.textAlignment = .right
         valueLabel.textColor = UIColor.white
         addSubview(valueLabel)
@@ -52,7 +52,7 @@ class ChartView: UIView, SpotDataDelegate, LineChartDelegate {
             make.top.equalTo(0)
         }
         
-        timeLabel.font = UIFont.systemFont(ofSize: 18, weight: UIFontWeightRegular)
+        timeLabel.font = UIFont.systemFont(ofSize: 18, weight: UIFont.Weight.regular)
         timeLabel.textColor = Colors.blue
         timeLabel.textAlignment = .right
         addSubview(timeLabel)
@@ -106,8 +106,8 @@ class ChartView: UIView, SpotDataDelegate, LineChartDelegate {
             make.width.equalTo(self)
             make.centerX.equalTo(self)
         }
-        chart.highlightDataPoints(Date().hour())
-        chart.simulateTouchAtIndex(Date().hour())
+        chart.highlightDataPoints(Date().component(.hour)!)
+        chart.simulateTouchAtIndex(Date().component(.hour)!)
     }
     
     func didSelectDataPoint(_ x: CGFloat, yValues: [CGFloat]) {
@@ -115,10 +115,10 @@ class ChartView: UIView, SpotDataDelegate, LineChartDelegate {
         chart.highlightDataPoints(chartIndexTouched)
         
         valueLabel.text = "\(Int(yValues.first!))ft"
-        if chartIndexTouched == Date().hour() {
+        if chartIndexTouched == Date().component(.hour)! {
             timeLabel.text = "Now"
         } else {
-            timeLabel.text = Date().dateAtStartOfDay().dateByAddingHours(chartIndexTouched).toString(.custom("ha"))
+            timeLabel.text = Date().dateFor(.startOfDay).adjust(.hour, offset: chartIndexTouched).toString(format: .custom("ha"))
         }
     }
     
